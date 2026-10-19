@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import confetti from 'canvas-confetti';
+import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import StatsCards from './components/StatsCards';
 import FilterBar from './components/FilterBar';
@@ -13,16 +14,19 @@ import MessengerShareModal from './components/MessengerShareModal';
 import PrintReportView from './components/PrintReportView';
 import ConnectStaffModal from './components/ConnectStaffModal';
 import DatabaseHub from './components/database/DatabaseHub';
+import LoginHistoryView from './components/LoginHistoryView';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
+import { INITIAL_LOGIN_HISTORY } from './data/initialLoginHistory';
 import { exportToExcel } from './utils/excelExport';
 
 const LOCAL_STORAGE_KEY = 'nyj_tasks_v1';
 const LOCAL_STORAGE_USER = 'nyj_current_user_v1';
 const LOCAL_STORAGE_DBS = 'nyj_databases_v1';
+const LOCAL_STORAGE_HISTORY = 'nyj_login_history_v1';
 
 export default function App() {
-  // Top-level module: 'facility' (시설·공사 관리) vs 'databases' (업무 데이터베이스 관리)
+  // Top-level module: 'facility' (시설·공사 관리) vs 'databases' (업무 데이터베이스) vs 'login-history' (로그인이력조회)
   const [currentModule, setCurrentModule] = useState('facility');
 
   // Tasks state with LocalStorage persistence
@@ -49,6 +53,18 @@ export default function App() {
       console.error('Failed to load custom databases from local storage', e);
     }
     return INITIAL_DATABASES;
+  });
+
+  // Selected Database ID in custom databases
+  const [selectedDbId, setSelectedDbId] = useState(() => customDatabases[0]?.id || '');
+
+  // Login History & Audit Log state
+  const [loginHistory, setLoginHistory] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_HISTORY);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return INITIAL_LOGIN_HISTORY;
   });
 
   // Current persona / logged in user
@@ -88,6 +104,32 @@ export default function App() {
     setTimeout(() => setToast(null), 3000);
   };
 
+  // Add real-time audit log entry
+  const addAuditLog = (action) => {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    const newEntry = {
+      id: `LOG-${Date.now()}`,
+      timestamp: timeStr,
+      userId: currentUser === '김일호' ? 'kim_ilho' : currentUser === '권병학' ? 'kwon_bh' : currentUser === '조현호' ? 'cho_hh' : 'admin_fms',
+      userName: currentUser !== 'ALL' ? currentUser : '관리자',
+      role: currentUser === '권병학' ? '시설담당 (대리)' : currentUser === 'ALL' ? '시스템 관리자' : '시설담당 (주임)',
+      dept: '체육문화센터 시설팀',
+      ip: serverInfo.ip || '192.168.101.96',
+      device: 'Chrome 128 / Windows 11 Pro',
+      action: action,
+      status: '성공'
+    };
+
+    const updated = [newEntry, ...loginHistory];
+    setLoginHistory(updated);
+    try {
+      localStorage.setItem(LOCAL_STORAGE_HISTORY, JSON.stringify(updated));
+    } catch (e) {}
+  };
+
   // Sync tasks to LocalStorage & Central Server API
   const persistTasks = async (newTasks) => {
     setTasks(newTasks);
@@ -99,165 +141,162 @@ export default function App() {
         body: JSON.stringify(newTasks)
       });
     } catch (e) {
-      console.error('Failed to save tasks to server', e);
+      console.warn('Network sync failed, saved locally:', e.message);
     }
   };
 
   // Sync custom databases to LocalStorage & Central Server API
-  const persistDatabases = async (newDbs) => {
-    setCustomDatabases(newDbs);
+  const persistDatabases = async (newDatabases) => {
+    setCustomDatabases(newDatabases);
     try {
-      localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(newDbs));
+      localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(newDatabases));
       await fetch('/api/databases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newDbs)
+        body: JSON.stringify(newDatabases)
       });
     } catch (e) {
-      console.error('Failed to save databases to server', e);
+      console.warn('Network sync for databases failed, saved locally:', e.message);
     }
   };
 
-  // Initial load from server and live multi-user polling
+  // Fetch initial tasks, databases & server info on mount
   useEffect(() => {
-    // 1. Fetch server info for LAN IP
-    fetch('/api/server-info')
-      .then(res => res.json())
-      .then(info => setServerInfo(info))
-      .catch(() => {});
-
-    // 2. Fetch latest shared tasks
-    fetch('/api/tasks')
-      .then(res => res.json())
-      .then(serverTasks => {
-        if (Array.isArray(serverTasks) && serverTasks.length > 0) {
-          setTasks(serverTasks);
-          try {
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(serverTasks));
-          } catch (e) {}
+    const fetchInitialData = async () => {
+      try {
+        const infoRes = await fetch('/api/server-info');
+        if (infoRes.ok) {
+          const info = await infoRes.json();
+          setServerInfo(info);
         }
-      })
-      .catch(() => {});
+      } catch (e) {}
 
-    // 3. Fetch latest shared custom databases
-    fetch('/api/databases')
-      .then(res => res.json())
-      .then(serverDbs => {
-        if (Array.isArray(serverDbs) && serverDbs.length > 0) {
-          setCustomDatabases(serverDbs);
-          try {
-            localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(serverDbs));
-          } catch (e) {}
+      try {
+        const tasksRes = await fetch('/api/tasks');
+        if (tasksRes.ok) {
+          const remoteTasks = await tasksRes.json();
+          if (Array.isArray(remoteTasks) && remoteTasks.length > 0) {
+            setTasks(remoteTasks);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(remoteTasks));
+          }
         }
-      })
-      .catch(() => {});
+      } catch (e) {}
 
-    // 4. Real-time background sync polling every 4 seconds for both tasks & databases
-    const interval = setInterval(() => {
-      // Sync tasks
-      fetch('/api/tasks')
-        .then(res => res.json())
-        .then(latestTasks => {
-          if (Array.isArray(latestTasks) && latestTasks.length > 0) {
+      try {
+        const dbRes = await fetch('/api/databases');
+        if (dbRes.ok) {
+          const remoteDbs = await dbRes.json();
+          if (Array.isArray(remoteDbs) && remoteDbs.length > 0) {
+            setCustomDatabases(remoteDbs);
+            localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(remoteDbs));
+          }
+        }
+      } catch (e) {}
+    };
+
+    fetchInitialData();
+  }, []);
+
+  // Real-time synchronization polling (every 4 seconds)
+  useEffect(() => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const tasksRes = await fetch('/api/tasks');
+        if (tasksRes.ok) {
+          const latestTasks = await tasksRes.json();
+          if (Array.isArray(latestTasks)) {
             setTasks(prev => {
               if (JSON.stringify(prev) !== JSON.stringify(latestTasks)) {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(latestTasks));
                 return latestTasks;
               }
               return prev;
             });
           }
-        })
-        .catch(() => {});
+        }
+      } catch (e) {}
 
-      // Sync databases
-      fetch('/api/databases')
-        .then(res => res.json())
-        .then(latestDbs => {
-          if (Array.isArray(latestDbs) && latestDbs.length > 0) {
+      try {
+        const dbRes = await fetch('/api/databases');
+        if (dbRes.ok) {
+          const latestDbs = await dbRes.json();
+          if (Array.isArray(latestDbs)) {
             setCustomDatabases(prev => {
               if (JSON.stringify(prev) !== JSON.stringify(latestDbs)) {
+                localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(latestDbs));
                 return latestDbs;
               }
               return prev;
             });
           }
-        })
-        .catch(() => {});
+        }
+      } catch (e) {}
     }, 4000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(pollInterval);
   }, []);
 
-  // Sync user to LocalStorage
-  useEffect(() => {
+  // Switch persona / current user
+  const handleUserChange = (newUser) => {
+    setCurrentUser(newUser);
     try {
-      localStorage.setItem(LOCAL_STORAGE_USER, currentUser);
-    } catch (e) {
-      console.error('Failed to save user', e);
-    }
-  }, [currentUser]);
-
-  // Persona change handler
-  const handleUserChange = (user) => {
-    setCurrentUser(user);
-    if (user === 'ALL') {
-      setIsMyTasksActive(false);
-      setSelectedManager('');
-    } else {
-      showToast(`접속자가 [${user}] 님으로 변경되었습니다.`, 'info');
-    }
+      localStorage.setItem(LOCAL_STORAGE_USER, newUser);
+    } catch (e) {}
+    addAuditLog(`사용자 변경: [${newUser}] 계정으로 전환`);
+    showToast(`접속자가 [${newUser === 'ALL' ? '전체 보기 (관리자)' : newUser + ' 담당자'}](으)로 변경되었습니다.`, 'info');
   };
 
-  // Quick filter for current user's tasks
+  // Quick filter for 'My Tasks'
   const handleQuickFilterMyTasks = () => {
     if (isMyTasksActive) {
-      setIsMyTasksActive(false);
       setSelectedManager('');
+      setIsMyTasksActive(false);
+      showToast('전체 담당자 업무로 전환되었습니다.', 'info');
     } else {
-      setIsMyTasksActive(true);
       setSelectedManager(currentUser);
+      setIsMyTasksActive(true);
+      showToast(`'${currentUser}' 님의 담당 업무만 필터링합니다.`);
     }
   };
 
-  // Filter tasks based on all active criteria
+  // Filter tasks
   const filteredTasks = useMemo(() => {
-    return tasks.filter((t) => {
-      // Search
+    return tasks.filter((task) => {
+      // Search query
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
-        const matchesTitle = t.title?.toLowerCase().includes(query);
-        const matchesLoc = t.location?.toLowerCase().includes(query);
-        const matchesFacility = t.facility?.toLowerCase().includes(query);
-        const matchesVendor = t.vendor?.toLowerCase().includes(query);
-        const matchesContact = t.contact?.includes(query);
-        const matchesManager = t.manager?.toLowerCase().includes(query);
-        const matchesMemo = t.memo?.toLowerCase().includes(query);
+        const matchesTitle = (task.title || '').toLowerCase().includes(query);
+        const matchesFacility = (task.facility || '').toLowerCase().includes(query);
+        const matchesLocation = (task.location || '').toLowerCase().includes(query);
+        const matchesVendor = (task.vendor || '').toLowerCase().includes(query);
+        const matchesContact = (task.contact || '').toLowerCase().includes(query);
+        const matchesNote = (task.estimatedCostNote || '').toLowerCase().includes(query);
 
-        if (!matchesTitle && !matchesLoc && !matchesFacility && !matchesVendor && !matchesContact && !matchesManager && !matchesMemo) {
+        if (!matchesTitle && !matchesFacility && !matchesLocation && !matchesVendor && !matchesContact && !matchesNote) {
           return false;
         }
       }
 
-      // Facility
-      if (selectedFacility && t.facility !== selectedFacility) {
+      // Facility filter
+      if (selectedFacility && task.facility !== selectedFacility) {
         return false;
       }
 
-      // Budget
-      if (selectedBudget && t.budget !== selectedBudget) {
+      // Budget filter
+      if (selectedBudget && task.budget !== selectedBudget) {
         return false;
       }
 
-      // Status
-      if (selectedStatus && t.status !== selectedStatus) {
+      // Status filter
+      if (selectedStatus && task.status !== selectedStatus) {
         return false;
       }
 
-      // Manager
+      // Manager filter
       if (selectedManager) {
         if (selectedManager === 'unassigned') {
-          if (t.manager) return false;
-        } else if (t.manager !== selectedManager) {
+          if (task.manager) return false;
+        } else if (task.manager !== selectedManager) {
           return false;
         }
       }
@@ -266,10 +305,7 @@ export default function App() {
     });
   }, [tasks, searchQuery, selectedFacility, selectedBudget, selectedStatus, selectedManager]);
 
-  const hasActiveFilters = Boolean(
-    searchQuery || selectedFacility || selectedBudget || selectedStatus || selectedManager || isMyTasksActive
-  );
-
+  // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedFacility('');
@@ -298,9 +334,11 @@ export default function App() {
     if (exists) {
       updated = tasks.map((t) => (t.id === taskData.id ? taskData : t));
       showToast(`'${taskData.title}' 정보가 수정되었습니다.`);
+      addAuditLog(`공사 업무 수정: [${taskData.title}]`);
     } else {
       updated = [taskData, ...tasks];
       showToast(`'${taskData.title}' 신규 공사가 등록되었습니다.`);
+      addAuditLog(`공사 업무 신규등록: [${taskData.title}]`);
     }
     persistTasks(updated);
 
@@ -318,13 +356,16 @@ export default function App() {
         setSelectedTask(null);
       }
       showToast(`'${title}' 업무가 삭제되었습니다.`, 'info');
+      addAuditLog(`공사 업무 삭제: [${title}]`);
     }
   };
 
   // Quick Inline Status Change
   const handleQuickStatusChange = (id, newStatus) => {
+    let targetTitle = '';
     const updated = tasks.map((t) => {
       if (t.id === id) {
+        targetTitle = t.title;
         const item = {
           ...t,
           status: newStatus,
@@ -357,12 +398,15 @@ export default function App() {
       return t;
     });
     persistTasks(updated);
+    addAuditLog(`상태 변경: [${targetTitle}] -> [${newStatus}]`);
   };
 
   // Quick Inline Manager Change
   const handleQuickManagerChange = (id, newManager) => {
+    let targetTitle = '';
     const updated = tasks.map((t) => {
       if (t.id === id) {
+        targetTitle = t.title;
         const item = {
           ...t,
           manager: newManager,
@@ -384,6 +428,7 @@ export default function App() {
       return t;
     });
     persistTasks(updated);
+    addAuditLog(`담당자 변경: [${targetTitle}] -> [${newManager || '미배정'}]`);
   };
 
   // Add Log / Note to Task
@@ -403,6 +448,7 @@ export default function App() {
     });
     persistTasks(updated);
     showToast('새 업무 일지가 등록되었습니다.');
+    addAuditLog(`업무일지 등록: [${selectedTask?.title || '공사'}]`);
   };
 
   // Custom Database Handlers (Create, Update, Delete Database)
@@ -412,9 +458,11 @@ export default function App() {
     if (exists) {
       updated = customDatabases.map(d => d.id === dbData.id ? dbData : d);
       showToast(`'${dbData.name}' 데이터베이스가 저장되었습니다.`);
+      addAuditLog(`데이터베이스 수정: [${dbData.name}]`);
     } else {
       updated = [...customDatabases, dbData];
       showToast(`'${dbData.name}' 새 데이터베이스가 생성되었습니다!`);
+      addAuditLog(`데이터베이스 신규생성: [${dbData.name}]`);
     }
     persistDatabases(updated);
   };
@@ -424,6 +472,7 @@ export default function App() {
     const updated = customDatabases.filter(d => d.id !== dbId);
     persistDatabases(updated);
     showToast(`'${target?.name || ''}' 데이터베이스가 삭제되었습니다.`, 'info');
+    addAuditLog(`데이터베이스 삭제: [${target?.name || ''}]`);
   };
 
   // Reset to default original 35 tasks
@@ -433,6 +482,7 @@ export default function App() {
       resetFilters();
       setSelectedTask(null);
       showToast('초기 35건의 공사 데이터로 복원되었습니다.');
+      addAuditLog('초기 35건 시설보수 데이터 전체 복원');
     }
   };
 
@@ -440,6 +490,7 @@ export default function App() {
   const handleExportExcel = () => {
     exportToExcel(filteredTasks, `남양주체육문화센터_공사업무현황_${new Date().toISOString().split('T')[0]}.xlsx`);
     showToast('Excel 파일이 다운로드되었습니다.');
+    addAuditLog(`공사현황 엑셀 다운로드 (총 ${filteredTasks.length}건)`);
   };
 
   // If Print View is active
@@ -453,9 +504,10 @@ export default function App() {
   }
 
   const myTasksCount = tasks.filter((t) => t.manager === currentUser).length;
+  const hasActiveFilters = Boolean(searchQuery || selectedFacility || selectedBudget || selectedStatus || selectedManager);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-100 font-sans">
+    <div className="min-h-screen flex bg-slate-100 font-sans">
       
       {/* Toast Notification */}
       {toast && (
@@ -468,113 +520,146 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Top Header */}
-      <Header
-        currentUser={currentUser}
-        onUserChange={handleUserChange}
-        onNewTask={() => {
-          setEditingTask(null);
-          setIsTaskModalOpen(true);
-        }}
-        onExportExcel={handleExportExcel}
-        onResetData={handleResetData}
-        onOpenConnect={() => setIsConnectModalOpen(true)}
-        serverInfo={serverInfo}
-        totalTasksCount={tasks.length}
-        myTasksCount={myTasksCount}
+      {/* 1. Left Frame: BLCS-FMS Collapsible Sidebar */}
+      <Sidebar
         currentModule={currentModule}
         onModuleChange={setCurrentModule}
-        dbCount={customDatabases.length}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        customDatabases={customDatabases}
+        selectedDbId={selectedDbId}
+        onSelectDbId={setSelectedDbId}
+        onOpenConnectModal={() => setIsConnectModalOpen(true)}
+        currentUser={currentUser}
+        tasksCount={tasks.length}
+        serverInfo={serverInfo}
       />
 
-      {/* Main Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
+      {/* 2. Right Work Frame: Full Screen Container */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         
-        {currentModule === 'databases' ? (
-          <DatabaseHub
-            databases={customDatabases}
-            onSaveDatabase={handleSaveDatabase}
-            onDeleteDatabase={handleDeleteDatabase}
-            currentUser={currentUser}
-          />
-        ) : (
-          <>
-            {/* KPI Summary Cards */}
-            <StatsCards
-              tasks={tasks}
-              onFilterClick={handleStatsFilterClick}
-            />
+        {/* Top Header */}
+        <Header
+          currentUser={currentUser}
+          onUserChange={handleUserChange}
+          onNewTask={() => {
+            setEditingTask(null);
+            setIsTaskModalOpen(true);
+          }}
+          onExportExcel={handleExportExcel}
+          onResetData={handleResetData}
+          onOpenConnect={() => setIsConnectModalOpen(true)}
+          serverInfo={serverInfo}
+          totalTasksCount={tasks.length}
+          myTasksCount={myTasksCount}
+          currentModule={currentModule}
+          onModuleChange={setCurrentModule}
+          dbCount={customDatabases.length}
+        />
 
-            {/* Filter and View mode Toolbar */}
-            <FilterBar
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              selectedFacility={selectedFacility}
-              onFacilityChange={setSelectedFacility}
-              selectedBudget={selectedBudget}
-              onBudgetChange={setSelectedBudget}
-              selectedStatus={selectedStatus}
-              onStatusChange={setSelectedStatus}
-              selectedManager={selectedManager}
-              onManagerChange={setSelectedManager}
-              onResetFilters={resetFilters}
-              hasActiveFilters={hasActiveFilters}
+        {/* Main Work Area (Screen-filling full width) */}
+        <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-5">
+          
+          {/* Module 1: 시스템관리 > 로그인이력조회 */}
+          {currentModule === 'login-history' && (
+            <LoginHistoryView
+              history={loginHistory}
+              onRefresh={() => addAuditLog('로그인이력 새로고침 조회')}
+            />
+          )}
+
+          {/* Module 2: 업무 데이터베이스 허브 */}
+          {currentModule === 'databases' && (
+            <DatabaseHub
+              databases={customDatabases}
+              onSaveDatabase={handleSaveDatabase}
+              onDeleteDatabase={handleDeleteDatabase}
               currentUser={currentUser}
-              onQuickFilterMyTasks={handleQuickFilterMyTasks}
-              isMyTasksActive={isMyTasksActive}
+              selectedDbId={selectedDbId}
+              onSelectDbId={setSelectedDbId}
             />
+          )}
 
-            {/* Dynamic Views */}
-            {viewMode === 'table' && (
-              <TableView
-                tasks={filteredTasks}
-                onSelectTask={(task) => setSelectedTask(task)}
-                onEditTask={(task) => {
-                  setEditingTask(task);
-                  setIsTaskModalOpen(true);
-                }}
-                onDeleteTask={handleDeleteTask}
-                onQuickStatusChange={handleQuickStatusChange}
-                onQuickManagerChange={handleQuickManagerChange}
+          {/* Module 3: 시설·공사 관리 (Main FMS Dashboard) */}
+          {currentModule === 'facility' && (
+            <>
+              {/* KPI Summary Cards */}
+              <StatsCards
+                tasks={tasks}
+                onFilterClick={handleStatsFilterClick}
               />
-            )}
 
-            {viewMode === 'kanban' && (
-              <KanbanView
-                tasks={filteredTasks}
-                onSelectTask={(task) => setSelectedTask(task)}
-                onQuickStatusChange={handleQuickStatusChange}
-                onNewTask={() => {
-                  setEditingTask(null);
-                  setIsTaskModalOpen(true);
-                }}
+              {/* Filter and View mode Toolbar */}
+              <FilterBar
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                selectedFacility={selectedFacility}
+                onFacilityChange={setSelectedFacility}
+                selectedBudget={selectedBudget}
+                onBudgetChange={setSelectedBudget}
+                selectedStatus={selectedStatus}
+                onStatusChange={setSelectedStatus}
+                selectedManager={selectedManager}
+                onManagerChange={setSelectedManager}
+                onResetFilters={resetFilters}
+                hasActiveFilters={hasActiveFilters}
+                currentUser={currentUser}
+                onQuickFilterMyTasks={handleQuickFilterMyTasks}
+                isMyTasksActive={isMyTasksActive}
               />
-            )}
 
-            {viewMode === 'facility' && (
-              <FacilityView
-                tasks={filteredTasks}
-                onSelectTask={(task) => setSelectedTask(task)}
-                onNewTask={() => {
-                  setEditingTask(null);
-                  setIsTaskModalOpen(true);
-                }}
-              />
-            )}
+              {/* Dynamic Views */}
+              {viewMode === 'table' && (
+                <TableView
+                  tasks={filteredTasks}
+                  onSelectTask={(task) => setSelectedTask(task)}
+                  onEditTask={(task) => {
+                    setEditingTask(task);
+                    setIsTaskModalOpen(true);
+                  }}
+                  onDeleteTask={handleDeleteTask}
+                  onQuickStatusChange={handleQuickStatusChange}
+                  onQuickManagerChange={handleQuickManagerChange}
+                />
+              )}
 
-            {viewMode === 'staff' && (
-              <StaffView
-                tasks={filteredTasks}
-                onSelectTask={(task) => setSelectedTask(task)}
-                onQuickManagerChange={handleQuickManagerChange}
-              />
-            )}
-          </>
-        )}
+              {viewMode === 'kanban' && (
+                <KanbanView
+                  tasks={filteredTasks}
+                  onSelectTask={(task) => setSelectedTask(task)}
+                  onQuickStatusChange={handleQuickStatusChange}
+                  onNewTask={() => {
+                    setEditingTask(null);
+                    setIsTaskModalOpen(true);
+                  }}
+                />
+              )}
 
-      </main>
+              {viewMode === 'facility' && (
+                <FacilityView
+                  tasks={filteredTasks}
+                  onSelectTask={(task) => setSelectedTask(task)}
+                  onNewTask={() => {
+                    setEditingTask(null);
+                    setIsTaskModalOpen(true);
+                  }}
+                />
+              )}
+
+              {viewMode === 'staff' && (
+                <StaffView
+                  tasks={filteredTasks}
+                  onSelectTask={(task) => setSelectedTask(task)}
+                  onQuickManagerChange={handleQuickManagerChange}
+                />
+              )}
+            </>
+          )}
+
+        </main>
+      </div>
 
       {/* Task Create / Edit Modal */}
       <TaskModal
@@ -584,45 +669,42 @@ export default function App() {
           setEditingTask(null);
         }}
         onSave={handleSaveTask}
-        task={editingTask}
+        editingTask={editingTask}
+        currentUser={currentUser}
       />
 
-      {/* Task Detail & Collaboration Drawer */}
+      {/* Task Detail & Staff Log Drawer */}
       <TaskDetailDrawer
+        task={selectedTask}
         isOpen={Boolean(selectedTask)}
         onClose={() => setSelectedTask(null)}
-        task={selectedTask}
-        currentUser={currentUser}
         onEdit={(task) => {
           setEditingTask(task);
           setIsTaskModalOpen(true);
         }}
+        onDelete={(id, title) => {
+          handleDeleteTask(id, title);
+          setSelectedTask(null);
+        }}
         onAddLog={handleAddLog}
-        onQuickStatusChange={handleQuickStatusChange}
+        currentUser={currentUser}
       />
 
-      {/* Messenger Sharing Modal */}
+      {/* Messenger / KakaoTalk Share Modal */}
       <MessengerShareModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         tasks={filteredTasks}
+        totalCost={tasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0)}
         currentUser={currentUser}
       />
 
-      {/* Connect Other Staff Modal */}
+      {/* Other Staff Connection Modal */}
       <ConnectStaffModal
         isOpen={isConnectModalOpen}
         onClose={() => setIsConnectModalOpen(false)}
         serverInfo={serverInfo}
       />
-
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800 no-print mt-auto">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>남양주체육문화센터 시설·공사 업무 공유 시스템 v1.0</span>
-          <span>담당자: 김일호, 권병학, 조현호 | 남양주도시공사 시설관리팀</span>
-        </div>
-      </footer>
 
     </div>
   );

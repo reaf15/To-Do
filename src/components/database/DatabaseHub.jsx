@@ -35,9 +35,13 @@ export default function DatabaseHub({
   databases,
   onSaveDatabase,
   onDeleteDatabase,
-  currentUser
+  currentUser,
+  selectedDbId: propSelectedDbId,
+  onSelectDbId: propOnSelectDbId
 }) {
-  const [selectedDbId, setSelectedDbId] = useState(() => databases[0]?.id || '');
+  const [internalSelectedDbId, setInternalSelectedDbId] = useState(() => databases[0]?.id || '');
+  const selectedDbId = propSelectedDbId !== undefined ? propSelectedDbId : internalSelectedDbId;
+  const setSelectedDbId = propOnSelectDbId || setInternalSelectedDbId;
   const [searchQuery, setSearchQuery] = useState('');
 
   // Modals state

@@ -8,7 +8,8 @@ import {
   Wifi,
   Hammer,
   Database,
-  ExternalLink
+  ExternalLink,
+  ShieldCheck
 } from 'lucide-react';
 import { MANAGERS } from '../data/initialTasks';
 
@@ -27,8 +28,8 @@ export default function Header({
   dbCount
 }) {
   return (
-    <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-30 no-print">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-30 no-print border-b border-slate-800">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
           {/* Logo & Module Switcher */}
@@ -43,11 +44,11 @@ export default function Header({
                     남양주도시공사
                   </span>
                   <span className="text-xs px-2 py-0.5 rounded font-medium bg-slate-800 text-slate-300 border border-slate-700">
-                    통합업무 2026
+                    BLCS-FMS
                   </span>
                 </div>
                 <h1 className="text-base sm:text-xl font-bold tracking-tight text-white mt-0.5">
-                  남양주체육문화센터
+                  남양주체육문화센터 시설물종합관리
                 </h1>
               </div>
             </div>
@@ -86,6 +87,18 @@ export default function Header({
                 }`}>
                   {dbCount || 0}
                 </span>
+              </button>
+
+              <button
+                onClick={() => onModuleChange('login-history')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  currentModule === 'login-history'
+                    ? 'bg-teal-500 text-slate-950 shadow-sm'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                }`}
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>로그인이력조회</span>
               </button>
             </div>
           </div>
