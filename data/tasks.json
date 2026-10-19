@@ -246,7 +246,7 @@
     ]
   },
   {
-    "id": "TASK-13",
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
@@ -255,11 +255,12 @@
     "estimatedCostNote": "",
     "manager": "조현호",
     "status": "견적방문",
-    "quoteAmount": null,
+    "quoteAmount": 1600000,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "contact": "010-6397-1914",
-    "memo": "10월 15일 견적방문 예정 / 관람석 방부목 데크 들뜸 피스 고정 및 교체",
+    "memo": "10��������� 15일 견적방문 예정 / 관람석 방부목 데크 들뜸 피스 고정 및 교체 / 다목적잔디광장 화장실 보수와 같이 진행",
+    "id": "TASK-13",
     "logs": [
       {
         "date": "2026-10-13",
@@ -270,11 +271,16 @@
         "date": "2026-10-15",
         "author": "조현호",
         "message": "현장 실측 완료. 견적서 금주 내 제출 예정"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "다목적잔디광장 화장실 배관 공사와 동시 진행"
       }
     ]
   },
   {
-    "id": "TASK-14",
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
@@ -283,39 +289,51 @@
     "estimatedCostNote": "",
     "manager": "조현호",
     "status": "견적의뢰",
-    "quoteAmount": 9634900,
+    "quoteAmount": 3060200,
     "contractAmount": null,
     "vendor": "서진전력",
     "contact": "010-9175-7701",
-    "memo": "조명탑 서치라이트 교체 및 회로 개별 제어 분리 공사 (서진전력 견적: 9,634,900원 접수, 예산 초과분 검토 필요)",
+    "memo": "조명탑 서치라이트 교체 및 회로 개별 제어 분리 공사 / 야구장 조명공사 동시 진행",
+    "id": "TASK-14",
     "logs": [
       {
         "date": "2026-10-12",
         "author": "조현호",
         "message": "서진전력 견적 접수 (9,634,900원). 예상비용(5,000,000원) 대비 상향되어 범위 조정 협의 예정"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "야구장 조명 보수 동시 진행(합 9,634,900원)"
       }
     ]
   },
   {
-    "id": "TASK-15",
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
-    "facility": "남양주센터",
+    "facility": "남양��센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
     "estimatedCost": 15000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "견적의뢰",
-    "quoteAmount": null,
+    "status": "견적���뢰",
+    "quoteAmount": 6570000,
     "contractAmount": null,
     "vendor": "서진전력",
     "contact": "010-9175-7701",
-    "memo": "야구장 메탈할라이드 투광기 점검 및 불량 안정기/램프 교체",
+    "memo": "야구장 메��할라이드 투광기 점검 및 불량 안정기/램프 ���� / 야외공연장 조명탑 공사와 동시 진행",
+    "id": "TASK-15",
     "logs": [
       {
         "date": "2026-10-13",
         "author": "조현호",
         "message": "서진전력 크레인 작업 견적 산출 중"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "야외공연장 조명탑 보수 동시 진행(합 9,634,900원)"
       }
     ]
   },
@@ -380,7 +398,7 @@
     "id": "TASK-19",
     "budget": "수선유지비",
     "facility": "남양주센터",
-    "location": "남양주센터",
+    "location": "남��주센터",
     "title": "정보통신유지관리자 성능점검",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
@@ -618,7 +636,7 @@
     "location": "장애인체육관",
     "title": "신발장 구매 설치",
     "estimatedCost": null,
-    "estimatedCostNote": "사무관리비",
+    "estimatedCostNote": "���무관��비",
     "manager": "",
     "status": "접수/대기",
     "quoteAmount": null,
@@ -631,7 +649,7 @@
   {
     "id": "TASK-31",
     "budget": "수선유지비",
-    "facility": "컨퍼런스",
+    "facility": "컨퍼���스",
     "location": "장애인체육관",
     "title": "컨퍼런스장 방풍비닐 설치",
     "estimatedCost": 5000000,
@@ -677,7 +695,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "접수/대기",
+    "status": "접수/대���",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -686,13 +704,13 @@
     "logs": [
       {
         "date": "2026-10-14",
-        "author": "권병학",
+        "author": "권���학",
         "message": "도색 도료 및 스토퍼 8개 구매 품의 준비"
       }
     ]
   },
   {
-    "id": "TASK-34",
+    "department": "남양주체육문화센터",
     "budget": "시설비",
     "facility": "파크골프",
     "location": "화장실",
@@ -701,11 +719,12 @@
     "estimatedCostNote": "",
     "manager": "조현호",
     "status": "견적방문",
-    "quoteAmount": null,
+    "quoteAmount": 1154000,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "contact": "010-6397-1914",
-    "memo": "10월 15일 견적방문 예정 / 화장실 동파 방지 보온재 및 배관 누수 구간 교체",
+    "memo": "10월 15일 견적방문 예정 / 화장실 동파 방지 보온재 및 배관 누수 구간 교체 / B,C 축구장 데크 들뜸 보수와 동시 진행",
+    "id": "TASK-34",
     "logs": [
       {
         "date": "2026-10-13",
@@ -716,6 +735,11 @@
         "date": "2026-10-15",
         "author": "조현호",
         "message": "현장 배관 동파부위 확인. 배관 교체 견적 접수 예정"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "B,C 축구장 데크 들뜸 공사와 동시 진행"
       }
     ]
   },
@@ -738,11 +762,11 @@
   },
   {
     "id": "TASK-HP-01",
-    "department": "호평체육문화센터",
+    "department": "호평체육문화센��",
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
     "location": "지하 수영장",
-    "title": "수영장 여과기 여재(활성탄·모래) 전면 교체",
+    "title": "수영장 여과기 여재(활��탄·모래) 전면 교체",
     "estimatedCost": 14500000,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -798,24 +822,24 @@
       {
         "date": "2026-10-15",
         "author": "조현호",
-        "message": "1호기 펌프 안착 완료"
+        "message": "1호��� 펌프 안착 완료"
       }
     ]
   },
   {
     "id": "TASK-JJ-01",
     "department": "진접체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선유���비",
     "facility": "진접체육문화센터",
     "location": "수영장 풀장",
-    "title": "수영장 바닥 및 벽면 타일 박리구간 긴급 보수",
+    "title": "수영장 바닥 및 벽면 타일 박��구간 긴급 보수",
     "estimatedCost": 5200000,
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "완료",
     "quoteAmount": 4900000,
     "contractAmount": 4800000,
-    "vendor": "신일타일",
+    "vendor": "신일타���",
     "contact": "010-7712-4450",
     "memo": "이용객 발 끼임 방지 긴급 수중 본드 타일 보수 완료",
     "logs": [
@@ -910,16 +934,16 @@
     "budget": "수선유지비",
     "facility": "에코랜드운영부",
     "location": "주민편익시설",
-    "title": "에코랜드 수영장 온수보일러 세관 및 버너 노즐 교체",
+    "title": "에코랜드 수영장 ��수보일러 세관 ��� 버너 노즐 교체",
     "estimatedCost": 11000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "검토중",
+    "status": "검토��",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "동절기 난방 및 온수 효율 제고를 위한 주기적 보일러 세관 공사",
+    "memo": "동절기 난방 및 온수 효율 제고를 위�� 주기적 보일러 세관 공사",
     "logs": []
   },
   {
@@ -955,7 +979,7 @@
     "contractAmount": null,
     "vendor": "한빛무대음향",
     "contact": "010-8899-1234",
-    "memo": "청소년 축제 대비 노후 조명 콘솔 점검 및 조명기기 수리",
+    "memo": "청소년 축제 대비 노후 조명 콘솔 점검 및 ���명기기 수리",
     "logs": []
   },
   {
@@ -982,7 +1006,7 @@
     "budget": "시설비",
     "facility": "별내커뮤니티센터",
     "location": "지하주차장",
-    "title": "지하주차장 LED 고효율 조명 및 디밍 시스템 설치",
+    "title": "지하주차��� LED 고효율 조명 및 디밍 시스템 설치",
     "estimatedCost": 12000000,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -1009,13 +1033,13 @@
     "contractAmount": 16500000,
     "vendor": "성진플로어",
     "contact": "010-5231-9981",
-    "memo": "체육관 마루 샌딩 공사 진행 중 (주말 작업)",
+    "memo": "체육관 ���루 샌딩 공사 진행 중 (주말 작업)",
     "logs": []
   },
   {
     "id": "TASK-WB-02",
     "department": "와부체육문화센터",
-    "budget": "시설비",
+    "budget": "���설비",
     "facility": "와부체육문화센터",
     "location": "옥상 기계실",
     "title": "옥상 냉각탑 소음 저감장치 및 방음벽 설치",
@@ -1036,7 +1060,7 @@
     "budget": "수선유지비",
     "facility": "화도체육문화센터",
     "location": "수영장 샤워실",
-    "title": "수영장 샤워실 온수탱크 배관 및 감압밸브 교체",
+    "title": "수영장 샤���실 온수탱크 배관 및 감압밸브 교체",
     "estimatedCost": 7200000,
     "estimatedCostNote": "",
     "manager": "조현호",

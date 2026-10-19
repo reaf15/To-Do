@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import Sidebar from './components/Sidebar';
-import Header from './components/Header';
 import StatsCards from './components/StatsCards';
 import FilterBar from './components/FilterBar';
 import TableView from './components/TableView';
@@ -742,27 +741,6 @@ export default function App() {
       {/* 2. Right Work Frame: Full Screen Container */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         
-        {/* Top Header */}
-        <Header
-          currentUser={currentUser}
-          onUserChange={handleUserChange}
-          onNewTask={() => {
-            setEditingTask(null);
-            setIsTaskModalOpen(true);
-          }}
-          onExportExcel={handleExportExcel}
-          onResetData={handleResetData}
-          onOpenConnect={() => setIsConnectModalOpen(true)}
-          serverInfo={serverInfo}
-          totalTasksCount={departmentTasks.length}
-          myTasksCount={myTasksCount}
-          currentModule={currentModule}
-          onModuleChange={setCurrentModule}
-          dbCount={customDatabases.length}
-          selectedDepartment={selectedDepartment}
-          selectedDbId={selectedDbId}
-        />
-
         {/* Main Work Area (Screen-filling full width) */}
         <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-5">
           
@@ -777,7 +755,7 @@ export default function App() {
           {/* Module 2: 업무 데이터베이스 (조직도 토글 및 하위 시설·공사 관리 통합) */}
           {(currentModule === 'databases' || currentModule === 'facility') && (
             <>
-              {/* Organization Department Bar with Toggles */}
+              {/* Organization Department Bar with Toggles & Actions */}
               <OrgDepartmentBar
                 selectedDivision={selectedDivision}
                 onSelectDivision={(divId) => {
@@ -794,6 +772,14 @@ export default function App() {
                 tasksCount={departmentTasks.length}
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
+                onNewTask={() => {
+                  setEditingTask(null);
+                  setIsTaskModalOpen(true);
+                }}
+                onExportExcel={handleExportExcel}
+                currentUser={currentUser}
+                onUserChange={handleUserChange}
+                myTasksCount={myTasksCount}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
