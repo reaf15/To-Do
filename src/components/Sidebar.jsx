@@ -20,7 +20,9 @@ import {
   Folder,
   FolderOpen,
   Train,
-  Sparkles
+  Sparkles,
+  Check,
+  RotateCcw
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 
@@ -53,14 +55,10 @@ export default function Sidebar({
     return localStorage.getItem('nyj_sidebar_collapsed') === 'true';
   });
 
-  // Expand state for each division in the tree
-  const [expandedDivisions, setExpandedDivisions] = useState({
-    'div-sports': true,
-    'div-traffic': false,
-    'div-youth': false,
-  });
+  // State for toggling department selector (오직 변경 시에만 열리고, 선택하면 나머지는 자동 숨김)
+  const [isDeptPickerOpen, setIsDeptPickerOpen] = useState(false);
 
-  // Expand state for groups (System admin, portal)
+  // Group expand state
   const [expandedGroups, setExpandedGroups] = useState({
     databases: true,
     system: true
@@ -72,13 +70,6 @@ export default function Sidebar({
     localStorage.setItem('nyj_sidebar_collapsed', String(nextState));
   };
 
-  const toggleDivision = (divId) => {
-    setExpandedDivisions(prev => ({
-      ...prev,
-      [divId]: !prev[divId]
-    }));
-  };
-
   const toggleGroup = (groupKey) => {
     setExpandedGroups(prev => ({
       ...prev,
@@ -86,10 +77,16 @@ export default function Sidebar({
     }));
   };
 
-  const handleDeptClick = (divId, deptName) => {
+  // Find current division from selectedDepartment
+  const currentDiv = ORGANIZATION_TREE.find(div => 
+    div.departments.some(d => d.name === selectedDepartment)
+  ) || ORGANIZATION_TREE.find(div => div.id === selectedDivision) || ORGANIZATION_TREE[0];
+
+  const handleDeptSelect = (divId, deptName) => {
     if (onSelectDivision) onSelectDivision(divId);
     if (onSelectDepartment) onSelectDepartment(deptName);
     onModuleChange('databases');
+    setIsDeptPickerOpen(false); // 부서 선택 후 나머지 부서들은 즉시 숨김!
   };
 
   const handleFacilityViewClick = (targetViewMode) => {
@@ -140,240 +137,249 @@ export default function Sidebar({
       </div>
 
       {/* 2. Navigation Menu Groups */}
-      <div className="flex-1 overflow-y-auto p-2 space-y-3.5 text-xs font-semibold scrollbar-thin scrollbar-thumb-slate-800">
+      <div className="flex-1 overflow-y-auto p-2 space-y-3 text-xs font-semibold scrollbar-thin scrollbar-thumb-slate-800">
         
-        {/* GROUP 1: 업무 데이터베이스 (조직도 연동 및 하위 시설·공사 관리) */}
+        {/* GROUP 1: 업무 데이터베이스 (선택된 1개 부서만 표시 + 부서 변경 시에만 목록 토글) */}
         <div>
           {!isCollapsed ? (
-            <button
-              onClick={() => toggleGroup('databases')}
-              className="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider hover:text-slate-200 transition"
-            >
-              <span className="flex items-center gap-1.5">
-                <Database className="w-3.5 h-3.5 text-blue-400" />
-                업무 데이터베이스 (조직도)
+            <div className="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-blue-400">
+                <Database className="w-3.5 h-3.5" />
+                업무 데이터베이스
               </span>
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expandedGroups.databases ? '' : '-rotate-90'}`} />
-            </button>
+              <span className="text-[10px] text-slate-500 font-normal">부서별 관리</span>
+            </div>
           ) : (
             <div className="w-full border-t border-slate-800 my-2" />
           )}
 
-          {(!isCollapsed ? expandedGroups.databases : true) && (
-            <div className="mt-1">
-              {!isCollapsed ? (
-                /* Full Tree View matching Organization Chart */
-                <div className="space-y-1">
-                  
-                  {/* Root Node: 시설본부 */}
-                  <div className="flex items-center gap-1.5 px-2 py-1 text-slate-300 font-extrabold text-[11px] bg-slate-800/40 rounded border border-slate-800/80">
-                    <FolderOpen className="w-3.5 h-3.5 text-teal-400" />
-                    <span>시설본부</span>
+          {!isCollapsed ? (
+            <div className="space-y-2 mt-1">
+              
+              {/* Selected Department Card (선택된 1개 부서 표시 & 변경 토글 버튼) */}
+              <div className="bg-slate-800/90 rounded-xl p-2.5 border border-slate-700/80 shadow-xs">
+                
+                <div className="flex items-center justify-between gap-1.5">
+                  <div className="flex items-center gap-2 overflow-hidden flex-1">
+                    <div className="w-7 h-7 rounded-lg bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-400 shrink-0 font-bold">
+                      <FolderOpen className="w-4 h-4" />
+                    </div>
+                    <div className="leading-tight truncate flex-1">
+                      <div className="text-[10px] text-slate-400 font-medium truncate">
+                        시설본부 • {currentDiv.name}
+                      </div>
+                      <div className="text-xs font-black text-amber-400 truncate flex items-center gap-1">
+                        <span>{selectedDepartment}</span>
+                        {selectedDepartment === '남양주체육문화센터' && (
+                          <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold">
+                            본청
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  {/* 3 Divisions (처) */}
-                  {ORGANIZATION_TREE.map(div => {
-                    const isDivExpanded = expandedDivisions[div.id];
-                    const DivIcon = div.id === 'div-sports' ? Building2 : div.id === 'div-traffic' ? Train : Sparkles;
+                  {/* '부서 변경' Toggle Button (클릭 시에만 부서 목록이 나타남) */}
+                  <button
+                    onClick={() => setIsDeptPickerOpen(!isDeptPickerOpen)}
+                    title={isDeptPickerOpen ? '부서 목록 닫기' : '다른 부서 선택하기'}
+                    className={`px-2 py-1 rounded text-[10px] font-bold transition flex items-center gap-1 border shrink-0 ${
+                      isDeptPickerOpen 
+                        ? 'bg-teal-600 text-white border-teal-500 shadow-xs' 
+                        : 'bg-slate-700/90 hover:bg-slate-700 text-slate-200 border-slate-600'
+                    }`}
+                  >
+                    <span>{isDeptPickerOpen ? '닫기' : '부서변경'}</span>
+                    <ChevronDown className={`w-3 h-3 transition-transform ${isDeptPickerOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
 
-                    return (
-                      <div key={div.id} className="ml-2 pl-2 border-l border-slate-700/60 my-1">
-                        
-                        {/* Division Header (Toggle) */}
-                        <button
-                          onClick={() => toggleDivision(div.id)}
-                          className="w-full flex items-center gap-1.5 px-1.5 py-1 text-[11px] font-bold text-slate-300 hover:text-white hover:bg-slate-800/60 rounded transition group"
-                        >
-                          <span className="w-3.5 h-3.5 flex items-center justify-center text-[10px] bg-slate-800 border border-slate-700 text-slate-400 group-hover:text-white rounded">
-                            {isDivExpanded ? '-' : '+'}
-                          </span>
-                          <Folder className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                          <span className="truncate flex-1 text-left">{div.name}</span>
-                          <span className="text-[10px] text-slate-500 font-normal">
-                            ({div.departments.length})
-                          </span>
-                        </button>
+                {/* Dropdown: Organization Tree Picker (선택하면 즉시 닫히고 나머지는 숨김 처리!) */}
+                {isDeptPickerOpen && (
+                  <div className="mt-2 pt-2 border-t border-slate-700/80 space-y-2 max-h-64 overflow-y-auto scrollbar-thin pr-1">
+                    <div className="text-[10px] font-bold text-slate-400 flex items-center justify-between">
+                      <span>조직도에서 부서 선택:</span>
+                      <span className="text-[9px] text-teal-400">선택 시 다른 부서 자동 숨김</span>
+                    </div>
 
-                        {/* Departments under Division */}
-                        {isDivExpanded && (
-                          <div className="ml-3 pl-2 border-l border-slate-700/50 space-y-0.5 mt-0.5">
+                    {ORGANIZATION_TREE.map(div => {
+                      const DivIcon = div.id === 'div-sports' ? Building2 : div.id === 'div-traffic' ? Train : Sparkles;
+
+                      return (
+                        <div key={div.id} className="space-y-1">
+                          <div className="text-[10px] font-bold text-slate-300 px-1.5 py-0.5 flex items-center gap-1.5 bg-slate-900/80 rounded border border-slate-800">
+                            <DivIcon className="w-3 h-3 text-teal-400 shrink-0" />
+                            <span>{div.name}</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 gap-0.5 pl-2 border-l border-slate-700/60">
                             {div.departments.map(dept => {
-                              const isDeptSelected = selectedDepartment === dept.name;
+                              const isSelected = dept.name === selectedDepartment;
                               const isHighlight = dept.name === '남양주체육문화센터';
 
                               return (
-                                <div key={dept.id} className="space-y-0.5">
-                                  
-                                  {/* Department Button */}
-                                  <button
-                                    onClick={() => handleDeptClick(div.id, dept.name)}
-                                    title={dept.name}
-                                    className={`w-full flex items-center gap-1.5 px-2 py-1 rounded text-[11px] transition text-left ${
-                                      isDeptSelected
-                                        ? isHighlight
-                                          ? 'text-amber-400 font-extrabold bg-amber-500/15 border border-amber-500/30'
-                                          : 'text-teal-300 font-bold bg-teal-500/15 border border-teal-500/30'
-                                        : isHighlight
-                                        ? 'text-amber-500 font-bold hover:text-amber-400 hover:bg-slate-800/80'
-                                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                                    }`}
-                                  >
-                                    <Folder className={`w-3 h-3 shrink-0 ${isHighlight ? 'text-amber-400' : 'text-slate-500'}`} />
-                                    <span className="truncate flex-1">{dept.name}</span>
-                                    {isHighlight && (
-                                      <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-black">
-                                        본청
-                                      </span>
-                                    )}
-                                  </button>
-
-                                  {/* Sub-items (하위 항목) under Selected Department */}
-                                  {isDeptSelected && (
-                                    <div className="ml-3 pl-2 border-l border-slate-700/40 space-y-0.5 my-1">
-                                      
-                                      {/* Sub-item 1: 시설·공사 관리대장 (이제 업무DB 하위 항목!) */}
-                                      <div className="space-y-0.5">
-                                        <button
-                                          onClick={() => {
-                                            onModuleChange('databases');
-                                            if (onSelectDbId) onSelectDbId('facility');
-                                          }}
-                                          className={`w-full flex items-center gap-1.5 px-2 py-1 rounded text-[11px] transition text-left ${
-                                            selectedDbId === 'facility' && currentModule === 'databases'
-                                              ? 'bg-teal-600 text-white font-bold shadow-xs'
-                                              : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                                          }`}
-                                        >
-                                          <Hammer className="w-3.5 h-3.5 text-teal-400 shrink-0" />
-                                          <span className="truncate flex-1">시설·공사 관리</span>
-                                          <span className="text-[9px] px-1 py-0.2 rounded bg-slate-900 text-slate-300 font-extrabold">
-                                            {dept.name === '남양주체육문화센터' ? tasksCount : 0}
-                                          </span>
-                                        </button>
-
-                                        {/* Facility 4 Sub-views (표, 칸반, 시설, 담당자) */}
-                                        {selectedDbId === 'facility' && currentModule === 'databases' && (
-                                          <div className="ml-3 pl-2 border-l border-teal-500/30 space-y-0.5 py-0.5">
-                                            <button
-                                              onClick={() => handleFacilityViewClick('table')}
-                                              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] transition text-left ${
-                                                viewMode === 'table' ? 'text-teal-300 font-extrabold bg-teal-900/30' : 'text-slate-400 hover:text-slate-200'
-                                              }`}
-                                            >
-                                              <Table className="w-3 h-3 shrink-0" />
-                                              <span className="truncate">공사목록 (표 보기)</span>
-                                            </button>
-                                            <button
-                                              onClick={() => handleFacilityViewClick('kanban')}
-                                              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] transition text-left ${
-                                                viewMode === 'kanban' ? 'text-teal-300 font-extrabold bg-teal-900/30' : 'text-slate-400 hover:text-slate-200'
-                                              }`}
-                                            >
-                                              <Kanban className="w-3 h-3 shrink-0" />
-                                              <span className="truncate">공정별 칸반보드</span>
-                                            </button>
-                                            <button
-                                              onClick={() => handleFacilityViewClick('facility')}
-                                              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] transition text-left ${
-                                                viewMode === 'facility' ? 'text-teal-300 font-extrabold bg-teal-900/30' : 'text-slate-400 hover:text-slate-200'
-                                              }`}
-                                            >
-                                              <Building className="w-3 h-3 shrink-0" />
-                                              <span className="truncate">시설물별 보수현황</span>
-                                            </button>
-                                            <button
-                                              onClick={() => handleFacilityViewClick('staff')}
-                                              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] transition text-left ${
-                                                viewMode === 'staff' ? 'text-teal-300 font-extrabold bg-teal-900/30' : 'text-slate-400 hover:text-slate-200'
-                                              }`}
-                                            >
-                                              <Users className="w-3 h-3 shrink-0" />
-                                              <span className="truncate">담당자별 공사현황</span>
-                                            </button>
-                                          </div>
-                                        )}
-                                      </div>
-
-                                      {/* Sub-item 2..N: Custom Department Databases */}
-                                      {customDatabases.map(db => {
-                                        const isDbSelected = currentModule === 'databases' && selectedDbId === db.id;
-                                        const Icon = DB_ICONS[db.icon] || Database;
-                                        return (
-                                          <button
-                                            key={db.id}
-                                            onClick={() => handleDbClick(db.id)}
-                                            className={`w-full flex items-center gap-1.5 px-2 py-1 rounded text-[11px] transition text-left ${
-                                              isDbSelected
-                                                ? 'bg-blue-600 text-white font-bold shadow-xs'
-                                                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                                            }`}
-                                          >
-                                            <Icon className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                                            <span className="truncate flex-1">{db.name}</span>
-                                            <span className="text-[9px] px-1 py-0.2 rounded bg-slate-800 text-slate-400">
-                                              {db.records?.length || 0}
-                                            </span>
-                                          </button>
-                                        );
-                                      })}
-
-                                      {/* Add New DB Button */}
-                                      <button
-                                        onClick={() => {
-                                          onModuleChange('databases');
-                                          if (onOpenNewDbModal) onOpenNewDbModal();
-                                        }}
-                                        className="w-full flex items-center gap-1.5 px-2 py-1 text-slate-400 hover:text-teal-400 rounded transition text-[10px] font-bold"
-                                      >
-                                        <PlusCircle className="w-3 h-3 shrink-0" />
-                                        <span>+ 새 대장 추가</span>
-                                      </button>
-
-                                    </div>
-                                  )}
-
-                                </div>
+                                <button
+                                  key={dept.id}
+                                  onClick={() => handleDeptSelect(div.id, dept.name)}
+                                  className={`w-full text-left px-2 py-1 rounded text-[11px] transition flex items-center justify-between ${
+                                    isSelected
+                                      ? 'bg-teal-600 text-white font-black shadow-xs'
+                                      : isHighlight
+                                      ? 'text-amber-400 font-bold hover:bg-slate-700/60'
+                                      : 'text-slate-300 hover:bg-slate-700/60 hover:text-white'
+                                  }`}
+                                >
+                                  <span className="truncate">{dept.name}</span>
+                                  {isSelected ? (
+                                    <Check className="w-3 h-3 text-white" />
+                                  ) : isHighlight ? (
+                                    <span className="text-[9px] text-amber-400 font-bold">본청</span>
+                                  ) : null}
+                                </button>
                               );
                             })}
                           </div>
-                        )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
 
-                      </div>
-                    );
-                  })}
+              </div>
 
-                </div>
-              ) : (
-                /* Collapsed Icon Mode */
-                <div className="space-y-1">
+              {/* Sub-items (하위 대장 목록): 오직 선택된 1개 부서의 것만 컴팩트하게 표시! */}
+              <div className="space-y-1">
+                
+                {/* 1. 시설·공사 관리대장 (업무 데이터베이스 하위 항목) */}
+                <div className="space-y-0.5">
                   <button
                     onClick={() => {
                       onModuleChange('databases');
                       if (onSelectDbId) onSelectDbId('facility');
                     }}
-                    title="시설·공사 관리대장"
-                    className={`w-full p-2.5 rounded-lg flex justify-center transition ${
-                      currentModule === 'databases' && selectedDbId === 'facility'
-                        ? 'bg-teal-600 text-white font-bold'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition text-left ${
+                      selectedDbId === 'facility' && currentModule === 'databases'
+                        ? 'bg-teal-600 text-white shadow-sm'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                     }`}
                   >
-                    <Hammer className="w-5 h-5 text-teal-400" />
+                    <Hammer className="w-4 h-4 text-teal-400 shrink-0" />
+                    <span className="truncate flex-1">시설·공사 관리대장</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900 text-slate-300 font-extrabold">
+                      {selectedDepartment === '남양주체육문화센터' ? tasksCount : 0}
+                    </span>
                   </button>
 
-                  <button
-                    onClick={() => onModuleChange('databases')}
-                    title="업무 데이터베이스 허브"
-                    className={`w-full p-2.5 rounded-lg flex justify-center transition ${
-                      currentModule === 'databases' && selectedDbId !== 'facility'
-                        ? 'bg-blue-600 text-white font-bold'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                    }`}
-                  >
-                    <Database className="w-5 h-5 text-blue-400" />
-                  </button>
+                  {/* Facility 4 Sub-views */}
+                  {selectedDbId === 'facility' && currentModule === 'databases' && (
+                    <div className="ml-3 pl-2.5 border-l-2 border-teal-500/40 space-y-0.5 py-1">
+                      <button
+                        onClick={() => handleFacilityViewClick('table')}
+                        className={`w-full flex items-center gap-2 px-2 py-1 rounded text-[11px] transition text-left ${
+                          viewMode === 'table' ? 'text-teal-300 font-black bg-teal-950/40' : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Table className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">공사목록 (표 보기)</span>
+                      </button>
+                      <button
+                        onClick={() => handleFacilityViewClick('kanban')}
+                        className={`w-full flex items-center gap-2 px-2 py-1 rounded text-[11px] transition text-left ${
+                          viewMode === 'kanban' ? 'text-teal-300 font-black bg-teal-950/40' : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Kanban className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">공정별 칸반보드</span>
+                      </button>
+                      <button
+                        onClick={() => handleFacilityViewClick('facility')}
+                        className={`w-full flex items-center gap-2 px-2 py-1 rounded text-[11px] transition text-left ${
+                          viewMode === 'facility' ? 'text-teal-300 font-black bg-teal-950/40' : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Building className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">시설물별 보수현황</span>
+                      </button>
+                      <button
+                        onClick={() => handleFacilityViewClick('staff')}
+                        className={`w-full flex items-center gap-2 px-2 py-1 rounded text-[11px] transition text-left ${
+                          viewMode === 'staff' ? 'text-teal-300 font-black bg-teal-950/40' : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Users className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">담당자별 공사현황</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
+
+                {/* 2..N Custom Department Databases */}
+                {customDatabases.map(db => {
+                  const isDbSelected = currentModule === 'databases' && selectedDbId === db.id;
+                  const Icon = DB_ICONS[db.icon] || Database;
+                  return (
+                    <button
+                      key={db.id}
+                      onClick={() => handleDbClick(db.id)}
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition text-left ${
+                        isDbSelected
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4 text-blue-400 shrink-0" />
+                      <span className="truncate flex-1">{db.name}</span>
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900 text-slate-400 font-semibold">
+                        {db.records?.length || 0}
+                      </span>
+                    </button>
+                  );
+                })}
+
+                {/* Add new DB button */}
+                <button
+                  onClick={() => {
+                    onModuleChange('databases');
+                    if (onOpenNewDbModal) onOpenNewDbModal();
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-400 hover:text-teal-400 hover:bg-slate-800/60 rounded-lg transition text-[11px] font-bold mt-1"
+                >
+                  <PlusCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>+ 새 대장 추가</span>
+                </button>
+
+              </div>
+
+            </div>
+          ) : (
+            /* Collapsed Icon Mode */
+            <div className="space-y-1 mt-1">
+              <button
+                onClick={() => {
+                  onModuleChange('databases');
+                  if (onSelectDbId) onSelectDbId('facility');
+                }}
+                title={`시설·공사 관리대장 (${selectedDepartment})`}
+                className={`w-full p-2.5 rounded-lg flex justify-center transition ${
+                  currentModule === 'databases' && selectedDbId === 'facility'
+                    ? 'bg-teal-600 text-white font-bold'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Hammer className="w-5 h-5 text-teal-400" />
+              </button>
+
+              <button
+                onClick={() => onModuleChange('databases')}
+                title="업무 데이터베이스 허브"
+                className={`w-full p-2.5 rounded-lg flex justify-center transition ${
+                  currentModule === 'databases' && selectedDbId !== 'facility'
+                    ? 'bg-blue-600 text-white font-bold'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Database className="w-5 h-5 text-blue-400" />
+              </button>
             </div>
           )}
         </div>
@@ -381,7 +387,7 @@ export default function Sidebar({
         {/* GROUP 2: 사내 연동 포털 (3001) */}
         <div>
           {!isCollapsed && (
-            <div className="px-2.5 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="px-2.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
               사내 연동 시스템
             </div>
           )}
@@ -407,7 +413,7 @@ export default function Sidebar({
           {!isCollapsed ? (
             <button
               onClick={() => toggleGroup('system')}
-              className="w-full flex items-center justify-between px-2.5 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider hover:text-slate-200 transition"
+              className="w-full flex items-center justify-between px-2.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider hover:text-slate-200 transition"
             >
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />

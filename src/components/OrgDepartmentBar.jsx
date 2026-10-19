@@ -17,7 +17,7 @@ import {
   Kanban,
   Building,
   Users,
-  CheckCircle2
+  Check
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 
@@ -41,23 +41,32 @@ export default function OrgDepartmentBar({
   onViewModeChange,
   onOpenNewDbModal
 }) {
-  const [isDeptTreeExpanded, setIsDeptTreeExpanded] = useState(true);
+  // Department picker open/close state (기본 숨김, 변경 클릭 시에만 노출 후 선택 시 자동 숨김)
+  const [isDeptPickerOpen, setIsDeptPickerOpen] = useState(false);
 
-  // Current active division object
-  const currentDiv = ORGANIZATION_TREE.find(div => div.id === selectedDivision) || ORGANIZATION_TREE[0];
+  // Current active division object based on selectedDepartment
+  const currentDiv = ORGANIZATION_TREE.find(div => 
+    div.departments.some(d => d.name === selectedDepartment)
+  ) || ORGANIZATION_TREE.find(div => div.id === selectedDivision) || ORGANIZATION_TREE[0];
 
   // Available databases for the selected department
   const deptDatabases = customDatabases.filter(db => 
     !db.department || db.department === selectedDepartment || db.department === '전체'
   );
 
+  const handleSelectDept = (divId, deptName) => {
+    onSelectDivision(divId);
+    onSelectDepartment(deptName);
+    setIsDeptPickerOpen(false); // 부서 선택 후 즉시 닫고 나머지는 숨김!
+  };
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-5 overflow-hidden select-none">
       
-      {/* 1. Top Bar: Organization Breadcrumb & Division Toggles */}
-      <div className="bg-slate-900 text-white px-4 py-3 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
+      {/* 1. Top Bar: Current Department Badge & Change Button */}
+      <div className="bg-slate-900 text-white px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         
-        {/* Left: Organization Hierarchy Breadcrumb */}
+        {/* Left: Current Active Department Breadcrumb */}
         <div className="flex items-center gap-2 text-xs font-semibold">
           <span className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700">
             <FolderOpen className="w-3.5 h-3.5" />
@@ -68,109 +77,108 @@ export default function OrgDepartmentBar({
             {currentDiv.name}
           </span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-teal-600/30 text-teal-300 font-extrabold border border-teal-500/40">
+          <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-teal-600/30 text-teal-300 font-black border border-teal-500/50 shadow-inner">
             <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
             {selectedDepartment}
+            {selectedDepartment === '남양주체육문화센터' && (
+              <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/30 text-amber-300 font-bold ml-1">
+                본청
+              </span>
+            )}
           </span>
         </div>
 
-        {/* Right: 3 Division Toggle Buttons (처 선택 토글) */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          {ORGANIZATION_TREE.map((div) => {
-            const isSelected = div.id === selectedDivision;
-            const Icon = div.id === 'div-sports' ? Building2 : div.id === 'div-traffic' ? Train : Sparkles;
-
-            return (
-              <button
-                key={div.id}
-                onClick={() => {
-                  onSelectDivision(div.id);
-                  // Auto-select first department in that division if current dept not in it
-                  const depts = div.departments;
-                  if (!depts.some(d => d.name === selectedDepartment)) {
-                    onSelectDepartment(depts[0].name);
-                  }
-                }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition border ${
-                  isSelected
-                    ? 'bg-teal-500 text-slate-950 border-teal-400 shadow-sm'
-                    : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{div.name}</span>
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
-                  isSelected ? 'bg-slate-900 text-teal-300' : 'bg-slate-900/60 text-slate-400'
-                }`}>
-                  {div.departments.length}
-                </span>
-              </button>
-            );
-          })}
-
+        {/* Right: '부서 변경' Toggle Button */}
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setIsDeptTreeExpanded(!isDeptTreeExpanded)}
-            title={isDeptTreeExpanded ? '조직도 접기' : '조직도 펼치기'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-700 transition ml-1"
+            onClick={() => setIsDeptPickerOpen(!isDeptPickerOpen)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition border shadow-xs ${
+              isDeptPickerOpen
+                ? 'bg-teal-500 text-slate-950 border-teal-400 font-black'
+                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
+            }`}
           >
-            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isDeptTreeExpanded ? '' : '-rotate-90'}`} />
+            <Folder className="w-3.5 h-3.5" />
+            <span>{isDeptPickerOpen ? '부서 목록 닫기' : '부서 변경 (조직도)'}</span>
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isDeptPickerOpen ? 'rotate-180' : ''}`} />
           </button>
         </div>
 
       </div>
 
-      {/* 2. Middle Bar: Department / Center Selection Chips (조직도 부서 토글) */}
-      {isDeptTreeExpanded && (
-        <div className="bg-slate-50/90 px-4 py-2.5 border-b border-slate-200">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 flex items-center gap-1 mr-1">
-              <Folder className="w-3.5 h-3.5 text-slate-400" />
-              소속 부서/센터:
-            </span>
+      {/* 2. Collapsible Department Picker (부서 변경 클릭 시에만 나타나고, 선택하면 즉시 닫혀서 나머지 부서는 숨김!) */}
+      {isDeptPickerOpen && (
+        <div className="bg-slate-50 p-4 border-b border-slate-200 transition-all">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <span>조직도에서 부서/센터를 선택하세요:</span>
+              <span className="text-[11px] text-teal-600 font-medium">(선택 시 나머지 부서는 자동으로 숨겨집니다)</span>
+            </div>
+            <button
+              onClick={() => setIsDeptPickerOpen(false)}
+              className="text-xs text-slate-400 hover:text-slate-600 font-bold"
+            >
+              닫기 ✕
+            </button>
+          </div>
 
-            {currentDiv.departments.map((dept) => {
-              const isSelected = dept.name === selectedDepartment;
-              const isHighlight = dept.name === '남양주체육문화센터';
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {ORGANIZATION_TREE.map((div) => {
+              const DivIcon = div.id === 'div-sports' ? Building2 : div.id === 'div-traffic' ? Train : Sparkles;
 
               return (
-                <button
-                  key={dept.id}
-                  onClick={() => onSelectDepartment(dept.name)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition shrink-0 border ${
-                    isSelected
-                      ? 'bg-teal-600 text-white font-bold border-teal-600 shadow-sm'
-                      : isHighlight
-                      ? 'bg-amber-50 text-amber-900 font-bold border-amber-300 hover:bg-amber-100'
-                      : 'bg-white text-slate-700 font-medium border-slate-300 hover:bg-slate-100 hover:text-slate-900'
-                  }`}
-                >
-                  <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-white' : isHighlight ? 'bg-amber-500' : 'bg-slate-300'}`} />
-                  <span>{dept.name}</span>
-                  {dept.name === '남양주체육문화센터' && (
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded font-extrabold ${
-                      isSelected ? 'bg-teal-700 text-white' : 'bg-amber-200 text-amber-900'
-                    }`}>
-                      본청 ({tasksCount})
-                    </span>
-                  )}
-                </button>
+                <div key={div.id} className="bg-white rounded-lg p-3 border border-slate-200 shadow-2xs">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 pb-2 mb-2 border-b border-slate-100">
+                    <DivIcon className="w-3.5 h-3.5 text-teal-600" />
+                    <span>{div.name}</span>
+                    <span className="text-[10px] text-slate-400 font-normal">({div.departments.length}개)</span>
+                  </div>
+
+                  <div className="space-y-1">
+                    {div.departments.map((dept) => {
+                      const isSelected = dept.name === selectedDepartment;
+                      const isHighlight = dept.name === '남양주체육문화센터';
+
+                      return (
+                        <button
+                          key={dept.id}
+                          onClick={() => handleSelectDept(div.id, dept.name)}
+                          className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs font-medium transition flex items-center justify-between border ${
+                            isSelected
+                              ? 'bg-teal-600 text-white font-black border-teal-600 shadow-xs'
+                              : isHighlight
+                              ? 'bg-amber-50/80 text-amber-900 border-amber-200 hover:bg-amber-100 font-bold'
+                              : 'bg-slate-50/60 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                          }`}
+                        >
+                          <span className="truncate">{dept.name}</span>
+                          {isSelected ? (
+                            <Check className="w-3.5 h-3.5 text-white" />
+                          ) : isHighlight ? (
+                            <span className="text-[9px] px-1 rounded bg-amber-200 text-amber-900 font-bold">본청</span>
+                          ) : null}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>
         </div>
       )}
 
-      {/* 3. Bottom Bar: Sub-Databases under this Department (업무 데이터베이스 하위 항목 탭) */}
-      <div className="px-4 py-2 bg-white flex flex-wrap items-center justify-between gap-3 text-xs">
+      {/* 3. Sub-Databases under this Department (선택된 부서의 하위 대장 탭) */}
+      <div className="px-4 py-2.5 bg-white flex flex-wrap items-center justify-between gap-3 text-xs">
         
         {/* Left: Sub-items tabs */}
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-xs font-bold text-slate-600 flex items-center gap-1 mr-1">
             <Database className="w-3.5 h-3.5 text-blue-600" />
-            업무 데이터베이스 목록:
+            <strong className="text-slate-800">{selectedDepartment}</strong> 대장:
           </span>
 
-          {/* Sub-item 1: 시설·공사 관리대장 (이제 업무 데이터베이스 하위 항목!) */}
+          {/* Sub-item 1: 시설·공사 관리대장 (업무 데이터베이스 하위 항목) */}
           <button
             onClick={() => onSelectDbId('facility')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition border ${
