@@ -1,0 +1,169 @@
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PORT = 5173;
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const DATA_FILE = path.resolve(__dirname, 'data/tasks.json');
+const DB_FILE = path.resolve(__dirname, 'data/custom_databases.json');
+
+const MIME_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.ttf': 'font/ttf',
+};
+
+// Get Server LAN IPs
+function getLocalIps() {
+  const networkInterfaces = os.networkInterfaces();
+  const ips = [];
+  for (const iface of Object.values(networkInterfaces)) {
+    for (const config of iface || []) {
+      if (config.family === 'IPv4' && !config.internal && !config.address.startsWith('169.254')) {
+        ips.push(config.address);
+      }
+    }
+  }
+  return ips;
+}
+
+const server = http.createServer((req, res) => {
+  // CORS Headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
+  // 1. API: Server Info
+  if (req.url === '/api/server-info' && req.method === 'GET') {
+    const ips = getLocalIps();
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({
+      ip: ips[0] || 'localhost',
+      allIps: ips,
+      port: PORT
+    }));
+    return;
+  }
+
+  // 2. API: GET tasks
+  if (req.url === '/api/tasks' && req.method === 'GET') {
+    if (fs.existsSync(DATA_FILE)) {
+      const data = fs.readFileSync(DATA_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
+  // 3. API: POST tasks (Save data)
+  if (req.url === '/api/tasks' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(DATA_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 4. API: GET custom databases
+  if (req.url === '/api/databases' && req.method === 'GET') {
+    if (fs.existsSync(DB_FILE)) {
+      const data = fs.readFileSync(DB_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
+  // 5. API: POST custom databases (Save custom databases & rows)
+  if (req.url === '/api/databases' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 6. Static File Serving (dist)
+  let reqPath = req.url.split('?')[0];
+  if (reqPath === '/') reqPath = '/index.html';
+
+  let filePath = path.join(DIST_DIR, reqPath);
+
+  // If path doesn't exist or is a directory, fallback to index.html (SPA routing)
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(DIST_DIR, 'index.html');
+  }
+
+  if (fs.existsSync(filePath)) {
+    const ext = path.extname(filePath).toLowerCase();
+    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+
+    // Cache control
+    if (ext === '.html') {
+      res.setHeader('Cache-Control', 'no-cache');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+
+    res.writeHead(200, { 'Content-Type': contentType });
+    fs.createReadStream(filePath).pipe(res);
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('404 Not Found - 빌드가 필요합니다: npm run build');
+  }
+});
+
+server.listen(PORT, '0.0.0.0', () => {
+  const ips = getLocalIps();
+  console.log('================================================================');
+  console.log('  남양주체육문화센터 시설·공사 업무 공유 서버 실행 중');
+  console.log('================================================================');
+  console.log(`  ▶ 내 컴퓨터 접속:    http://localhost:${PORT}`);
+  ips.forEach(ip => {
+    console.log(`  ▶ 다른 직원 접속:    http://${ip}:${PORT}`);
+  });
+  console.log('================================================================');
+});

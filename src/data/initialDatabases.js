@@ -1,0 +1,152 @@
+export const INITIAL_DATABASES = [
+  {
+    id: 'db-equipment',
+    name: '체육용품 및 비품 관리대장',
+    description: '센터 내 각 체육시설 비품 및 운동기구 수량·상태 관리',
+    icon: 'Package',
+    color: 'teal',
+    createdAt: '2026-10-19',
+    updatedAt: '2026-10-19',
+    columns: [
+      { id: 'code', name: '관리번호', type: 'text', required: true },
+      { id: 'itemName', name: '물품/기구명', type: 'text', required: true },
+      { id: 'category', name: '종목/분류', type: 'select', options: ['축구/풋살', '야구', '탁구', '피트니스', '수영/수처리', '일반비품'] },
+      { id: 'quantity', name: '수량', type: 'number', unit: '개' },
+      { id: 'location', name: '보관위치', type: 'text' },
+      { id: 'status', name: '상태', type: 'select', options: ['양호', '정상사용', '점검필요', '수리중', '폐기예정'] },
+      { id: 'manager', name: '관리담당자', type: 'select', options: ['김일호', '권병학', '조현호'] },
+      { id: 'buyDate', name: '구입/도입일자', type: 'date' },
+      { id: 'memo', name: '비고/특이사항', type: 'textarea' }
+    ],
+    records: [
+      {
+        id: 'rec-1',
+        code: 'EQ-2026-001',
+        itemName: '풋살 골대 이동식 안전 네트',
+        category: '축구/풋살',
+        quantity: 2,
+        location: 'A구장 창고',
+        status: '양호',
+        manager: '조현호',
+        buyDate: '2026-03-15',
+        memo: '정기 안전점검 완료'
+      },
+      {
+        id: 'rec-2',
+        code: 'EQ-2026-002',
+        itemName: '탁구대 (공인 챔피언급)',
+        category: '탁구',
+        quantity: 6,
+        location: '도농공원 탁구장',
+        status: '정상사용',
+        manager: '김일호',
+        buyDate: '2025-08-10',
+        memo: '네트 및 지지대 보강 완료'
+      },
+      {
+        id: 'rec-3',
+        code: 'EQ-2026-003',
+        itemName: '야구공 피칭 머신',
+        category: '야구',
+        quantity: 1,
+        location: '야구장 3면 불펜',
+        status: '점검필요',
+        manager: '김일호',
+        buyDate: '2024-11-20',
+        memo: '전원 케이블 접촉 상태 점검 요망'
+      }
+    ]
+  },
+  {
+    id: 'db-vehicles',
+    name: '관용차량 운행일지',
+    description: '센터 업무용 차량 배차 및 일일 운행거리·유류비 기록',
+    icon: 'Car',
+    color: 'blue',
+    createdAt: '2026-10-19',
+    updatedAt: '2026-10-19',
+    columns: [
+      { id: 'date', name: '운행일자', type: 'date', required: true },
+      { id: 'carNum', name: '차량번호', type: 'select', options: ['남양주 70가 1234 (스타렉스)', '남양주 70나 5678 (포터 트럭)', '남양주 70다 9012 (전기차 EV6)'] },
+      { id: 'driver', name: '운전자', type: 'select', options: ['김일호', '권병학', '조현호'] },
+      { id: 'dest', name: '행선지/목적지', type: 'text' },
+      { id: 'purpose', name: '운행목적', type: 'text' },
+      { id: 'distance', name: '주행거리(km)', type: 'number', unit: 'km' },
+      { id: 'fuelCost', name: '주유/충전비(원)', type: 'currency' },
+      { id: 'memo', name: '비고', type: 'text' }
+    ],
+    records: [
+      {
+        id: 'v-1',
+        date: '2026-10-15',
+        carNum: '남양주 70나 5678 (포터 트럭)',
+        driver: '조현호',
+        dest: '파크골프장 및 다목적광장',
+        purpose: '화장실 배관 점검 자재 운반',
+        distance: 32,
+        fuelCost: 45000,
+        memo: '세한이앤지 미팅 동행'
+      },
+      {
+        id: 'v-2',
+        date: '2026-10-16',
+        carNum: '남양주 70다 9012 (전기차 EV6)',
+        driver: '김일호',
+        dest: '삼패야구장',
+        purpose: '바닥 정지 작업 현장 실측',
+        distance: 18,
+        fuelCost: 0,
+        memo: '센터 충전기 완충'
+      }
+    ]
+  },
+  {
+    id: 'db-complaints',
+    name: '시민 시설민원 접수대장',
+    description: '체육문화센터 시설 이용 시민 불편 접수 및 조치 결과 공유',
+    icon: 'MessageSquare',
+    color: 'amber',
+    createdAt: '2026-10-19',
+    updatedAt: '2026-10-19',
+    columns: [
+      { id: 'receiveDate', name: '접수일자', type: 'date', required: true },
+      { id: 'complainant', name: '민원인(성함/연락처)', type: 'text' },
+      { id: 'facility', name: '시설구역', type: 'select', options: ['남양주센터', '다산멀티', '도농공원', '삼패야구장', '컨퍼런스', '파크골프'] },
+      { id: 'content', name: '민원 내용', type: 'textarea', required: true },
+      { id: 'status', name: '처리상태', type: 'select', options: ['접수', '현장확인', '보수진행중', '완료(회신완료)'] },
+      { id: 'manager', name: '처리담당자', type: 'select', options: ['김일호', '권병학', '조현호'] },
+      { id: 'actionResult', name: '조치 결과', type: 'textarea' }
+    ],
+    records: [
+      {
+        id: 'c-1',
+        receiveDate: '2026-10-12',
+        complainant: '이** (010-****-1234)',
+        facility: '남양주센터',
+        content: 'B축구장 관람석 데크 바닥이 들떠 있어서 발이 걸릴 뻔했습니다.',
+        status: '보수진행중',
+        manager: '조현호',
+        actionResult: '10/15 세한이앤지 견적 방문 완료. 들뜸 피스 고정 및 교체 공사 예정 안내 회신'
+      },
+      {
+        id: 'c-2',
+        receiveDate: '2026-10-14',
+        complainant: '박** (010-****-5678)',
+        facility: '다산멀티',
+        content: '남녀 탈의실 내 습기 배출이 잘 안 되어 환풍기 점검 바랍니다.',
+        status: '접수',
+        manager: '권병학',
+        actionResult: '고풍량 시로코팬 환풍기 신설 공사 품의 준비 중'
+      }
+    ]
+  }
+];
+
+export const COLUMN_TYPES = [
+  { value: 'text', label: '단문 텍스트 (이름, 위치 등)' },
+  { value: 'textarea', label: '장문 메모 (내용, 결과 등)' },
+  { value: 'number', label: '숫자 (수량, 거리 등)' },
+  { value: 'currency', label: '금액 / 비용 (원화 ₩)' },
+  { value: 'date', label: '날짜 (연-월-일)' },
+  { value: 'select', label: '선택형 태그 (상태, 분류, 담당자 등)' }
+];
