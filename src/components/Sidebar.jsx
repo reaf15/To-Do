@@ -22,7 +22,8 @@ import {
   Train,
   Sparkles,
   Check,
-  RotateCcw
+  RotateCcw,
+  Calendar
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 
@@ -296,6 +297,15 @@ export default function Sidebar({
                       >
                         <Kanban className="w-3.5 h-3.5 shrink-0" />
                         <span className="truncate">공정별 칸반보드</span>
+                      </button>
+                      <button
+                        onClick={() => handleFacilityViewClick('calendar')}
+                        className={`w-full flex items-center gap-2 px-2 py-1 rounded text-[11px] transition text-left ${
+                          viewMode === 'calendar' ? 'text-teal-300 font-black bg-teal-950/40' : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Calendar className="w-3.5 h-3.5 shrink-0 text-teal-400" />
+                        <span className="truncate">공사일정 (달력 보기)</span>
                       </button>
                       <button
                         onClick={() => handleFacilityViewClick('facility')}

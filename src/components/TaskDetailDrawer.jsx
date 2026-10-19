@@ -170,6 +170,19 @@ export default function TaskDetailDrawer({
             )}
           </div>
 
+          {/* Construction Schedule Box */}
+          {(task.startDate || task.endDate) && (
+            <div className="bg-teal-50/70 p-3 rounded-xl border border-teal-200 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 text-teal-900 font-bold">
+                <Calendar className="w-4 h-4 text-teal-600" />
+                <span>공사 일정:</span>
+              </div>
+              <div className="font-extrabold text-teal-800">
+                {task.startDate || '시작 미정'} ~ {task.endDate || '완료 미정'}
+              </div>
+            </div>
+          )}
+
           {/* Manager & Contractor Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Manager Box */}

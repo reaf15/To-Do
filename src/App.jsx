@@ -7,6 +7,7 @@ import TableView from './components/TableView';
 import KanbanView from './components/KanbanView';
 import FacilityView from './components/FacilityView';
 import StaffView from './components/StaffView';
+import CalendarView from './components/CalendarView';
 import TaskModal from './components/TaskModal';
 import TaskDetailDrawer from './components/TaskDetailDrawer';
 import MessengerShareModal from './components/MessengerShareModal';
@@ -861,6 +862,22 @@ export default function App() {
                       tasks={filteredTasks}
                       onSelectTask={(task) => setSelectedTask(task)}
                       onQuickManagerChange={handleQuickManagerChange}
+                    />
+                  )}
+
+                  {viewMode === 'calendar' && (
+                    <CalendarView
+                      tasks={filteredTasks}
+                      onSelectTask={(task) => setSelectedTask(task)}
+                      onEditTask={(task) => {
+                        setEditingTask(task);
+                        setIsTaskModalOpen(true);
+                      }}
+                      onNewTask={(initialDateObj) => {
+                        setEditingTask(initialDateObj || null);
+                        setIsTaskModalOpen(true);
+                      }}
+                      selectedDepartment={selectedDepartment}
                     />
                   )}
                 </>

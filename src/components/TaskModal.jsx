@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, AlertCircle, Building2 } from 'lucide-react';
+import { X, Save, AlertCircle, Building2, Calendar } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
 
@@ -23,10 +23,11 @@ export default function TaskModal({
     estimatedCostNote: '',
     manager: '',
     status: '접수/대기',
+    startDate: '',
+    endDate: '',
     quoteAmount: '',
     contractAmount: '',
     vendor: '',
-    contact: '',
     memo: '',
   });
 
@@ -44,10 +45,11 @@ export default function TaskModal({
         estimatedCostNote: currentTask.estimatedCostNote || '',
         manager: currentTask.manager || '',
         status: currentTask.status || '접수/대기',
+        startDate: currentTask.startDate || '',
+        endDate: currentTask.endDate || '',
         quoteAmount: currentTask.quoteAmount ? String(currentTask.quoteAmount) : '',
         contractAmount: currentTask.contractAmount ? String(currentTask.contractAmount) : '',
         vendor: currentTask.vendor || '',
-        contact: currentTask.contact || '',
         memo: currentTask.memo || '',
       });
     } else {
@@ -61,10 +63,11 @@ export default function TaskModal({
         estimatedCostNote: '',
         manager: '',
         status: '접수/대기',
+        startDate: '',
+        endDate: '',
         quoteAmount: '',
         contractAmount: '',
         vendor: '',
-        contact: '',
         memo: '',
       });
     }
@@ -286,6 +289,38 @@ export default function TaskModal({
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
+            </div>
+          </div>
+
+          {/* Row 4.5: Construction Schedule (공사 일정: 착공일 ~ 준공일) */}
+          <div className="bg-teal-50/70 p-3 rounded-xl border border-teal-200">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-teal-900 mb-2">
+              <Calendar className="w-4 h-4 text-teal-600" />
+              <span>공사 일정 (달력 연동)</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  착공일 (공사 시작일)
+                </label>
+                <input
+                  type="date"
+                  value={formData.startDate || ''}
+                  onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                  className="w-full px-3 py-1.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 text-xs font-medium cursor-pointer"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  준공 예정일 (공사 완료일)
+                </label>
+                <input
+                  type="date"
+                  value={formData.endDate || ''}
+                  onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                  className="w-full px-3 py-1.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 text-xs font-medium cursor-pointer"
+                />
+              </div>
             </div>
           </div>
 

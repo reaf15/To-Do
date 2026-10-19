@@ -8,7 +8,8 @@ import {
   UserSquare2, 
   X, 
   RotateCcw,
-  Sparkles
+  Sparkles,
+  Calendar
 } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 
@@ -85,6 +86,18 @@ export default function FilterBar({
           >
             <UserSquare2 className="w-3.5 h-3.5" />
             <span>담당자별 현황</span>
+          </button>
+
+          <button
+            onClick={() => onViewModeChange('calendar')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition ${
+              viewMode === 'calendar'
+                ? 'bg-white text-teal-700 shadow-sm font-extrabold'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Calendar className="w-3.5 h-3.5 text-teal-600" />
+            <span>공사일정 (달력)</span>
           </button>
         </div>
 
