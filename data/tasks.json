@@ -88,29 +88,29 @@
     "endDate": "2026-10-15"
   },
   {
-    "id": "TASK-05",
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장 3면",
-    "title": "야구장 투수마운드 보수",
+    "title": "야구장 시설 보수 (그물망, 주루베이스)",
     "estimatedCost": 15000000,
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "견적의뢰",
+    "startDate": "2026-10-09",
+    "endDate": "2026-10-18",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "현 eng",
-    "contact": "010-4529-2649",
     "memo": "야구장 3면 정규 투수마운드 흙 교체 및 레벨링 평탄화 작업",
+    "id": "TASK-05",
     "logs": [
       {
         "date": "2026-10-11",
         "author": "김일호",
         "message": "현 eng 업체에 현장 답사 및 견적 요청"
       }
-    ],
-    "startDate": "2026-10-09",
-    "endDate": "2026-10-18"
+    ]
   },
   {
     "id": "TASK-06",
@@ -165,7 +165,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대기",
+    "status": "공사진행",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -411,7 +411,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대���",
+    "status": "접수/대기",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -529,7 +529,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대기",
+    "status": "공사진행",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -609,7 +609,7 @@
     "endDate": "2026-10-14"
   },
   {
-    "id": "TASK-26",
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "삼패야구장",
     "location": "야구장 3면",
@@ -618,20 +618,20 @@
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "견적의뢰",
+    "startDate": "2026-10-11",
+    "endDate": "2026-10-17",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "에스엠",
-    "contact": "",
     "memo": "한강 둔치 삼패야구장 그라운드 침하 정비 및 마사토 쇄석 포설 정지 작업",
+    "id": "TASK-26",
     "logs": [
       {
         "date": "2026-10-13",
         "author": "김일호",
         "message": "에스엠 중장비 투입 일정 및 토사 물량 산출 협의"
       }
-    ],
-    "startDate": "2026-10-11",
-    "endDate": "2026-10-17"
+    ]
   },
   {
     "id": "TASK-27",
@@ -774,7 +774,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "접수/대���",
+    "status": "접수/대기",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -847,7 +847,7 @@
   },
   {
     "id": "TASK-HP-01",
-    "department": "호평체육문화센��",
+    "department": "호평체육문화센터",
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
     "location": "지하 수영장",
@@ -943,7 +943,6 @@
     "endDate": "2026-10-28"
   },
   {
-    "id": "TASK-PN-01",
     "department": "평내체육문화센터",
     "budget": "수선유지비",
     "facility": "평내체육문화센터",
@@ -952,15 +951,15 @@
     "estimatedCost": 3800000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "접수/대기",
+    "status": "공사진행",
+    "startDate": "2026-10-19",
+    "endDate": "2026-10-31",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "겨울철 난방 가동 대비 실외��� 2호기 팬 모터 이상 소음 점검",
-    "logs": [],
-    "startDate": "2026-10-19",
-    "endDate": "2026-10-31"
+    "id": "TASK-PN-01",
+    "logs": []
   },
   {
     "id": "TASK-RS-01",
@@ -1038,7 +1037,7 @@
     "estimatedCost": 11000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "검토��",
+    "status": "검토중",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",

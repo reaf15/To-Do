@@ -7,7 +7,8 @@ import {
   Pencil, 
   Check, 
   X,
-  RotateCcw
+  RotateCcw,
+  Activity
 } from 'lucide-react';
 import { formatCurrency, formatCurrencyShort } from '../utils/formatters';
 import BudgetModal from './BudgetModal';
@@ -16,6 +17,8 @@ export default function StatsCards({
   tasks = [], 
   allTasks = [],
   onFilterClick,
+  onStatusFilterClick,
+  selectedStatus = '',
   selectedDepartment = '남양주체육문화센터',
   budgets = {
     '수선유지비': 200000000,
@@ -84,7 +87,7 @@ export default function StatsCards({
   const inProgressCount = tasks.filter((t) => t.status !== '완료').length;
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  // Manager workload (Card 4) for this department
+  // Manager workload (Card 4: 담당자 업무 현황) for this department
   const kimCount = tasks.filter((t) => t.manager === '김일호').length;
   const kwonCount = tasks.filter((t) => t.manager === '권병학').length;
   const choCount = tasks.filter((t) => t.manager === '조현호').length;
@@ -320,17 +323,18 @@ export default function StatsCards({
         </div>
 
         {/* ======================================================== */}
-        {/* 4. 담당자 배정 현황 (선택 부서 기준) */}
+        {/* 4. 담당자 업무 현황 (선택 부서 실시간 연동) */}
         {/* ======================================================== */}
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              담당자 배정 현황
+              담당자 업무 현황
             </span>
             <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
               <Users className="w-4 h-4" />
             </div>
           </div>
+
           <div className="grid grid-cols-4 gap-1 text-center mt-1">
             <div 
               onClick={() => onFilterClick && onFilterClick('김일호')}
@@ -340,6 +344,7 @@ export default function StatsCards({
               <div className="text-[11px] font-bold text-slate-700">김일호</div>
               <div className="text-base font-extrabold text-teal-600">{kimCount}</div>
             </div>
+
             <div 
               onClick={() => onFilterClick && onFilterClick('권병학')}
               className="p-1.5 rounded-lg bg-slate-50 hover:bg-teal-50 cursor-pointer transition border border-slate-100"
@@ -348,6 +353,7 @@ export default function StatsCards({
               <div className="text-[11px] font-bold text-slate-700">권병학</div>
               <div className="text-base font-extrabold text-blue-600">{kwonCount}</div>
             </div>
+
             <div 
               onClick={() => onFilterClick && onFilterClick('조현호')}
               className="p-1.5 rounded-lg bg-slate-50 hover:bg-teal-50 cursor-pointer transition border border-slate-100"
@@ -356,6 +362,7 @@ export default function StatsCards({
               <div className="text-[11px] font-bold text-slate-700">조현호</div>
               <div className="text-base font-extrabold text-purple-600">{choCount}</div>
             </div>
+
             <div 
               onClick={() => onFilterClick && onFilterClick('unassigned')}
               className="p-1.5 rounded-lg bg-slate-50 hover:bg-rose-50 cursor-pointer transition border border-slate-100"
@@ -365,6 +372,7 @@ export default function StatsCards({
               <div className="text-base font-extrabold text-slate-400">{unassignedCount}</div>
             </div>
           </div>
+
           <div className="mt-2 text-xs text-slate-400 flex items-center justify-between border-t border-slate-100 pt-2">
             <span>담당 지정률:</span>
             <span className="font-semibold text-slate-700">

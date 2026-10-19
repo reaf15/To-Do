@@ -516,6 +516,11 @@ export default function App() {
     setViewMode('table');
   };
 
+  const handleStatusFilterClick = (status) => {
+    setSelectedStatus((prev) => (prev === status ? '' : status));
+    setViewMode('table');
+  };
+
   // Add / Edit Task
   const handleSaveTask = (taskData) => {
     const taskToSave = {
@@ -775,6 +780,8 @@ export default function App() {
                     budgets={currentDeptBudgets}
                     allBudgets={budgets}
                     onFilterClick={handleStatsFilterClick}
+                    onStatusFilterClick={handleStatusFilterClick}
+                    selectedStatus={selectedStatus}
                     onSaveBudgets={handleSaveDepartmentBudgets}
                     onSaveDepartmentBudget={handleSaveDepartmentBudgets}
                   />
