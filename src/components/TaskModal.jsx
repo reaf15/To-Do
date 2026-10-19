@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, AlertCircle } from 'lucide-react';
+import { X, Save, AlertCircle, Building2 } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
+import { ALL_DEPARTMENTS } from '../data/organizationChart';
 
 export default function TaskModal({
   isOpen,
   onClose,
   onSave,
-  task
+  task,
+  editingTask,
+  selectedDepartment = '남양주체육문화센터'
 }) {
+  const currentTask = task || editingTask;
+
   const [formData, setFormData] = useState({
+    department: selectedDepartment,
     budget: '수선유지비',
     facility: '남양주센터',
     location: '',
@@ -27,26 +33,28 @@ export default function TaskModal({
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (task) {
+    if (currentTask) {
       setFormData({
-        budget: task.budget || '수선유지비',
-        facility: task.facility || '남양주센터',
-        location: task.location || '',
-        title: task.title || '',
-        estimatedCost: task.estimatedCost ? String(task.estimatedCost) : '',
-        estimatedCostNote: task.estimatedCostNote || '',
-        manager: task.manager || '',
-        status: task.status || '접수/대기',
-        quoteAmount: task.quoteAmount ? String(task.quoteAmount) : '',
-        contractAmount: task.contractAmount ? String(task.contractAmount) : '',
-        vendor: task.vendor || '',
-        contact: task.contact || '',
-        memo: task.memo || '',
+        department: currentTask.department || selectedDepartment || '남양주체육문화센터',
+        budget: currentTask.budget || '수선유지비',
+        facility: currentTask.facility || '남양주센터',
+        location: currentTask.location || '',
+        title: currentTask.title || '',
+        estimatedCost: currentTask.estimatedCost ? String(currentTask.estimatedCost) : '',
+        estimatedCostNote: currentTask.estimatedCostNote || '',
+        manager: currentTask.manager || '',
+        status: currentTask.status || '접수/대기',
+        quoteAmount: currentTask.quoteAmount ? String(currentTask.quoteAmount) : '',
+        contractAmount: currentTask.contractAmount ? String(currentTask.contractAmount) : '',
+        vendor: currentTask.vendor || '',
+        contact: currentTask.contact || '',
+        memo: currentTask.memo || '',
       });
     } else {
       setFormData({
+        department: selectedDepartment || '남양주체육문화센터',
         budget: '수선유지비',
-        facility: '남양주센터',
+        facility: selectedDepartment.includes('체육문화센터') ? selectedDepartment.replace('체육문화센터', '센터') : selectedDepartment,
         location: '',
         title: '',
         estimatedCost: '',
@@ -61,7 +69,7 @@ export default function TaskModal({
       });
     }
     setErrors({});
-  }, [task, isOpen]);
+  }, [currentTask, isOpen, selectedDepartment]);
 
   if (!isOpen) return null;
 
@@ -72,9 +80,6 @@ export default function TaskModal({
     if (!formData.title.trim()) {
       newErrors.title = '공사명을 입력해주세요.';
     }
-    if (!formData.facility) {
-      newErrors.facility = '분류(센터)를 선택해주세요.';
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -83,15 +88,16 @@ export default function TaskModal({
 
     const payload = {
       ...formData,
-      id: task ? task.id : `TASK-${Date.now()}`,
+      department: formData.department || selectedDepartment || '남양주체육문화센터',
+      id: currentTask ? currentTask.id : `TASK-${Date.now()}`,
       estimatedCost: formData.estimatedCost ? Number(formData.estimatedCost) : null,
       quoteAmount: formData.quoteAmount ? Number(formData.quoteAmount) : null,
       contractAmount: formData.contractAmount ? Number(formData.contractAmount) : null,
-      logs: task?.logs || [
+      logs: currentTask?.logs || [
         {
           date: new Date().toISOString().split('T')[0],
           author: formData.manager || '시스템',
-          message: task ? '공사 정보 수정' : '신규 공사 업무 등록'
+          message: currentTask ? '공사 정보 수정' : '신규 공사 업무 등록'
         }
       ]
     };
@@ -110,10 +116,10 @@ export default function TaskModal({
         <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between">
           <div>
             <h3 className="text-base sm:text-lg font-bold">
-              {task ? '공사 업무 정보 수정' : '신규 시설·공사 업무 등록'}
+              {currentTask ? '공사 업무 정보 수정' : '신규 시설·공사 업무 등록'}
             </h3>
             <p className="text-xs text-teal-400 mt-0.5">
-              남양주체육문화센터 시설관리 시스템
+              시설본부 • {formData.department}
             </p>
           </div>
           <button
@@ -127,6 +133,29 @@ export default function TaskModal({
         {/* Modal Form */}
         <form onSubmit={handleSubmit} className="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
           
+          {/* Row 0: Department Indicator & Switcher */}
+          <div className="flex items-center justify-between p-3 bg-amber-50/70 rounded-xl border border-amber-200/90">
+            <div className="flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-amber-600" />
+              <span className="text-xs font-bold text-slate-700">소속 부서:</span>
+              <span className="text-xs font-black text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-300">
+                {formData.department}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-slate-500 font-semibold">부서 변경:</span>
+              <select
+                value={formData.department}
+                onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
+                className="text-xs font-bold bg-white border border-amber-300 rounded-lg px-2.5 py-1 text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+              >
+                {ALL_DEPARTMENTS.map(d => (
+                  <option key={d.name} value={d.name}>{d.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           {/* Row 1: Budget, Facility, Location */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
@@ -148,15 +177,13 @@ export default function TaskModal({
               <label className="block font-bold text-slate-700 mb-1">
                 분류 (센터/구역) <span className="text-rose-500">*</span>
               </label>
-              <select
+              <input
+                type="text"
                 value={formData.facility}
                 onChange={(e) => setFormData({ ...formData, facility: e.target.value })}
+                placeholder="예: 남양주센터, 다목적체육관 등"
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
-              >
-                {FACILITIES.map((f) => (
-                  <option key={f} value={f}>{f}</option>
-                ))}
-              </select>
+              />
             </div>
 
             <div>
@@ -167,7 +194,7 @@ export default function TaskModal({
                 type="text"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                placeholder="예: 옥상, 야구장 3면, 3층 로비"
+                placeholder="예: 옥상, 지하 기계실, 3층 로비"
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
               />
             </div>
@@ -348,7 +375,7 @@ export default function TaskModal({
               className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-teal-600 text-white hover:bg-teal-700 font-bold shadow-md transition"
             >
               <Save className="w-4 h-4" />
-              <span>{task ? '수정사항 저장' : '신규 업무 등록'}</span>
+              <span>{currentTask ? '수정사항 저장' : '신규 업무 등록'}</span>
             </button>
           </div>
 

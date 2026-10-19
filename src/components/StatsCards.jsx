@@ -14,13 +14,16 @@ import BudgetModal from './BudgetModal';
 
 export default function StatsCards({ 
   tasks = [], 
+  allTasks = [],
   onFilterClick,
+  selectedDepartment = '남양주체육문화센터',
   budgets = {
     '수선유지비': 200000000,
-    '시설비': 50000000,
-    '사무관리비': 10000000
+    '시설비': 50000000
   },
-  onSaveBudgets
+  allBudgets = {},
+  onSaveBudgets,
+  onSaveDepartmentBudget
 }) {
   const totalCount = tasks.length;
   
@@ -30,21 +33,13 @@ export default function StatsCards({
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const [inlineValue, setInlineValue] = useState('');
 
-  // Collect all budget categories
-  const allCategories = Array.from(
-    new Set([
-      '수선유지비',
-      '시설비',
-      '사무관리비',
-      ...Object.keys(budgets),
-      ...tasks.map(t => t.budget).filter(Boolean)
-    ])
-  );
+  // Fixed budget categories: strictly 수선유지비 and 시설비
+  const allCategories = ['수선유지비', '시설비'];
 
-  // Card 2: Allocated budget calculation
+  // Card 2: Allocated budget calculation for this department
   const allocatedBudget = selectedBudgetItem === 'ALL'
-    ? Object.values(budgets).reduce((sum, v) => sum + (Number(v) || 0), 0)
-    : (Number(budgets[selectedBudgetItem]) || 0);
+    ? ((Number(budgets?.['수선유지비']) || 0) + (Number(budgets?.['시설비']) || 0))
+    : (Number(budgets?.[selectedBudgetItem]) || 0);
 
   // Helper: calculate planned cost per task with 3-tier priority (1.계약금액 > 2.견적가 > 3.예상비용)
   const getTaskPlannedCost = (t) => {
@@ -60,7 +55,7 @@ export default function StatsCards({
     return { amount: 0, type: 'none' };
   };
 
-  // Card 3: Tasks relevant to selected budget item
+  // Card 3: Tasks relevant to selected budget item in this department
   const relevantTasks = selectedBudgetItem === 'ALL'
     ? tasks
     : tasks.filter(t => t.budget === selectedBudgetItem);
@@ -82,14 +77,14 @@ export default function StatsCards({
   const burnRate = allocatedBudget > 0 ? Math.min(Math.round((plannedExecutionCost / allocatedBudget) * 100), 100) : 0;
   const exactRate = allocatedBudget > 0 ? ((plannedExecutionCost / allocatedBudget) * 100).toFixed(1) : '0.0';
 
-  // Status counts (Card 1)
+  // Status counts (Card 1) for this department
   const completedCount = tasks.filter((t) => t.status === '완료').length;
   const quoteCount = tasks.filter((t) => t.status === '견적의뢰').length;
   const visitCount = tasks.filter((t) => t.status === '견적방문').length;
   const inProgressCount = tasks.filter((t) => t.status !== '완료').length;
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  // Manager workload (Card 4)
+  // Manager workload (Card 4) for this department
   const kimCount = tasks.filter((t) => t.manager === '김일호').length;
   const kwonCount = tasks.filter((t) => t.manager === '권병학').length;
   const choCount = tasks.filter((t) => t.manager === '조현호').length;
@@ -107,11 +102,17 @@ export default function StatsCards({
 
   const handleSaveInlineEdit = () => {
     const num = parseInt(inlineValue.replace(/[^0-9]/g, ''), 10) || 0;
-    if (selectedBudgetItem !== 'ALL' && onSaveBudgets) {
-      onSaveBudgets({
-        ...budgets,
+    if (selectedBudgetItem !== 'ALL') {
+      const updated = {
+        '수선유지비': Number(budgets?.['수선유지비']) || 0,
+        '시설비': Number(budgets?.['시설비']) || 0,
         [selectedBudgetItem]: num
-      });
+      };
+      if (onSaveDepartmentBudget) {
+        onSaveDepartmentBudget(updated, selectedDepartment);
+      } else if (onSaveBudgets) {
+        onSaveBudgets(updated, selectedDepartment);
+      }
     }
     setIsInlineEditing(false);
   };
@@ -121,16 +122,16 @@ export default function StatsCards({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         
         {/* ======================================================== */}
-        {/* 1. 총 업무 및 진행률 */}
+        {/* 1. 총 업무 및 진행률 (선택 부서 기준) */}
         {/* ======================================================== */}
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              공사·수선 현황
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <span>공사·수선 현황</span>
             </span>
-            <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
-              <Briefcase className="w-4 h-4" />
-            </div>
+            <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+              {selectedDepartment}
+            </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl sm:text-3xl font-extrabold text-slate-900">{totalCount}</span>
@@ -143,7 +144,7 @@ export default function StatsCards({
           {/* Progress bar */}
           <div className="mt-3">
             <div className="flex justify-between text-[11px] font-medium text-slate-500 mb-1">
-              <span>진행 건수 ({inProgressCount}건)</span>
+              <span>진행 중 ({inProgressCount}건)</span>
               <span>완료율 {completionRate}%</span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden flex">
@@ -154,7 +155,7 @@ export default function StatsCards({
               />
               <div 
                 className="bg-teal-500 h-2 opacity-70 transition-all duration-500" 
-                style={{ width: `${Math.round(((quoteCount + visitCount) / totalCount) * 100)}%` }}
+                style={{ width: `${totalCount > 0 ? Math.round(((quoteCount + visitCount) / totalCount) * 100) : 0}%` }}
                 title={`견적단계 ${quoteCount + visitCount}건`}
               />
             </div>
@@ -162,15 +163,20 @@ export default function StatsCards({
         </div>
 
         {/* ======================================================== */}
-        {/* 2. 예산금액 (예산종목 선택 및 담당자 직접 입력 지원) */}
+        {/* 2. 예산금액 (부서별 시설비·수선유지비 개별 배정액 및 직접 입력) */}
         {/* ======================================================== */}
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-              <span>예산금액</span>
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                예산금액
+              </span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                {selectedDepartment}
+              </span>
+            </div>
 
-            {/* 예산종목 선택 드롭다운 & 직접입력 버튼 */}
+            {/* 예산종목 선택 드롭다운 (오직 전체, 수선유지비, 시설비만 표시!) */}
             <div className="flex items-center gap-1">
               <select
                 value={selectedBudgetItem}
@@ -181,18 +187,15 @@ export default function StatsCards({
                 className="text-[11px] font-bold bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
                 title="조회할 예산종목을 선택하세요"
               >
-                <option value="ALL">전체 예산</option>
-                {allCategories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
+                <option value="ALL">전체 예산 (합계)</option>
+                <option value="수선유지비">수선유지비</option>
+                <option value="시설비">시설비</option>
               </select>
 
               <button
                 type="button"
                 onClick={() => setIsBudgetModalOpen(true)}
-                title="담당자 예산금액 직접 입력 및 관리 설정"
+                title="부서 예산금액 직접 입력 및 관리 설정"
                 className="w-7 h-7 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 flex items-center justify-center transition shadow-2xs"
               >
                 <Pencil className="w-3.5 h-3.5" />
@@ -250,21 +253,26 @@ export default function StatsCards({
             <span className="font-semibold text-slate-700">{formatCurrency(allocatedBudget)}</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-0.5 truncate">
-            * {selectedBudgetItem === 'ALL' ? '수선유지비+시설비+사무관리비 총액' : `${selectedBudgetItem} 배정액`} (담당자 입력)
+            * [{selectedDepartment}] {selectedBudgetItem === 'ALL' ? '수선유지비 + 시설비 배정총액' : `${selectedBudgetItem} 배정액`} (담당자 직접 입력)
           </div>
         </div>
 
         {/* ======================================================== */}
-        {/* 3. 집행예정금액 및 잔여예산 (선택한 예산종목과 실시간 연동) */}
+        {/* 3. 집행예정금액 및 잔여예산 (선택 부서 실시간 연동) */}
         {/* ======================================================== */}
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              집행예정 및 잔여예산
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                집행예정 및 잔여예산
+              </span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                {selectedDepartment}
+              </span>
+            </div>
             <span 
               className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200"
-              title="현재 상단에서 선택된 예산종목 기준 집계"
+              title="현재 선택된 예산종목 기준 집계"
             >
               {selectedBudgetItem === 'ALL' ? '전체 종목' : selectedBudgetItem}
             </span>
@@ -312,7 +320,7 @@ export default function StatsCards({
         </div>
 
         {/* ======================================================== */}
-        {/* 4. 담당자 배정 현황 */}
+        {/* 4. 담당자 배정 현황 (선택 부서 기준) */}
         {/* ======================================================== */}
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
@@ -349,7 +357,7 @@ export default function StatsCards({
               <div className="text-base font-extrabold text-purple-600">{choCount}</div>
             </div>
             <div 
-              onClick={() => onFilterClick && onFilterClick('UNASSIGNED')}
+              onClick={() => onFilterClick && onFilterClick('unassigned')}
               className="p-1.5 rounded-lg bg-slate-50 hover:bg-rose-50 cursor-pointer transition border border-slate-100"
               title="미배정 공사 필터링"
             >
@@ -367,16 +375,21 @@ export default function StatsCards({
 
       </div>
 
-      {/* Budget Management Modal */}
+      {/* Budget Management Modal with Department Selector */}
       <BudgetModal
         isOpen={isBudgetModalOpen}
         onClose={() => setIsBudgetModalOpen(false)}
+        currentDepartment={selectedDepartment}
         budgets={budgets}
-        onSave={(newBudgets) => {
-          if (onSaveBudgets) onSaveBudgets(newBudgets);
+        allBudgets={allBudgets}
+        onSave={(newBudgets, targetDept) => {
+          if (onSaveDepartmentBudget) {
+            onSaveDepartmentBudget(newBudgets, targetDept || selectedDepartment);
+          } else if (onSaveBudgets) {
+            onSaveBudgets(newBudgets, targetDept || selectedDepartment);
+          }
         }}
-        budgetTypes={allCategories}
-        tasks={tasks}
+        tasks={allTasks && allTasks.length > 0 ? allTasks : tasks}
       />
     </>
   );

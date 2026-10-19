@@ -1,34 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Coins, 
-  Plus, 
-  Trash2, 
   Save, 
   CheckCircle2, 
-  AlertCircle,
-  HelpCircle,
-  RotateCcw
+  RotateCcw,
+  Building2
 } from 'lucide-react';
 import { formatCurrency, formatCurrencyShort } from '../utils/formatters';
+import { ALL_DEPARTMENTS } from '../data/organizationChart';
 
 export default function BudgetModal({
   isOpen,
   onClose,
+  currentDepartment = '남양주체육문화센터',
   budgets = {},
+  allBudgets = {},
   onSave,
-  budgetTypes = ['수선유지비', '시설비', '사무관리비'],
   tasks = []
 }) {
-  const [formData, setFormData] = useState(() => ({ ...budgets }));
-  const [newCategoryName, setNewCategoryName] = useState('');
-  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [targetDepartment, setTargetDepartment] = useState(currentDepartment);
+  const [formData, setFormData] = useState({
+    '수선유지비': 0,
+    '시설비': 0
+  });
+
+  // Sync target department when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setTargetDepartment(currentDepartment);
+    }
+  }, [isOpen, currentDepartment]);
+
+  // Load budgets for targetDepartment
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let deptBudget = null;
+    if (allBudgets && allBudgets[targetDepartment] && typeof allBudgets[targetDepartment] === 'object') {
+      deptBudget = allBudgets[targetDepartment];
+    } else if (targetDepartment === currentDepartment && budgets && typeof budgets === 'object') {
+      deptBudget = budgets;
+    }
+
+    setFormData({
+      '수선유지비': Number(deptBudget?.['수선유지비']) || 0,
+      '시설비': Number(deptBudget?.['시설비']) || 0
+    });
+  }, [isOpen, targetDepartment, allBudgets, currentDepartment, budgets]);
 
   if (!isOpen) return null;
 
-  // Compute current planned execution cost per budget item
+  // Filter tasks belonging strictly to targetDepartment
+  const departmentTasks = tasks.filter(t => (t.department || '남양주체육문화센터') === targetDepartment);
+
+  // Compute current planned execution cost per budget item (3-tier priority)
   const getPlannedCostForBudget = (budgetName) => {
-    return tasks
+    return departmentTasks
       .filter(t => !budgetName || t.budget === budgetName)
       .reduce((sum, t) => {
         const c = Number(t.contractAmount) || 0;
@@ -41,12 +69,7 @@ export default function BudgetModal({
       }, 0);
   };
 
-  const allCategories = Array.from(
-    new Set([...budgetTypes, ...Object.keys(formData)])
-  ).filter(Boolean);
-
   const handleAmountChange = (category, value) => {
-    // Only numbers
     const cleanNum = value.replace(/[^0-9]/g, '');
     const num = cleanNum ? parseInt(cleanNum, 10) : 0;
     setFormData(prev => ({
@@ -62,51 +85,60 @@ export default function BudgetModal({
     }));
   };
 
-  const handleAddNewCategory = () => {
-    const trimmed = newCategoryName.trim();
-    if (!trimmed) return;
-    if (!formData[trimmed]) {
-      setFormData(prev => ({
-        ...prev,
-        [trimmed]: 0
-      }));
-    }
-    setNewCategoryName('');
-    setIsAddingNew(false);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    if (onSave) {
+      onSave(formData, targetDepartment);
+    }
     onClose();
   };
 
-  const totalAllocated = Object.values(formData).reduce((sum, v) => sum + (Number(v) || 0), 0);
+  const totalAllocated = (Number(formData['수선유지비']) || 0) + (Number(formData['시설비']) || 0);
   const totalPlanned = getPlannedCostForBudget(null);
   const totalRemaining = totalAllocated - totalPlanned;
+
+  const budgetCategories = ['수선유지비', '시설비'];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400 font-bold">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400 font-bold shrink-0">
               <Coins className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-black tracking-tight text-white flex items-center gap-2">
-                예산금액 설정 및 관리
-                <span className="text-xs px-2 py-0.5 rounded font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                  담당자 직접 입력
+              <div className="flex items-center gap-2">
+                <h2 className="text-base font-black tracking-tight text-white">
+                  부서별 예산금액 입력 및 설정
+                </h2>
+                <span className="text-[11px] px-2 py-0.5 rounded font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                  수선유지비·시설비
                 </span>
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                예산종목별 배정 금액을 입력하고, 집행 예정액 및 잔여 예산을 실시간으로 관리합니다.
-              </p>
+              </div>
+              
+              {/* Department Switcher Dropdown */}
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
+                  <Building2 className="w-3.5 h-3.5 text-teal-400" />
+                  대상 부서:
+                </span>
+                <select
+                  value={targetDepartment}
+                  onChange={(e) => setTargetDepartment(e.target.value)}
+                  className="text-xs font-black bg-slate-800 text-amber-300 border border-slate-700 rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-teal-400 focus:outline-none cursor-pointer"
+                >
+                  {ALL_DEPARTMENTS.map(d => (
+                    <option key={d.name} value={d.name} className="bg-slate-900 text-white">
+                      {d.name} {d.name === currentDepartment ? '(현재 활성 부서)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
           <button
@@ -117,10 +149,10 @@ export default function BudgetModal({
           </button>
         </div>
 
-        {/* Total Summary Banner */}
+        {/* Total Summary Banner for this Department */}
         <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-slate-50 border-b border-slate-200 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div>
-            <span className="text-slate-500 font-medium">총 배정예산 합계:</span>
+            <span className="text-slate-500 font-medium">[{targetDepartment}] 총 배정예산:</span>
             <span className="ml-1.5 text-base font-black text-blue-700">
               {formatCurrency(totalAllocated)}
             </span>
@@ -141,10 +173,10 @@ export default function BudgetModal({
           </div>
         </div>
 
-        {/* Modal Body / Items List */}
+        {/* Modal Body: Only 수선유지비 & 시설비 */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
-          <div className="space-y-3">
-            {allCategories.map((category) => {
+          <div className="space-y-4">
+            {budgetCategories.map((category) => {
               const amount = Number(formData[category]) || 0;
               const planned = getPlannedCostForBudget(category);
               const remaining = amount - planned;
@@ -246,52 +278,13 @@ export default function BudgetModal({
               );
             })}
           </div>
-
-          {/* Add New Category Section */}
-          <div className="pt-2 border-t border-slate-200">
-            {isAddingNew ? (
-              <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <input
-                  type="text"
-                  placeholder="새 예산종목명 (예: 자산취득비)"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={handleAddNewCategory}
-                  className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700"
-                >
-                  추가
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsAddingNew(false)}
-                  className="px-3 py-1.5 bg-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-300"
-                >
-                  취소
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setIsAddingNew(true)}
-                className="w-full py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-blue-400 hover:bg-blue-50/50 text-slate-600 hover:text-blue-600 text-xs font-bold flex items-center justify-center gap-1.5 transition"
-              >
-                <Plus className="w-4 h-4" />
-                <span>새 예산종목 추가하기</span>
-              </button>
-            )}
-          </div>
         </form>
 
         {/* Modal Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
           <div className="text-[11px] text-slate-500 flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-            <span>저장 시 전 직원 및 중앙 서버에 실시간으로 즉시 반영됩니다.</span>
+            <span>[{targetDepartment}]의 수선유지비와 시설비 예산이 저장됩니다.</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -308,7 +301,7 @@ export default function BudgetModal({
               className="flex items-center gap-1.5 px-5 py-2 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-700 text-white shadow-md transition"
             >
               <Save className="w-4 h-4" />
-              <span>예산금액 저장</span>
+              <span>[{targetDepartment}] 예산 저장</span>
             </button>
           </div>
         </div>

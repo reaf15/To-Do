@@ -38,8 +38,7 @@ const LOCAL_STORAGE_BUDGETS = 'nyj_budget_allocations_v1';
 
 export const DEFAULT_BUDGETS = {
   '수선유지비': 200000000,
-  '시설비': 50000000,
-  '사무관리비': 10000000
+  '시설비': 50000000
 };
 
 export default function App() {
@@ -79,12 +78,16 @@ export default function App() {
     return INITIAL_TASKS;
   });
 
-  // Custom Databases state with LocalStorage persistence
+  // Custom Databases state with LocalStorage persistence (strictly 시설민원 접수대장)
   const [customDatabases, setCustomDatabases] = useState(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_DBS);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        const filtered = Array.isArray(parsed) 
+          ? parsed.filter(d => d.id !== 'db-equipment' && d.id !== 'db-vehicles') 
+          : [];
+        if (filtered.length > 0) return filtered;
       }
     } catch (e) {
       console.error('Failed to load custom databases from local storage', e);
@@ -115,14 +118,42 @@ export default function App() {
     return calculateSubmissionStats(submissionMap);
   }, [submissionMap]);
 
-  // Budget allocations per category (예산금액)
+  // Budget allocations per department (예산금액: 수선유지비 & 시설비)
   const [budgets, setBudgets] = useState(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_BUDGETS);
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          if (parsed['수선유지비'] !== undefined && !parsed['남양주체육문화센터']) {
+            return { '남양주체육문화센터': parsed };
+          }
+          return parsed;
+        }
+      }
     } catch (e) {}
-    return DEFAULT_BUDGETS;
+    return {
+      '남양주체육문화센터': { '수선유지비': 200000000, '시설비': 50000000 }
+    };
   });
+
+  // Current selected department budget allocations (시설비 & 수선유지비)
+  const currentDeptBudgets = useMemo(() => {
+    if (budgets && typeof budgets === 'object') {
+      if (budgets[selectedDepartment] && typeof budgets[selectedDepartment] === 'object') {
+        return budgets[selectedDepartment];
+      }
+      if (budgets['수선유지비'] !== undefined) {
+        if (selectedDepartment === '남양주체육문화센터') {
+          return budgets;
+        }
+      }
+    }
+    return {
+      '수선유지비': 100000000,
+      '시설비': 25000000
+    };
+  }, [budgets, selectedDepartment]);
 
   // Current persona / logged in user
   const [currentUser, setCurrentUser] = useState(() => {
@@ -227,11 +258,20 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newBudgets)
       });
-      showToast('예산금액이 성공적으로 저장되었습니다.');
-      addAuditLog(`예산 배정액 설정/수정 (총 ${Object.values(newBudgets).reduce((a, b) => a + (Number(b) || 0), 0).toLocaleString()}원)`);
     } catch (e) {
       console.warn('Network sync for budgets failed, saved locally:', e.message);
     }
+  };
+
+  // Save budget allocations for a specific department
+  const handleSaveDepartmentBudgets = (newDeptBudgets, targetDept = selectedDepartment) => {
+    const updatedAllBudgets = {
+      ...(budgets && !budgets['수선유지비'] ? budgets : { '남양주체육문화센터': budgets }),
+      [targetDept]: newDeptBudgets
+    };
+    persistBudgets(updatedAllBudgets);
+    showToast(`[${targetDept}] 예산금액이 저장되었습니다.`);
+    addAuditLog(`부서 예산 설정: [${targetDept}] (수선: ${Number(newDeptBudgets['수선유지비'] || 0).toLocaleString()}원, 시설: ${Number(newDeptBudgets['시설비'] || 0).toLocaleString()}원)`);
   };
 
   // Fetch initial tasks, databases & server info on mount
@@ -261,8 +301,9 @@ export default function App() {
         if (dbRes.ok) {
           const remoteDbs = await dbRes.json();
           if (Array.isArray(remoteDbs) && remoteDbs.length > 0) {
-            setCustomDatabases(remoteDbs);
-            localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(remoteDbs));
+            const filtered = remoteDbs.filter(d => d.id !== 'db-equipment' && d.id !== 'db-vehicles');
+            setCustomDatabases(filtered);
+            localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(filtered));
           }
         }
       } catch (e) {}
@@ -402,9 +443,14 @@ export default function App() {
     }
   };
 
-  // Filter tasks
+  // Filter tasks strictly by selectedDepartment
+  const departmentTasks = useMemo(() => {
+    return tasks.filter((t) => (t.department || '남양주체육문화센터') === selectedDepartment);
+  }, [tasks, selectedDepartment]);
+
+  // Filter tasks for the active department
   const filteredTasks = useMemo(() => {
-    return tasks.filter((task) => {
+    return departmentTasks.filter((task) => {
       // Search query
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
@@ -446,7 +492,7 @@ export default function App() {
 
       return true;
     });
-  }, [tasks, searchQuery, selectedFacility, selectedBudget, selectedStatus, selectedManager]);
+  }, [departmentTasks, searchQuery, selectedFacility, selectedBudget, selectedStatus, selectedManager]);
 
   // Reset all filters
   const resetFilters = () => {
@@ -472,21 +518,25 @@ export default function App() {
 
   // Add / Edit Task
   const handleSaveTask = (taskData) => {
+    const taskToSave = {
+      ...taskData,
+      department: taskData.department || selectedDepartment || '남양주체육문화센터'
+    };
     let updated;
-    const exists = tasks.some((t) => t.id === taskData.id);
+    const exists = tasks.some((t) => t.id === taskToSave.id);
     if (exists) {
-      updated = tasks.map((t) => (t.id === taskData.id ? taskData : t));
-      showToast(`'${taskData.title}' 정보가 수정되었습니다.`);
-      addAuditLog(`공사 업무 수정: [${taskData.title}]`);
+      updated = tasks.map((t) => (t.id === taskToSave.id ? taskToSave : t));
+      showToast(`'${taskToSave.title}' 정보가 수정되었습니다.`);
+      addAuditLog(`공사 업무 수정: [${taskToSave.title}] (${taskToSave.department})`);
     } else {
-      updated = [taskData, ...tasks];
-      showToast(`'${taskData.title}' 신규 공사가 등록되었습니다.`);
-      addAuditLog(`공사 업무 신규등록: [${taskData.title}]`);
+      updated = [taskToSave, ...tasks];
+      showToast(`'${taskToSave.title}' 신규 공사가 등록되었습니다.`);
+      addAuditLog(`공사 업무 신규등록: [${taskToSave.title}] (${taskToSave.department})`);
     }
     persistTasks(updated);
 
-    if (selectedTask && selectedTask.id === taskData.id) {
-      setSelectedTask(taskData);
+    if (selectedTask && selectedTask.id === taskToSave.id) {
+      setSelectedTask(taskToSave);
     }
   };
 
@@ -646,7 +696,7 @@ export default function App() {
     );
   }
 
-  const myTasksCount = tasks.filter((t) => t.manager === currentUser).length;
+  const myTasksCount = departmentTasks.filter((t) => t.manager === currentUser).length;
   const hasActiveFilters = Boolean(searchQuery || selectedFacility || selectedBudget || selectedStatus || selectedManager);
 
   return (
@@ -689,7 +739,7 @@ export default function App() {
         }}
         onOpenConnectModal={() => setIsConnectModalOpen(true)}
         currentUser={currentUser}
-        tasksCount={tasks.length}
+        tasksCount={departmentTasks.length}
         serverInfo={serverInfo}
         submissionStats={submissionStats}
         submissionMap={submissionMap}
@@ -710,7 +760,7 @@ export default function App() {
           onResetData={handleResetData}
           onOpenConnect={() => setIsConnectModalOpen(true)}
           serverInfo={serverInfo}
-          totalTasksCount={tasks.length}
+          totalTasksCount={departmentTasks.length}
           myTasksCount={myTasksCount}
           currentModule={currentModule}
           onModuleChange={setCurrentModule}
@@ -752,7 +802,7 @@ export default function App() {
                   addAuditLog(`업무 대장 열람: [${dbId === 'facility' ? '시설·공사 관리대장' : dbId}]`);
                 }}
                 customDatabases={customDatabases}
-                tasksCount={filteredTasks.length}
+                tasksCount={departmentTasks.length}
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
                 onOpenNewDbModal={() => {
@@ -768,10 +818,14 @@ export default function App() {
                 <>
                   {/* KPI Summary Cards */}
                   <StatsCards
-                    tasks={tasks}
+                    tasks={departmentTasks}
+                    allTasks={tasks}
+                    selectedDepartment={selectedDepartment}
+                    budgets={currentDeptBudgets}
+                    allBudgets={budgets}
                     onFilterClick={handleStatsFilterClick}
-                    budgets={budgets}
-                    onSaveBudgets={persistBudgets}
+                    onSaveBudgets={handleSaveDepartmentBudgets}
+                    onSaveDepartmentBudget={handleSaveDepartmentBudgets}
                   />
 
                   {/* Filter and View mode Toolbar */}
@@ -869,6 +923,8 @@ export default function App() {
         }}
         onSave={handleSaveTask}
         editingTask={editingTask}
+        task={editingTask}
+        selectedDepartment={selectedDepartment}
         currentUser={currentUser}
       />
 

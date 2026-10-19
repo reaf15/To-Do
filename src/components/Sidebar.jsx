@@ -148,13 +148,10 @@ export default function Sidebar({
         {/* GROUP 1: 업무 데이터베이스 (선택된 1개 부서만 표시 + 부서 변경 시에만 목록 토글) */}
         <div>
           {!isCollapsed ? (
-            <div className="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+            <div className="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center">
               <span className="flex items-center gap-1.5 text-blue-400">
                 <Database className="w-3.5 h-3.5" />
                 업무 데이터베이스
-              </span>
-              <span className="text-[10px] text-teal-400 font-bold">
-                제출 {submissionStats.rate}%
               </span>
             </div>
           ) : (
@@ -275,7 +272,7 @@ export default function Sidebar({
                     <Hammer className="w-4 h-4 text-teal-400 shrink-0" />
                     <span className="truncate flex-1">시설·공사 관리대장</span>
                     <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900 text-slate-300 font-extrabold">
-                      {selectedDepartment === '남양주체육문화센터' ? tasksCount : 0}
+                      {tasksCount}
                     </span>
                   </button>
 
@@ -344,18 +341,6 @@ export default function Sidebar({
                     </button>
                   );
                 })}
-
-                {/* Add new DB button */}
-                <button
-                  onClick={() => {
-                    onModuleChange('databases');
-                    if (onOpenNewDbModal) onOpenNewDbModal();
-                  }}
-                  className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-400 hover:text-teal-400 hover:bg-slate-800/60 rounded-lg transition text-[11px] font-bold mt-1"
-                >
-                  <PlusCircle className="w-3.5 h-3.5 shrink-0" />
-                  <span>+ 새 대장 추가</span>
-                </button>
 
               </div>
 
