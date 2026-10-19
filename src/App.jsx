@@ -759,28 +759,9 @@ export default function App() {
               {/* Organization Department Bar with Toggles & Actions */}
               <OrgDepartmentBar
                 selectedDivision={selectedDivision}
-                onSelectDivision={(divId) => {
-                  setSelectedDivision(divId);
-                  localStorage.setItem('nyj_selected_division', divId);
-                }}
                 selectedDepartment={selectedDepartment}
-                onSelectDepartment={(deptName) => {
-                  setSelectedDepartment(deptName);
-                  localStorage.setItem('nyj_selected_dept', deptName);
-                  addAuditLog(`조직도 부서 이동: [${deptName}]`);
-                }}
-                selectedDbId="facility"
-                tasksCount={departmentTasks.length}
-                viewMode={viewMode}
-                onViewModeChange={setViewMode}
-                onNewTask={() => {
-                  setEditingTask(null);
-                  setIsTaskModalOpen(true);
-                }}
-                onExportExcel={handleExportExcel}
                 currentUser={currentUser}
                 onUserChange={handleUserChange}
-                myTasksCount={myTasksCount}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
@@ -817,6 +798,11 @@ export default function App() {
                     currentUser={currentUser}
                     onQuickFilterMyTasks={handleQuickFilterMyTasks}
                     isMyTasksActive={isMyTasksActive}
+                    onNewTask={() => {
+                      setEditingTask(null);
+                      setIsTaskModalOpen(true);
+                    }}
+                    onExportExcel={handleExportExcel}
                   />
 
                   {/* Dynamic Views */}

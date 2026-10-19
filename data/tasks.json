@@ -872,7 +872,6 @@
     "endDate": "2026-10-19"
   },
   {
-    "id": "TASK-HP-02",
     "department": "호평체육문화센터",
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
@@ -882,14 +881,14 @@
     "estimatedCostNote": "",
     "manager": "권병학",
     "status": "견적의뢰",
+    "startDate": "2026-10-21",
+    "endDate": "2026-10-24",
     "quoteAmount": 4500000,
     "contractAmount": null,
     "vendor": "경향매트",
-    "contact": "010-8871-3321",
     "memo": "충격 흡수 매트 노후화로 인한 교체 견적 접수 중",
-    "logs": [],
-    "startDate": "2026-10-13",
-    "endDate": "2026-10-22"
+    "id": "TASK-HP-02",
+    "logs": []
   },
   {
     "id": "TASK-ON-01",

@@ -9,7 +9,9 @@ import {
   X, 
   RotateCcw,
   Sparkles,
-  Calendar
+  Calendar,
+  Plus,
+  FileSpreadsheet
 } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 
@@ -30,7 +32,9 @@ export default function FilterBar({
   hasActiveFilters,
   currentUser,
   onQuickFilterMyTasks,
-  isMyTasksActive
+  isMyTasksActive,
+  onNewTask,
+  onExportExcel
 }) {
   return (
     <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm mb-6 space-y-3.5 no-print">
@@ -158,6 +162,29 @@ export default function FilterBar({
             >
               <RotateCcw className="w-3 h-3" />
               <span>초기화</span>
+            </button>
+          )}
+
+          {/* Action buttons: Excel & New Task */}
+          {onExportExcel && (
+            <button
+              onClick={onExportExcel}
+              title="현재 공사 목록 Excel 다운로드"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 transition shadow-2xs shrink-0 ml-auto md:ml-0"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+              <span>엑셀</span>
+            </button>
+          )}
+
+          {onNewTask && (
+            <button
+              onClick={onNewTask}
+              title="새로운 공사 업무 등록"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-500 text-white shadow-sm transition active:scale-95 shrink-0"
+            >
+              <Plus className="w-4 h-4" />
+              <span>+ 새 공사 등록</span>
             </button>
           )}
         </div>
