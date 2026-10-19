@@ -48,7 +48,7 @@ export default function TaskDetailDrawer({
       `🏢 위치: ${task.facility} ${task.location}\n` +
       `💰 예상: ${task.estimatedCost ? formatCurrency(task.estimatedCost) : (task.estimatedCostNote || '미정')}` +
       (task.quoteAmount ? ` | 견적: ${formatCurrency(task.quoteAmount)}` : '') + `\n` +
-      `👤 담당자: ${task.manager || '미배정'} | 진행: ${task.status}\n` +
+      `👤 담당자: ${task.manager || '미정'} | 진행: ${task.status}\n` +
       (task.vendor ? `🏢 업체: ${task.vendor}\n` : '') +
       (task.memo ? `📝 비고: ${task.memo}\n` : '');
 
@@ -194,7 +194,7 @@ export default function TaskDetailDrawer({
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 text-xs">
-                    {task.manager || '담당자 미배정'}
+                    {task.manager || '담당자 미정'}
                   </div>
                   <span className="text-[10px] text-slate-400">남양주체육문화센터</span>
                 </div>

@@ -20,7 +20,7 @@ export default function StaffView({
 }) {
   const staffGroups = [
     ...MANAGERS.map((m) => ({ name: m, isUnassigned: false })),
-    { name: '미배정 (담당자 미지정)', isUnassigned: true }
+    { name: '미정 (담당자 미지정)', isUnassigned: true }
   ];
 
   return (

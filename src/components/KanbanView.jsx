@@ -185,7 +185,7 @@ export default function KanbanView({
                             ? 'bg-purple-50 text-purple-700'
                             : 'bg-slate-100 text-slate-400'
                         }`}>
-                          {t.manager ? `@${t.manager}` : '미배정'}
+                          {t.manager ? `@${t.manager}` : '미정'}
                         </span>
 
                         {/* Quick stage transition buttons */}

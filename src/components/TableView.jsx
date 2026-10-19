@@ -566,7 +566,7 @@ export default function TableView({
           )}
           {rowFilters.manager && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white text-slate-800 border border-amber-300 text-[11px] shadow-2xs">
-              담당: <strong>{rowFilters.manager === 'unassigned' ? '미배정' : rowFilters.manager}</strong>
+              담당: <strong>{rowFilters.manager === 'unassigned' ? '미정' : rowFilters.manager}</strong>
               <button onClick={() => setRowFilters(p => ({ ...p, manager: '' }))} className="text-slate-400 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
             </span>
           )}
@@ -859,7 +859,7 @@ export default function TableView({
                         {uniqueManagers.map(m => (
                           <option key={m} value={m}>{m}</option>
                         ))}
-                        <option value="unassigned">(미배정)</option>
+                        <option value="unassigned">(미정)</option>
                       </select>
                     </th>
                   )}
@@ -1072,7 +1072,7 @@ export default function TableView({
                               : 'bg-slate-50 text-slate-400 border-slate-200'
                           }`}
                         >
-                          <option value="">미배정</option>
+                          <option value="">미정</option>
                           {MANAGERS.map((m) => (
                             <option key={m} value={m}>{m}</option>
                           ))}

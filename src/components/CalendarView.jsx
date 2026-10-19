@@ -427,7 +427,7 @@ export default function CalendarView({
                               e.stopPropagation();
                               onSelectTask(task);
                             }}
-                            title={`[${task.status}] ${task.title} (담당: ${task.manager || '미배정'}, ${task.facility})`}
+                            title={`[${task.status}] ${task.title} (담당: ${task.manager || '미정'}, ${task.facility})`}
                             className={`px-1.5 py-0.5 rounded text-[10px] font-semibold border truncate cursor-pointer transition shadow-2xs hover:scale-[1.02] flex items-center justify-between gap-1 ${stStyle.bg} ${stStyle.text} ${stStyle.border}`}
                           >
                             <span className="truncate flex-1">
@@ -528,7 +528,7 @@ export default function CalendarView({
                         <div className="bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 text-center min-w-[70px]">
                           <div className="text-[10px] text-slate-400 font-medium">담당자</div>
                           <div className="text-xs font-bold text-slate-800">
-                            {task.manager || '미배정'}
+                            {task.manager || '미정'}
                           </div>
                         </div>
 

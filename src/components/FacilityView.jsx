@@ -144,7 +144,7 @@ export default function FacilityView({
                               <span className={`px-1.5 py-0.2 rounded font-bold ${
                                 t.manager ? 'bg-slate-100 text-slate-700' : 'text-slate-400'
                               }`}>
-                                {t.manager || '미배정'}
+                                {t.manager || '미정'}
                               </span>
                             </div>
                           </div>

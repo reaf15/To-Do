@@ -617,7 +617,7 @@ export default function App() {
             }
           ]
         };
-        showToast(`담당자가 [${newManager || '미배정'}](으)로 변경되었습니다.`);
+        showToast(`담당자가 [${newManager || '미정'}](으)로 변경되었습니다.`);
         if (selectedTask?.id === id) {
           setSelectedTask(item);
         }
@@ -626,7 +626,7 @@ export default function App() {
       return t;
     });
     persistTasks(updated);
-    addAuditLog(`담당자 변경: [${targetTitle}] -> [${newManager || '미배정'}]`);
+    addAuditLog(`담당자 변경: [${targetTitle}] -> [${newManager || '미정'}]`);
   };
 
   // Add Log / Note to Task
