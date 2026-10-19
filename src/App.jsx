@@ -15,9 +15,11 @@ import PrintReportView from './components/PrintReportView';
 import ConnectStaffModal from './components/ConnectStaffModal';
 import DatabaseHub from './components/database/DatabaseHub';
 import LoginHistoryView from './components/LoginHistoryView';
+import OrgDepartmentBar from './components/OrgDepartmentBar';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
 import { INITIAL_LOGIN_HISTORY } from './data/initialLoginHistory';
+import { ORGANIZATION_TREE, DEFAULT_DEPARTMENT, DEFAULT_DIVISION } from './data/organizationChart';
 import { exportToExcel } from './utils/excelExport';
 
 const LOCAL_STORAGE_KEY = 'nyj_tasks_v1';
@@ -26,8 +28,28 @@ const LOCAL_STORAGE_DBS = 'nyj_databases_v1';
 const LOCAL_STORAGE_HISTORY = 'nyj_login_history_v1';
 
 export default function App() {
-  // Top-level module: 'facility' (시설·공사 관리) vs 'databases' (업무 데이터베이스) vs 'login-history' (로그인이력조회)
-  const [currentModule, setCurrentModule] = useState('facility');
+  // Top-level module: 'databases' (업무 데이터베이스 - 시설·공사 관리 포함) vs 'login-history' (로그인이력조회)
+  const [currentModule, setCurrentModule] = useState('databases');
+
+  // Organization hierarchy state (조직도: 시설본부 > 처 > 부서/센터)
+  const [selectedDivision, setSelectedDivision] = useState(() => {
+    try {
+      return localStorage.getItem('nyj_selected_division') || 'div-sports';
+    } catch {
+      return 'div-sports';
+    }
+  });
+
+  const [selectedDepartment, setSelectedDepartment] = useState(() => {
+    try {
+      return localStorage.getItem('nyj_selected_dept') || '남양주체육문화센터';
+    } catch {
+      return '남양주체육문화센터';
+    }
+  });
+
+  // Selected Database ID: 'facility' (시설·공사 관리대장) or custom database IDs
+  const [selectedDbId, setSelectedDbId] = useState('facility');
 
   // Tasks state with LocalStorage persistence
   const [tasks, setTasks] = useState(() => {
@@ -54,9 +76,6 @@ export default function App() {
     }
     return INITIAL_DATABASES;
   });
-
-  // Selected Database ID in custom databases
-  const [selectedDbId, setSelectedDbId] = useState(() => customDatabases[0]?.id || '');
 
   // Login History & Audit Log state
   const [loginHistory, setLoginHistory] = useState(() => {
@@ -520,7 +539,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 1. Left Frame: BLCS-FMS Collapsible Sidebar */}
+      {/* 1. Left Frame: BLCS-FMS Collapsible Sidebar with Organization Tree */}
       <Sidebar
         currentModule={currentModule}
         onModuleChange={setCurrentModule}
@@ -529,6 +548,21 @@ export default function App() {
         customDatabases={customDatabases}
         selectedDbId={selectedDbId}
         onSelectDbId={setSelectedDbId}
+        selectedDivision={selectedDivision}
+        onSelectDivision={(divId) => {
+          setSelectedDivision(divId);
+          localStorage.setItem('nyj_selected_division', divId);
+        }}
+        selectedDepartment={selectedDepartment}
+        onSelectDepartment={(deptName) => {
+          setSelectedDepartment(deptName);
+          localStorage.setItem('nyj_selected_dept', deptName);
+          addAuditLog(`사이드바 조직도 이동: [${deptName}]`);
+        }}
+        onOpenNewDbModal={() => {
+          setCurrentModule('databases');
+          setSelectedDbId(customDatabases[0]?.id || '');
+        }}
         onOpenConnectModal={() => setIsConnectModalOpen(true)}
         currentUser={currentUser}
         tasksCount={tasks.length}
@@ -555,6 +589,8 @@ export default function App() {
           currentModule={currentModule}
           onModuleChange={setCurrentModule}
           dbCount={customDatabases.length}
+          selectedDepartment={selectedDepartment}
+          selectedDbId={selectedDbId}
         />
 
         {/* Main Work Area (Screen-filling full width) */}
@@ -568,91 +604,123 @@ export default function App() {
             />
           )}
 
-          {/* Module 2: 업무 데이터베이스 허브 */}
-          {currentModule === 'databases' && (
-            <DatabaseHub
-              databases={customDatabases}
-              onSaveDatabase={handleSaveDatabase}
-              onDeleteDatabase={handleDeleteDatabase}
-              currentUser={currentUser}
-              selectedDbId={selectedDbId}
-              onSelectDbId={setSelectedDbId}
-            />
-          )}
-
-          {/* Module 3: 시설·공사 관리 (Main FMS Dashboard) */}
-          {currentModule === 'facility' && (
+          {/* Module 2: 업무 데이터베이스 (조직도 토글 및 하위 시설·공사 관리 통합) */}
+          {(currentModule === 'databases' || currentModule === 'facility') && (
             <>
-              {/* KPI Summary Cards */}
-              <StatsCards
-                tasks={tasks}
-                onFilterClick={handleStatsFilterClick}
-              />
-
-              {/* Filter and View mode Toolbar */}
-              <FilterBar
+              {/* Organization Department Bar with Toggles & Sub-database Tabs */}
+              <OrgDepartmentBar
+                selectedDivision={selectedDivision}
+                onSelectDivision={(divId) => {
+                  setSelectedDivision(divId);
+                  localStorage.setItem('nyj_selected_division', divId);
+                }}
+                selectedDepartment={selectedDepartment}
+                onSelectDepartment={(deptName) => {
+                  setSelectedDepartment(deptName);
+                  localStorage.setItem('nyj_selected_dept', deptName);
+                  addAuditLog(`조직도 부서 이동: [${deptName}]`);
+                }}
+                selectedDbId={selectedDbId}
+                onSelectDbId={(dbId) => {
+                  setSelectedDbId(dbId);
+                  addAuditLog(`업무 대장 열람: [${dbId === 'facility' ? '시설·공사 관리대장' : dbId}]`);
+                }}
+                customDatabases={customDatabases}
+                tasksCount={filteredTasks.length}
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                selectedFacility={selectedFacility}
-                onFacilityChange={setSelectedFacility}
-                selectedBudget={selectedBudget}
-                onBudgetChange={setSelectedBudget}
-                selectedStatus={selectedStatus}
-                onStatusChange={setSelectedStatus}
-                selectedManager={selectedManager}
-                onManagerChange={setSelectedManager}
-                onResetFilters={resetFilters}
-                hasActiveFilters={hasActiveFilters}
-                currentUser={currentUser}
-                onQuickFilterMyTasks={handleQuickFilterMyTasks}
-                isMyTasksActive={isMyTasksActive}
+                onOpenNewDbModal={() => {
+                  setSelectedDbId(customDatabases[0]?.id || '');
+                }}
               />
 
-              {/* Dynamic Views */}
-              {viewMode === 'table' && (
-                <TableView
-                  tasks={filteredTasks}
-                  onSelectTask={(task) => setSelectedTask(task)}
-                  onEditTask={(task) => {
-                    setEditingTask(task);
-                    setIsTaskModalOpen(true);
-                  }}
-                  onDeleteTask={handleDeleteTask}
-                  onQuickStatusChange={handleQuickStatusChange}
-                  onQuickManagerChange={handleQuickManagerChange}
-                />
+              {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
+              {selectedDbId === 'facility' && (
+                <>
+                  {/* KPI Summary Cards */}
+                  <StatsCards
+                    tasks={tasks}
+                    onFilterClick={handleStatsFilterClick}
+                  />
+
+                  {/* Filter and View mode Toolbar */}
+                  <FilterBar
+                    viewMode={viewMode}
+                    onViewModeChange={setViewMode}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    selectedFacility={selectedFacility}
+                    onFacilityChange={setSelectedFacility}
+                    selectedBudget={selectedBudget}
+                    onBudgetChange={setSelectedBudget}
+                    selectedStatus={selectedStatus}
+                    onStatusChange={setSelectedStatus}
+                    selectedManager={selectedManager}
+                    onManagerChange={setSelectedManager}
+                    onResetFilters={resetFilters}
+                    hasActiveFilters={hasActiveFilters}
+                    currentUser={currentUser}
+                    onQuickFilterMyTasks={handleQuickFilterMyTasks}
+                    isMyTasksActive={isMyTasksActive}
+                  />
+
+                  {/* Dynamic Views */}
+                  {viewMode === 'table' && (
+                    <TableView
+                      tasks={filteredTasks}
+                      onSelectTask={(task) => setSelectedTask(task)}
+                      onEditTask={(task) => {
+                        setEditingTask(task);
+                        setIsTaskModalOpen(true);
+                      }}
+                      onDeleteTask={handleDeleteTask}
+                      onQuickStatusChange={handleQuickStatusChange}
+                      onQuickManagerChange={handleQuickManagerChange}
+                    />
+                  )}
+
+                  {viewMode === 'kanban' && (
+                    <KanbanView
+                      tasks={filteredTasks}
+                      onSelectTask={(task) => setSelectedTask(task)}
+                      onQuickStatusChange={handleQuickStatusChange}
+                      onNewTask={() => {
+                        setEditingTask(null);
+                        setIsTaskModalOpen(true);
+                      }}
+                    />
+                  )}
+
+                  {viewMode === 'facility' && (
+                    <FacilityView
+                      tasks={filteredTasks}
+                      onSelectTask={(task) => setSelectedTask(task)}
+                      onNewTask={() => {
+                        setEditingTask(null);
+                        setIsTaskModalOpen(true);
+                      }}
+                    />
+                  )}
+
+                  {viewMode === 'staff' && (
+                    <StaffView
+                      tasks={filteredTasks}
+                      onSelectTask={(task) => setSelectedTask(task)}
+                      onQuickManagerChange={handleQuickManagerChange}
+                    />
+                  )}
+                </>
               )}
 
-              {viewMode === 'kanban' && (
-                <KanbanView
-                  tasks={filteredTasks}
-                  onSelectTask={(task) => setSelectedTask(task)}
-                  onQuickStatusChange={handleQuickStatusChange}
-                  onNewTask={() => {
-                    setEditingTask(null);
-                    setIsTaskModalOpen(true);
-                  }}
-                />
-              )}
-
-              {viewMode === 'facility' && (
-                <FacilityView
-                  tasks={filteredTasks}
-                  onSelectTask={(task) => setSelectedTask(task)}
-                  onNewTask={() => {
-                    setEditingTask(null);
-                    setIsTaskModalOpen(true);
-                  }}
-                />
-              )}
-
-              {viewMode === 'staff' && (
-                <StaffView
-                  tasks={filteredTasks}
-                  onSelectTask={(task) => setSelectedTask(task)}
-                  onQuickManagerChange={handleQuickManagerChange}
+              {/* Sub-item B: Custom Databases (Equipment, Vehicles, Complaints, etc.) */}
+              {selectedDbId !== 'facility' && (
+                <DatabaseHub
+                  databases={customDatabases}
+                  onSaveDatabase={handleSaveDatabase}
+                  onDeleteDatabase={handleDeleteDatabase}
+                  currentUser={currentUser}
+                  selectedDbId={selectedDbId}
+                  onSelectDbId={setSelectedDbId}
                 />
               )}
             </>

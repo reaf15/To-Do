@@ -25,14 +25,16 @@ export default function Header({
   myTasksCount,
   currentModule,
   onModuleChange,
-  dbCount
+  dbCount,
+  selectedDepartment,
+  selectedDbId
 }) {
   return (
     <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-30 no-print border-b border-slate-800">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
-          {/* Logo & Module Switcher */}
+          {/* Logo & Department Indicator */}
           <div className="flex items-center space-x-3 sm:space-x-5">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-400 shadow-inner">
@@ -46,32 +48,19 @@ export default function Header({
                   <span className="text-xs px-2 py-0.5 rounded font-medium bg-slate-800 text-slate-300 border border-slate-700">
                     BLCS-FMS
                   </span>
+                  <span className="hidden sm:inline-flex text-xs px-2 py-0.5 rounded font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    {selectedDepartment || '남양주체육문화센터'}
+                  </span>
                 </div>
-                <h1 className="text-base sm:text-xl font-bold tracking-tight text-white mt-0.5">
-                  남양주체육문화센터 시설물종합관리
+                <h1 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5 flex items-center gap-1.5">
+                  <span>시설물종합관리</span>
+                  <span className="text-xs text-slate-400 font-normal">| {selectedDbId === 'facility' ? '시설·공사 관리대장' : '업무 데이터베이스'}</span>
                 </h1>
               </div>
             </div>
 
             {/* Top Module Switcher Tabs */}
             <div className="hidden lg:flex items-center p-1 bg-slate-800/90 rounded-xl border border-slate-700">
-              <button
-                onClick={() => onModuleChange('facility')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                  currentModule === 'facility'
-                    ? 'bg-teal-500 text-slate-950 shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700'
-                }`}
-              >
-                <Hammer className="w-3.5 h-3.5" />
-                <span>시설·공사 관리</span>
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
-                  currentModule === 'facility' ? 'bg-teal-700 text-white' : 'bg-slate-700 text-slate-300'
-                }`}>
-                  {totalTasksCount}
-                </span>
-              </button>
-
               <button
                 onClick={() => onModuleChange('databases')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
@@ -81,11 +70,11 @@ export default function Header({
                 }`}
               >
                 <Database className="w-3.5 h-3.5" />
-                <span>업무 데이터베이스</span>
+                <span>업무 데이터베이스 (조직도)</span>
                 <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
                   currentModule === 'databases' ? 'bg-teal-700 text-white' : 'bg-slate-700 text-slate-300'
                 }`}>
-                  {dbCount || 0}
+                  {1 + (dbCount || 0)}
                 </span>
               </button>
 
