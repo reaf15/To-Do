@@ -15,7 +15,6 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
     '견적가': t.quoteAmount ? Number(t.quoteAmount) : '',
     '계약금액': t.contractAmount ? Number(t.contractAmount) : '',
     '업체명': t.vendor || '',
-    '업체 연락처': t.contact || '',
     '비고/메모': t.memo || '',
   }));
 
@@ -35,7 +34,6 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
     '견적가': totalQuote,
     '계약금액': totalContract,
     '업체명': '',
-    '업체 연락처': '',
     '비고/메모': `총 ${tasks.length}건`,
   });
 
@@ -53,7 +51,6 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
     { wch: 16 }, // 견적가
     { wch: 16 }, // 계약금액
     { wch: 16 }, // 업체명
-    { wch: 18 }, // 연락처
     { wch: 30 }, // 메모
   ];
 

@@ -3,7 +3,6 @@ import {
   ArrowUpDown, 
   ArrowUp, 
   ArrowDown, 
-  Phone, 
   Copy, 
   Check, 
   Eye, 
@@ -32,7 +31,6 @@ export const TABLE_COLUMNS = [
   { id: 'quoteAmount', label: '견적가', align: 'right' },
   { id: 'contractAmount', label: '계약금액', align: 'right' },
   { id: 'vendor', label: '업체명' },
-  { id: 'contact', label: '업체 연락처' },
 ];
 
 // View Presets
@@ -41,7 +39,7 @@ export const VIEW_PRESETS = [
     id: 'all',
     name: '전체 보기',
     description: '모든 열을 표시합니다',
-    columns: ['budget', 'facility', 'location', 'title', 'estimatedCost', 'manager', 'status', 'quoteAmount', 'contractAmount', 'vendor', 'contact']
+    columns: ['budget', 'facility', 'location', 'title', 'estimatedCost', 'manager', 'status', 'quoteAmount', 'contractAmount', 'vendor']
   },
   {
     id: 'budget_focused',
@@ -52,8 +50,8 @@ export const VIEW_PRESETS = [
   {
     id: 'field_focused',
     name: '👷 현장·업체 중심',
-    description: '시설, 위치, 담당자, 시공업체 및 연락처 중심',
-    columns: ['facility', 'location', 'title', 'manager', 'status', 'vendor', 'contact']
+    description: '시설, 위치, 담당자, 시공업체 중심',
+    columns: ['facility', 'location', 'title', 'manager', 'status', 'vendor']
   },
   {
     id: 'compact',
@@ -105,7 +103,6 @@ export default function TableView({
     quoteState: '',
     contractState: '',
     vendor: '',
-    contact: '',
     quickFilter: 'all',
   };
 
@@ -130,7 +127,6 @@ export default function TableView({
     if (rowFilters.quoteState) count++;
     if (rowFilters.contractState) count++;
     if (rowFilters.vendor.trim()) count++;
-    if (rowFilters.contact.trim()) count++;
     if (rowFilters.quickFilter !== 'all') count++;
     return count;
   }, [rowFilters]);
@@ -199,11 +195,6 @@ export default function TableView({
         return false;
       }
 
-      // Contact filter
-      if (rowFilters.contact.trim() && !(t.contact || '').toLowerCase().includes(rowFilters.contact.trim().toLowerCase())) {
-        return false;
-      }
-
       return true;
     });
   }, [tasks, rowFilters]);
@@ -253,14 +244,6 @@ export default function TableView({
   const totalQuote = sortedTasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
   const totalContract = sortedTasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
 
-  const handleCopyPhone = async (e, phone, id) => {
-    e.stopPropagation();
-    const success = await copyToClipboard(phone);
-    if (success) {
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2000);
-    }
-  };
 
   const renderSortIcon = (field) => {
     if (sortField !== field) {
@@ -611,12 +594,7 @@ export default function TableView({
               <button onClick={() => setRowFilters(p => ({ ...p, vendor: '' }))} className="text-slate-400 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
             </span>
           )}
-          {rowFilters.contact.trim() && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white text-slate-800 border border-amber-300 text-[11px] shadow-2xs">
-              연락처: <strong>"{rowFilters.contact}"</strong>
-              <button onClick={() => setRowFilters(p => ({ ...p, contact: '' }))} className="text-slate-400 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
-            </span>
-          )}
+
           {rowFilters.quickFilter !== 'all' && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-400 text-[11px] font-bold shadow-2xs">
               {rowFilters.quickFilter === 'unfinished' && '🚨 미완료 공사만'}
@@ -745,11 +723,6 @@ export default function TableView({
                   </th>
                 )}
 
-                {visibleColumns.includes('contact') && (
-                  <th scope="col" className="py-3 px-3 whitespace-nowrap">
-                    업체 연락처
-                  </th>
-                )}
 
                 <th scope="col" className="py-3 px-3 text-center whitespace-nowrap w-24">
                   관리
@@ -969,31 +942,6 @@ export default function TableView({
                     </th>
                   )}
 
-                  {/* contact */}
-                  {visibleColumns.includes('contact') && (
-                    <th scope="col" className="py-1.5 px-2 font-normal">
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="연락처..."
-                          value={rowFilters.contact}
-                          onChange={(e) => setRowFilters({ ...rowFilters, contact: e.target.value })}
-                          className={`w-full text-[11px] pl-2 pr-5 py-1 rounded border transition font-medium focus:outline-none focus:ring-1 focus:ring-teal-500 ${
-                            rowFilters.contact ? 'border-teal-500 bg-teal-50 text-teal-900 font-bold' : 'border-slate-300 bg-white text-slate-700'
-                          }`}
-                        />
-                        {rowFilters.contact && (
-                          <button
-                            type="button"
-                            onClick={() => setRowFilters({ ...rowFilters, contact: '' })}
-                            className="absolute right-1.5 top-1.5 text-slate-400 hover:text-slate-600"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        )}
-                      </div>
-                    </th>
-                  )}
 
                   {/* actions */}
                   <th scope="col" className="py-1.5 px-2 text-center font-normal">
@@ -1168,36 +1116,6 @@ export default function TableView({
                       </td>
                     )}
 
-                    {/* Contact */}
-                    {visibleColumns.includes('contact') && (
-                      <td className="py-2.5 px-3 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                        {t.contact ? (
-                          <div className="flex items-center gap-1.5">
-                            <a
-                              href={`tel:${t.contact}`}
-                              className="flex items-center gap-1 text-teal-600 hover:text-teal-800 font-medium"
-                              title="전화 걸기"
-                            >
-                              <Phone className="w-3 h-3 text-teal-500" />
-                              <span>{t.contact}</span>
-                            </a>
-                            <button
-                              onClick={(e) => handleCopyPhone(e, t.contact, t.id)}
-                              className="p-1 text-slate-400 hover:text-slate-600 rounded hover:bg-slate-100 transition"
-                              title="연락처 복사"
-                            >
-                              {copiedId === t.id ? (
-                                <Check className="w-3 h-3 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3 h-3" />
-                              )}
-                            </button>
-                          </div>
-                        ) : (
-                          <span className="text-slate-400">-</span>
-                        )}
-                      </td>
-                    )}
 
                     {/* Action buttons */}
                     <td className="py-2.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>

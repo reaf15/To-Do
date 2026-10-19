@@ -259,7 +259,7 @@
     "contractAmount": null,
     "vendor": "세한이앤지",
     "contact": "010-6397-1914",
-    "memo": "10��������� 15일 견적방문 예정 / 관람석 방부목 데크 들뜸 피스 고정 및 교체 / 다목적잔디광장 화장실 보수와 같이 진행",
+    "memo": "10���������� 15일 견적방문 예정 / 관람석 방부목 데크 들뜸 피스 고정 및 교체 / 다목적잔디광장 화장실 보수와 같이 진행",
     "id": "TASK-13",
     "logs": [
       {
@@ -288,7 +288,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "견적의뢰",
+    "status": "견적방문",
     "quoteAmount": 3060200,
     "contractAmount": null,
     "vendor": "서진전력",
@@ -305,19 +305,24 @@
         "date": "2026-10-19",
         "author": "조현호",
         "message": "야구장 조명 보수 동시 진행(합 9,634,900원)"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "진행 상태를 [견적방문](으)로 변경"
       }
     ]
   },
   {
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
-    "facility": "남양��센터",
+    "facility": "남����센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
     "estimatedCost": 15000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "견적���뢰",
+    "status": "견적방문",
     "quoteAmount": 6570000,
     "contractAmount": null,
     "vendor": "서진전력",
@@ -334,6 +339,11 @@
         "date": "2026-10-19",
         "author": "조현호",
         "message": "야외공연장 조명탑 보수 동시 진행(합 9,634,900원)"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "진행 상태를 [견적방문](으)로 변경"
       }
     ]
   },
@@ -369,7 +379,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대기",
+    "status": "접수/대���",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -449,7 +459,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "견적의뢰",
+    "status": "제안서 협의",
     "quoteAmount": 3300000,
     "contractAmount": null,
     "vendor": "고려안전",
@@ -460,6 +470,11 @@
         "date": "2026-10-15",
         "author": "조현호",
         "message": "고려안전 상세 내역서 접수 (3,300,000원)"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "조현호",
+        "message": "진행 상태를 [제안서 협의](으)로 변경"
       }
     ]
   },
@@ -808,7 +823,7 @@
     "budget": "수선유지비",
     "facility": "오남체육문화센터",
     "location": "지하 기계실",
-    "title": "기계실 배수펌프 2기 노후 교체 및 제어반 점검",
+    "title": "기계실 배수펌프 2기 ���후 교체 및 제어반 점검",
     "estimatedCost": 6500000,
     "estimatedCostNote": "",
     "manager": "조현호",
@@ -865,7 +880,7 @@
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "겨울철 난방 가동 대비 실외기 2호기 팬 모터 이상 소음 점검",
+    "memo": "겨울철 난방 가동 대비 실외��� 2호기 팬 모터 이상 소음 점검",
     "logs": []
   },
   {
@@ -969,7 +984,7 @@
     "department": "남양주시청소년수련관",
     "budget": "수선유지비",
     "facility": "남양주시청소년수련관",
-    "location": "지하 대강당",
+    "location": "���하 대강당",
     "title": "대강당 무대 조명 제어반 콘솔 및 LED 스포트라이트 보수",
     "estimatedCost": 6800000,
     "estimatedCostNote": "",

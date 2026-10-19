@@ -138,7 +138,6 @@ export default function PrintReportView({
               <th className="border border-slate-400 p-1.5 w-20 text-right">견적가</th>
               <th className="border border-slate-400 p-1.5 w-20 text-right">계약금액</th>
               <th className="border border-slate-400 p-1.5 w-24 text-left">업체명</th>
-              <th className="border border-slate-400 p-1.5 w-28 text-left">업체 연락처</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-300">
@@ -176,9 +175,6 @@ export default function PrintReportView({
                 </td>
                 <td className="border border-slate-400 p-1.5">
                   {t.vendor || '-'}
-                </td>
-                <td className="border border-slate-400 p-1.5 text-[11px]">
-                  {t.contact || '-'}
                 </td>
               </tr>
             ))}

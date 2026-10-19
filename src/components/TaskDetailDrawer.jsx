@@ -3,7 +3,6 @@ import {
   X, 
   Building2, 
   MapPin, 
-  Phone, 
   Copy, 
   Check, 
   Calendar, 
@@ -32,7 +31,6 @@ export default function TaskDetailDrawer({
 }) {
   const [newLogMessage, setNewLogMessage] = useState('');
   const [logAuthor, setLogAuthor] = useState(currentUser !== 'ALL' ? currentUser : '김일호');
-  const [copiedPhone, setCopiedPhone] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
 
   if (!isOpen || !task) return null;
@@ -44,15 +42,6 @@ export default function TaskDetailDrawer({
     dot: 'bg-slate-400'
   };
 
-  const handleCopyPhone = async () => {
-    if (!task.contact) return;
-    const ok = await copyToClipboard(task.contact);
-    if (ok) {
-      setCopiedPhone(true);
-      setTimeout(() => setCopiedPhone(false), 2000);
-    }
-  };
-
   const handleCopyTaskSummary = async () => {
     const summary = `[남양주체육문화센터 시설업무 공유]\n` +
       `📌 공사명: ${task.title}\n` +
@@ -60,7 +49,7 @@ export default function TaskDetailDrawer({
       `💰 예상: ${task.estimatedCost ? formatCurrency(task.estimatedCost) : (task.estimatedCostNote || '미정')}` +
       (task.quoteAmount ? ` | 견적: ${formatCurrency(task.quoteAmount)}` : '') + `\n` +
       `👤 담당자: ${task.manager || '미배정'} | 진행: ${task.status}\n` +
-      (task.vendor ? `🏢 업체: ${task.vendor} (${task.contact || '연락처 없음'})\n` : '') +
+      (task.vendor ? `🏢 업체: ${task.vendor}\n` : '') +
       (task.memo ? `📝 비고: ${task.memo}\n` : '');
 
     const ok = await copyToClipboard(summary);
@@ -202,29 +191,9 @@ export default function TaskDetailDrawer({
             {/* Contractor Box */}
             <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
               <span className="text-[11px] text-slate-400 block font-medium mb-1">시공 / 협력업체</span>
-              <div className="font-bold text-slate-900 text-xs mb-1">
+              <div className="font-bold text-slate-900 text-xs">
                 {task.vendor || '업체 미지정'}
               </div>
-              {task.contact ? (
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`tel:${task.contact}`}
-                    className="flex items-center gap-1 text-teal-600 hover:text-teal-800 font-bold"
-                  >
-                    <Phone className="w-3 h-3 text-teal-500" />
-                    <span>{task.contact}</span>
-                  </a>
-                  <button
-                    onClick={handleCopyPhone}
-                    className="p-1 rounded bg-white text-slate-400 hover:text-slate-700 border border-slate-200 transition"
-                    title="연락처 복사"
-                  >
-                    {copiedPhone ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                  </button>
-                </div>
-              ) : (
-                <span className="text-slate-400 text-[11px]">연락처 없음</span>
-              )}
             </div>
           </div>
 

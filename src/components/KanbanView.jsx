@@ -5,7 +5,6 @@ import {
   Send, 
   Hammer, 
   CheckCircle, 
-  Phone, 
   ArrowLeft, 
   ArrowRight,
   Eye,
@@ -168,20 +167,10 @@ export default function KanbanView({
 
                       {/* Vendor if any */}
                       {t.vendor && (
-                        <div className="text-[11px] text-slate-600 flex items-center justify-between mb-2 pb-1.5 border-b border-slate-100">
-                          <span className="font-medium text-slate-700 truncate max-w-[120px]">
+                        <div className="text-[11px] text-slate-600 mb-2 pb-1.5 border-b border-slate-100">
+                          <span className="font-medium text-slate-700 truncate block">
                             🏢 {t.vendor}
                           </span>
-                          {t.contact && (
-                            <a
-                              href={`tel:${t.contact}`}
-                              onClick={(e) => e.stopPropagation()}
-                              className="text-teal-600 hover:underline flex items-center gap-0.5"
-                            >
-                              <Phone className="w-2.5 h-2.5" />
-                              <span className="text-[10px]">{t.contact.slice(-4)}</span>
-                            </a>
-                          )}
                         </div>
                       )}
 

@@ -90,7 +90,7 @@ export function generateShareText(tasks, filterTitle = '전체 공사 현황') {
   tasks.forEach((t, index) => {
     const cost = t.estimatedCost ? formatCurrency(t.estimatedCost) : (t.estimatedCostNote || '미정');
     const quote = t.quoteAmount ? ` | 견적: ${formatCurrency(t.quoteAmount)}` : '';
-    const vendor = t.vendor ? ` [${t.vendor}${t.contact ? ` (${t.contact})` : ''}]` : '';
+    const vendor = t.vendor ? ` [${t.vendor}]` : '';
     const manager = t.manager ? `@${t.manager}` : '(담당자미정)';
 
     text += `${index + 1}. [${t.facility} ${t.location}] ${t.title}\n`;
