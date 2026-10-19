@@ -123,7 +123,7 @@ export default function Sidebar({
           {!isCollapsed && (
             <div className="leading-tight truncate">
               <div className="text-[10px] font-bold text-teal-400 uppercase tracking-wider">
-                BLCS-FMS • 남양주도시공사
+                남양주도시공사 • 시설본부
               </div>
               <div className="text-sm font-extrabold text-white truncate">
                 시설물종합관리시스템
@@ -434,7 +434,7 @@ export default function Sidebar({
           </a>
         </div>
 
-        {/* GROUP 3: 시스템 관리 (BLCS-FMS 로그인이력조회) */}
+        {/* GROUP 3: 시스템 관리 (로그인이력조회) */}
         <div>
           {!isCollapsed ? (
             <button

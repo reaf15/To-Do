@@ -107,7 +107,7 @@ export default function LoginHistoryView({ history = [], onRefresh }) {
               <h1 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
                 시스템관리 &gt; 로그인이력조회
                 <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-teal-50 text-teal-700 border border-teal-200">
-                  BLCS-FMS 표준
+                  보안감사 표준
                 </span>
               </h1>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -324,7 +324,7 @@ export default function LoginHistoryView({ history = [], onRefresh }) {
         {/* Bottom Status bar */}
         <div className="bg-slate-50 px-4 py-2.5 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
           <span>💡 시스템관리자 전용: 공공기관 정보보안 감사 지침에 따라 모든 사용자의 접속 일시와 IP를 기록합니다.</span>
-          <span>남양주체육문화센터 시설관리시스템 (BLCS-FMS 규격)</span>
+          <span>남양주도시공사 시설물종합관리시스템</span>
         </div>
       </div>
 

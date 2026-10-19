@@ -45,9 +45,6 @@ export default function Header({
                   <span className="text-xs px-2 py-0.5 rounded font-semibold bg-teal-500/20 text-teal-300 border border-teal-500/30">
                     남양주도시공사
                   </span>
-                  <span className="text-xs px-2 py-0.5 rounded font-medium bg-slate-800 text-slate-300 border border-slate-700">
-                    BLCS-FMS
-                  </span>
                   <span className="hidden sm:inline-flex text-xs px-2 py-0.5 rounded font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">
                     {selectedDepartment || '남양주체육문화센터'}
                   </span>

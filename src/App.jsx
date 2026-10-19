@@ -619,7 +619,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 1. Left Frame: BLCS-FMS Collapsible Sidebar with Organization Tree */}
+      {/* 1. Left Frame: Collapsible Sidebar with Organization Tree */}
       <Sidebar
         currentModule={currentModule}
         onModuleChange={setCurrentModule}
