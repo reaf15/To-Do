@@ -34,6 +34,13 @@ const LOCAL_STORAGE_USER = 'nyj_current_user_v1';
 const LOCAL_STORAGE_DBS = 'nyj_databases_v1';
 const LOCAL_STORAGE_HISTORY = 'nyj_login_history_v1';
 const LOCAL_STORAGE_SUBMISSIONS = 'nyj_submissions_status_v1';
+const LOCAL_STORAGE_BUDGETS = 'nyj_budget_allocations_v1';
+
+export const DEFAULT_BUDGETS = {
+  '수선유지비': 200000000,
+  '시설비': 50000000,
+  '사무관리비': 10000000
+};
 
 export default function App() {
   // Top-level module: 'databases' (업무 데이터베이스 - 시설·공사 관리 포함) vs 'login-history' (로그인이력조회)
@@ -107,6 +114,15 @@ export default function App() {
   const submissionStats = useMemo(() => {
     return calculateSubmissionStats(submissionMap);
   }, [submissionMap]);
+
+  // Budget allocations per category (예산금액)
+  const [budgets, setBudgets] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_BUDGETS);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_BUDGETS;
+  });
 
   // Current persona / logged in user
   const [currentUser, setCurrentUser] = useState(() => {
@@ -201,6 +217,23 @@ export default function App() {
     }
   };
 
+  // Sync budgets to LocalStorage & Central Server API
+  const persistBudgets = async (newBudgets) => {
+    setBudgets(newBudgets);
+    try {
+      localStorage.setItem(LOCAL_STORAGE_BUDGETS, JSON.stringify(newBudgets));
+      await fetch('/api/budgets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newBudgets)
+      });
+      showToast('예산금액이 성공적으로 저장되었습니다.');
+      addAuditLog(`예산 배정액 설정/수정 (총 ${Object.values(newBudgets).reduce((a, b) => a + (Number(b) || 0), 0).toLocaleString()}원)`);
+    } catch (e) {
+      console.warn('Network sync for budgets failed, saved locally:', e.message);
+    }
+  };
+
   // Fetch initial tasks, databases & server info on mount
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -230,6 +263,17 @@ export default function App() {
           if (Array.isArray(remoteDbs) && remoteDbs.length > 0) {
             setCustomDatabases(remoteDbs);
             localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(remoteDbs));
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const budgetRes = await fetch('/api/budgets');
+        if (budgetRes.ok) {
+          const remoteBudgets = await budgetRes.json();
+          if (remoteBudgets && typeof remoteBudgets === 'object') {
+            setBudgets(remoteBudgets);
+            localStorage.setItem(LOCAL_STORAGE_BUDGETS, JSON.stringify(remoteBudgets));
           }
         }
       } catch (e) {}
@@ -726,6 +770,8 @@ export default function App() {
                   <StatsCards
                     tasks={tasks}
                     onFilterClick={handleStatsFilterClick}
+                    budgets={budgets}
+                    onSaveBudgets={persistBudgets}
                   />
 
                   {/* Filter and View mode Toolbar */}

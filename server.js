@@ -11,6 +11,7 @@ const PORT = 5173;
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const DATA_FILE = path.resolve(__dirname, 'data/tasks.json');
 const DB_FILE = path.resolve(__dirname, 'data/custom_databases.json');
+const BUDGET_FILE = path.resolve(__dirname, 'data/budgets.json');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -126,7 +127,42 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 6. Static File Serving (dist)
+  // 6. API: GET budgets
+  if (req.url === '/api/budgets' && req.method === 'GET') {
+    if (fs.existsSync(BUDGET_FILE)) {
+      const data = fs.readFileSync(BUDGET_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        '수선유지비': 200000000,
+        '시설비': 50000000,
+        '사무관리비': 10000000
+      }));
+    }
+    return;
+  }
+
+  // 7. API: POST budgets (Save budget allocations)
+  if (req.url === '/api/budgets' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(BUDGET_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 8. Static File Serving (dist)
   let reqPath = req.url.split('?')[0];
   if (reqPath === '/') reqPath = '/index.html';
 
