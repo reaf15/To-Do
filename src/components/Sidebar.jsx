@@ -180,7 +180,7 @@ export default function Sidebar({
                         <span>{selectedDepartment}</span>
                         {selectedDepartment === '남양주체육문화센터' && (
                           <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold">
-                            본청
+                            본부
                           </span>
                         )}
                       </div>
@@ -205,9 +205,8 @@ export default function Sidebar({
                 {/* Dropdown: Organization Tree Picker (선택하면 즉시 닫히고 나머지는 숨김 처리!) */}
                 {isDeptPickerOpen && (
                   <div className="mt-2 pt-2 border-t border-slate-700/80 space-y-2 max-h-64 overflow-y-auto scrollbar-thin pr-1">
-                    <div className="text-[10px] font-bold text-slate-400 flex items-center justify-between">
+                    <div className="text-[10px] font-bold text-slate-400">
                       <span>조직도에서 부서 선택:</span>
-                      <span className="text-[9px] text-teal-400">선택 시 다른 부서 자동 숨김</span>
                     </div>
 
                     {ORGANIZATION_TREE.map(div => {
@@ -241,7 +240,7 @@ export default function Sidebar({
                                   {isSelected ? (
                                     <Check className="w-3 h-3 text-white" />
                                   ) : isHighlight ? (
-                                    <span className="text-[9px] text-amber-400 font-bold">본청</span>
+                                    <span className="text-[9px] text-amber-400 font-bold">본부</span>
                                   ) : null}
                                 </button>
                               );
@@ -255,23 +254,7 @@ export default function Sidebar({
 
               </div>
 
-              {/* Submission Progress Mini Bar (사이드바 요약: 제출 진행률만 깔끔하게 노출) */}
-              <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/60 text-[10px]">
-                <div className="flex items-center justify-between font-bold text-slate-300 mb-1">
-                  <span>자료제출 진행률:</span>
-                  <span className="text-teal-400 font-extrabold">{submissionStats.submittedCount}/{submissionStats.totalCount} ({submissionStats.rate}%)</span>
-                </div>
-                <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                  <div 
-                    className="bg-teal-500 h-1.5 rounded-full" 
-                    style={{ width: `${Math.max(Number(submissionStats.rate), 3)}%` }}
-                  />
-                </div>
-                <div className="flex items-center justify-between mt-1 text-[9px] text-slate-400 font-medium">
-                  <span className="text-emerald-400">완료 {submissionStats.submittedCount}곳</span>
-                  <span className="text-slate-500">미제출 {submissionStats.unsubmittedCount}곳</span>
-                </div>
-              </div>
+
 
               {/* Sub-items (하위 대장 목록): 오직 선택된 1개 부서의 것만 컴팩트하게 표시! */}
               <div className="space-y-1">

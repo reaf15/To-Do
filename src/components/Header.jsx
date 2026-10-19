@@ -8,8 +8,7 @@ import {
   Wifi,
   Hammer,
   Database,
-  ExternalLink,
-  ShieldCheck
+  ExternalLink
 } from 'lucide-react';
 import { MANAGERS } from '../data/initialTasks';
 
@@ -56,37 +55,7 @@ export default function Header({
               </div>
             </div>
 
-            {/* Top Module Switcher Tabs */}
-            <div className="hidden lg:flex items-center p-1 bg-slate-800/90 rounded-xl border border-slate-700">
-              <button
-                onClick={() => onModuleChange('databases')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                  currentModule === 'databases'
-                    ? 'bg-teal-500 text-slate-950 shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700'
-                }`}
-              >
-                <Database className="w-3.5 h-3.5" />
-                <span>업무 데이터베이스 (조직도)</span>
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
-                  currentModule === 'databases' ? 'bg-teal-700 text-white' : 'bg-slate-700 text-slate-300'
-                }`}>
-                  {1 + (dbCount || 0)}
-                </span>
-              </button>
 
-              <button
-                onClick={() => onModuleChange('login-history')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                  currentModule === 'login-history'
-                    ? 'bg-teal-500 text-slate-950 shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700'
-                }`}
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>로그인이력조회</span>
-              </button>
-            </div>
           </div>
 
           {/* Right Action Bar */}

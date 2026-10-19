@@ -87,7 +87,7 @@ export default function OrgDepartmentBar({
             {selectedDepartment}
             {selectedDepartment === '남양주체육문화센터' && (
               <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/30 text-amber-300 font-bold ml-1">
-                본청
+                본부
               </span>
             )}
           </span>
@@ -213,7 +213,7 @@ export default function OrgDepartmentBar({
                           {isSelected ? (
                             <Check className="w-3.5 h-3.5 text-white" />
                           ) : isHighlight ? (
-                            <span className="text-[9px] px-1 rounded bg-amber-200 text-amber-900 font-bold">본청</span>
+                            <span className="text-[9px] px-1 rounded bg-amber-200 text-amber-900 font-bold">본부</span>
                           ) : null}
                         </button>
                       );
