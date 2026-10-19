@@ -7,7 +7,8 @@ import {
   UserCheck, 
   Wifi,
   Hammer,
-  Database
+  Database,
+  ExternalLink
 } from 'lucide-react';
 import { MANAGERS } from '../data/initialTasks';
 
@@ -125,6 +126,19 @@ export default function Header({
               <span className="hidden sm:inline">직원 접속</span>
               <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
             </button>
+
+            {/* Link to Cowork App (3001) */}
+            <a
+              href={`http://${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}:3001`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="[남양주도시공사 시설본부 | 업무자료 실시간 자동 취합 시스템] 바로가기"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 border border-blue-500/40 transition shadow-sm"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+              <span className="hidden md:inline">자료취합 포털 (3001)</span>
+              <span className="md:hidden">취합포털</span>
+            </a>
 
             {/* Excel Download Button */}
             <button
