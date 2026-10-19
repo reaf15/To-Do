@@ -184,14 +184,6 @@ export default function Sidebar({
                           </span>
                         )}
                       </div>
-                      {/* Department submission status indicator */}
-                      <div className="text-[10px] mt-0.5 font-bold flex items-center gap-1">
-                        {isCurrentDeptSubmitted ? (
-                          <span className="text-emerald-400">🟢 자료 제출완료</span>
-                        ) : (
-                          <span className="text-rose-400">⏳ 자료 미제출</span>
-                        )}
-                      </div>
                     </div>
                   </div>
 
@@ -215,7 +207,7 @@ export default function Sidebar({
                   <div className="mt-2 pt-2 border-t border-slate-700/80 space-y-2 max-h-64 overflow-y-auto scrollbar-thin pr-1">
                     <div className="text-[10px] font-bold text-slate-400 flex items-center justify-between">
                       <span>조직도에서 부서 선택:</span>
-                      <span className="text-[9px] text-teal-400">미제출: {submissionStats.unsubmittedCount}곳</span>
+                      <span className="text-[9px] text-teal-400">선택 시 다른 부서 자동 숨김</span>
                     </div>
 
                     {ORGANIZATION_TREE.map(div => {
@@ -232,7 +224,6 @@ export default function Sidebar({
                             {div.departments.map(dept => {
                               const isSelected = dept.name === selectedDepartment;
                               const isHighlight = dept.name === '남양주체육문화센터';
-                              const isSub = submissionMap[dept.name]?.status === '제출완료' || submissionMap[dept.name]?.status === '완료';
 
                               return (
                                 <button
@@ -246,13 +237,12 @@ export default function Sidebar({
                                       : 'text-slate-300 hover:bg-slate-700/60 hover:text-white'
                                   }`}
                                 >
-                                  <span className="truncate flex-1">{dept.name}</span>
-                                  <span className={`text-[9px] px-1 rounded font-bold shrink-0 ml-1 ${
-                                    isSub ? 'text-emerald-400' : 'text-rose-400'
-                                  }`}>
-                                    {isSub ? '완료' : '미제출'}
-                                  </span>
-                                  {isSelected && <Check className="w-3 h-3 text-white ml-1 shrink-0" />}
+                                  <span className="truncate">{dept.name}</span>
+                                  {isSelected ? (
+                                    <Check className="w-3 h-3 text-white" />
+                                  ) : isHighlight ? (
+                                    <span className="text-[9px] text-amber-400 font-bold">본청</span>
+                                  ) : null}
                                 </button>
                               );
                             })}
@@ -265,7 +255,7 @@ export default function Sidebar({
 
               </div>
 
-              {/* Submission Progress Mini Bar (사이드바 요약) */}
+              {/* Submission Progress Mini Bar (사이드바 요약: 제출 진행률만 깔끔하게 노출) */}
               <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/60 text-[10px]">
                 <div className="flex items-center justify-between font-bold text-slate-300 mb-1">
                   <span>자료제출 진행률:</span>
@@ -279,7 +269,7 @@ export default function Sidebar({
                 </div>
                 <div className="flex items-center justify-between mt-1 text-[9px] text-slate-400 font-medium">
                   <span className="text-emerald-400">완료 {submissionStats.submittedCount}곳</span>
-                  <span className="text-rose-400 font-bold">미제출 {submissionStats.unsubmittedCount}곳</span>
+                  <span className="text-slate-500">미제출 {submissionStats.unsubmittedCount}곳</span>
                 </div>
               </div>
 
