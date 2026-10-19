@@ -61,3 +61,49 @@ export const ALL_DEPARTMENTS = ORGANIZATION_TREE.flatMap(div =>
 
 export const DEFAULT_DEPARTMENT = '남양주체육문화센터';
 export const DEFAULT_DIVISION = '체육문화운영처';
+
+// 기본 제출 상태 맵 (취합 포털 3001 연동 및 로컬 캐시)
+export const DEFAULT_SUBMISSION_MAP = {
+  '남양주체육문화센터': { status: '제출완료', submittedAt: '2026-10-16 02:37:24', writer: '체육문화운영처', memo: '세부 실태 작성 완료' }
+};
+
+// 부서명으로 소속 처 찾기
+export function getDepartmentDivision(deptName) {
+  return ALL_DEPARTMENTS.find(d => d.name === deptName) || ALL_DEPARTMENTS[0];
+}
+
+// 제출 통계 계산 헬퍼
+export function calculateSubmissionStats(submissionMap = {}) {
+  const totalCount = ALL_DEPARTMENTS.length; // 20
+  const submittedDepts = [];
+  const unsubmittedDepts = [];
+
+  ALL_DEPARTMENTS.forEach(dept => {
+    const sub = submissionMap[dept.name];
+    if (sub && (sub.status === '제출완료' || sub.status === '완료')) {
+      submittedDepts.push({
+        ...dept,
+        ...sub
+      });
+    } else {
+      unsubmittedDepts.push({
+        ...dept,
+        status: '미제출',
+        memo: sub?.memo || '미작성'
+      });
+    }
+  });
+
+  const submittedCount = submittedDepts.length;
+  const unsubmittedCount = unsubmittedDepts.length;
+  const rate = totalCount > 0 ? ((submittedCount / totalCount) * 100).toFixed(1) : '0.0';
+
+  return {
+    totalCount,
+    submittedCount,
+    unsubmittedCount,
+    rate,
+    submittedDepts,
+    unsubmittedDepts
+  };
+}

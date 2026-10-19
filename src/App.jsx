@@ -19,13 +19,21 @@ import OrgDepartmentBar from './components/OrgDepartmentBar';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
 import { INITIAL_LOGIN_HISTORY } from './data/initialLoginHistory';
-import { ORGANIZATION_TREE, DEFAULT_DEPARTMENT, DEFAULT_DIVISION } from './data/organizationChart';
+import { 
+  ORGANIZATION_TREE, 
+  DEFAULT_DEPARTMENT, 
+  DEFAULT_DIVISION,
+  ALL_DEPARTMENTS,
+  DEFAULT_SUBMISSION_MAP,
+  calculateSubmissionStats 
+} from './data/organizationChart';
 import { exportToExcel } from './utils/excelExport';
 
 const LOCAL_STORAGE_KEY = 'nyj_tasks_v1';
 const LOCAL_STORAGE_USER = 'nyj_current_user_v1';
 const LOCAL_STORAGE_DBS = 'nyj_databases_v1';
 const LOCAL_STORAGE_HISTORY = 'nyj_login_history_v1';
+const LOCAL_STORAGE_SUBMISSIONS = 'nyj_submissions_status_v1';
 
 export default function App() {
   // Top-level module: 'databases' (업무 데이터베이스 - 시설·공사 관리 포함) vs 'login-history' (로그인이력조회)
@@ -85,6 +93,20 @@ export default function App() {
     } catch (e) {}
     return INITIAL_LOGIN_HISTORY;
   });
+
+  // Real-time submission status map for all 20 departments (취합 포털 3001 연동)
+  const [submissionMap, setSubmissionMap] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_SUBMISSIONS);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_SUBMISSION_MAP;
+  });
+
+  // Calculate live submission statistics (진행률 및 미제출 부서 목록)
+  const submissionStats = useMemo(() => {
+    return calculateSubmissionStats(submissionMap);
+  }, [submissionMap]);
 
   // Current persona / logged in user
   const [currentUser, setCurrentUser] = useState(() => {
@@ -250,10 +272,68 @@ export default function App() {
           }
         }
       } catch (e) {}
+
+      // Real-time live sync with Cowork Data Collection Portal (port 3001)
+      try {
+        const coworkHost = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+        const coworkRes = await fetch(`http://${coworkHost}:3001/api/submissions`);
+        if (coworkRes.ok) {
+          const json = await coworkRes.json();
+          if (json.success && Array.isArray(json.data)) {
+            const liveMap = {};
+            json.data.forEach(item => {
+              liveMap[item.facility_name] = {
+                status: item.status === '제출완료' ? '제출완료' : '미제출',
+                submittedAt: item.submitted_at || null,
+                writer: item.writer_name || item.writer_dept || '',
+                memo: item.memo || item.submission_note || ''
+              };
+            });
+            setSubmissionMap(prev => {
+              if (JSON.stringify(prev) !== JSON.stringify(liveMap)) {
+                localStorage.setItem(LOCAL_STORAGE_SUBMISSIONS, JSON.stringify(liveMap));
+                return liveMap;
+              }
+              return prev;
+            });
+          }
+        }
+      } catch (e) {
+        // Cowork server might be initializing or unreachable, gracefully ignore
+      }
     }, 4000);
 
     return () => clearInterval(pollInterval);
   }, []);
+
+  // Toggle submission status for a department (수동 제출 완료/미제출 처리 및 연동)
+  const handleToggleSubmission = (deptName, targetStatus) => {
+    setSubmissionMap(prev => {
+      const currentStatus = prev[deptName]?.status === '제출완료' ? '제출완료' : '미제출';
+      const nextStatus = targetStatus || (currentStatus === '제출완료' ? '미제출' : '제출완료');
+      const updated = {
+        ...prev,
+        [deptName]: {
+          ...prev[deptName],
+          status: nextStatus,
+          submittedAt: nextStatus === '제출완료' ? new Date().toISOString().replace('T', ' ').slice(0, 19) : null,
+          writer: currentUser !== 'ALL' ? currentUser : '관리자'
+        }
+      };
+      try {
+        localStorage.setItem(LOCAL_STORAGE_SUBMISSIONS, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+
+    const isNowDone = targetStatus === '제출완료' || (!targetStatus && submissionMap[deptName]?.status !== '제출완료');
+    if (isNowDone) {
+      showToast(`🟢 [${deptName}] 자료가 제출완료 처리되었습니다!`);
+    } else {
+      showToast(`⏳ [${deptName}] 자료가 미제출 상태로 변경되었습니다.`, 'info');
+    }
+    addAuditLog(`부서 제출상태 변경: [${deptName}] -> [${isNowDone ? '제출완료' : '미제출'}]`);
+  };
 
   // Switch persona / current user
   const handleUserChange = (newUser) => {
@@ -567,6 +647,8 @@ export default function App() {
         currentUser={currentUser}
         tasksCount={tasks.length}
         serverInfo={serverInfo}
+        submissionStats={submissionStats}
+        submissionMap={submissionMap}
       />
 
       {/* 2. Right Work Frame: Full Screen Container */}
@@ -632,6 +714,9 @@ export default function App() {
                 onOpenNewDbModal={() => {
                   setSelectedDbId(customDatabases[0]?.id || '');
                 }}
+                submissionStats={submissionStats}
+                submissionMap={submissionMap}
+                onToggleSubmission={handleToggleSubmission}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
