@@ -50,7 +50,7 @@ export default function Header({
                 </div>
                 <h1 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5 flex items-center gap-1.5">
                   <span>시설물종합관리</span>
-                  <span className="text-xs text-slate-400 font-normal">| {selectedDbId === 'facility' ? '시설·공사 관리대장' : '업무 데이터베이스'}</span>
+                  <span className="text-xs text-teal-400 font-semibold">| 시설·공사 관리대장</span>
                 </h1>
               </div>
             </div>
@@ -142,28 +142,9 @@ export default function Header({
 
       {/* Mobile Subbar: User Switcher & Module Switcher */}
       <div className="lg:hidden bg-slate-800/90 border-t border-slate-700/80 px-4 py-2 flex items-center justify-between gap-2 text-xs">
-        {/* Mobile Module Switcher */}
-        <div className="flex items-center p-0.5 bg-slate-900 rounded-lg border border-slate-700">
-          <button
-            onClick={() => onModuleChange('facility')}
-            className={`px-2 py-1 rounded text-[11px] font-bold transition ${
-              currentModule === 'facility'
-                ? 'bg-teal-500 text-slate-950'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            시설·공사 ({totalTasksCount})
-          </button>
-          <button
-            onClick={() => onModuleChange('databases')}
-            className={`px-2 py-1 rounded text-[11px] font-bold transition ${
-              currentModule === 'databases'
-                ? 'bg-teal-500 text-slate-950'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            업무DB ({dbCount || 0})
-          </button>
+        {/* Mobile Title Badge */}
+        <div className="flex items-center px-2 py-1 bg-slate-900 rounded-lg border border-slate-700 text-teal-300 font-bold text-[11px]">
+          <span>시설·공사 ({totalTasksCount}건)</span>
         </div>
 
         {/* Mobile Persona Switcher */}

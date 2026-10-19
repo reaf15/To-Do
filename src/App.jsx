@@ -719,9 +719,7 @@ export default function App() {
         onModuleChange={setCurrentModule}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
-        customDatabases={customDatabases}
-        selectedDbId={selectedDbId}
-        onSelectDbId={setSelectedDbId}
+        selectedDbId="facility"
         selectedDivision={selectedDivision}
         onSelectDivision={(divId) => {
           setSelectedDivision(divId);
@@ -732,10 +730,6 @@ export default function App() {
           setSelectedDepartment(deptName);
           localStorage.setItem('nyj_selected_dept', deptName);
           addAuditLog(`사이드바 조직도 이동: [${deptName}]`);
-        }}
-        onOpenNewDbModal={() => {
-          setCurrentModule('databases');
-          setSelectedDbId(customDatabases[0]?.id || '');
         }}
         onOpenConnectModal={() => setIsConnectModalOpen(true)}
         currentUser={currentUser}
@@ -783,7 +777,7 @@ export default function App() {
           {/* Module 2: 업무 데이터베이스 (조직도 토글 및 하위 시설·공사 관리 통합) */}
           {(currentModule === 'databases' || currentModule === 'facility') && (
             <>
-              {/* Organization Department Bar with Toggles & Sub-database Tabs */}
+              {/* Organization Department Bar with Toggles */}
               <OrgDepartmentBar
                 selectedDivision={selectedDivision}
                 onSelectDivision={(divId) => {
@@ -796,21 +790,10 @@ export default function App() {
                   localStorage.setItem('nyj_selected_dept', deptName);
                   addAuditLog(`조직도 부서 이동: [${deptName}]`);
                 }}
-                selectedDbId={selectedDbId}
-                onSelectDbId={(dbId) => {
-                  setSelectedDbId(dbId);
-                  addAuditLog(`업무 대장 열람: [${dbId === 'facility' ? '시설·공사 관리대장' : dbId}]`);
-                }}
-                customDatabases={customDatabases}
+                selectedDbId="facility"
                 tasksCount={departmentTasks.length}
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
-                onOpenNewDbModal={() => {
-                  setSelectedDbId(customDatabases[0]?.id || '');
-                }}
-                submissionStats={submissionStats}
-                submissionMap={submissionMap}
-                onToggleSubmission={handleToggleSubmission}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
@@ -895,18 +878,6 @@ export default function App() {
                     />
                   )}
                 </>
-              )}
-
-              {/* Sub-item B: Custom Databases (Equipment, Vehicles, Complaints, etc.) */}
-              {selectedDbId !== 'facility' && (
-                <DatabaseHub
-                  databases={customDatabases}
-                  onSaveDatabase={handleSaveDatabase}
-                  onDeleteDatabase={handleDeleteDatabase}
-                  currentUser={currentUser}
-                  selectedDbId={selectedDbId}
-                  onSelectDbId={setSelectedDbId}
-                />
               )}
             </>
           )}

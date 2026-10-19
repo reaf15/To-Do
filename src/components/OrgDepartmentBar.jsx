@@ -8,7 +8,6 @@ import {
   ChevronRight, 
   ChevronDown, 
   Hammer, 
-  MessageSquare, 
   Database,
   Table,
   Kanban,
@@ -18,19 +17,13 @@ import {
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 
-const DB_ICONS = {
-  MessageSquare: MessageSquare,
-  Database: Database
-};
-
 export default function OrgDepartmentBar({
   selectedDivision,
   onSelectDivision,
   selectedDepartment,
   onSelectDepartment,
-  selectedDbId,
+  selectedDbId = 'facility',
   onSelectDbId,
-  customDatabases = [],
   tasksCount = 0,
   viewMode = 'table',
   onViewModeChange
@@ -42,11 +35,6 @@ export default function OrgDepartmentBar({
   const currentDiv = ORGANIZATION_TREE.find(div => 
     div.departments.some(d => d.name === selectedDepartment)
   ) || ORGANIZATION_TREE.find(div => div.id === selectedDivision) || ORGANIZATION_TREE[0];
-
-  // Available databases for the selected department (only complaints)
-  const deptDatabases = customDatabases.filter(db => 
-    !db.department || db.department === selectedDepartment || db.department === '전체'
-  );
 
   const handleSelectDept = (divId, deptName) => {
     onSelectDivision(divId);
@@ -161,63 +149,27 @@ export default function OrgDepartmentBar({
         </div>
       )}
 
-      {/* 3. Sub-Databases under this Department (시설·공사 관리대장 & 시설민원 접수대장) */}
+      {/* 3. Register Header: Only 시설·공사 관리대장 */}
       <div className="px-4 py-2.5 bg-white flex flex-wrap items-center justify-between gap-3 text-xs">
         
-        {/* Left: 2 Registers Only */}
+        {/* Left: Department & Facility Management Register Indicator */}
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-xs font-bold text-slate-600 flex items-center gap-1 mr-1">
-            <Database className="w-3.5 h-3.5 text-blue-600" />
-            <strong className="text-slate-800">{selectedDepartment}</strong> 대장:
+            <Database className="w-3.5 h-3.5 text-teal-600" />
+            <strong className="text-slate-800">{selectedDepartment}</strong>:
           </span>
 
-          {/* Sub-item 1: 시설·공사 관리대장 */}
-          <button
-            onClick={() => onSelectDbId('facility')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition border ${
-              selectedDbId === 'facility'
-                ? 'bg-teal-600 text-white border-teal-600 shadow-sm'
-                : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100 hover:text-slate-900'
-            }`}
-          >
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold bg-teal-600 text-white border border-teal-600 shadow-xs">
             <Hammer className="w-3.5 h-3.5" />
             <span>시설·공사 관리대장</span>
-            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
-              selectedDbId === 'facility' ? 'bg-teal-700 text-white' : 'bg-slate-200 text-slate-700'
-            }`}>
-              {tasksCount}
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-teal-700 text-white ml-0.5">
+              {tasksCount}건
             </span>
-          </button>
-
-          {/* Sub-item 2: 시설민원 접수대장 */}
-          {deptDatabases.map(db => {
-            const isSelected = selectedDbId === db.id;
-            const Icon = DB_ICONS[db.icon] || MessageSquare;
-
-            return (
-              <button
-                key={db.id}
-                onClick={() => onSelectDbId(db.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition border ${
-                  isSelected
-                    ? 'bg-amber-600 text-white border-amber-600 shadow-sm'
-                    : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{db.name}</span>
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
-                  isSelected ? 'bg-amber-700 text-white' : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {db.records?.length || 0}
-                </span>
-              </button>
-            );
-          })}
+          </div>
         </div>
 
-        {/* Right: If facility maintenance is active, show viewMode pills */}
-        {selectedDbId === 'facility' && onViewModeChange && (
+        {/* Right: View Mode Pills (표 보기, 칸반보드, 시설별, 담당자별) */}
+        {onViewModeChange && (
           <div className="flex items-center p-0.5 bg-slate-100 rounded-lg border border-slate-200">
             <button
               onClick={() => onViewModeChange('table')}

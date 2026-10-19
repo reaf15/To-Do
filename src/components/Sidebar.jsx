@@ -319,29 +319,6 @@ export default function Sidebar({
                   )}
                 </div>
 
-                {/* 2..N Custom Department Databases */}
-                {customDatabases.map(db => {
-                  const isDbSelected = currentModule === 'databases' && selectedDbId === db.id;
-                  const Icon = DB_ICONS[db.icon] || Database;
-                  return (
-                    <button
-                      key={db.id}
-                      onClick={() => handleDbClick(db.id)}
-                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition text-left ${
-                        isDbSelected
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4 text-blue-400 shrink-0" />
-                      <span className="truncate flex-1">{db.name}</span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900 text-slate-400 font-semibold">
-                        {db.records?.length || 0}
-                      </span>
-                    </button>
-                  );
-                })}
-
               </div>
 
             </div>
@@ -361,18 +338,6 @@ export default function Sidebar({
                 }`}
               >
                 <Hammer className="w-5 h-5 text-teal-400" />
-              </button>
-
-              <button
-                onClick={() => onModuleChange('databases')}
-                title="업무 데이터베이스 허브"
-                className={`w-full p-2.5 rounded-lg flex justify-center transition ${
-                  currentModule === 'databases' && selectedDbId !== 'facility'
-                    ? 'bg-blue-600 text-white font-bold'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                <Database className="w-5 h-5 text-blue-400" />
               </button>
             </div>
           )}
