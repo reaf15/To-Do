@@ -19,6 +19,35 @@ export default function StatsCards({ tasks, onFilterClick }) {
   const totalQuoteAmount = tasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
   const totalContractAmount = tasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
 
+  // 3. 집행 예정금액 산정 (우선순위: 1. 계약금액 > 2. 견적가 > 3. 예상비용)
+  let contractAppliedCount = 0;
+  let quoteAppliedCount = 0;
+  let estimatedAppliedCount = 0;
+
+  const totalPlannedExecutionCost = tasks.reduce((sum, t) => {
+    const contract = Number(t.contractAmount) || 0;
+    if (contract > 0) {
+      contractAppliedCount++;
+      return sum + contract;
+    }
+
+    const quote = Number(t.quoteAmount) || 0;
+    if (quote > 0) {
+      quoteAppliedCount++;
+      return sum + quote;
+    }
+
+    const estimated = Number(t.estimatedCost) || 0;
+    if (estimated > 0) {
+      estimatedAppliedCount++;
+      return sum + estimated;
+    }
+
+    return sum;
+  }, 0);
+
+  const plannedAppliedTotalCount = contractAppliedCount + quoteAppliedCount + estimatedAppliedCount;
+
   // Status counts
   const completedCount = tasks.filter((t) => t.status === '완료').length;
   const quoteCount = tasks.filter((t) => t.status === '견적의뢰').length;
@@ -100,11 +129,11 @@ export default function StatsCards({ tasks, onFilterClick }) {
         </div>
       </div>
 
-      {/* 3. 견적 및 계약 금액 */}
+      {/* 3. 집행 예정금액 (우선순위: 1.계약금액 > 2.견적가 > 3.예상비용) */}
       <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            견적 접수 확정액
+            집행 예정금액
           </span>
           <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
             <FileCheck2 className="w-4 h-4" />
@@ -112,18 +141,18 @@ export default function StatsCards({ tasks, onFilterClick }) {
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600">
-            {formatCurrencyShort(totalQuoteAmount)}
+            {formatCurrencyShort(totalPlannedExecutionCost)}
           </span>
           <span className="text-xs font-medium text-slate-400">
-            ({tasks.filter(t => t.quoteAmount > 0).length}건 접수)
+            ({plannedAppliedTotalCount}건 반영)
           </span>
         </div>
         <div className="mt-2 text-xs text-slate-500 flex items-center justify-between border-t border-slate-100 pt-2">
-          <span>견적 합계:</span>
-          <span className="font-semibold text-indigo-700">{formatCurrency(totalQuoteAmount)}</span>
+          <span>집행예정 합계:</span>
+          <span className="font-semibold text-indigo-700">{formatCurrency(totalPlannedExecutionCost)}</span>
         </div>
-        <div className="text-[11px] text-slate-400 mt-0.5">
-          * 고려안전, 서진전력 접수 내역
+        <div className="text-[11px] text-slate-400 mt-0.5 truncate" title={`1.계약(${contractAppliedCount}건) > 2.견적(${quoteAppliedCount}건) > 3.예상비용(${estimatedAppliedCount}건) 우선 적용`}>
+          * 1.계약({contractAppliedCount}건) &gt; 2.견적({quoteAppliedCount}건) &gt; 3.예상({estimatedAppliedCount}건)
         </div>
       </div>
 

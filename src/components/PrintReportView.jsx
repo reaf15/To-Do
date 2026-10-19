@@ -15,6 +15,17 @@ export default function PrintReportView({
   const totalCost = tasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
   const totalQuote = tasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
   const totalContract = tasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
+  
+  // 집행 예정금액 (우선순위: 1.계약금액 > 2.견적가 > 3.예상비용)
+  const totalPlannedCost = tasks.reduce((sum, t) => {
+    const c = Number(t.contractAmount) || 0;
+    if (c > 0) return sum + c;
+    const q = Number(t.quoteAmount) || 0;
+    if (q > 0) return sum + q;
+    const e = Number(t.estimatedCost) || 0;
+    if (e > 0) return sum + e;
+    return sum;
+  }, 0);
 
   const handlePrint = () => {
     window.print();
@@ -101,8 +112,8 @@ export default function PrintReportView({
             <span className="text-base font-extrabold text-slate-900 mt-0.5 block">{formatCurrency(totalCost)}</span>
           </div>
           <div>
-            <span className="text-slate-500 block font-medium">견적 접수 확정액</span>
-            <span className="text-base font-extrabold text-indigo-700 mt-0.5 block">{formatCurrency(totalQuote)}</span>
+            <span className="text-slate-500 block font-medium">집행 예정금액</span>
+            <span className="text-base font-extrabold text-indigo-700 mt-0.5 block">{formatCurrency(totalPlannedCost)}</span>
           </div>
           <div>
             <span className="text-slate-500 block font-medium">진행 상태 요약</span>
