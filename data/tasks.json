@@ -9,7 +9,7 @@
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "견적의뢰",
-    "quoteAmount": null,
+    "quoteAmount": 13185000,
     "contractAmount": null,
     "vendor": "진산종합환경",
     "contact": "010-4529-2649",
@@ -22,7 +22,8 @@
       }
     ],
     "startDate": "2026-10-01",
-    "endDate": "2026-10-06"
+    "endDate": "2026-10-06",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-02",
@@ -41,7 +42,8 @@
     "memo": "우천 시 누수 여부 점검 후 보수 계획 수립 필요",
     "logs": [],
     "startDate": "2026-10-03",
-    "endDate": "2026-10-09"
+    "endDate": "2026-10-09",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-03",
@@ -60,7 +62,8 @@
     "memo": "안전사고 예방을 위한 화단 안전 펜스 난간대 설치",
     "logs": [],
     "startDate": "2026-10-05",
-    "endDate": "2026-10-12"
+    "endDate": "2026-10-12",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-04",
@@ -85,14 +88,15 @@
       }
     ],
     "startDate": "2026-10-07",
-    "endDate": "2026-10-15"
+    "endDate": "2026-10-15",
+    "department": "남양주체육문화센터"
   },
   {
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장 3면",
-    "title": "야구장 시설 보수 (그물망, 주루베이스)",
+    "title": "야구장 투수마운드 보수",
     "estimatedCost": 15000000,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -129,7 +133,8 @@
     "memo": "방송실 텍스 천정재 노후 교체 및 방음재 보강",
     "logs": [],
     "startDate": "2026-10-11",
-    "endDate": "2026-10-21"
+    "endDate": "2026-10-21",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-07",
@@ -154,7 +159,8 @@
       }
     ],
     "startDate": "2026-10-13",
-    "endDate": "2026-10-24"
+    "endDate": "2026-10-24",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-08",
@@ -165,7 +171,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "공사진행",
+    "status": "접수/대기",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -173,7 +179,8 @@
     "memo": "이용객 프라이버시 보호를 위한 락커 칸막이 증설",
     "logs": [],
     "startDate": "2026-10-15",
-    "endDate": "2026-10-27"
+    "endDate": "2026-10-27",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-09",
@@ -192,7 +199,8 @@
     "memo": "추락 방지 안전기준 1.2m 상향에 따른 난간 증설",
     "logs": [],
     "startDate": "2026-10-17",
-    "endDate": "2026-10-22"
+    "endDate": "2026-10-22",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-10",
@@ -217,7 +225,8 @@
       }
     ],
     "startDate": "2026-10-19",
-    "endDate": "2026-10-25"
+    "endDate": "2026-10-25",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-11",
@@ -242,7 +251,8 @@
       }
     ],
     "startDate": "2026-10-01",
-    "endDate": "2026-10-08"
+    "endDate": "2026-10-08",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-12",
@@ -253,10 +263,10 @@
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "접수/대기",
+    "status": "견적의뢰",
     "quoteAmount": null,
     "contractAmount": null,
-    "vendor": "",
+    "vendor": "대신이엔지",
     "contact": "",
     "memo": "안전 그물망 지지 와이어 파단 부위 긴급 보수 검토",
     "logs": [
@@ -267,7 +277,8 @@
       }
     ],
     "startDate": "2026-10-03",
-    "endDate": "2026-10-11"
+    "endDate": "2026-10-11",
+    "department": "남양주체육문화센터"
   },
   {
     "department": "남양주체육문화센터",
@@ -276,14 +287,14 @@
     "location": "B,C 축구장",
     "title": "관람석 데크 들뜸 보수",
     "estimatedCost": 5000000,
-    "estimatedCostNote": "",
+    "estimatedCostNote": "다목적잔디광장 화장실 배관 공사 포함",
     "manager": "조현호",
     "status": "견적방문",
-    "quoteAmount": 1600000,
+    "quoteAmount": null,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "contact": "010-6397-1914",
-    "memo": "10���������� 15일 견적방문 예정 / 관람석 방부목 데크 들뜸 피스 고정 및 교체 / 다목적잔디광장 화장실 보수와 같이 진행",
+    "memo": "10월 15일 견적방문 (다목적잔디광장 화장실 배관 공사 포함)",
     "id": "TASK-13",
     "logs": [
       {
@@ -302,8 +313,8 @@
         "message": "다목적잔디광장 화장실 배관 공사와 동시 진행"
       }
     ],
-    "startDate": "2026-10-05",
-    "endDate": "2026-10-14"
+    "startDate": "2026-10-15",
+    "endDate": "2026-10-15"
   },
   {
     "department": "남양주체육문화센터",
@@ -314,8 +325,8 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "견적방문",
-    "quoteAmount": 3060200,
+    "status": "견적의뢰",
+    "quoteAmount": 9634900,
     "contractAmount": null,
     "vendor": "서진전력",
     "contact": "010-9175-7701",
@@ -344,14 +355,14 @@
   {
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
-    "facility": "남����센터",
+    "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
     "estimatedCost": 15000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "견적방문",
-    "quoteAmount": 6570000,
+    "status": "견적의뢰",
+    "quoteAmount": null,
     "contractAmount": null,
     "vendor": "서진전력",
     "contact": "010-9175-7701",
@@ -400,7 +411,8 @@
       }
     ],
     "startDate": "2026-10-11",
-    "endDate": "2026-10-23"
+    "endDate": "2026-10-23",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-17",
@@ -419,7 +431,8 @@
     "memo": "관람석 의자 균열 및 페인트 박리 보수",
     "logs": [],
     "startDate": "2026-10-13",
-    "endDate": "2026-10-18"
+    "endDate": "2026-10-18",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-18",
@@ -438,13 +451,14 @@
     "memo": "주차장 차량 하중으로 침하 및 파손된 콘크리트 플륨관 전면 교체",
     "logs": [],
     "startDate": "2026-10-15",
-    "endDate": "2026-10-21"
+    "endDate": "2026-10-21",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-19",
     "budget": "수선유지비",
     "facility": "남양주센터",
-    "location": "남��주센터",
+    "location": "남양주센터",
     "title": "정보통신유지관리자 성능점검",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
@@ -463,7 +477,8 @@
       }
     ],
     "startDate": "2026-10-17",
-    "endDate": "2026-10-24"
+    "endDate": "2026-10-24",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-20",
@@ -488,7 +503,8 @@
       }
     ],
     "startDate": "2026-10-19",
-    "endDate": "2026-10-27"
+    "endDate": "2026-10-27",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-21",
@@ -499,7 +515,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "제안서 협의",
+    "status": "견적의뢰",
     "quoteAmount": 3300000,
     "contractAmount": null,
     "vendor": "고려안전",
@@ -518,7 +534,8 @@
       }
     ],
     "startDate": "2026-10-01",
-    "endDate": "2026-10-10"
+    "endDate": "2026-10-10",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-22",
@@ -529,7 +546,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "공사진행",
+    "status": "접수/대기",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -537,7 +554,8 @@
     "memo": "인공암벽장 고천정 LED 투광등 불량품 교체",
     "logs": [],
     "startDate": "2026-10-03",
-    "endDate": "2026-10-13"
+    "endDate": "2026-10-13",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-23",
@@ -562,7 +580,8 @@
       }
     ],
     "startDate": "2026-10-05",
-    "endDate": "2026-10-16"
+    "endDate": "2026-10-16",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-24",
@@ -581,7 +600,8 @@
     "memo": "도농공원 관리동 옥상 바닥 크랙 보수 및 탑코팅",
     "logs": [],
     "startDate": "2026-10-07",
-    "endDate": "2026-10-19"
+    "endDate": "2026-10-19",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-25",
@@ -606,7 +626,8 @@
       }
     ],
     "startDate": "2026-10-09",
-    "endDate": "2026-10-14"
+    "endDate": "2026-10-14",
+    "department": "남양주체육문화센터"
   },
   {
     "department": "남양주체육문화센터",
@@ -656,7 +677,8 @@
       }
     ],
     "startDate": "2026-10-13",
-    "endDate": "2026-10-20"
+    "endDate": "2026-10-20",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-28",
@@ -675,7 +697,8 @@
     "memo": "우천 시 진흙탕 방지를 위한 25mm 쇄석 골재 50톤 포설 및 다짐",
     "logs": [],
     "startDate": "2026-10-15",
-    "endDate": "2026-10-23"
+    "endDate": "2026-10-23",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-29",
@@ -700,7 +723,8 @@
       }
     ],
     "startDate": "2026-10-17",
-    "endDate": "2026-10-26"
+    "endDate": "2026-10-26",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-30",
@@ -709,7 +733,7 @@
     "location": "장애인체육관",
     "title": "신발장 구매 설치",
     "estimatedCost": null,
-    "estimatedCostNote": "���무관��비",
+    "estimatedCostNote": "",
     "manager": "",
     "status": "접수/대기",
     "quoteAmount": null,
@@ -719,12 +743,13 @@
     "memo": "수선유지비가 아닌 사무관리비 예산으로 100켤레 수납 신발장 일괄 구매 예정",
     "logs": [],
     "startDate": "2026-10-19",
-    "endDate": "2026-10-29"
+    "endDate": "2026-10-29",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-31",
     "budget": "수선유지비",
-    "facility": "컨퍼���스",
+    "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "컨퍼런스장 방풍비닐 설치",
     "estimatedCost": 5000000,
@@ -744,7 +769,8 @@
       }
     ],
     "startDate": "2026-10-01",
-    "endDate": "2026-10-12"
+    "endDate": "2026-10-12",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-32",
@@ -763,7 +789,8 @@
     "memo": "휠체어 바퀴 공기압 주입 및 먼지 털이용 저소음 콤프레샤 설치",
     "logs": [],
     "startDate": "2026-10-03",
-    "endDate": "2026-10-15"
+    "endDate": "2026-10-15",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-33",
@@ -788,7 +815,8 @@
       }
     ],
     "startDate": "2026-10-05",
-    "endDate": "2026-10-10"
+    "endDate": "2026-10-10",
+    "department": "남양주체육문화센터"
   },
   {
     "department": "남양주체육문화센터",
@@ -800,11 +828,11 @@
     "estimatedCostNote": "",
     "manager": "조현호",
     "status": "견적방문",
-    "quoteAmount": 1154000,
+    "quoteAmount": 2754000,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "contact": "010-6397-1914",
-    "memo": "10월 15일 견적방문 예정 / 화장실 동파 방지 보온재 및 배관 누수 구간 교체 / B,C 축구장 데크 들뜸 보수와 동시 진행",
+    "memo": "10월 15일 견적방문",
     "id": "TASK-34",
     "logs": [
       {
@@ -823,17 +851,17 @@
         "message": "B,C 축구장 데크 들뜸 공사와 동시 진행"
       }
     ],
-    "startDate": "2026-10-07",
-    "endDate": "2026-10-13"
+    "startDate": "2026-10-15",
+    "endDate": "2026-10-15"
   },
   {
     "id": "TASK-35",
     "budget": "수선유지비",
     "facility": "파크골프",
-    "location": "골프장 일원",
+    "location": "",
     "title": "조명 각도 조정",
     "estimatedCost": null,
-    "estimatedCostNote": "시설비",
+    "estimatedCostNote": "",
     "manager": "",
     "status": "접수/대기",
     "quoteAmount": null,
@@ -843,7 +871,8 @@
     "memo": "야간 이용객 눈부심 방지 및 코스 조도 확보를 위한 투광등 각도 재조정 (시설비 과목 집행 검토)",
     "logs": [],
     "startDate": "2026-10-09",
-    "endDate": "2026-10-16"
+    "endDate": "2026-10-16",
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-HP-01",
