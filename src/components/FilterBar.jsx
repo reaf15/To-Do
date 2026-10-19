@@ -151,7 +151,7 @@ export default function FilterBar({
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
-            담당자 미배정 건
+            담당자 미정 건
           </button>
 
           {hasActiveFilters && (
@@ -275,7 +275,7 @@ export default function FilterBar({
                 {m}
               </option>
             ))}
-            <option value="unassigned">담당자 미배정</option>
+            <option value="unassigned">담당자 미정</option>
           </select>
         </div>
 

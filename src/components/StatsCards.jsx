@@ -366,9 +366,9 @@ export default function StatsCards({
             <div 
               onClick={() => onFilterClick && onFilterClick('unassigned')}
               className="p-1.5 rounded-lg bg-slate-50 hover:bg-rose-50 cursor-pointer transition border border-slate-100"
-              title="미배정 공사 필터링"
+              title="담당자 미정 공사 필터링"
             >
-              <div className="text-[11px] font-bold text-slate-500">미배정</div>
+              <div className="text-[11px] font-bold text-slate-500">미정</div>
               <div className="text-base font-extrabold text-slate-400">{unassignedCount}</div>
             </div>
           </div>
