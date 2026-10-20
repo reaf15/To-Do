@@ -228,6 +228,101 @@
         "주차장"
       ],
       "description": ""
+    },
+    {
+      "id": "fac-1792469584802-6a6n7",
+      "department": "남양주체육문화센터",
+      "name": "다산야구장",
+      "fullName": "다산야구장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792469592655-qnexy",
+      "department": "남양주체육문화센터",
+      "name": "리틀야구장",
+      "fullName": "리틀야구장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792469600521-45j1b",
+      "department": "남양주체육문화센터",
+      "name": "족구장",
+      "fullName": "족구장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792469606771-3cxej",
+      "department": "남양주체육문화센터",
+      "name": "테니스장",
+      "fullName": "테니스장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792469617282-qqn5a",
+      "department": "남양주체육문화센터",
+      "name": "풋살장",
+      "fullName": "풋살장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
     }
   ],
   "호평체육문화센터": [
