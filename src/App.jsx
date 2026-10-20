@@ -1168,6 +1168,7 @@ export default function App() {
         serverInfo={serverInfo}
         submissionStats={submissionStats}
         submissionMap={submissionMap}
+        onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
       />
 
       {/* 2. Right Work Frame: Full Screen Container */}
@@ -1190,6 +1191,7 @@ export default function App() {
               onRefreshAllData={refreshAllData}
               addAuditLog={addAuditLog}
               currentUser={currentUser}
+              onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
             />
           )}
 
@@ -1212,6 +1214,7 @@ export default function App() {
                 setViewMode('table');
               }}
               currentUser={currentUser}
+              onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
             />
           )}
 

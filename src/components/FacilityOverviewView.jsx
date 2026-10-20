@@ -17,7 +17,8 @@ import {
   Tag, 
   Coins, 
   Info,
-  Clock
+  Clock,
+  Users
 } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import { STATUS_COLORS } from '../data/initialTasks';
@@ -32,7 +33,8 @@ export default function FacilityOverviewView({
   onEditTask,
   onNewTaskForFacility,
   onNavigateToTasks,
-  currentUser
+  currentUser,
+  onOpenDeptManagersModal
 }) {
   // Filter facilities for current department
   const deptFacilities = useMemo(() => {
@@ -167,6 +169,17 @@ export default function FacilityOverviewView({
 
           {/* Right: Actions */}
           <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-center">
+            {onOpenDeptManagersModal && (
+              <button
+                onClick={onOpenDeptManagersModal}
+                title="부서별 담당자(직원) 목록을 추가 및 수정합니다"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-teal-300 hover:text-white border border-slate-700 hover:border-teal-500/50 transition shadow-2xs active:scale-95 cursor-pointer"
+              >
+                <Users className="w-3.5 h-3.5 text-teal-400" />
+                <span>부서 담당자 설정</span>
+              </button>
+            )}
+
             <button
               onClick={handleOpenCreateModal}
               title="현재 부서에 새로운 관리 대상 시설을 등록합니다"

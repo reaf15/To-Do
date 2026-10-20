@@ -53,7 +53,8 @@ export default function Sidebar({
   facilitiesCount = 0,
   serverInfo,
   submissionStats = { totalCount: 20, submittedCount: 1, unsubmittedCount: 19, rate: '5.0', submittedDepts: [], unsubmittedDepts: [] },
-  submissionMap = {}
+  submissionMap = {},
+  onOpenDeptManagersModal
 }) {
   const [isCollapsed, setIsCollapsed] = useState(() => {
     return localStorage.getItem('nyj_sidebar_collapsed') === 'true';
@@ -352,6 +353,20 @@ export default function Sidebar({
                   </button>
                 </div>
 
+                {/* 3. 부서별 담당자(직원) 관리 */}
+                <div className="space-y-0.5 pt-1">
+                  <button
+                    onClick={() => {
+                      if (onOpenDeptManagersModal) onOpenDeptManagersModal();
+                    }}
+                    title="각 부서의 담당자(직원) 목록을 추가/수정합니다"
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800/80 transition text-left group cursor-pointer"
+                  >
+                    <Users className="w-4 h-4 text-teal-400 shrink-0 group-hover:scale-110 transition" />
+                    <span className="truncate flex-1">부서별 담당자 관리</span>
+                  </button>
+                </div>
+
               </div>
 
             </div>
@@ -385,6 +400,16 @@ export default function Sidebar({
                 }`}
               >
                 <Building2 className="w-5 h-5 text-amber-400" />
+              </button>
+
+              <button
+                onClick={() => {
+                  if (onOpenDeptManagersModal) onOpenDeptManagersModal();
+                }}
+                title="부서별 담당자(직원) 관리"
+                className="w-full p-2.5 rounded-lg flex justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              >
+                <Users className="w-5 h-5 text-teal-400" />
               </button>
             </div>
           )}
