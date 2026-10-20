@@ -349,6 +349,25 @@
         "주차장"
       ],
       "description": "동호인 및 청소년 풋살 경기를 위한 국제규격 1면 인조잔디 풋살구장으로 야간 LED 라이트가 완비되어 있습니다."
+    },
+    {
+      "id": "fac-1792474685221-agzqa",
+      "department": "남양주체육문화센터",
+      "name": "야외공연장",
+      "fullName": "야외공연장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
     }
   ],
   "호평체육문화센터": [
