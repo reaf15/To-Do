@@ -10,6 +10,7 @@ import {
   Settings, 
   Hammer, 
   ExternalLink, 
+  Sparkles, 
   FolderOpen,
   ChevronRight, 
   CheckCircle2, 
@@ -138,9 +139,9 @@ export default function FacilityOverviewView({
     <div className="space-y-6 mb-12 select-none animate-in fade-in duration-200">
       
       {/* ========================================================
-          1. HEADER BAR: 부서 개요 + 시설 선택 커서 & 생성·관리 컨트롤 (다크 테마 복원 & 자동 줄바꿈)
+          1. HEADER BAR: 부서 개요 + 시설 선택 커서 & 생성·관리 컨트롤 (다크 테마)
          ======================================================== */}
-      <div className="bg-slate-900 rounded-2xl text-white p-4 sm:p-5 border border-slate-800 shadow-md space-y-4">
+      <div className="bg-slate-900 rounded-2xl text-white p-4 sm:p-5 border border-slate-800 shadow-md">
         
         {/* Top Header Row (자동 줄바꿈 flex-wrap) */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 flex-wrap">
@@ -238,62 +239,67 @@ export default function FacilityOverviewView({
           </div>
 
         </div>
+      </div>
 
-        {/* Quick Facility Cursor Pill Carousel (자동 줄바꿈 flex-wrap, "빠른 커서 이동:" 라벨 삭제) */}
-        <div className="pt-3 border-t border-slate-800/90 flex flex-wrap items-center gap-1.5">
+      {/* ========================================================
+          1-B. QUICK FACILITY CURSOR PILLS BAR (바디 색상 일치 + 자동 줄바꿈 flex-wrap)
+         ======================================================== */}
+      <div className="bg-white rounded-xl p-3 border border-slate-200 shadow-xs flex flex-wrap items-center gap-1.5">
+        <span className="text-[11px] font-bold text-slate-500 mr-1 flex items-center gap-1 shrink-0">
+          <Sparkles className="w-3 h-3 text-amber-500" />
+          빠른 커서 이동:
+        </span>
 
-          {/* ALL Pill */}
-          <button
-            onClick={() => setSelectedFacilityId('ALL')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1.5 border ${
-              selectedFacilityId === 'ALL'
-                ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm font-black'
-                : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            <span>전체 요약 보기</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900/60 font-extrabold">
-              {deptFacilities.length}
-            </span>
-          </button>
+        {/* ALL Pill */}
+        <button
+          onClick={() => setSelectedFacilityId('ALL')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1.5 border ${
+            selectedFacilityId === 'ALL'
+              ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-xs font-black'
+              : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+          }`}
+        >
+          <span>전체 요약 보기</span>
+          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-200/80 font-extrabold text-slate-700">
+            {deptFacilities.length}
+          </span>
+        </button>
 
-          {/* Individual Facility Pills (줄바꿈 가능) */}
-          {deptFacilities.map((fac) => {
-            const facTaskCount = deptTasks.filter(t => t.facility === fac.name).length;
-            const isSelected = selectedFacilityId === fac.id;
+        {/* Individual Facility Pills (줄바꿈 가능) */}
+        {deptFacilities.map((fac) => {
+          const facTaskCount = deptTasks.filter(t => t.facility === fac.name).length;
+          const isSelected = selectedFacilityId === fac.id;
 
-            return (
-              <button
-                key={fac.id}
-                onClick={() => setSelectedFacilityId(fac.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1.5 border ${
-                  isSelected
-                    ? 'bg-teal-600 text-white border-teal-400 shadow-md ring-2 ring-teal-400/30 font-black'
-                    : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white'
-                }`}
-              >
-                {isSelected && <span className="w-2 h-2 rounded-full bg-teal-300 animate-pulse" />}
-                <span>{fac.name}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${
-                  isSelected ? 'bg-teal-900 text-teal-200' : 'bg-slate-900 text-slate-400'
-                }`}>
-                  {facTaskCount}건
-                </span>
-              </button>
-            );
-          })}
+          return (
+            <button
+              key={fac.id}
+              onClick={() => setSelectedFacilityId(fac.id)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1.5 border ${
+                isSelected
+                  ? 'bg-teal-600 text-white border-teal-600 shadow-sm font-black'
+                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+              }`}
+            >
+              {isSelected && <span className="w-2 h-2 rounded-full bg-teal-200 animate-pulse" />}
+              <span>{fac.name}</span>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${
+                isSelected ? 'bg-teal-800 text-teal-100' : 'bg-slate-200 text-slate-600'
+              }`}>
+                {facTaskCount}건
+              </span>
+            </button>
+          );
+        })}
 
-          {/* Inline Add Button in Cursor Bar */}
-          <button
-            onClick={handleOpenCreateModal}
-            title="새 관리 시설 추가"
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-teal-950/60 text-teal-400 hover:bg-teal-900/80 border border-teal-700/60 transition shrink-0 flex items-center gap-1 font-bold"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>+ 시설 추가</span>
-          </button>
-        </div>
-
+        {/* Inline Add Button in Cursor Bar */}
+        <button
+          onClick={handleOpenCreateModal}
+          title="새 관리 시설 추가"
+          className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 transition shrink-0 flex items-center gap-1 font-black"
+        >
+          <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+          <span>+ 시설 추가</span>
+        </button>
       </div>
 
 
