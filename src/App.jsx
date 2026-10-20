@@ -1191,7 +1191,6 @@ export default function App() {
               onRefreshAllData={refreshAllData}
               addAuditLog={addAuditLog}
               currentUser={currentUser}
-              onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
             />
           )}
 

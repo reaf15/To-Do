@@ -16,11 +16,6 @@ export default function TaskModal({
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
-  const baseManagers = managers && managers.length > 0 ? managers : MANAGERS;
-  const activeManagers = Array.from(new Set([
-    ...baseManagers,
-    ...(formData?.manager ? [formData.manager] : [])
-  ]));
 
   const [formData, setFormData] = useState({
     department: selectedDepartment,
@@ -84,6 +79,12 @@ export default function TaskModal({
   }, [currentTask, isOpen, selectedDepartment, defaultBudget]);
 
   if (!isOpen) return null;
+
+  const baseManagers = managers && managers.length > 0 ? managers : MANAGERS;
+  const activeManagers = Array.from(new Set([
+    ...baseManagers,
+    ...(formData?.manager ? [formData.manager] : [])
+  ]));
 
   const handleSubmit = (e) => {
     e.preventDefault();
