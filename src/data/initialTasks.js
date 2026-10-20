@@ -8,9 +8,9 @@ export const FACILITIES = [
 ];
 
 export const BUDGET_TYPES = [
-  '일상경비',
-  '운영경비',
+  '수선유지비',
   '시설비',
+  '운영경비',
 ];
 
 export const MANAGERS = [
@@ -44,7 +44,7 @@ export const STATUS_COLORS = {
 export const INITIAL_TASKS = [
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "",
     "title": "화단 통행로 이동",
@@ -69,7 +69,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-01",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "옥상",
     "title": "체육관 옥상 방수(콘크리트면)",
@@ -95,7 +95,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-02",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "게이트볼장",
     "title": "게이트볼장 옥상 방수",
@@ -115,7 +115,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-03",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
     "title": "화단 난간대 설치",
@@ -135,7 +135,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-04",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "청수관 교차로",
     "title": "회전교차로 사고석 보수",
@@ -161,7 +161,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 그물망 및 주루베이스 교체",
@@ -186,7 +186,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-06",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "3층 방송실",
     "title": "방송실 천정재 설치",
@@ -206,7 +206,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-07",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "각층 화장실",
     "title": "화장실 대변기 커버 교체",
@@ -232,7 +232,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-08",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "남녀 탈의실",
     "title": "탈의실 락커 수직 칸막이 공사",
@@ -252,7 +252,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-09",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "3층 로비",
     "title": "체육관 3층 로비 난간 증설 공사(1.2m 까지)",
@@ -272,7 +272,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-10",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "A구장",
     "title": "CCTV 증설",
@@ -298,7 +298,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-11",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "A구장 데크 계단",
     "title": "데크 계단 철거",
@@ -324,7 +324,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-12",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "B,C축구장 와이어 파단 보수",
@@ -350,7 +350,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "관람석 데크 들뜸 보수",
@@ -386,7 +386,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
     "title": "주차장 조명탑 조명보수 및 회로분리 공사",
@@ -422,7 +422,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
@@ -458,7 +458,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-16",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "야구장 더그아웃 평탄화",
@@ -524,7 +524,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-18",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "B,C축구장 주차장 배수로 플륨관 교체",
@@ -570,7 +570,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-20",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "주차장 배면 옹벽",
     "title": "보강토 옹벽 보수",
@@ -596,7 +596,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-21",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "정문 구내도로",
     "title": "정문 통행로 주차규제봉 설치 및 풋살 그물망 고정",
@@ -627,7 +627,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "인공암벽장",
     "title": "등기구 교체",
@@ -652,7 +652,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-23",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "다산멀티",
     "location": "남녀 탈의실",
     "title": "다산멀티스포츠센터 탈의실 환풍기 설치 및 전기공사",
@@ -678,7 +678,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-24",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "도농공원",
     "location": "옥상",
     "title": "도농공원 옥상 방수",
@@ -698,7 +698,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-25",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "도농공원",
     "location": "탁구장",
     "title": "바닥 매트 설치",
@@ -724,7 +724,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "삼패야구장",
     "location": "야구장 3면",
     "title": "삼패야구장 바닥 정지 작업",
@@ -749,7 +749,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-27",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장, 장애인 체육관 전기 공사",
@@ -775,7 +775,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-28",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장 주차장 잡석 포설",
@@ -821,7 +821,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-31",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "컨퍼런스장 방풍비닐 설치",
@@ -847,7 +847,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-32",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "장애인체육관 에어 컴푸레서 설치",
@@ -867,7 +867,7 @@ export const INITIAL_TASKS = [
   },
   {
     "id": "TASK-33",
-    "budget": "일상경비",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "장애인체육관 장애인 주차장 스토퍼 설치, 주차구역 표시",

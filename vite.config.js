@@ -99,6 +99,76 @@ function taskStoragePlugin() {
           return
         }
 
+        // 6. GET budget categories
+        if (req.url === '/api/budget-categories' && req.method === 'GET') {
+          const catFilePath = path.resolve(__dirname, 'data/budget_categories.json')
+          if (fs.existsSync(catFilePath)) {
+            const data = fs.readFileSync(catFilePath, 'utf-8')
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(data)
+          } else {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify(['수선유지비', '시설비', '운영경비']))
+          }
+          return
+        }
+
+        // 7. POST budget categories
+        if (req.url === '/api/budget-categories' && req.method === 'POST') {
+          const catFilePath = path.resolve(__dirname, 'data/budget_categories.json')
+          let body = ''
+          req.on('data', chunk => { body += chunk })
+          req.on('end', () => {
+            try {
+              const parsed = JSON.parse(body)
+              fs.writeFileSync(catFilePath, JSON.stringify(parsed, null, 2), 'utf-8')
+              res.setHeader('Content-Type', 'application/json; charset=utf-8')
+              res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }))
+            } catch (err) {
+              res.statusCode = 500
+              res.end(JSON.stringify({ error: err.message }))
+            }
+          })
+          return
+        }
+
+        // 8. GET budgets
+        if (req.url === '/api/budgets' && req.method === 'GET') {
+          const budgetFilePath = path.resolve(__dirname, 'data/budgets.json')
+          if (fs.existsSync(budgetFilePath)) {
+            const data = fs.readFileSync(budgetFilePath, 'utf-8')
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(data)
+          } else {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({
+              '수선유지비': 200000000,
+              '시설비': 50000000,
+              '운영경비': 30000000
+            }))
+          }
+          return
+        }
+
+        // 9. POST budgets
+        if (req.url === '/api/budgets' && req.method === 'POST') {
+          const budgetFilePath = path.resolve(__dirname, 'data/budgets.json')
+          let body = ''
+          req.on('data', chunk => { body += chunk })
+          req.on('end', () => {
+            try {
+              const parsed = JSON.parse(body)
+              fs.writeFileSync(budgetFilePath, JSON.stringify(parsed, null, 2), 'utf-8')
+              res.setHeader('Content-Type', 'application/json; charset=utf-8')
+              res.end(JSON.stringify({ success: true, updatedAt: Date.now() }))
+            } catch (err) {
+              res.statusCode = 500
+              res.end(JSON.stringify({ error: err.message }))
+            }
+          })
+          return
+        }
+
         next()
       })
     }

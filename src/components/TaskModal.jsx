@@ -9,13 +9,15 @@ export default function TaskModal({
   onSave,
   task,
   editingTask,
-  selectedDepartment = '남양주체육문화센터'
+  selectedDepartment = '남양주체육문화센터',
+  budgetCategories = BUDGET_TYPES
 }) {
   const currentTask = task || editingTask;
+  const defaultBudget = budgetCategories[0] || '수선유지비';
 
   const [formData, setFormData] = useState({
     department: selectedDepartment,
-    budget: '일상경비',
+    budget: defaultBudget,
     facility: '남양주센터',
     location: '',
     title: '',
@@ -37,7 +39,7 @@ export default function TaskModal({
     if (currentTask) {
       setFormData({
         department: currentTask.department || selectedDepartment || '남양주체육문화센터',
-        budget: currentTask.budget || '일상경비',
+        budget: currentTask.budget || defaultBudget,
         facility: currentTask.facility || '남양주센터',
         location: currentTask.location || '',
         title: currentTask.title || '',
@@ -55,7 +57,7 @@ export default function TaskModal({
     } else {
       setFormData({
         department: selectedDepartment || '남양주체육문화센터',
-        budget: '일상경비',
+        budget: defaultBudget,
         facility: selectedDepartment.includes('체육문화센터') ? selectedDepartment.replace('체육문화센터', '센터') : selectedDepartment,
         location: '',
         title: '',
@@ -72,7 +74,7 @@ export default function TaskModal({
       });
     }
     setErrors({});
-  }, [currentTask, isOpen, selectedDepartment]);
+  }, [currentTask, isOpen, selectedDepartment, defaultBudget]);
 
   if (!isOpen) return null;
 
@@ -170,7 +172,7 @@ export default function TaskModal({
                 onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
               >
-                {BUDGET_TYPES.map((b) => (
+                {budgetCategories.map((b) => (
                   <option key={b} value={b}>{b}</option>
                 ))}
               </select>

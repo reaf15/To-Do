@@ -5,7 +5,13 @@ import {
   Save, 
   CheckCircle2, 
   RotateCcw,
-  Building2
+  Building2,
+  Plus,
+  Pencil,
+  Trash2,
+  Check,
+  Tag,
+  AlertCircle
 } from 'lucide-react';
 import { formatCurrency, formatCurrencyShort } from '../utils/formatters';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
@@ -17,23 +23,29 @@ export default function BudgetModal({
   budgets = {},
   allBudgets = {},
   onSave,
-  tasks = []
+  tasks = [],
+  budgetCategories = ['수선유지비', '시설비', '운영경비'],
+  onAddCategory,
+  onRenameCategory,
+  onDeleteCategory
 }) {
   const [targetDepartment, setTargetDepartment] = useState(currentDepartment);
-  const [formData, setFormData] = useState({
-    '일상경비': 0,
-    '운영경비': 0,
-    '시설비': 0
-  });
+  const [formData, setFormData] = useState({});
+  const [newCategoryInput, setNewCategoryInput] = useState('');
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [renameInput, setRenameInput] = useState('');
 
   // Sync target department when modal opens
   useEffect(() => {
     if (isOpen) {
       setTargetDepartment(currentDepartment);
+      setEditingCategory(null);
+      setRenameInput('');
+      setNewCategoryInput('');
     }
   }, [isOpen, currentDepartment]);
 
-  // Load budgets for targetDepartment
+  // Load budgets for targetDepartment and dynamic categories
   useEffect(() => {
     if (!isOpen) return;
 
@@ -44,19 +56,29 @@ export default function BudgetModal({
       deptBudget = budgets;
     }
 
-    setFormData({
-      '일상경비': Number(deptBudget?.['일상경비']) || Number(deptBudget?.['수선유지비']) || 0,
-      '운영경비': Number(deptBudget?.['운영경비']) || 0,
-      '시설비': Number(deptBudget?.['시설비']) || 0
+    const nextForm = {};
+    budgetCategories.forEach(cat => {
+      let val = deptBudget?.[cat];
+      // Compatibility fallback between 수선유지비 and legacy 일상경비
+      if (val === undefined) {
+        if (cat === '수선유지비' && deptBudget?.['일상경비'] !== undefined) {
+          val = deptBudget['일상경비'];
+        } else if (cat === '일상경비' && deptBudget?.['수선유지비'] !== undefined) {
+          val = deptBudget['수선유지비'];
+        }
+      }
+      nextForm[cat] = Number(val) || 0;
     });
-  }, [isOpen, targetDepartment, allBudgets, currentDepartment, budgets]);
+
+    setFormData(nextForm);
+  }, [isOpen, targetDepartment, allBudgets, currentDepartment, budgets, budgetCategories]);
 
   if (!isOpen) return null;
 
   // Filter tasks belonging strictly to targetDepartment
   const departmentTasks = tasks.filter(t => (t.department || '남양주체육문화센터') === targetDepartment);
 
-  // Compute current planned execution cost per budget item (3-tier priority)
+  // Compute current planned execution cost per budget item (3-tier priority: contract > quote > estimated)
   const getPlannedCostForBudget = (budgetName) => {
     return departmentTasks
       .filter(t => !budgetName || t.budget === budgetName)
@@ -87,6 +109,68 @@ export default function BudgetModal({
     }));
   };
 
+  // Add new budget category
+  const handleAddNewCategory = (e) => {
+    e.preventDefault();
+    const trimmed = newCategoryInput.trim();
+    if (!trimmed) return;
+    if (budgetCategories.includes(trimmed)) {
+      alert(`'${trimmed}'은(는) 이미 존재하는 예산과목입니다.`);
+      return;
+    }
+    if (onAddCategory) {
+      onAddCategory(trimmed);
+    }
+    setFormData(prev => ({
+      ...prev,
+      [trimmed]: 0
+    }));
+    setNewCategoryInput('');
+  };
+
+  // Start inline rename
+  const handleStartRename = (category) => {
+    setEditingCategory(category);
+    setRenameInput(category);
+  };
+
+  // Save inline rename
+  const handleSaveRename = (oldName) => {
+    const trimmed = renameInput.trim();
+    if (!trimmed || trimmed === oldName) {
+      setEditingCategory(null);
+      return;
+    }
+    if (budgetCategories.includes(trimmed)) {
+      alert(`'${trimmed}'은(는) 이미 존재하는 예산과목명입니다.`);
+      return;
+    }
+    if (onRenameCategory) {
+      onRenameCategory(oldName, trimmed);
+    }
+    setFormData(prev => {
+      const next = { ...prev };
+      next[trimmed] = next[oldName] || 0;
+      delete next[oldName];
+      return next;
+    });
+    setEditingCategory(null);
+  };
+
+  // Cancel inline rename
+  const handleCancelRename = () => {
+    setEditingCategory(null);
+    setRenameInput('');
+  };
+
+  // Delete category
+  const handleDeleteCategory = (category) => {
+    if (onDeleteCategory) {
+      onDeleteCategory(category);
+    }
+  };
+
+  // Save current department allocations
   const handleSubmit = (e) => {
     e.preventDefault();
     if (onSave) {
@@ -95,16 +179,14 @@ export default function BudgetModal({
     onClose();
   };
 
-  const totalAllocated = (Number(formData['일상경비']) || 0) + (Number(formData['운영경비']) || 0) + (Number(formData['시설비']) || 0);
+  const totalAllocated = budgetCategories.reduce((sum, cat) => sum + (Number(formData[cat]) || 0), 0);
   const totalPlanned = getPlannedCostForBudget(null);
   const totalRemaining = totalAllocated - totalPlanned;
-
-  const budgetCategories = ['일상경비', '운영경비', '시설비'];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden flex flex-col max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -116,10 +198,10 @@ export default function BudgetModal({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-black tracking-tight text-white">
-                  부서별 예산금액 입력 및 설정
+                  부서별 예산금액 및 과목 관리
                 </h2>
                 <span className="text-[11px] px-2 py-0.5 rounded font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                  일상경비·운영경비·시설비
+                  과목 추가·수정·삭제 지원
                 </span>
               </div>
               
@@ -151,6 +233,33 @@ export default function BudgetModal({
           </button>
         </div>
 
+        {/* Add New Category Top Control Bar */}
+        <div className="bg-slate-800/95 border-b border-slate-700 px-6 py-2.5">
+          <form onSubmit={handleAddNewCategory} className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 text-xs text-slate-300 shrink-0 font-bold">
+              <Tag className="w-3.5 h-3.5 text-teal-400" />
+              <span>새 과목 추가:</span>
+            </div>
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={newCategoryInput}
+                onChange={(e) => setNewCategoryInput(e.target.value)}
+                placeholder="새 예산과목명 입력 (예: 일상경비, 소모품비, 재료비)"
+                className="w-full text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-teal-400"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={!newCategoryInput.trim()}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-500 disabled:bg-slate-700 disabled:text-slate-500 text-white transition shrink-0 shadow-xs cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ 과목 추가</span>
+            </button>
+          </form>
+        </div>
+
         {/* Total Summary Banner for this Department */}
         <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-slate-50 border-b border-slate-200 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div>
@@ -175,30 +284,98 @@ export default function BudgetModal({
           </div>
         </div>
 
-        {/* Modal Body: Only 수선유지비 & 시설비 */}
+        {/* Modal Body: Dynamic Budget Categories List */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           <div className="space-y-4">
-            {budgetCategories.map((category) => {
+            {budgetCategories.map((category, index) => {
               const amount = Number(formData[category]) || 0;
               const planned = getPlannedCostForBudget(category);
               const remaining = amount - planned;
               const usageRate = amount > 0 ? Math.min(Math.round((planned / amount) * 100), 100) : 0;
+              const isDefault = category === '수선유지비' || index === 0;
+              const isEditingThis = editingCategory === category;
 
               return (
                 <div 
                   key={category}
-                  className="bg-slate-50 hover:bg-slate-100/80 rounded-xl p-4 border border-slate-200 transition space-y-3"
+                  className="bg-slate-50 hover:bg-slate-100/90 rounded-xl p-4 border border-slate-200 transition space-y-3"
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-black text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">
-                        {category}
-                      </span>
-                      <span className="text-xs font-semibold text-blue-600">
-                        {amount > 0 ? formatCurrencyShort(amount) : '0원'}
-                      </span>
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    {/* Left: Category Badge, Inline Rename, & Delete */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {isEditingThis ? (
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="text"
+                            value={renameInput}
+                            onChange={(e) => setRenameInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleSaveRename(category);
+                              } else if (e.key === 'Escape') {
+                                handleCancelRename();
+                              }
+                            }}
+                            className="px-2 py-0.5 text-xs font-black border border-teal-500 rounded bg-white text-slate-900 focus:outline-none"
+                            autoFocus
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleSaveRename(category)}
+                            title="과목명 저장 (공사목록 일괄 반영)"
+                            className="p-1 bg-teal-600 hover:bg-teal-700 text-white rounded transition"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleCancelRename}
+                            title="수정 취소"
+                            className="p-1 bg-slate-300 hover:bg-slate-400 text-slate-700 rounded transition"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm font-black text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs flex items-center gap-1.5">
+                            <span>{category}</span>
+                            {isDefault && (
+                              <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded bg-teal-50 text-teal-700 border border-teal-200">
+                                기본
+                              </span>
+                            )}
+                          </span>
+
+                          {/* Rename Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleStartRename(category)}
+                            title={`'${category}' 과목명 수정 (공사목록 및 예산 일괄 자동 변경)`}
+                            className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition border border-transparent hover:border-blue-200"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Delete Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCategory(category)}
+                            title={`'${category}' 과목 삭제`}
+                            className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition border border-transparent hover:border-rose-200"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+
+                          <span className="text-xs font-semibold text-blue-600 ml-1">
+                            {amount > 0 ? formatCurrencyShort(amount) : '0원'}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
+                    {/* Right: Planned execution and remaining */}
                     <div className="text-xs text-slate-500 flex items-center gap-3">
                       <span>집행예정: <strong className="text-slate-800">{formatCurrency(planned)}</strong></span>
                       <span>
@@ -284,23 +461,23 @@ export default function BudgetModal({
 
         {/* Modal Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-          <div className="text-[11px] text-slate-500 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-            <span>[{targetDepartment}]의 일상경비, 운영경비, 시설비 예산이 저장됩니다.</span>
+          <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+            <span>과목명 수정/삭제 시 등록된 공사 목록의 예산과목도 실시간 일괄 반영됩니다.</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200 transition"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200 transition cursor-pointer"
             >
               닫기
             </button>
             <button
               type="button"
               onClick={handleSubmit}
-              className="flex items-center gap-1.5 px-5 py-2 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-700 text-white shadow-md transition"
+              className="flex items-center gap-1.5 px-5 py-2 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-700 text-white shadow-md transition cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>[{targetDepartment}] 예산 저장</span>

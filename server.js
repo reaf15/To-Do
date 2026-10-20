@@ -12,6 +12,7 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 const DATA_FILE = path.resolve(__dirname, 'data/tasks.json');
 const DB_FILE = path.resolve(__dirname, 'data/custom_databases.json');
 const BUDGET_FILE = path.resolve(__dirname, 'data/budgets.json');
+const BUDGET_CATEGORIES_FILE = path.resolve(__dirname, 'data/budget_categories.json');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -117,6 +118,37 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 5-1. API: GET budget categories
+  if (req.url === '/api/budget-categories' && req.method === 'GET') {
+    if (fs.existsSync(BUDGET_CATEGORIES_FILE)) {
+      const data = fs.readFileSync(BUDGET_CATEGORIES_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(['수선유지비', '시설비', '운영경비']));
+    }
+    return;
+  }
+
+  // 5-2. API: POST budget categories
+  if (req.url === '/api/budget-categories' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(BUDGET_CATEGORIES_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {
