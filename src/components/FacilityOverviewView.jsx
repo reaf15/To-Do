@@ -245,8 +245,8 @@ export default function FacilityOverviewView({
           1-B. QUICK FACILITY CURSOR PILLS BAR (사이드바와 같은 바탕색 bg-slate-900 + 자동 줄바꿈 flex-wrap)
          ======================================================== */}
       <div className="bg-slate-900 rounded-xl p-3 border border-slate-800 shadow-sm flex flex-wrap items-center gap-1.5 text-white">
-        <span className="text-[11px] font-bold text-slate-400 mr-1 flex items-center gap-1 shrink-0">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+        <span className="text-[11px] font-bold text-slate-500 mr-1 flex items-center gap-1 shrink-0">
+          <Sparkles className="w-3 h-3 text-amber-500" />
           빠른 커서 이동:
         </span>
 
