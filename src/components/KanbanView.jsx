@@ -136,8 +136,10 @@ export default function KanbanView({
                           {t.facility} · {t.location}
                         </span>
                         <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${
-                          t.budget === '수선유지비'
+                          t.budget === '일상경비'
                             ? 'bg-blue-50 text-blue-700 border-blue-200'
+                            : t.budget === '운영경비'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
                             : 'bg-purple-50 text-purple-700 border-purple-200'
                         }`}>
                           {t.budget}

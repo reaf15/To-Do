@@ -82,7 +82,7 @@ export function importFromExcel(file) {
 
             return {
               id: `TASK-IMP-${Date.now()}-${index + 1}`,
-              budget: row['예산'] || '수선유지비',
+              budget: row['예산'] || '일상경비',
               facility: row['분류'] || '남양주센터',
               location: row['위치'] || '',
               title: row['공사명'] || '',

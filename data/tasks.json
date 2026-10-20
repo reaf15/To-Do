@@ -1,7 +1,32 @@
 [
   {
+    "department": "남양주체육문화센터",
+    "budget": "일상경비",
+    "facility": "남양주센터",
+    "location": "",
+    "title": "화단 통행로 이동",
+    "estimatedCost": 3000000,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "접수/대기",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "id": "TASK-1792459522047",
+    "logs": [
+      {
+        "date": "2026-10-20",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
     "id": "TASK-01",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "옥상",
     "title": "체육관 옥상 방수(콘크리트면)",
@@ -27,7 +52,7 @@
   },
   {
     "id": "TASK-02",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "게이트볼장",
     "title": "게이트볼장 옥상 방수",
@@ -47,7 +72,7 @@
   },
   {
     "id": "TASK-03",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
     "title": "화단 난간대 설치",
@@ -59,7 +84,7 @@
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "안전사고 예방을 위한 화단 안전 펜스 난간대 설치",
+    "memo": "안전사고 예방을 위한 화단 안전 펜스 난간대 ���치",
     "logs": [],
     "startDate": "2026-10-05",
     "endDate": "2026-10-12",
@@ -67,7 +92,7 @@
   },
   {
     "id": "TASK-04",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "청수관 교차로",
     "title": "회전교차로 사고석 보수",
@@ -93,10 +118,10 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "야구장 3면",
-    "title": "야구장 투수마운드 보수",
+    "title": "야구장 그물망 및 주루베이스 교체",
     "estimatedCost": 15000000,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -118,7 +143,7 @@
   },
   {
     "id": "TASK-06",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "3층 방송실",
     "title": "방송실 천정재 설치",
@@ -138,7 +163,7 @@
   },
   {
     "id": "TASK-07",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "각층 화장실",
     "title": "화장실 대변기 커버 교체",
@@ -164,7 +189,7 @@
   },
   {
     "id": "TASK-08",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "남녀 탈의실",
     "title": "탈의실 락커 수직 칸막이 공사",
@@ -184,7 +209,7 @@
   },
   {
     "id": "TASK-09",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "3층 로비",
     "title": "체육관 3층 로비 난간 증설 공사(1.2m 까지)",
@@ -204,7 +229,7 @@
   },
   {
     "id": "TASK-10",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "A구장",
     "title": "CCTV 증설",
@@ -230,7 +255,7 @@
   },
   {
     "id": "TASK-11",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "A구장 데크 계단",
     "title": "데크 계단 철거",
@@ -256,7 +281,7 @@
   },
   {
     "id": "TASK-12",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "B,C축구장 와이어 파단 보수",
@@ -282,7 +307,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "관람석 데크 들뜸 보수",
@@ -305,7 +330,7 @@
       {
         "date": "2026-10-15",
         "author": "조현호",
-        "message": "현장 실측 완료. 견적서 금주 내 제출 예정"
+        "message": "현장 실측 완료. 견적서 금주 내 제출 ���정"
       },
       {
         "date": "2026-10-19",
@@ -318,7 +343,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
     "title": "주차장 조명탑 조명보수 및 회로분리 공사",
@@ -354,7 +379,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
@@ -364,7 +389,7 @@
     "status": "견적의뢰",
     "quoteAmount": null,
     "contractAmount": null,
-    "vendor": "서진전력",
+    "vendor": "서��전력",
     "contact": "010-9175-7701",
     "memo": "야구장 메��할라이드 투광기 점검 및 불량 안정기/램프 ���� / 야외공연장 조명탑 공사와 동시 진행",
     "id": "TASK-15",
@@ -390,7 +415,7 @@
   },
   {
     "id": "TASK-16",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "야구장 더그아웃 평탄화",
@@ -415,28 +440,48 @@
     "department": "남양주체육문화센터"
   },
   {
-    "id": "TASK-17",
+    "department": "남양주체육문화센터",
     "budget": "시설비",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "성인야구장 관람석 보수",
-    "estimatedCost": null,
+    "estimatedCost": 13900000,
     "estimatedCostNote": "",
-    "manager": "",
-    "status": "접수/대기",
+    "manager": "권병학",
+    "status": "견적의뢰",
+    "startDate": "2026-10-13",
+    "endDate": "2026-10-18",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "관람석 의자 균열 및 페인트 박리 보수",
-    "logs": [],
-    "startDate": "2026-10-13",
-    "endDate": "2026-10-18",
-    "department": "남양주체육문화센터"
+    "id": "TASK-17",
+    "logs": [
+      {
+        "date": "2026-10-19",
+        "author": "관리자",
+        "message": "진행 상태를 [검토중](으)로 변경"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "관리자",
+        "message": "진행 상태를 [견적의뢰](으)로 변경"
+      },
+      {
+        "date": "2026-10-19",
+        "author": "관리자",
+        "message": "담당자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-10-20",
+        "author": "관리자",
+        "message": "담당자를 [권병학](으)로 지정"
+      }
+    ]
   },
   {
     "id": "TASK-18",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "B,C축구장 주차장 배수로 플륨관 교체",
@@ -456,7 +501,7 @@
   },
   {
     "id": "TASK-19",
-    "budget": "수선유지비",
+    "budget": "운영경비",
     "facility": "남양주센터",
     "location": "남양주센터",
     "title": "정보통신유지관리자 성능점검",
@@ -482,7 +527,7 @@
   },
   {
     "id": "TASK-20",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "주차장 배면 옹벽",
     "title": "보강토 옹벽 보수",
@@ -508,7 +553,7 @@
   },
   {
     "id": "TASK-21",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "정문 구내도로",
     "title": "정문 통행로 주차규제봉 설치 및 풋살 그물망 고정",
@@ -538,28 +583,33 @@
     "department": "남양주체육문화센터"
   },
   {
-    "id": "TASK-22",
-    "budget": "수선유지비",
+    "department": "남양주체육문화센터",
+    "budget": "일상경비",
     "facility": "남양주센터",
     "location": "인공암벽장",
     "title": "등기구 교체",
-    "estimatedCost": 5000000,
+    "estimatedCost": 0,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대기",
+    "status": "완료",
+    "startDate": "2026-10-03",
+    "endDate": "2026-10-13",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "인공암벽장 고천정 LED 투광등 불량품 교체",
-    "logs": [],
-    "startDate": "2026-10-03",
-    "endDate": "2026-10-13",
-    "department": "남양주체육문화센터"
+    "id": "TASK-22",
+    "logs": [
+      {
+        "date": "2026-10-20",
+        "author": "관리자",
+        "message": "진행 상태를 [완료](으)로 변경"
+      }
+    ]
   },
   {
     "id": "TASK-23",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "다산멀티",
     "location": "남녀 탈의실",
     "title": "다산멀티스포츠센터 탈의실 환풍기 설치 및 전기공사",
@@ -585,7 +635,7 @@
   },
   {
     "id": "TASK-24",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "도농공원",
     "location": "옥상",
     "title": "도농공원 옥상 방수",
@@ -605,7 +655,7 @@
   },
   {
     "id": "TASK-25",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "도농공원",
     "location": "탁구장",
     "title": "바닥 매트 설치",
@@ -631,7 +681,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "삼패야구장",
     "location": "야구장 3면",
     "title": "삼패야구장 바닥 정지 작업",
@@ -656,7 +706,7 @@
   },
   {
     "id": "TASK-27",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장, 장애인 체육관 전기 공사",
@@ -668,7 +718,7 @@
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "컨퍼런스룸 음향·조명 콘센트 추가 및 장애인 체육관 조명 컨트롤러 정비",
+    "memo": "컨퍼런스룸 음향·조명 콘���트 추가 및 장애인 체육관 조명 컨트롤러 정비",
     "logs": [
       {
         "date": "2026-10-14",
@@ -682,7 +732,7 @@
   },
   {
     "id": "TASK-28",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장 주차장 잡석 포설",
@@ -702,13 +752,13 @@
   },
   {
     "id": "TASK-29",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "장애인체육관 민원 캐노피 설치",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "권병학",
     "status": "견적의뢰",
     "quoteAmount": null,
     "contractAmount": null,
@@ -720,35 +770,46 @@
         "date": "2026-10-12",
         "author": "김일호",
         "message": "153 업체에 출입구 캐노피 디자인 시안 요청"
+      },
+      {
+        "date": "2026-10-20",
+        "author": "김일호",
+        "message": "담당자를 [권병학](으)로 지정"
       }
     ],
     "startDate": "2026-10-17",
     "endDate": "2026-10-26",
-    "department": "남양주체육문화센터"
+    "department": "남양주체���문화센터"
   },
   {
     "id": "TASK-30",
-    "budget": "사무관리비",
+    "budget": "운영경비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "신발장 구매 설치",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대기",
+    "status": "검토중",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
     "contact": "",
     "memo": "수선유지비가 아닌 사무관리비 예산으로 100켤레 수납 신발장 일괄 구매 예정",
-    "logs": [],
+    "logs": [
+      {
+        "date": "2026-10-19",
+        "author": "관리자",
+        "message": "진행 상태를 [검토중](으)로 변경"
+      }
+    ],
     "startDate": "2026-10-19",
     "endDate": "2026-10-29",
     "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-31",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "컨퍼런스장 방풍비닐 설치",
@@ -774,7 +835,7 @@
   },
   {
     "id": "TASK-32",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "장애인체육관 에어 컴푸레서 설치",
@@ -794,7 +855,7 @@
   },
   {
     "id": "TASK-33",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "장애인체육관 장애인 주차장 스토퍼 설치, 주차구역 표시",
@@ -855,29 +916,34 @@
     "endDate": "2026-10-15"
   },
   {
-    "id": "TASK-35",
-    "budget": "수선유지비",
+    "department": "남양주체육문화센터",
+    "budget": "시설비",
     "facility": "파크골프",
     "location": "",
     "title": "조명 각도 조정",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "접수/대기",
+    "status": "계약체결",
+    "startDate": "2026-10-09",
+    "endDate": "2026-10-16",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "야간 이용객 눈부심 방지 및 코스 조도 확보를 위한 투광등 각도 재조정 (시설비 과목 집행 검토)",
-    "logs": [],
-    "startDate": "2026-10-09",
-    "endDate": "2026-10-16",
-    "department": "남양주체육문화센터"
+    "id": "TASK-35",
+    "logs": [
+      {
+        "date": "2026-10-19",
+        "author": "관리자",
+        "message": "진행 상태를 [계약체결](으)로 변경"
+      }
+    ]
   },
   {
     "id": "TASK-HP-01",
     "department": "호평체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "호평체육문화센터",
     "location": "지하 수영장",
     "title": "수영장 여과기 여재(활��탄·모래) 전면 교체",
@@ -902,7 +968,7 @@
   },
   {
     "department": "호평체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "호평체육문화센터",
     "location": "2층 헬스장",
     "title": "헬스장 프리웨이트존 고무블럭 바닥 교체",
@@ -922,7 +988,7 @@
   {
     "id": "TASK-ON-01",
     "department": "오남체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "오남체육문화센터",
     "location": "지하 기계실",
     "title": "기계실 배수펌프 2기 ���후 교체 및 제어반 점검",
@@ -948,7 +1014,7 @@
   {
     "id": "TASK-JJ-01",
     "department": "진접체육문화센터",
-    "budget": "수선유���비",
+    "budget": "일상경비",
     "facility": "진접체육문화센터",
     "location": "수영장 풀장",
     "title": "수영장 바닥 및 벽면 타일 박��구간 긴급 보수",
@@ -973,7 +1039,7 @@
   },
   {
     "department": "평내체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "평내체육문화센터",
     "location": "옥상 실외기실",
     "title": "다목적실 시스템에어컨 실외기 팬 모터 교체",
@@ -1009,7 +1075,7 @@
     "logs": [
       {
         "date": "2026-10-14",
-        "author": "조현호",
+        "author": "조현���",
         "message": "자재 검수 및 야간 차단작업 계획 수립"
       }
     ],
@@ -1019,7 +1085,7 @@
   {
     "id": "TASK-RO-01",
     "department": "철도운영부",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "철도운영부",
     "location": "차량기지",
     "title": "전동차 객실 냉난방 공기정화 필터 전면 교체",
@@ -1039,7 +1105,7 @@
   {
     "id": "TASK-PF-01",
     "department": "주차시설부",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "주차시설부",
     "location": "평내호평역 공영주차장",
     "title": "공영주차장 출차 차단기 및 루프코일 센서 교체",
@@ -1059,7 +1125,7 @@
   {
     "id": "TASK-EL-01",
     "department": "에코랜드운영부",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "에코랜드운영부",
     "location": "주민편익시설",
     "title": "에코랜드 수영장 ��수보일러 세관 ��� 버너 노즐 교체",
@@ -1079,7 +1145,7 @@
   {
     "id": "TASK-CV-01",
     "department": "어린이비전센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "어린이비전센터",
     "location": "1층 놀이자율체험관",
     "title": "어린이 안전 벽면쿠션 전면 교체 및 바닥 매트 보수",
@@ -1099,7 +1165,7 @@
   {
     "id": "TASK-YC-01",
     "department": "남양주시청소년수련관",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "남양주시청소년수련관",
     "location": "���하 대강당",
     "title": "대강당 무대 조명 제어반 콘솔 및 LED 스포트라이트 보수",
@@ -1119,7 +1185,7 @@
   {
     "id": "TASK-BN-01",
     "department": "별내커뮤니티센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "별내커뮤니티센터",
     "location": "수영장 풀장",
     "title": "별내 수영장 오버풀 트렌치 그레이팅 전면 교체",
@@ -1159,7 +1225,7 @@
   {
     "id": "TASK-WB-01",
     "department": "와부체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "와부체육문화센터",
     "location": "다목적체육관",
     "title": "다목적체육관 마루 샌딩 및 우레탄 라인마킹",
@@ -1179,7 +1245,7 @@
   {
     "id": "TASK-WB-02",
     "department": "와부체육문화센터",
-    "budget": "���설비",
+    "budget": "시설비",
     "facility": "와부체육문화센터",
     "location": "옥상 기계실",
     "title": "옥상 냉각탑 소음 저감장치 및 방음벽 설치",
@@ -1199,7 +1265,7 @@
   {
     "id": "TASK-HD-01",
     "department": "화도체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "화도체육문화센터",
     "location": "수영장 샤워실",
     "title": "수영장 샤���실 온수탱크 배관 및 감압밸브 교체",
@@ -1219,7 +1285,7 @@
   {
     "id": "TASK-HD-02",
     "department": "화도체육문화센터",
-    "budget": "수선유지비",
+    "budget": "일상경비",
     "facility": "화도체육문화센터",
     "location": "야외주차장",
     "title": "야외주차장 카스토퍼 및 노면 차선 도색 공사",

@@ -138,7 +138,7 @@ export default function TableView({
       if (rowFilters.quickFilter === 'unfinished' && t.status === '완료') return false;
       if (rowFilters.quickFilter === 'high_cost' && (Number(t.estimatedCost) || 0) < 10000000) return false;
       if (rowFilters.quickFilter === 'has_logs' && (!t.logs || t.logs.length === 0)) return false;
-      if (rowFilters.quickFilter === 'budget_repair' && t.budget !== '수선유지비') return false;
+      if (rowFilters.quickFilter === 'budget_repair' && t.budget !== '일상경비') return false;
 
       // Budget filter
       if (rowFilters.budget && t.budget !== rowFilters.budget) return false;
@@ -504,7 +504,7 @@ export default function TableView({
                 : 'bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border-cyan-200'
             }`}
           >
-            🏢 수선유지비
+            🏢 일상경비
           </button>
         </div>
 
@@ -600,7 +600,7 @@ export default function TableView({
               {rowFilters.quickFilter === 'unfinished' && '🚨 미완료 공사만'}
               {rowFilters.quickFilter === 'high_cost' && '💰 1,000만원 이상'}
               {rowFilters.quickFilter === 'has_logs' && '💬 일지 작성건'}
-              {rowFilters.quickFilter === 'budget_repair' && '🏢 수선유지비'}
+              {rowFilters.quickFilter === 'budget_repair' && '🏢 일상경비'}
               <button onClick={() => setRowFilters(p => ({ ...p, quickFilter: 'all' }))} className="text-amber-800 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
             </span>
           )}
@@ -1004,11 +1004,11 @@ export default function TableView({
                     {visibleColumns.includes('budget') && (
                       <td className="py-2.5 px-3 whitespace-nowrap">
                         <span className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${
-                          t.budget === '수선유지비' 
+                          t.budget === '일상경비' 
                             ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                            : t.budget === '시설비'
-                            ? 'bg-purple-50 text-purple-700 border-purple-200'
-                            : 'bg-amber-50 text-amber-700 border-amber-200'
+                            : t.budget === '운영경비'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : 'bg-purple-50 text-purple-700 border-purple-200'
                         }`}>
                           {t.budget}
                         </span>

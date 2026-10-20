@@ -15,7 +15,7 @@ export default function TaskModal({
 
   const [formData, setFormData] = useState({
     department: selectedDepartment,
-    budget: '수선유지비',
+    budget: '일상경비',
     facility: '남양주센터',
     location: '',
     title: '',
@@ -37,7 +37,7 @@ export default function TaskModal({
     if (currentTask) {
       setFormData({
         department: currentTask.department || selectedDepartment || '남양주체육문화센터',
-        budget: currentTask.budget || '수선유지비',
+        budget: currentTask.budget || '일상경비',
         facility: currentTask.facility || '남양주센터',
         location: currentTask.location || '',
         title: currentTask.title || '',
@@ -55,7 +55,7 @@ export default function TaskModal({
     } else {
       setFormData({
         department: selectedDepartment || '남양주체육문화센터',
-        budget: '수선유지비',
+        budget: '일상경비',
         facility: selectedDepartment.includes('체육문화센터') ? selectedDepartment.replace('체육문화센터', '센터') : selectedDepartment,
         location: '',
         title: '',

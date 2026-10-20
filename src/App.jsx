@@ -118,40 +118,68 @@ export default function App() {
     return calculateSubmissionStats(submissionMap);
   }, [submissionMap]);
 
-  // Budget allocations per department (예산금액: 수선유지비 & 시설비)
+  // Budget allocations per department (예산금액: 일상경비, 운영경비, 시설비)
   const [budgets, setBudgets] = useState(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_BUDGETS);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed === 'object') {
+          // Normalize old formats
+          Object.keys(parsed).forEach(k => {
+            const item = parsed[k];
+            if (item && typeof item === 'object') {
+              if (item['수선유지비'] !== undefined && item['일상경비'] === undefined) {
+                item['일상경비'] = item['수선유지비'];
+              }
+              if (item['운영경비'] === undefined) {
+                item['운영경비'] = 50000000;
+              }
+            }
+          });
           if (parsed['수선유지비'] !== undefined && !parsed['남양주체육문화센터']) {
-            return { '남양주체육문화센터': parsed };
+            return {
+              '남양주체육문화센터': {
+                '일상경비': Number(parsed['일상경비'] || parsed['수선유지비']) || 150000000,
+                '운영경비': Number(parsed['운영경비']) || 50000000,
+                '시설비': Number(parsed['시설비']) || 50000000
+              }
+            };
           }
           return parsed;
         }
       }
     } catch (e) {}
     return {
-      '남양주체육문화센터': { '수선유지비': 200000000, '시설비': 50000000 }
+      '남양주체육문화센터': { '일상경비': 150000000, '운영경비': 50000000, '시설비': 50000000 }
     };
   });
 
-  // Current selected department budget allocations (시설비 & 수선유지비)
+  // Current selected department budget allocations (일상경비, 운영경비, 시설비)
   const currentDeptBudgets = useMemo(() => {
     if (budgets && typeof budgets === 'object') {
       if (budgets[selectedDepartment] && typeof budgets[selectedDepartment] === 'object') {
-        return budgets[selectedDepartment];
+        const b = budgets[selectedDepartment];
+        return {
+          '일상경비': Number(b['일상경비'] || b['수선유지비']) || 150000000,
+          '운영경비': Number(b['운영경비']) || 50000000,
+          '시설비': Number(b['시설비']) || 50000000
+        };
       }
-      if (budgets['수선유지비'] !== undefined) {
+      if (budgets['일상경비'] !== undefined || budgets['수선유지비'] !== undefined) {
         if (selectedDepartment === '남양주체육문화센터') {
-          return budgets;
+          return {
+            '일상경비': Number(budgets['일상경비'] || budgets['수선유지비']) || 150000000,
+            '운영경비': Number(budgets['운영경비']) || 50000000,
+            '시설비': Number(budgets['시설비']) || 50000000
+          };
         }
       }
     }
     return {
-      '수선유지비': 100000000,
-      '시설비': 25000000
+      '일상경비': 100000000,
+      '운영경비': 30000000,
+      '시설비': 20000000
     };
   }, [budgets, selectedDepartment]);
 

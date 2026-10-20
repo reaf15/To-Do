@@ -21,7 +21,8 @@ export default function StatsCards({
   selectedStatus = '',
   selectedDepartment = '남양주체육문화센터',
   budgets = {
-    '수선유지비': 200000000,
+    '일상경비': 150000000,
+    '운영경비': 50000000,
     '시설비': 50000000
   },
   allBudgets = {},
@@ -36,13 +37,13 @@ export default function StatsCards({
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const [inlineValue, setInlineValue] = useState('');
 
-  // Fixed budget categories: strictly 수선유지비 and 시설비
-  const allCategories = ['수선유지비', '시설비'];
+  // Fixed budget categories: 일상경비, 운영경비, 시설비
+  const allCategories = ['일상경비', '운영경비', '시설비'];
 
   // Card 2: Allocated budget calculation for this department
   const allocatedBudget = selectedBudgetItem === 'ALL'
-    ? ((Number(budgets?.['수선유지비']) || 0) + (Number(budgets?.['시설비']) || 0))
-    : (Number(budgets?.[selectedBudgetItem]) || 0);
+    ? ((Number(budgets?.['일상경비']) || Number(budgets?.['수선유지비']) || 0) + (Number(budgets?.['운영경비']) || 0) + (Number(budgets?.['시설비']) || 0))
+    : (Number(budgets?.[selectedBudgetItem]) || (selectedBudgetItem === '일상경비' ? Number(budgets?.['수선유지비']) : 0) || 0);
 
   // Helper: calculate planned cost per task with 3-tier priority (1.계약금액 > 2.견적가 > 3.예상비용)
   const getTaskPlannedCost = (t) => {
@@ -107,7 +108,8 @@ export default function StatsCards({
     const num = parseInt(inlineValue.replace(/[^0-9]/g, ''), 10) || 0;
     if (selectedBudgetItem !== 'ALL') {
       const updated = {
-        '수선유지비': Number(budgets?.['수선유지비']) || 0,
+        '일상경비': Number(budgets?.['일상경비']) || Number(budgets?.['수선유지비']) || 0,
+        '운영경비': Number(budgets?.['운영경비']) || 0,
         '시설비': Number(budgets?.['시설비']) || 0,
         [selectedBudgetItem]: num
       };
@@ -179,7 +181,7 @@ export default function StatsCards({
               </span>
             </div>
 
-            {/* 예산종목 선택 드롭다운 (오직 전체, 수선유지비, 시설비만 표시!) */}
+            {/* 예산종목 선택 드롭다운 (전체, 일상경비, 운영경비, 시설비) */}
             <div className="flex items-center gap-1">
               <select
                 value={selectedBudgetItem}
@@ -191,7 +193,8 @@ export default function StatsCards({
                 title="조회할 예산종목을 선택하세요"
               >
                 <option value="ALL">전체 예산 (합계)</option>
-                <option value="수선유지비">수선유지비</option>
+                <option value="일상경비">일상경비</option>
+                <option value="운영경비">운영경비</option>
                 <option value="시설비">시설비</option>
               </select>
 
@@ -256,7 +259,7 @@ export default function StatsCards({
             <span className="font-semibold text-slate-700">{formatCurrency(allocatedBudget)}</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-0.5 truncate">
-            * [{selectedDepartment}] {selectedBudgetItem === 'ALL' ? '수선유지비 + 시설비 배정총액' : `${selectedBudgetItem} 배정액`} (담당자 직접 입력)
+            * [{selectedDepartment}] {selectedBudgetItem === 'ALL' ? '일상경비 + 운영경비 + 시설비 배정총액' : `${selectedBudgetItem} 배정액`} (담당자 직접 입력)
           </div>
         </div>
 

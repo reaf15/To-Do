@@ -21,7 +21,8 @@ export default function BudgetModal({
 }) {
   const [targetDepartment, setTargetDepartment] = useState(currentDepartment);
   const [formData, setFormData] = useState({
-    '수선유지비': 0,
+    '일상경비': 0,
+    '운영경비': 0,
     '시설비': 0
   });
 
@@ -44,7 +45,8 @@ export default function BudgetModal({
     }
 
     setFormData({
-      '수선유지비': Number(deptBudget?.['수선유지비']) || 0,
+      '일상경비': Number(deptBudget?.['일상경비']) || Number(deptBudget?.['수선유지비']) || 0,
+      '운영경비': Number(deptBudget?.['운영경비']) || 0,
       '시설비': Number(deptBudget?.['시설비']) || 0
     });
   }, [isOpen, targetDepartment, allBudgets, currentDepartment, budgets]);
@@ -93,11 +95,11 @@ export default function BudgetModal({
     onClose();
   };
 
-  const totalAllocated = (Number(formData['수선유지비']) || 0) + (Number(formData['시설비']) || 0);
+  const totalAllocated = (Number(formData['일상경비']) || 0) + (Number(formData['운영경비']) || 0) + (Number(formData['시설비']) || 0);
   const totalPlanned = getPlannedCostForBudget(null);
   const totalRemaining = totalAllocated - totalPlanned;
 
-  const budgetCategories = ['수선유지비', '시설비'];
+  const budgetCategories = ['일상경비', '운영경비', '시설비'];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200">
@@ -117,7 +119,7 @@ export default function BudgetModal({
                   부서별 예산금액 입력 및 설정
                 </h2>
                 <span className="text-[11px] px-2 py-0.5 rounded font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                  수선유지비·시설비
+                  일상경비·운영경비·시설비
                 </span>
               </div>
               
@@ -284,7 +286,7 @@ export default function BudgetModal({
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
           <div className="text-[11px] text-slate-500 flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-            <span>[{targetDepartment}]의 수선유지비와 시설비 예산이 저장됩니다.</span>
+            <span>[{targetDepartment}]의 일상경비, 운영경비, 시설비 예산이 저장됩니다.</span>
           </div>
 
           <div className="flex items-center gap-2">
