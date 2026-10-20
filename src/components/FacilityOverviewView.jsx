@@ -406,14 +406,14 @@ export default function FacilityOverviewView({
                       <span>공사 등록</span>
                     </button>
 
-                    {/* Action 2: 시설 정보 수정 */}
+                    {/* Action 2: 시설 정보 및 개요 수정 */}
                     <button
                       onClick={() => handleOpenEditModal(fac)}
-                      title={`'${fac.name}' 시설 제원 및 설비 정보를 수정합니다`}
+                      title={`'${fac.name}' 주소, 대지면적, 시설면적, 층수, 건축면적, 연면적, 준공일 등 개요 수정`}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
                     >
-                      <Settings className="w-3.5 h-3.5 text-slate-500" />
-                      <span>시설 수정</span>
+                      <Settings className="w-3.5 h-3.5 text-teal-600" />
+                      <span>시설 개요 및 제원 수정</span>
                     </button>
 
                     {/* Action 3: 공사 내역 펼치기/접기 토글 */}
@@ -438,29 +438,120 @@ export default function FacilityOverviewView({
 
                 </div>
 
-                {/* 5-B. SPECIFICATION CHIPS BAR (한눈에 보는 핵심 제원) */}
-                <div className="px-5 py-3 bg-slate-50/70 border-b border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="flex items-center gap-2 text-slate-700">
-                    <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span className="text-slate-400 font-medium">규모/층수:</span>
-                    <strong className="truncate font-bold text-slate-800">{fac.scale || '정보 미기재'}</strong>
+                {/* 5-B. ARCHITECTURAL & SPECIFICATION DETAILS (건축 제원 및 면적 개요) */}
+                <div className="px-5 py-3.5 bg-slate-50/80 border-b border-slate-100 space-y-2.5">
+                  {/* 6 Key Metrics Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
+                    
+                    {/* 층수 */}
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                      <span className="text-[10px] text-slate-400 font-bold block flex items-center gap-1 mb-0.5">
+                        <Layers className="w-3 h-3 text-blue-500" />
+                        층수
+                      </span>
+                      <strong className="text-slate-800 font-extrabold truncate block">
+                        {fac.floorCount || (fac.scale?.split('(')[0] || '정보 미기재')}
+                      </strong>
+                    </div>
+
+                    {/* 대지면적 */}
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                      <span className="text-[10px] text-slate-400 font-bold block mb-0.5">
+                        대지면적
+                      </span>
+                      <strong className="text-slate-800 font-extrabold truncate block">
+                        {fac.landArea || '-'}
+                      </strong>
+                    </div>
+
+                    {/* 시설면적 */}
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                      <span className="text-[10px] text-slate-400 font-bold block mb-0.5">
+                        시설면적
+                      </span>
+                      <strong className="text-slate-800 font-extrabold truncate block">
+                        {fac.facilityArea || fac.totalFloorArea || '-'}
+                      </strong>
+                    </div>
+
+                    {/* 건축면적 */}
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                      <span className="text-[10px] text-slate-400 font-bold block mb-0.5">
+                        건축면적
+                      </span>
+                      <strong className="text-slate-800 font-extrabold truncate block">
+                        {fac.buildingArea || '-'}
+                      </strong>
+                    </div>
+
+                    {/* 연면적 */}
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                      <span className="text-[10px] text-slate-400 font-bold block mb-0.5">
+                        연면적
+                      </span>
+                      <strong className="text-teal-700 font-black truncate block">
+                        {fac.totalFloorArea || (fac.scale?.match(/연면적\s*[0-9,]+(\.[0-9]+)?\s*㎡/)?.[0] || '-')}
+                      </strong>
+                    </div>
+
+                    {/* 준공일 */}
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                      <span className="text-[10px] text-slate-400 font-bold block flex items-center gap-1 mb-0.5">
+                        <Calendar className="w-3 h-3 text-amber-500" />
+                        준공일
+                      </span>
+                      <strong className="text-slate-800 font-extrabold truncate block">
+                        {fac.completionDate || '미상'}
+                      </strong>
+                    </div>
+
                   </div>
 
-                  <div className="flex items-center gap-2 text-slate-700">
-                    <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span className="text-slate-400 font-medium">관리책임자:</span>
-                    <strong className="truncate font-bold text-slate-800">{fac.manager ? `${fac.manager} (담당)` : '담당자 미정'}</strong>
-                  </div>
+                  {/* Second row: Location address & Contact & Manager */}
+                  <div className="pt-2 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                      <span className="text-slate-400 font-medium">소재지 주소:</span>
+                      <strong className="text-slate-800 font-semibold truncate">{fac.location || '주소 정보 미기재'}</strong>
+                    </div>
 
-                  <div className="flex items-center gap-2 text-slate-700">
-                    <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span className="text-slate-400 font-medium">대표연락처:</span>
-                    <strong className="truncate font-bold text-slate-800">{fac.contact || '031-560-1200'}</strong>
+                    <div className="flex items-center gap-4 shrink-0">
+                      <div className="flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="text-slate-400 font-medium">관리책임자:</span>
+                        <strong className="text-slate-800">{fac.manager ? `${fac.manager} (담당)` : '담당자 미정'}</strong>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="text-slate-400 font-medium">대표연락처:</span>
+                        <strong className="text-slate-800">{fac.contact || '031-560-1200'}</strong>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* 5-C. MAJOR FACILITIES & DESCRIPTION (설비 및 개요) */}
                 <div className="p-4 sm:p-5 space-y-3 bg-white">
+                  {/* Facility Description with inline Edit Button */}
+                  <div className="p-3.5 rounded-xl bg-slate-50/90 border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                        <Info className="w-3.5 h-3.5 text-teal-600" />
+                        <span>시설 개요 및 운영 설명</span>
+                      </span>
+                      <button
+                        onClick={() => handleOpenEditModal(fac)}
+                        className="text-[11px] font-bold text-teal-700 hover:text-teal-900 flex items-center gap-1 hover:underline"
+                        title="시설 개요 및 설명 수정"
+                      >
+                        <Settings className="w-3 h-3" />
+                        <span>개요 수정</span>
+                      </button>
+                    </div>
+                    <p className="text-slate-600 pt-0.5">
+                      {fac.description || '등록된 시설 개요 설명이 없습니다. [개요 수정] 버튼을 눌러 상세 설명을 등록해주세요.'}
+                    </p>
+                  </div>
                   {/* Major Facilities Tags */}
                   {fac.majorFacilities && (
                     <div className="space-y-1">

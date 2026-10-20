@@ -117,8 +117,13 @@ const facSheetData = allFacilities.map((f, idx) => ({
   '정식명칭': f.fullName || '',
   '시설분류': f.category || '',
   '소재지/주소': f.location || '',
-  '규모/층수': f.scale || '',
   '준공/개관일': f.completionDate || '',
+  '층수': f.floorCount || '',
+  '대지면적': f.landArea || '',
+  '시설면적': f.facilityArea || '',
+  '건축면적': f.buildingArea || '',
+  '연면적': f.totalFloorArea || '',
+  '규모종합요약': f.scale || '',
   '관리책임자': f.manager ? `${f.manager} (담당)` : '담당자 지정',
   '대표연락처': f.contact || '',
   '주요구성설비': f.majorFacilities || '',
@@ -135,8 +140,13 @@ wsFacilities['!cols'] = [
   { wch: 28 }, // 정식명칭
   { wch: 16 }, // 시설분류
   { wch: 38 }, // 소재지
-  { wch: 32 }, // 규모/층수
   { wch: 16 }, // 준공일
+  { wch: 20 }, // 층수
+  { wch: 16 }, // 대지면적
+  { wch: 16 }, // 시설면적
+  { wch: 16 }, // 건축면적
+  { wch: 16 }, // 연면적
+  { wch: 36 }, // 규모종합요약
   { wch: 14 }, // 책임자
   { wch: 16 }, // 연락처
   { wch: 45 }, // 주요설비
