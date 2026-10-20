@@ -508,34 +508,34 @@ export default function FacilityOverviewView({
           {/* 4-A. FACILITY PROFILE & SPECIFICATION CARD */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             
-            {/* Card Header Banner */}
-            <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            {/* Card Header Banner (바디 색상 스타일 적용) */}
+            <div className="bg-white p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200">
               <div className="flex items-start sm:items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300 font-black shadow-inner shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 font-bold shadow-2xs shrink-0">
                   <Building2 className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-lg sm:text-xl font-black text-white">
+                    <h3 className="text-lg sm:text-xl font-black text-slate-900">
                       {activeFacility.name}
                     </h3>
                     {activeFacility.fullName && activeFacility.fullName !== activeFacility.name && (
-                      <span className="text-xs text-slate-300 font-semibold">
+                      <span className="text-xs text-slate-500 font-semibold">
                         ({activeFacility.fullName})
                       </span>
                     )}
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/40">
+                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 font-extrabold">
                       {activeFacility.category || '종합체육시설'}
                     </span>
                     {activeFacility.completionDate && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-amber-400" />
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-amber-500" />
                         준공: {activeFacility.completionDate}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-300 mt-1 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                  <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
+                    <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
                     <span>{activeFacility.location || '위치 정보 미기재'}</span>
                   </p>
                 </div>
@@ -545,14 +545,14 @@ export default function FacilityOverviewView({
               <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                 <button
                   onClick={handleOpenEditModal}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 transition shadow-xs"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
                 >
-                  <Settings className="w-3.5 h-3.5 text-teal-400" />
+                  <Settings className="w-3.5 h-3.5 text-teal-600" />
                   <span>시설 정보 수정</span>
                 </button>
                 <button
                   onClick={() => onNewTaskForFacility && onNewTaskForFacility(activeFacility.name)}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black bg-teal-500 hover:bg-teal-400 text-slate-950 transition shadow-sm active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black bg-teal-600 hover:bg-teal-500 text-white transition shadow-sm active:scale-95"
                 >
                   <Plus className="w-3.5 h-3.5 stroke-[3]" />
                   <span>이 시설에 공사 등록</span>
