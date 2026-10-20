@@ -24,26 +24,30 @@ export default function StatsCards({
   allBudgets = {},
   onSaveBudgets,
   onSaveDepartmentBudget,
-  budgetCategories = ['수선유지비', '시설비', '운영경비'],
+  budgetCategories = ['수선유지비'],
   onAddCategory,
   onRenameCategory,
   onDeleteCategory
 }) {
   const totalCount = tasks.length;
   
-  // State: selected budget item for Card 2 (예산금액) & Card 3 (집행예정 및 잔여예산)
-  const [selectedBudgetItem, setSelectedBudgetItem] = useState('ALL');
+  // State: selected budget item for Card 2 (예산금액) & Card 3 (집행예정 및 잔여예산) - NO 'ALL' (전체예산 합계 없음)
+  const [selectedBudgetItem, setSelectedBudgetItem] = useState(() => {
+    return budgetCategories[0] || '수선유지비';
+  });
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const [inlineValue, setInlineValue] = useState('');
 
-  // Card 2: Allocated budget calculation for this department
-  const allocatedBudget = selectedBudgetItem === 'ALL'
-    ? budgetCategories.reduce((sum, cat) => {
-        const val = budgets?.[cat] !== undefined ? budgets[cat] : (cat === '수선유지비' ? budgets?.['일상경비'] : cat === '일상경비' ? budgets?.['수선유지비'] : 0);
-        return sum + (Number(val) || 0);
-      }, 0)
-    : (Number(budgets?.[selectedBudgetItem]) || (selectedBudgetItem === '수선유지비' ? Number(budgets?.['일상경비']) : selectedBudgetItem === '일상경비' ? Number(budgets?.['수선유지비']) : 0) || 0);
+  // Sync selected budget item if department or categories change
+  React.useEffect(() => {
+    if (!budgetCategories.includes(selectedBudgetItem)) {
+      setSelectedBudgetItem(budgetCategories[0] || '수선유지비');
+    }
+  }, [budgetCategories, selectedBudgetItem]);
+
+  // Card 2: Allocated budget calculation strictly for selectedBudgetItem
+  const allocatedBudget = Number(budgets?.[selectedBudgetItem]) || 0;
 
   // Helper: calculate planned cost per task with 3-tier priority (1.계약금액 > 2.견적가 > 3.예상비용)
   const getTaskPlannedCost = (t) => {
@@ -59,10 +63,8 @@ export default function StatsCards({
     return { amount: 0, type: 'none' };
   };
 
-  // Card 3: Tasks relevant to selected budget item in this department
-  const relevantTasks = selectedBudgetItem === 'ALL'
-    ? tasks
-    : tasks.filter(t => t.budget === selectedBudgetItem);
+  // Card 3: Tasks relevant strictly to selected budget item in this department
+  const relevantTasks = tasks.filter(t => t.budget === selectedBudgetItem);
 
   let contractAppliedCount = 0;
   let quoteAppliedCount = 0;
@@ -179,30 +181,35 @@ export default function StatsCards({
               </span>
             </div>
 
-            {/* 예산종목 선택 드롭다운 (전체 및 동적 예산과목) */}
+            {/* 예산종목 선택 (부서별 과목, 전체예산 합계 없음) */}
             <div className="flex items-center gap-1">
-              <select
-                value={selectedBudgetItem}
-                onChange={(e) => {
-                  setSelectedBudgetItem(e.target.value);
-                  setIsInlineEditing(false);
-                }}
-                className="text-[11px] font-bold bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-                title="조회할 예산종목을 선택하세요"
-              >
-                <option value="ALL">전체 예산 (합계)</option>
-                {budgetCategories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+              {budgetCategories.length > 1 ? (
+                <select
+                  value={selectedBudgetItem}
+                  onChange={(e) => {
+                    setSelectedBudgetItem(e.target.value);
+                    setIsInlineEditing(false);
+                  }}
+                  className="text-[11px] font-bold bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                  title="조회할 예산종목을 선택하세요"
+                >
+                  {budgetCategories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <span className="text-[11px] font-black bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-2.5 py-1 shadow-2xs">
+                  {selectedBudgetItem}
+                </span>
+              )}
 
               <button
                 type="button"
                 onClick={() => setIsBudgetModalOpen(true)}
                 title="부서 예산금액 직접 입력 및 관리 설정"
-                className="w-7 h-7 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 flex items-center justify-center transition shadow-2xs"
+                className="w-7 h-7 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 flex items-center justify-center transition shadow-2xs cursor-pointer"
               >
                 <Pencil className="w-3.5 h-3.5" />
               </button>
@@ -219,7 +226,7 @@ export default function StatsCards({
                 type="button"
                 onClick={handleStartInlineEdit}
                 title="클릭하여 예산금액을 직접 입력합니다"
-                className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline ml-0.5"
+                className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline ml-0.5 cursor-pointer"
               >
                 [금액입력]
               </button>
@@ -238,7 +245,7 @@ export default function StatsCards({
               <button
                 type="button"
                 onClick={handleSaveInlineEdit}
-                className="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs"
+                className="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs cursor-pointer"
                 title="저장"
               >
                 <Check className="w-3.5 h-3.5" />
@@ -246,7 +253,7 @@ export default function StatsCards({
               <button
                 type="button"
                 onClick={() => setIsInlineEditing(false)}
-                className="p-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md text-xs"
+                className="p-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md text-xs cursor-pointer"
                 title="취소"
               >
                 <X className="w-3.5 h-3.5" />
@@ -255,11 +262,11 @@ export default function StatsCards({
           )}
 
           <div className="mt-2 text-xs text-slate-500 flex items-center justify-between border-t border-slate-100 pt-2">
-            <span>배정액 합계:</span>
+            <span>{selectedBudgetItem} 배정액:</span>
             <span className="font-semibold text-slate-700">{formatCurrency(allocatedBudget)}</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-0.5 truncate">
-            * [{selectedDepartment}] {selectedBudgetItem === 'ALL' ? '부서 전체 예산 배정 총액' : `${selectedBudgetItem} 배정액`} (담당자 직접 입력 가능)
+            * [{selectedDepartment}] {selectedBudgetItem} 배정액 (직접 금액 입력 가능)
           </div>
         </div>
 

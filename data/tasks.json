@@ -441,7 +441,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "성인야구장 관람석 보수",
@@ -501,7 +501,7 @@
   },
   {
     "id": "TASK-19",
-    "budget": "운영경비",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "남양주센터",
     "title": "정보통신유지관리자 성능점검",
@@ -783,7 +783,7 @@
   },
   {
     "id": "TASK-30",
-    "budget": "운영경비",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "신발장 구매 설치",
@@ -881,7 +881,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비",
+    "budget": "수선유지비",
     "facility": "파크골프",
     "location": "화장실",
     "title": "다목적잔디광장 화장실 배관 공사",
@@ -917,7 +917,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비",
+    "budget": "수선유지비",
     "facility": "파크골프",
     "location": "",
     "title": "조명 각도 조정",
@@ -1059,7 +1059,7 @@
   {
     "id": "TASK-RS-01",
     "department": "철도안전부",
-    "budget": "시설비",
+    "budget": "수선유지비",
     "facility": "철도안전부",
     "location": "역사 승강장 전 구역",
     "title": "승강장 안전발판(안전갭) 보수 및 경고등 설치",
@@ -1205,7 +1205,7 @@
   {
     "id": "TASK-BN-02",
     "department": "별내커뮤니티센터",
-    "budget": "시설비",
+    "budget": "수선유지비",
     "facility": "별내커뮤니티센터",
     "location": "지하주차장",
     "title": "지하주차��� LED 고효율 조명 및 디밍 시스템 설치",
@@ -1245,7 +1245,7 @@
   {
     "id": "TASK-WB-02",
     "department": "와부체육문화센터",
-    "budget": "시설비",
+    "budget": "수선유지비",
     "facility": "와부체육문화센터",
     "location": "옥상 기계실",
     "title": "옥상 냉각탑 소음 저감장치 및 방음벽 설치",

@@ -37,11 +37,10 @@ const LOCAL_STORAGE_SUBMISSIONS = 'nyj_submissions_status_v1';
 const LOCAL_STORAGE_BUDGETS = 'nyj_budget_allocations_v1';
 const LOCAL_STORAGE_BUDGET_CATEGORIES = 'nyj_budget_categories_v2';
 
-export const DEFAULT_BUDGET_CATEGORIES = ['수선유지비', '시설비', '운영경비'];
+export const DEFAULT_BUDGET_CATEGORIES = ['수선유지비'];
 
 export const DEFAULT_BUDGETS = {
-  '수선유지비': 200000000,
-  '시설비': 50000000
+  '수선유지비': 150000000
 };
 
 export default function App() {
@@ -121,19 +120,7 @@ export default function App() {
     return calculateSubmissionStats(submissionMap);
   }, [submissionMap]);
 
-  // Budget categories state (기본 항목: 수선유지비, 추가/수정/삭제 지원)
-  const [budgetCategories, setBudgetCategories] = useState(() => {
-    try {
-      const saved = localStorage.getItem(LOCAL_STORAGE_BUDGET_CATEGORIES);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch (e) {}
-    return DEFAULT_BUDGET_CATEGORIES;
-  });
-
-  // Budget allocations per department
+  // Budget allocations per department (기본: 수선유지비, 부서별 개별 과목 및 금액 관리)
   const [budgets, setBudgets] = useState(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_BUDGETS);
@@ -145,40 +132,26 @@ export default function App() {
       }
     } catch (e) {}
     return {
-      '남양주체육문화센터': { '수선유지비': 150000000, '시설비': 50000000, '운영경비': 30000000 }
+      '남양주체육문화센터': { '수선유지비': 150000000 }
     };
   });
 
-  // Current selected department budget allocations dynamically keyed by budgetCategories
+  // Current selected department budget allocations dynamically keyed by department
   const currentDeptBudgets = useMemo(() => {
-    const res = {};
-    budgetCategories.forEach(cat => {
-      res[cat] = 0;
-    });
-
     if (budgets && typeof budgets === 'object') {
       const deptData = budgets[selectedDepartment] || (selectedDepartment === '남양주체육문화센터' ? budgets['남양주체육문화센터'] : null);
-      if (deptData && typeof deptData === 'object') {
-        budgetCategories.forEach(cat => {
-          let val = deptData[cat];
-          if (val === undefined) {
-            if (cat === '수선유지비' && deptData['일상경비'] !== undefined) {
-              val = deptData['일상경비'];
-            } else if (cat === '일상경비' && deptData['수선유지비'] !== undefined) {
-              val = deptData['수선유지비'];
-            }
-          }
-          res[cat] = Number(val) || 0;
-        });
-        return res;
+      if (deptData && typeof deptData === 'object' && Object.keys(deptData).length > 0) {
+        return deptData;
       }
     }
+    return { '수선유지비': selectedDepartment === '남양주체육문화센터' ? 150000000 : 100000000 };
+  }, [budgets, selectedDepartment]);
 
-    if (res['수선유지비'] !== undefined) res['수선유지비'] = 150000000;
-    if (res['시설비'] !== undefined) res['시설비'] = 50000000;
-    if (res['운영경비'] !== undefined) res['운영경비'] = 30000000;
-    return res;
-  }, [budgets, selectedDepartment, budgetCategories]);
+  // Current selected department budget categories (기본: 수선유지비)
+  const currentDeptCategories = useMemo(() => {
+    const keys = Object.keys(currentDeptBudgets);
+    return keys.length > 0 ? keys : ['수선유지비'];
+  }, [currentDeptBudgets]);
 
   // Current persona / logged in user
   const [currentUser, setCurrentUser] = useState(() => {
@@ -288,55 +261,59 @@ export default function App() {
     }
   };
 
-  // Sync budget categories to LocalStorage & Central Server API
-  const persistBudgetCategories = async (newCategories) => {
-    setBudgetCategories(newCategories);
-    try {
-      localStorage.setItem(LOCAL_STORAGE_BUDGET_CATEGORIES, JSON.stringify(newCategories));
-      await fetch('/api/budget-categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newCategories)
-      });
-    } catch (e) {
-      console.warn('Network sync for budget categories failed, saved locally:', e.message);
-    }
-  };
-
-  // Add budget category
-  const handleAddBudgetCategory = (newCategoryName) => {
+  // Add budget category to a specific department
+  const handleAddDeptCategory = (newCategoryName, targetDept = selectedDepartment) => {
     const trimmed = (newCategoryName || '').trim();
     if (!trimmed) {
       showToast('추가할 예산과목명을 입력해주세요.', 'info');
       return;
     }
-    if (budgetCategories.includes(trimmed)) {
-      showToast(`'${trimmed}'은(는) 이미 존재하는 예산과목입니다.`, 'info');
+    const currentDeptObj = budgets[targetDept] || { '수선유지비': 100000000 };
+    if (currentDeptObj[trimmed] !== undefined) {
+      showToast(`'${trimmed}'은(는) 이미 [${targetDept}]에 존재하는 예산과목입니다.`, 'info');
       return;
     }
-    const updated = [...budgetCategories, trimmed];
-    persistBudgetCategories(updated);
-    showToast(`새 예산과목 '[${trimmed}]'이(가) 추가되었습니다!`);
-    addAuditLog(`예산과목 추가: [${trimmed}]`);
+    const updated = {
+      ...(budgets && typeof budgets === 'object' ? budgets : {}),
+      [targetDept]: {
+        ...currentDeptObj,
+        [trimmed]: 0
+      }
+    };
+    persistBudgets(updated);
+    showToast(`[${targetDept}]에 새 예산과목 '[${trimmed}]'이(가) 추가되었습니다!`);
+    addAuditLog(`부서 예산과목 추가: [${targetDept}] -> [${trimmed}]`);
   };
 
-  // Rename budget category (cascades to all tasks and department budgets)
-  const handleRenameBudgetCategory = (oldName, newName) => {
+  // Rename budget category in a specific department (cascades to targetDept tasks)
+  const handleRenameDeptCategory = (oldName, newName, targetDept = selectedDepartment) => {
     const trimmed = (newName || '').trim();
     if (!trimmed || trimmed === oldName) return;
-    if (budgetCategories.includes(trimmed)) {
-      showToast(`'${trimmed}'은(는) 이미 존재하는 예산과목명입니다.`, 'info');
+    const currentDeptObj = budgets[targetDept] || {};
+    if (currentDeptObj[trimmed] !== undefined) {
+      showToast(`'${trimmed}'은(는) 이미 [${targetDept}]에 존재하는 예산과목명입니다.`, 'info');
       return;
     }
 
-    // 1. Update categories list
-    const updatedCategories = budgetCategories.map(c => c === oldName ? trimmed : c);
-    persistBudgetCategories(updatedCategories);
+    // 1. Rename key in targetDept budget
+    const updatedDept = {};
+    Object.keys(currentDeptObj).forEach(key => {
+      if (key === oldName) {
+        updatedDept[trimmed] = currentDeptObj[oldName];
+      } else {
+        updatedDept[key] = currentDeptObj[key];
+      }
+    });
+    const updated = {
+      ...(budgets && typeof budgets === 'object' ? budgets : {}),
+      [targetDept]: updatedDept
+    };
+    persistBudgets(updated);
 
-    // 2. Cascade rename to all tasks
+    // 2. Cascade rename to targetDept tasks
     let affectedTasksCount = 0;
     const updatedTasks = tasks.map(t => {
-      if (t.budget === oldName) {
+      if ((t.department || '남양주체육문화센터') === targetDept && t.budget === oldName) {
         affectedTasksCount++;
         return { ...t, budget: trimmed };
       }
@@ -346,77 +323,60 @@ export default function App() {
       persistTasks(updatedTasks);
     }
 
-    // 3. Cascade rename to department budgets
-    const updatedBudgets = {};
-    if (budgets && typeof budgets === 'object') {
-      Object.keys(budgets).forEach(deptKey => {
-        const deptObj = { ...budgets[deptKey] };
-        if (deptObj[oldName] !== undefined) {
-          deptObj[trimmed] = deptObj[oldName];
-          delete deptObj[oldName];
-        }
-        updatedBudgets[deptKey] = deptObj;
-      });
-      persistBudgets(updatedBudgets);
-    }
-
-    // 4. Update active filter if selected
-    if (selectedBudget === oldName) {
+    if (selectedDepartment === targetDept && selectedBudget === oldName) {
       setSelectedBudget(trimmed);
     }
 
-    showToast(`예산과목이 '[${oldName}]'에서 '[${trimmed}]'(으)로 변경되었습니다. (공사목록 ${affectedTasksCount}건 반영)`);
-    addAuditLog(`예산과목 명칭변경: [${oldName}] -> [${trimmed}] (공사목록 ${affectedTasksCount}건 연동)`);
+    showToast(`[${targetDept}] 예산과목이 '[${oldName}]'에서 '[${trimmed}]'(으)로 변경되었습니다. (공사 ${affectedTasksCount}건 반영)`);
+    addAuditLog(`부서 예산과목 변경: [${targetDept}] [${oldName}] -> [${trimmed}] (${affectedTasksCount}건)`);
   };
 
-  // Delete budget category (reassigns tasks to default category)
-  const handleDeleteBudgetCategory = (categoryToDelete) => {
-    if (budgetCategories.length <= 1) {
+  // Delete budget category from a specific department (reassigns targetDept tasks to default)
+  const handleDeleteDeptCategory = (categoryToDelete, targetDept = selectedDepartment) => {
+    const currentDeptObj = budgets[targetDept] || {};
+    const keys = Object.keys(currentDeptObj);
+    if (keys.length <= 1) {
       alert('최소 1개 이상의 예산과목이 유지되어야 하므로 삭제할 수 없습니다.');
       return;
     }
 
-    const fallbackCategory = budgetCategories.find(c => c !== categoryToDelete && c === '수선유지비') || 
-      budgetCategories.find(c => c !== categoryToDelete) || 
+    const fallbackCategory = keys.find(c => c !== categoryToDelete && c === '수선유지비') || 
+      keys.find(c => c !== categoryToDelete) || 
       '수선유지비';
 
-    const affectedTasks = tasks.filter(t => t.budget === categoryToDelete);
+    const affectedTasks = tasks.filter(t => (t.department || '남양주체육문화센터') === targetDept && t.budget === categoryToDelete);
     const confirmMessage = affectedTasks.length > 0
-      ? `'${categoryToDelete}' 예산과목을 삭제하시겠습니까?\n현재 이 과목으로 지정된 공사 ${affectedTasks.length}건은 기본 항목인 '${fallbackCategory}'(으)로 일괄 변경됩니다.`
-      : `'${categoryToDelete}' 예산과목을 삭제하시겠습니까?`;
+      ? `[${targetDept}]의 '${categoryToDelete}' 예산과목을 삭제하시겠습니까?\n현재 이 과목으로 지정된 공사 ${affectedTasks.length}건은 기본 항목인 '${fallbackCategory}'(으)로 일괄 변경됩니다.`
+      : `[${targetDept}]의 '${categoryToDelete}' 예산과목을 삭제하시겠습니까?`;
 
     if (!window.confirm(confirmMessage)) return;
 
-    // 1. Update categories list
-    const updatedCategories = budgetCategories.filter(c => c !== categoryToDelete);
-    persistBudgetCategories(updatedCategories);
+    // 1. Remove category from targetDept budget
+    const updatedDept = { ...currentDeptObj };
+    delete updatedDept[categoryToDelete];
+    const updated = {
+      ...(budgets && typeof budgets === 'object' ? budgets : {}),
+      [targetDept]: updatedDept
+    };
+    persistBudgets(updated);
 
-    // 2. Cascade reassignment to tasks
+    // 2. Cascade reassignment to targetDept tasks
     if (affectedTasks.length > 0) {
-      const updatedTasks = tasks.map(t => 
-        t.budget === categoryToDelete ? { ...t, budget: fallbackCategory } : t
-      );
+      const updatedTasks = tasks.map(t => {
+        if ((t.department || '남양주체육문화센터') === targetDept && t.budget === categoryToDelete) {
+          return { ...t, budget: fallbackCategory };
+        }
+        return t;
+      });
       persistTasks(updatedTasks);
     }
 
-    // 3. Cascade removal from department budgets
-    const updatedBudgets = {};
-    if (budgets && typeof budgets === 'object') {
-      Object.keys(budgets).forEach(deptKey => {
-        const deptObj = { ...budgets[deptKey] };
-        delete deptObj[categoryToDelete];
-        updatedBudgets[deptKey] = deptObj;
-      });
-      persistBudgets(updatedBudgets);
-    }
-
-    // 4. Reset active filter if selected
-    if (selectedBudget === categoryToDelete) {
+    if (selectedDepartment === targetDept && selectedBudget === categoryToDelete) {
       setSelectedBudget('');
     }
 
-    showToast(`'${categoryToDelete}' 예산과목이 삭제되었습니다.${affectedTasks.length > 0 ? ` (공사 ${affectedTasks.length}건이 '${fallbackCategory}'(으)로 변경됨)` : ''}`);
-    addAuditLog(`예산과목 삭제: [${categoryToDelete}] (공사 ${affectedTasks.length}건 -> ${fallbackCategory})`);
+    showToast(`[${targetDept}]의 '${categoryToDelete}' 예산과목이 삭제되었습니다.${affectedTasks.length > 0 ? ` (공사 ${affectedTasks.length}건이 '${fallbackCategory}'(으)로 변경됨)` : ''}`);
+    addAuditLog(`부서 예산과목 삭제: [${targetDept}] [${categoryToDelete}] (공사 ${affectedTasks.length}건 -> ${fallbackCategory})`);
   };
 
   // Save budget allocations for a specific department
@@ -967,10 +927,10 @@ export default function App() {
                     selectedStatus={selectedStatus}
                     onSaveBudgets={handleSaveDepartmentBudgets}
                     onSaveDepartmentBudget={handleSaveDepartmentBudgets}
-                    budgetCategories={budgetCategories}
-                    onAddCategory={handleAddBudgetCategory}
-                    onRenameCategory={handleRenameBudgetCategory}
-                    onDeleteCategory={handleDeleteBudgetCategory}
+                    budgetCategories={currentDeptCategories}
+                    onAddCategory={handleAddDeptCategory}
+                    onRenameCategory={handleRenameDeptCategory}
+                    onDeleteCategory={handleDeleteDeptCategory}
                   />
 
                   {/* Filter and View mode Toolbar */}
@@ -997,7 +957,7 @@ export default function App() {
                       setIsTaskModalOpen(true);
                     }}
                     onExportExcel={handleExportExcel}
-                    budgetCategories={budgetCategories}
+                    budgetCategories={currentDeptCategories}
                   />
 
                   {/* Dynamic Views */}
@@ -1081,7 +1041,7 @@ export default function App() {
         task={editingTask}
         selectedDepartment={selectedDepartment}
         currentUser={currentUser}
-        budgetCategories={budgetCategories}
+        budgetCategories={currentDeptCategories}
       />
 
       {/* Task Detail & Staff Log Drawer */}
