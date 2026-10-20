@@ -28,7 +28,7 @@ import {
   DEFAULT_SUBMISSION_MAP,
   calculateSubmissionStats 
 } from './data/organizationChart';
-import { exportToExcel } from './utils/excelExport';
+import { exportToExcel, exportMasterDataToExcel } from './utils/excelExport';
 
 const LOCAL_STORAGE_KEY = 'nyj_tasks_v1';
 const LOCAL_STORAGE_USER = 'nyj_current_user_v1';
@@ -953,11 +953,23 @@ export default function App() {
     }
   };
 
-  // Excel Export
+  // Excel Export: Current Department Tasks
   const handleExportExcel = () => {
-    exportToExcel(filteredTasks, `남양주체육문화센터_공사업무현황_${new Date().toISOString().split('T')[0]}.xlsx`);
-    showToast('Excel 파일이 다운로드되었습니다.');
-    addAuditLog(`공사현황 엑셀 다운로드 (총 ${filteredTasks.length}건)`);
+    exportToExcel(filteredTasks, `${selectedDepartment}_공사업무현황_${new Date().toISOString().split('T')[0]}.xlsx`);
+    showToast(`[${selectedDepartment}] 공사 목록이 Excel로 다운로드되었습니다.`);
+    addAuditLog(`공사현황 엑셀 다운로드: [${selectedDepartment}] (총 ${filteredTasks.length}건)`);
+  };
+
+  // Excel Export: Master All Data (전 부서 공사 + 시설현황 + 예산 종합)
+  const handleExportAllExcel = () => {
+    exportMasterDataToExcel({
+      allTasks: tasks,
+      facilities: facilities,
+      budgets: budgets,
+      fileName: `남양주도시공사_시설본부_전체통합데이터_${new Date().toISOString().split('T')[0]}.xlsx`
+    });
+    showToast('시설본부 전체 통합 데이터(공사+시설+예산)가 Excel로 다운로드되었습니다.');
+    addAuditLog(`전체 통합 엑셀 다운로드 (공사 ${tasks.length}건, 시설 ${facilities.length}개소)`);
   };
 
   // If Print View is active
@@ -1115,6 +1127,7 @@ export default function App() {
                       setIsTaskModalOpen(true);
                     }}
                     onExportExcel={handleExportExcel}
+                    onExportAllExcel={handleExportAllExcel}
                     budgetCategories={currentDeptCategories}
                     facilities={currentDeptFacilities.map(f => f.name)}
                   />

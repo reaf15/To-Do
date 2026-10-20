@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -11,7 +11,9 @@ import {
   Sparkles,
   Calendar,
   Plus,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Building2,
+  ChevronDown
 } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 
@@ -35,10 +37,23 @@ export default function FilterBar({
   isMyTasksActive,
   onNewTask,
   onExportExcel,
+  onExportAllExcel,
   budgetCategories = BUDGET_TYPES,
   facilities = []
 }) {
   const facilityList = facilities && facilities.length > 0 ? facilities : FACILITIES;
+  const [isExcelMenuOpen, setIsExcelMenuOpen] = useState(false);
+  const excelMenuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (excelMenuRef.current && !excelMenuRef.current.contains(event.target)) {
+        setIsExcelMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   return (
     <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm mb-6 space-y-3.5 no-print">
       
@@ -170,14 +185,51 @@ export default function FilterBar({
 
           {/* Action buttons: Excel & New Task */}
           {onExportExcel && (
-            <button
-              onClick={onExportExcel}
-              title="현재 공사 목록 Excel 다운로드"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 transition shadow-2xs shrink-0 ml-auto md:ml-0"
-            >
-              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
-              <span>엑셀</span>
-            </button>
+            <div className="relative ml-auto md:ml-0" ref={excelMenuRef}>
+              <button
+                onClick={() => setIsExcelMenuOpen(!isExcelMenuOpen)}
+                title="엑셀 다운로드 옵션 선택"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 transition shadow-2xs shrink-0"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                <span>엑셀 다운로드</span>
+                <ChevronDown className="w-3 h-3 text-emerald-700" />
+              </button>
+
+              {isExcelMenuOpen && (
+                <div className="absolute right-0 mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+                  <button
+                    onClick={() => {
+                      setIsExcelMenuOpen(false);
+                      onExportExcel();
+                    }}
+                    className="w-full px-3.5 py-2 text-left hover:bg-slate-50 transition flex items-center gap-2.5 text-xs text-slate-800"
+                  >
+                    <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <div>
+                      <div className="font-bold">현재 부서 공사목록 (.xlsx)</div>
+                      <div className="text-[10px] text-slate-400">현재 선택된 부서의 공사 업무 엑셀 파일</div>
+                    </div>
+                  </button>
+
+                  {onExportAllExcel && (
+                    <button
+                      onClick={() => {
+                        setIsExcelMenuOpen(false);
+                        onExportAllExcel();
+                      }}
+                      className="w-full px-3.5 py-2 text-left hover:bg-teal-50 transition flex items-center gap-2.5 text-xs text-teal-900 border-t border-slate-100"
+                    >
+                      <Building2 className="w-4 h-4 text-teal-600 shrink-0" />
+                      <div>
+                        <div className="font-bold text-teal-700">시설본부 전체 통합 엑셀 (.xlsx)</div>
+                        <div className="text-[10px] text-slate-400">전 부서 공사 + 시설현황 + 예산 3개 시트 통합</div>
+                      </div>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           )}
 
           {onNewTask && (

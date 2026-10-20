@@ -61,6 +61,137 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
 }
 
 /**
+ * 시설본부 전체 데이터 통합 Excel (.xlsx) 파일로 내보내기 (멀티 시트)
+ * 시트 1: 전 부서 공사 관리대장 (부서명 포함)
+ * 시트 2: 부서별 시설 현황 및 개요
+ * 시트 3: 부서별 예산 현황
+ */
+export function exportMasterDataToExcel({
+  allTasks = [],
+  facilities = [],
+  budgets = {},
+  fileName = `남양주도시공사_시설본부_전체통합데이터_${new Date().toISOString().split('T')[0]}.xlsx`
+}) {
+  const workbook = XLSX.utils.book_new();
+
+  // 1. Sheet 1: 공사 관리대장
+  const tasksSheetData = allTasks.map((t) => ({
+    '소속부서': t.department || '남양주체육문화센터',
+    '예산과목': t.budget || '수선유지비',
+    '시설(센터)': t.facility || '',
+    '상세위치': t.location || '',
+    '공사명': t.title || '',
+    '예상비용': t.estimatedCost ? Number(t.estimatedCost) : (t.estimatedCostNote || ''),
+    '진행상태': t.status || '',
+    '견적가': t.quoteAmount ? Number(t.quoteAmount) : '',
+    '계약금액': t.contractAmount ? Number(t.contractAmount) : '',
+    '시공업체': t.vendor || '',
+    '업체연락처': t.contact || '',
+    '담당자': t.manager || '',
+    '비고/메모': t.memo || '',
+  }));
+
+  const totalCost = allTasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
+  const totalQuote = allTasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
+  const totalContract = allTasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
+
+  tasksSheetData.push({
+    '소속부서': '합계',
+    '예산과목': '',
+    '시설(센터)': '',
+    '상세위치': '',
+    '공사명': `총 ${allTasks.length}건`,
+    '예상비용': totalCost,
+    '진행상태': '',
+    '견적가': totalQuote,
+    '계약금액': totalContract,
+    '시공업체': '',
+    '업체연락처': '',
+    '담당자': '',
+    '비고/메모': '',
+  });
+
+  const wsTasks = XLSX.utils.json_to_sheet(tasksSheetData);
+  wsTasks['!cols'] = [
+    { wch: 18 }, // 소속부서
+    { wch: 14 }, // 예산과목
+    { wch: 16 }, // 시설
+    { wch: 18 }, // 위치
+    { wch: 38 }, // 공사명
+    { wch: 16 }, // 예상비용
+    { wch: 12 }, // 진행상태
+    { wch: 16 }, // 견적가
+    { wch: 16 }, // 계약금액
+    { wch: 18 }, // 업체명
+    { wch: 15 }, // 연락처
+    { wch: 10 }, // 담당자
+    { wch: 25 }, // 메모
+  ];
+  XLSX.utils.book_append_sheet(workbook, wsTasks, '공사관리대장');
+
+  // 2. Sheet 2: 부서별 시설 현황
+  if (Array.isArray(facilities) && facilities.length > 0) {
+    const facSheetData = facilities.map((f) => ({
+      '소속부서': f.department || '',
+      '시설명': f.name || '',
+      '정식명칭': f.fullName || '',
+      '시설분류': f.category || '',
+      '소재지/주소': f.location || '',
+      '규모/층수': f.scale || '',
+      '준공/개관일': f.completionDate || '',
+      '관리책임자': f.manager || '',
+      '대표연락처': f.contact || '',
+      '주요설비': f.majorFacilities || '',
+      '세부구역': Array.isArray(f.zones) ? f.zones.join(', ') : '',
+      '시설개요': f.description || '',
+    }));
+    const wsFacilities = XLSX.utils.json_to_sheet(facSheetData);
+    wsFacilities['!cols'] = [
+      { wch: 18 },
+      { wch: 16 },
+      { wch: 24 },
+      { wch: 14 },
+      { wch: 32 },
+      { wch: 25 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 15 },
+      { wch: 40 },
+      { wch: 30 },
+      { wch: 40 },
+    ];
+    XLSX.utils.book_append_sheet(workbook, wsFacilities, '부서별시설현황');
+  }
+
+  // 3. Sheet 3: 부서별 예산 현황
+  if (budgets && typeof budgets === 'object') {
+    const budgetSheetData = [];
+    Object.entries(budgets).forEach(([dept, catMap]) => {
+      if (catMap && typeof catMap === 'object') {
+        Object.entries(catMap).forEach(([cat, amount]) => {
+          budgetSheetData.push({
+            '소속부서': dept,
+            '예산과목': cat,
+            '배정예산액': Number(amount) || 0,
+          });
+        });
+      }
+    });
+    if (budgetSheetData.length > 0) {
+      const wsBudgets = XLSX.utils.json_to_sheet(budgetSheetData);
+      wsBudgets['!cols'] = [
+        { wch: 22 },
+        { wch: 16 },
+        { wch: 18 },
+      ];
+      XLSX.utils.book_append_sheet(workbook, wsBudgets, '부서별예산현황');
+    }
+  }
+
+  XLSX.writeFile(workbook, fileName);
+}
+
+/**
  * 엑셀 파일(.xlsx, .xls) 읽어들이기
  */
 export function importFromExcel(file) {

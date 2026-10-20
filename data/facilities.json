@@ -95,7 +95,7 @@
     {
       "id": "fac-nyj-5",
       "department": "남양주체육문화센터",
-      "name": "컨퍼런스",
+      "name": "컨퍼런스 A",
       "fullName": "컨퍼런스홀 및 문화관",
       "category": "문화·집회시설",
       "location": "경기도 남양주시 다산지금로 91 (체육문화센터 내)",
@@ -133,6 +133,101 @@
         "주차장"
       ],
       "description": "어르신 및 남녀노소 누구나 즐길 수 있는 한강변 천연 잔디 18홀 규격 파크골프 시설입니다."
+    },
+    {
+      "id": "fac-1792468056152-6xojh",
+      "department": "남양주체육문화센터",
+      "name": "게이트볼장",
+      "fullName": "게이트볼장",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792468097869-cynxc",
+      "department": "남양주체육문화센터",
+      "name": "컨퍼런스 B(장애인)",
+      "fullName": "컨퍼런스 B(장애인)",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792468127333-mrckl",
+      "department": "남양주체육문화센터",
+      "name": "축구장A",
+      "fullName": "축구장A",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792468136970-9uagl",
+      "department": "남양주체육문화센터",
+      "name": "축구장B",
+      "fullName": "축구장B",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
+    },
+    {
+      "id": "fac-1792468144633-jacov",
+      "department": "남양주체육문화센터",
+      "name": "축구장C",
+      "fullName": "축구장C",
+      "category": "종합체육시설",
+      "location": "",
+      "scale": "",
+      "completionDate": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
     }
   ],
   "호평체육문화센터": [
