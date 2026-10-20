@@ -51,7 +51,7 @@ export default function Header({
                   </span>
                 </div>
                 <h1 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5 flex items-center gap-1.5">
-                  <span>시설관리 시스템</span>
+                  <span>시설물종합관리</span>
                   <span className="text-xs text-teal-400 font-semibold">| 시설·공사 관리대장</span>
                 </h1>
               </div>

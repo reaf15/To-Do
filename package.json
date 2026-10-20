@@ -1,6 +1,5 @@
 {
-  "name": "nyj-fms",
-  "description": "남양주도시공사 시설관리 시스템",
+  "name": "to-do",
   "private": true,
   "version": "0.0.0",
   "type": "module",

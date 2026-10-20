@@ -131,7 +131,7 @@ export default function Sidebar({
                 남양주도시공사 • 시설본부
               </div>
               <div className="text-sm font-extrabold text-white truncate">
-                시설관리 시스템
+                시설물종합관리시스템
               </div>
             </div>
           )}
