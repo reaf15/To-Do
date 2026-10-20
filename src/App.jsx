@@ -966,9 +966,10 @@ export default function App() {
       allTasks: tasks,
       facilities: facilities,
       budgets: budgets,
+      loginHistory: loginHistory,
       fileName: `남양주도시공사_시설본부_전체통합데이터_${new Date().toISOString().split('T')[0]}.xlsx`
     });
-    showToast('시설본부 전체 통합 데이터(공사+시설+예산)가 Excel로 다운로드되었습니다.');
+    showToast('시설본부 전체 통합 데이터(5개 시트)가 Excel로 다운로드되었습니다.');
     addAuditLog(`전체 통합 엑셀 다운로드 (공사 ${tasks.length}건, 시설 ${facilities.length}개소)`);
   };
 

@@ -166,26 +166,139 @@ export function exportMasterDataToExcel({
   // 3. Sheet 3: 부서별 예산 현황
   if (budgets && typeof budgets === 'object') {
     const budgetSheetData = [];
+    let totalBudget = 0;
+    let totalExecuted = 0;
+
     Object.entries(budgets).forEach(([dept, catMap]) => {
       if (catMap && typeof catMap === 'object') {
         Object.entries(catMap).forEach(([cat, amount]) => {
+          const bAmount = Number(amount) || 0;
+          const deptTasks = allTasks.filter(t => (t.department || '남양주체육문화센터') === dept && (t.budget || '수선유지비') === cat);
+          const executed = deptTasks.reduce((s, t) => s + (Number(t.estimatedCost) || 0), 0);
+          const remain = bAmount - executed;
+          const rate = bAmount > 0 ? ((executed / bAmount) * 100).toFixed(1) : '0.0';
+
+          totalBudget += bAmount;
+          totalExecuted += executed;
+
           budgetSheetData.push({
             '소속부서': dept,
             '예산과목': cat,
-            '배정예산액': Number(amount) || 0,
+            '배정예산액(원)': bAmount,
+            '집행예정액(원)': executed,
+            '잔여예산액(원)': remain,
+            '집행률(%)': `${rate}%`,
+            '공사건수': `${deptTasks.length}건`,
+            '비고': remain < 0 ? '⚠️ 예산초과' : '정상 집행 중'
           });
         });
       }
     });
+
     if (budgetSheetData.length > 0) {
+      budgetSheetData.push({
+        '소속부서': '합계',
+        '예산과목': '전체 예산 총계',
+        '배정예산액(원)': totalBudget,
+        '집행예정액(원)': totalExecuted,
+        '잔여예산액(원)': totalBudget - totalExecuted,
+        '집행률(%)': totalBudget > 0 ? `${((totalExecuted / totalBudget) * 100).toFixed(1)}%` : '0.0%',
+        '공사건수': `${allTasks.length}건`,
+        '비고': '총괄'
+      });
+
       const wsBudgets = XLSX.utils.json_to_sheet(budgetSheetData);
       wsBudgets['!cols'] = [
         { wch: 22 },
-        { wch: 16 },
+        { wch: 20 },
         { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 12 },
+        { wch: 12 },
+        { wch: 16 }
       ];
       XLSX.utils.book_append_sheet(workbook, wsBudgets, '부서별예산현황');
     }
+  }
+
+  // 4. Sheet 4: 조직도 및 제출 현황
+  const DIVISIONS = [
+    {
+      division: '체육문화운영처',
+      departments: ['남양주체육문화센터', '호평체육문화센터', '오남체육문화센터', '화도체육문화센터', '별내커뮤니티센터', '와부체육문화센터', '평내체육문화센터', '진접체육문화센터']
+    },
+    {
+      division: '교통환경처',
+      departments: ['철도안전부', '철도운영부', '철도지원부', '주차운영부', '주차시설부', '에코랜드운영부', '화도푸른물센터']
+    },
+    {
+      division: '미래청소년처',
+      departments: ['남양주시청소년수련관', '정약용 펀그라운드', '펀그라운드 진접', '펀그라운드 수동', '어린이비전센터']
+    }
+  ];
+
+  const orgSheetData = [];
+  DIVISIONS.forEach(div => {
+    div.departments.forEach(dept => {
+      const facCount = facilities.filter(f => (f.department || '남양주체육문화센터') === dept).length;
+      const deptTasks = allTasks.filter(t => (t.department || '남양주체육문화센터') === dept).length;
+      const deptBudget = budgets[dept] ? Object.values(budgets[dept]).reduce((s, v) => s + (Number(v) || 0), 0) : 100000000;
+      orgSheetData.push({
+        '총괄본부': '남양주도시공사 시설본부',
+        '소속처': div.division,
+        '부서명': dept,
+        '관리시설수': `${facCount}개소`,
+        '등록공사수': `${deptTasks}건`,
+        '배정예산합계(원)': deptBudget,
+        '예산제출상태': dept === '남양주체육문화센터' ? '제출완료' : '작성중'
+      });
+    });
+  });
+
+  const wsOrg = XLSX.utils.json_to_sheet(orgSheetData);
+  wsOrg['!cols'] = [
+    { wch: 24 },
+    { wch: 18 },
+    { wch: 22 },
+    { wch: 14 },
+    { wch: 14 },
+    { wch: 20 },
+    { wch: 16 }
+  ];
+  XLSX.utils.book_append_sheet(workbook, wsOrg, '조직도및부서현황');
+
+  // 5. Sheet 5: 감사 및 작업 이력
+  if (Array.isArray(loginHistory) && loginHistory.length > 0) {
+    const historySheetData = loginHistory.map((item, idx) => ({
+      '연번': idx + 1,
+      '이력ID': item.id || '',
+      '접속일시': item.timestamp || '',
+      '계정ID': item.userId || '',
+      '작업자명': item.userName || '',
+      '직책/역할': item.role || '',
+      '소속부서': item.dept || '',
+      '접속IP': item.ip || '',
+      '기기/브라우저': item.device || '',
+      '수행작업내용': item.action || '',
+      '처리결과': item.status || '성공'
+    }));
+
+    const wsHistory = XLSX.utils.json_to_sheet(historySheetData);
+    wsHistory['!cols'] = [
+      { wch: 8 },
+      { wch: 18 },
+      { wch: 20 },
+      { wch: 14 },
+      { wch: 12 },
+      { wch: 18 },
+      { wch: 22 },
+      { wch: 16 },
+      { wch: 28 },
+      { wch: 40 },
+      { wch: 12 }
+    ];
+    XLSX.utils.book_append_sheet(workbook, wsHistory, '접속및작업감사이력');
   }
 
   XLSX.writeFile(workbook, fileName);

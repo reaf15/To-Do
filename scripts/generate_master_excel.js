@@ -297,10 +297,16 @@ const genericFileName = '남양주도시공사_시설본부_전체통합데이�
 const pathsToWrite = [
   path.join(ROOT_DIR, outFileName),
   path.join(ROOT_DIR, genericFileName),
+  path.join(ROOT_DIR, 'master_data.xlsx'),
+  path.join(ROOT_DIR, 'namyangju_fms_all_data.xlsx'),
   path.join(ROOT_DIR, 'public', outFileName),
   path.join(ROOT_DIR, 'public', genericFileName),
+  path.join(ROOT_DIR, 'public', 'master_data.xlsx'),
+  path.join(ROOT_DIR, 'public', 'namyangju_fms_all_data.xlsx'),
   path.join(ROOT_DIR, 'dist', outFileName),
-  path.join(ROOT_DIR, 'dist', genericFileName)
+  path.join(ROOT_DIR, 'dist', genericFileName),
+  path.join(ROOT_DIR, 'dist', 'master_data.xlsx'),
+  path.join(ROOT_DIR, 'dist', 'namyangju_fms_all_data.xlsx')
 ];
 
 pathsToWrite.forEach(targetPath => {

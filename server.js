@@ -27,6 +27,9 @@ const MIME_TYPES = {
   '.woff2': 'font/woff2',
   '.woff': 'font/woff',
   '.ttf': 'font/ttf',
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.xls': 'application/vnd.ms-excel',
+  '.csv': 'text/csv; charset=utf-8',
 };
 
 // Get Server LAN IPs
@@ -226,14 +229,56 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 7-3. API: Dedicated Master Excel File Download
+  if (req.url.startsWith('/api/download-excel') || req.url.startsWith('/api/download/master-excel') || req.url.startsWith('/master_data.xlsx')) {
+    const candidates = [
+      path.resolve(__dirname, '남양주도시공사_시설본부_전체통합데이터.xlsx'),
+      path.resolve(DIST_DIR, '남양주도시공사_시설본부_전체통합데이터.xlsx'),
+      path.resolve(__dirname, 'master_data.xlsx')
+    ];
+    const targetFile = candidates.find(f => fs.existsSync(f));
+    if (targetFile) {
+      const stat = fs.statSync(targetFile);
+      const encodedFilename = encodeURIComponent('남양주도시공사_시설본부_전체통합데이터.xlsx');
+      res.writeHead(200, {
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Length': stat.size,
+        'Content-Disposition': `attachment; filename="namyangju_fms_all_data.xlsx"; filename*=UTF-8''${encodedFilename}`
+      });
+      fs.createReadStream(targetFile).pipe(res);
+      return;
+    }
+  }
+
   // 8. Static File Serving (dist)
-  let reqPath = req.url.split('?')[0];
+  let rawPath = req.url.split('?')[0];
+  let reqPath = rawPath;
+  try {
+    reqPath = decodeURIComponent(rawPath);
+  } catch (e) {
+    reqPath = rawPath;
+  }
   if (reqPath === '/') reqPath = '/index.html';
 
   let filePath = path.join(DIST_DIR, reqPath);
 
-  // If path doesn't exist or is a directory, fallback to index.html (SPA routing)
+  // If path doesn't exist in DIST_DIR, check in root if it's an excel or data file
+  if (!fs.existsSync(filePath) && (reqPath.endsWith('.xlsx') || reqPath.endsWith('.xls'))) {
+    const rootCandidate = path.join(__dirname, reqPath);
+    if (fs.existsSync(rootCandidate)) {
+      filePath = rootCandidate;
+    }
+  }
+
+  // If path doesn't exist or is a directory, handle SPA routing or 404
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    const ext = path.extname(reqPath).toLowerCase();
+    // Do NOT fallback to index.html if a specific file format was requested!
+    if (ext && ext !== '.html') {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('404 Not Found - 요청한 파일을 찾을 수 없습니다.');
+      return;
+    }
     filePath = path.join(DIST_DIR, 'index.html');
   }
 
@@ -241,14 +286,21 @@ const server = http.createServer((req, res) => {
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    // Cache control
+    // Headers
+    const headers = { 'Content-Type': contentType };
     if (ext === '.html') {
-      res.setHeader('Cache-Control', 'no-cache');
+      headers['Cache-Control'] = 'no-cache';
     } else {
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      headers['Cache-Control'] = 'public, max-age=31536000, immutable';
     }
 
-    res.writeHead(200, { 'Content-Type': contentType });
+    if (ext === '.xlsx' || ext === '.xls') {
+      const baseName = path.basename(filePath);
+      const encName = encodeURIComponent(baseName);
+      headers['Content-Disposition'] = `attachment; filename="export.xlsx"; filename*=UTF-8''${encName}`;
+    }
+
+    res.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(res);
   } else {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
