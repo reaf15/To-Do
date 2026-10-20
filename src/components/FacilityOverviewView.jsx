@@ -11,6 +11,7 @@ import {
   Hammer, 
   ExternalLink, 
   Sparkles, 
+  FolderOpen,
   ChevronRight, 
   CheckCircle2, 
   Clock, 
@@ -138,13 +139,112 @@ export default function FacilityOverviewView({
     <div className="space-y-6 mb-12 select-none animate-in fade-in duration-200">
       
       {/* ========================================================
-          1. FACILITY CURSOR BAR (부서별 관리 시설 선택 커서)
+          1. HEADER BAR: 부서 개요 + 시설 선택 커서 & 생성·관리 컨트롤 (바디 색상 일치 & 자동 줄바꿈)
          ======================================================== */}
-      <div className="bg-slate-900 rounded-2xl text-white p-3.5 sm:p-4 border border-slate-800 shadow-md flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin flex-1">
-          <span className="text-[11px] font-bold text-slate-400 mr-1 flex items-center gap-1 shrink-0">
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            시설 커서:
+      <div className="bg-white rounded-2xl text-slate-800 p-4 sm:p-5 border border-slate-200 shadow-sm space-y-4">
+        
+        {/* Top Header Row (자동 줄바꿈 flex-wrap) */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 flex-wrap">
+          
+          {/* Left: Department & Title */}
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 flex-wrap">
+              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-100 text-teal-700 border border-slate-200 font-bold">
+                <FolderOpen className="w-3.5 h-3.5 text-teal-600" />
+                시설본부
+              </span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-amber-800 font-extrabold px-2 py-0.5 rounded bg-amber-50 border border-amber-200">
+                {selectedDepartment}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2.5 pt-0.5">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 font-bold shadow-2xs shrink-0">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 flex-wrap">
+                  <span>부서별 시설 현황 및 개요</span>
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 font-extrabold">
+                    {deptFacilities.length}개 시설 관리
+                  </span>
+                </h2>
+                <p className="text-xs text-slate-500">
+                  부서에서 관할하는 대상 시설의 제원, 주요 설비 및 유지보수 공사 내역을 총괄 조회합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Header Facility Cursor (커서) & Management Controls (자동 줄바꿈 flex-wrap) */}
+          <div className="flex flex-wrap items-center gap-2 pt-2 lg:pt-0">
+            
+            {/* FACILITY CURSOR SELECTOR (헤더 시설 선택 커서) */}
+            <div className="flex items-center gap-2 bg-slate-50 border-2 border-teal-500/40 rounded-xl px-3 py-1.5 shadow-2xs">
+              <div className="flex items-center gap-1.5 text-xs font-black text-teal-700">
+                <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+                <span>시설 커서:</span>
+              </div>
+
+              <select
+                value={selectedFacilityId}
+                onChange={(e) => setSelectedFacilityId(e.target.value)}
+                className="bg-white text-slate-900 font-bold text-xs rounded-lg px-2.5 py-1 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 cursor-pointer max-w-[200px] truncate shadow-2xs"
+                title="조회할 시설을 선택하여 커서를 이동합니다"
+              >
+                <option value="ALL">🏢 전체 시설 개요 요약 ({deptFacilities.length}개소)</option>
+                {deptFacilities.map((fac) => (
+                  <option key={fac.id} value={fac.id}>
+                    📍 {fac.name} ({fac.category || '관리시설'})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* [+ 새 시설 등록] 버튼 */}
+            <button
+              onClick={handleOpenCreateModal}
+              title="현재 부서에 새로운 관리 대상 시설을 추가 등록합니다"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black bg-teal-600 hover:bg-teal-500 text-white shadow-xs transition active:scale-95 shrink-0"
+            >
+              <Plus className="w-4 h-4 stroke-[3]" />
+              <span>+ 새 시설 등록</span>
+            </button>
+
+            {/* [시설 관리/수정] 버튼 (선택된 시설이 있을 때 활성화) */}
+            {activeFacility && (
+              <button
+                onClick={handleOpenEditModal}
+                title={`선택된 '${activeFacility.name}' 시설의 제원 및 구역 정보를 수정하거나 삭제합니다`}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs shrink-0"
+              >
+                <Settings className="w-3.5 h-3.5 text-teal-600" />
+                <span>시설 관리/수정</span>
+              </button>
+            )}
+
+            {/* [공사 관리대장] 바로가기 */}
+            {onNavigateToTasks && (
+              <button
+                onClick={onNavigateToTasks}
+                title="시설·공사 관리대장(표 보기)으로 이동합니다"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs shrink-0"
+              >
+                <Hammer className="w-3.5 h-3.5 text-amber-600" />
+                <span className="hidden sm:inline">공사 관리대장</span>
+              </button>
+            )}
+
+          </div>
+
+        </div>
+
+        {/* Quick Facility Cursor Pill Carousel (바디 색상 일치 + 자동 줄바꿈 flex-wrap) */}
+        <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5">
+          <span className="text-[11px] font-bold text-slate-500 mr-1 flex items-center gap-1 shrink-0">
+            <Sparkles className="w-3 h-3 text-amber-500" />
+            빠른 커서 이동:
           </span>
 
           {/* ALL Pill */}
@@ -152,17 +252,17 @@ export default function FacilityOverviewView({
             onClick={() => setSelectedFacilityId('ALL')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1.5 border ${
               selectedFacilityId === 'ALL'
-                ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm font-black'
-                : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white'
+                ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-xs font-black'
+                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
             <span>전체 요약 보기</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900/60 font-extrabold">
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-200/80 font-extrabold text-slate-700">
               {deptFacilities.length}
             </span>
           </button>
 
-          {/* Individual Facility Pills */}
+          {/* Individual Facility Pills (줄바꿈 가능) */}
           {deptFacilities.map((fac) => {
             const facTaskCount = deptTasks.filter(t => t.facility === fac.name).length;
             const isSelected = selectedFacilityId === fac.id;
@@ -173,14 +273,14 @@ export default function FacilityOverviewView({
                 onClick={() => setSelectedFacilityId(fac.id)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1.5 border ${
                   isSelected
-                    ? 'bg-teal-600 text-white border-teal-400 shadow-md ring-2 ring-teal-400/30 font-black'
-                    : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white'
+                    ? 'bg-teal-600 text-white border-teal-600 shadow-sm font-black'
+                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
-                {isSelected && <span className="w-2 h-2 rounded-full bg-teal-300 animate-pulse" />}
+                {isSelected && <span className="w-2 h-2 rounded-full bg-teal-200 animate-pulse" />}
                 <span>{fac.name}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${
-                  isSelected ? 'bg-teal-900 text-teal-200' : 'bg-slate-900 text-slate-400'
+                  isSelected ? 'bg-teal-800 text-teal-100' : 'bg-slate-200 text-slate-600'
                 }`}>
                   {facTaskCount}건
                 </span>
@@ -192,12 +292,13 @@ export default function FacilityOverviewView({
           <button
             onClick={handleOpenCreateModal}
             title="새 관리 시설 추가"
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-teal-500 text-slate-950 hover:bg-teal-400 shadow-xs transition shrink-0 flex items-center gap-1 font-black"
+            className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 transition shrink-0 flex items-center gap-1 font-black"
           >
-            <Plus className="w-3.5 h-3.5 stroke-[3]" />
-            <span>+ 새 시설 등록</span>
+            <Plus className="w-3 h-3 stroke-[2.5]" />
+            <span>+ 시설 추가</span>
           </button>
         </div>
+
       </div>
 
 

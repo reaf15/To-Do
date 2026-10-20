@@ -1042,33 +1042,24 @@ export default function App() {
 
           {/* Module 2: 부서별 시설 현황 및 개요 */}
           {currentModule === 'facility-overview' && (
-            <>
-              {/* Organization Department Bar with Toggles & Actions */}
-              <OrgDepartmentBar
-                selectedDivision={selectedDivision}
-                selectedDepartment={selectedDepartment}
-                currentUser={currentUser}
-                onUserChange={handleUserChange}
-              />
-              <FacilityOverviewView
-                facilities={facilities}
-                selectedDepartment={selectedDepartment}
-                tasks={tasks}
-                onSaveFacility={handleSaveFacility}
-                onDeleteFacility={handleDeleteFacility}
-                onEditTask={(task) => {
-                  setEditingTask(task);
-                  setIsTaskModalOpen(true);
-                }}
-                onNewTaskForFacility={handleNewTaskForFacility}
-                onNavigateToTasks={() => {
-                  setCurrentModule('databases');
-                  setSelectedDbId('facility');
-                  setViewMode('table');
-                }}
-                currentUser={currentUser}
-              />
-            </>
+            <FacilityOverviewView
+              facilities={facilities}
+              selectedDepartment={selectedDepartment}
+              tasks={tasks}
+              onSaveFacility={handleSaveFacility}
+              onDeleteFacility={handleDeleteFacility}
+              onEditTask={(task) => {
+                setEditingTask(task);
+                setIsTaskModalOpen(true);
+              }}
+              onNewTaskForFacility={handleNewTaskForFacility}
+              onNavigateToTasks={() => {
+                setCurrentModule('databases');
+                setSelectedDbId('facility');
+                setViewMode('table');
+              }}
+              currentUser={currentUser}
+            />
           )}
 
           {/* Module 3: 업무 데이터베이스 (조직도 토글 및 하위 시설·공사 관리 통합) */}
