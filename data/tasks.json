@@ -923,7 +923,7 @@
     "title": "조명 각도 조정",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "",
+    "manager": "조현호",
     "status": "계약체결",
     "startDate": "2026-10-09",
     "endDate": "2026-10-16",
@@ -937,6 +937,11 @@
         "date": "2026-10-19",
         "author": "관리자",
         "message": "진행 상태를 [계약체결](으)로 변경"
+      },
+      {
+        "date": "2026-10-20",
+        "author": "관리자",
+        "message": "담당자를 [조현호](으)로 지정"
       }
     ]
   },

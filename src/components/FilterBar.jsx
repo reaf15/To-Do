@@ -35,8 +35,10 @@ export default function FilterBar({
   isMyTasksActive,
   onNewTask,
   onExportExcel,
-  budgetCategories = BUDGET_TYPES
+  budgetCategories = BUDGET_TYPES,
+  facilities = []
 }) {
+  const facilityList = facilities && facilities.length > 0 ? facilities : FACILITIES;
   return (
     <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm mb-6 space-y-3.5 no-print">
       
@@ -223,7 +225,7 @@ export default function FilterBar({
             className="w-full py-1.5 px-2.5 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium text-slate-700"
           >
             <option value="">전체 센터/시설</option>
-            {FACILITIES.map((f) => (
+            {facilityList.map((f) => (
               <option key={f} value={f}>
                 {f}
               </option>

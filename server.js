@@ -13,6 +13,7 @@ const DATA_FILE = path.resolve(__dirname, 'data/tasks.json');
 const DB_FILE = path.resolve(__dirname, 'data/custom_databases.json');
 const BUDGET_FILE = path.resolve(__dirname, 'data/budgets.json');
 const BUDGET_CATEGORIES_FILE = path.resolve(__dirname, 'data/budget_categories.json');
+const FACILITIES_FILE = path.resolve(__dirname, 'data/facilities.json');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -184,6 +185,37 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(BUDGET_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 7-1. API: GET facilities
+  if (req.url === '/api/facilities' && req.method === 'GET') {
+    if (fs.existsSync(FACILITIES_FILE)) {
+      const data = fs.readFileSync(FACILITIES_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({}));
+    }
+    return;
+  }
+
+  // 7-2. API: POST facilities (Save department facilities)
+  if (req.url === '/api/facilities' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(FACILITIES_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
       } catch (err) {

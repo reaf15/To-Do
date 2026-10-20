@@ -169,6 +169,39 @@ function taskStoragePlugin() {
           return
         }
 
+        // 10. GET facilities
+        if (req.url === '/api/facilities' && req.method === 'GET') {
+          const facFilePath = path.resolve(__dirname, 'data/facilities.json')
+          if (fs.existsSync(facFilePath)) {
+            const data = fs.readFileSync(facFilePath, 'utf-8')
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(data)
+          } else {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({}))
+          }
+          return
+        }
+
+        // 11. POST facilities
+        if (req.url === '/api/facilities' && req.method === 'POST') {
+          const facFilePath = path.resolve(__dirname, 'data/facilities.json')
+          let body = ''
+          req.on('data', chunk => { body += chunk })
+          req.on('end', () => {
+            try {
+              const parsed = JSON.parse(body)
+              fs.writeFileSync(facFilePath, JSON.stringify(parsed, null, 2), 'utf-8')
+              res.setHeader('Content-Type', 'application/json; charset=utf-8')
+              res.end(JSON.stringify({ success: true, updatedAt: Date.now() }))
+            } catch (err) {
+              res.statusCode = 500
+              res.end(JSON.stringify({ error: err.message }))
+            }
+          })
+          return
+        }
+
         next()
       })
     }

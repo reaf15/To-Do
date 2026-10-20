@@ -15,9 +15,11 @@ import ConnectStaffModal from './components/ConnectStaffModal';
 import DatabaseHub from './components/database/DatabaseHub';
 import LoginHistoryView from './components/LoginHistoryView';
 import OrgDepartmentBar from './components/OrgDepartmentBar';
+import FacilityOverviewView from './components/FacilityOverviewView';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
 import { INITIAL_LOGIN_HISTORY } from './data/initialLoginHistory';
+import { INITIAL_DEPARTMENT_FACILITIES } from './data/initialFacilities';
 import { 
   ORGANIZATION_TREE, 
   DEFAULT_DEPARTMENT, 
@@ -35,6 +37,32 @@ const LOCAL_STORAGE_HISTORY = 'nyj_login_history_v1';
 const LOCAL_STORAGE_SUBMISSIONS = 'nyj_submissions_status_v1';
 const LOCAL_STORAGE_BUDGETS = 'nyj_budget_allocations_v1';
 const LOCAL_STORAGE_BUDGET_CATEGORIES = 'nyj_budget_categories_v2';
+const LOCAL_STORAGE_FACILITIES = 'nyj_facilities_v1';
+
+export function flattenFacilities(data) {
+  if (Array.isArray(data)) return data;
+  if (data && typeof data === 'object') {
+    return Object.entries(data).flatMap(([dept, facList]) => {
+      if (Array.isArray(facList)) {
+        return facList.map(f => ({ ...f, department: f.department || dept }));
+      }
+      return [];
+    });
+  }
+  return [];
+}
+
+export function unflattenFacilities(facArray) {
+  const map = {};
+  if (Array.isArray(facArray)) {
+    facArray.forEach(f => {
+      const d = f.department || '남양주체육문화센터';
+      map[d] = map[d] || [];
+      map[d].push(f);
+    });
+  }
+  return map;
+}
 
 export const DEFAULT_BUDGET_CATEGORIES = ['수선유지비'];
 
@@ -152,6 +180,24 @@ export default function App() {
     return keys.length > 0 ? keys : ['수선유지비'];
   }, [currentDeptBudgets]);
 
+  // Facilities state with LocalStorage & Central Server API persistence
+  const [facilities, setFacilities] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_FACILITIES);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const flat = flattenFacilities(parsed);
+        if (flat.length > 0) return flat;
+      }
+    } catch (e) {}
+    return flattenFacilities(INITIAL_DEPARTMENT_FACILITIES);
+  });
+
+  // Current selected department's facilities
+  const currentDeptFacilities = useMemo(() => {
+    return facilities.filter(f => (f.department || '남양주체육문화센터') === selectedDepartment);
+  }, [facilities, selectedDepartment]);
+
   // Current persona / logged in user
   const [currentUser, setCurrentUser] = useState(() => {
     try {
@@ -258,6 +304,58 @@ export default function App() {
     } catch (e) {
       console.warn('Network sync for budgets failed, saved locally:', e.message);
     }
+  };
+
+  // Sync facilities to LocalStorage & Central Server API
+  const persistFacilities = async (newFacilities) => {
+    setFacilities(newFacilities);
+    try {
+      localStorage.setItem(LOCAL_STORAGE_FACILITIES, JSON.stringify(newFacilities));
+      const grouped = unflattenFacilities(newFacilities);
+      await fetch('/api/facilities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(grouped)
+      });
+    } catch (e) {
+      console.warn('Network sync for facilities failed, saved locally:', e.message);
+    }
+  };
+
+  // Handle create or update facility for a department
+  const handleSaveFacility = (facilityData, isEdit) => {
+    let updated;
+    if (isEdit) {
+      updated = facilities.map(f => f.id === facilityData.id ? facilityData : f);
+      showToast(`'${facilityData.name}' 시설 정보가 저장되었습니다.`);
+      addAuditLog(`시설 정보 수정: [${selectedDepartment}] ${facilityData.name}`);
+    } else {
+      updated = [...facilities, facilityData];
+      showToast(`'${facilityData.name}' 시설이 새로 등록되었습니다!`);
+      addAuditLog(`시설 신규 등록: [${selectedDepartment}] ${facilityData.name}`);
+    }
+    persistFacilities(updated);
+  };
+
+  // Handle delete facility
+  const handleDeleteFacility = (facilityId) => {
+    const target = facilities.find(f => f.id === facilityId);
+    const updated = facilities.filter(f => f.id !== facilityId);
+    persistFacilities(updated);
+    showToast(`'${target?.name || ''}' 시설이 삭제되었습니다.`, 'info');
+    addAuditLog(`시설 삭제: [${selectedDepartment}] ${target?.name || ''}`);
+  };
+
+  // Handle register a new task pre-filled with a specific facility
+  const handleNewTaskForFacility = (facilityName) => {
+    setEditingTask({
+      department: selectedDepartment,
+      facility: facilityName,
+      budget: currentDeptCategories[0] || '수선유지비',
+      status: '접수/대기',
+      manager: currentUser !== 'ALL' ? currentUser : ''
+    });
+    setIsTaskModalOpen(true);
   };
 
   // Add budget category to a specific department
@@ -444,6 +542,18 @@ export default function App() {
           }
         }
       } catch (e) {}
+
+      try {
+        const facRes = await fetch('/api/facilities');
+        if (facRes.ok) {
+          const remoteFacs = await facRes.json();
+          const flat = flattenFacilities(remoteFacs);
+          if (flat.length > 0) {
+            setFacilities(flat);
+            localStorage.setItem(LOCAL_STORAGE_FACILITIES, JSON.stringify(flat));
+          }
+        }
+      } catch (e) {}
     };
 
     fetchInitialData();
@@ -461,6 +571,23 @@ export default function App() {
               if (JSON.stringify(prev) !== JSON.stringify(latestCats)) {
                 localStorage.setItem(LOCAL_STORAGE_BUDGET_CATEGORIES, JSON.stringify(latestCats));
                 return latestCats;
+              }
+              return prev;
+            });
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const facRes = await fetch('/api/facilities');
+        if (facRes.ok) {
+          const latestFacs = await facRes.json();
+          const flat = flattenFacilities(latestFacs);
+          if (flat.length > 0) {
+            setFacilities(prev => {
+              if (JSON.stringify(prev) !== JSON.stringify(flat)) {
+                localStorage.setItem(LOCAL_STORAGE_FACILITIES, JSON.stringify(flat));
+                return flat;
               }
               return prev;
             });
@@ -881,6 +1008,7 @@ export default function App() {
         onOpenConnectModal={() => setIsConnectModalOpen(true)}
         currentUser={currentUser}
         tasksCount={departmentTasks.length}
+        facilitiesCount={currentDeptFacilities.length}
         serverInfo={serverInfo}
         submissionStats={submissionStats}
         submissionMap={submissionMap}
@@ -900,7 +1028,29 @@ export default function App() {
             />
           )}
 
-          {/* Module 2: 업무 데이터베이스 (조직도 토글 및 하위 시설·공사 관리 통합) */}
+          {/* Module 2: 부서별 시설 현황 및 개요 */}
+          {currentModule === 'facility-overview' && (
+            <FacilityOverviewView
+              facilities={facilities}
+              selectedDepartment={selectedDepartment}
+              tasks={tasks}
+              onSaveFacility={handleSaveFacility}
+              onDeleteFacility={handleDeleteFacility}
+              onEditTask={(task) => {
+                setEditingTask(task);
+                setIsTaskModalOpen(true);
+              }}
+              onNewTaskForFacility={handleNewTaskForFacility}
+              onNavigateToTasks={() => {
+                setCurrentModule('databases');
+                setSelectedDbId('facility');
+                setViewMode('table');
+              }}
+              currentUser={currentUser}
+            />
+          )}
+
+          {/* Module 3: 업무 데이터베이스 (조직도 토글 및 하위 시설·공사 관리 통합) */}
           {(currentModule === 'databases' || currentModule === 'facility') && (
             <>
               {/* Organization Department Bar with Toggles & Actions */}
@@ -957,6 +1107,7 @@ export default function App() {
                     }}
                     onExportExcel={handleExportExcel}
                     budgetCategories={currentDeptCategories}
+                    facilities={currentDeptFacilities.map(f => f.name)}
                   />
 
                   {/* Dynamic Views */}
@@ -1052,6 +1203,7 @@ export default function App() {
         selectedDepartment={selectedDepartment}
         currentUser={currentUser}
         budgetCategories={currentDeptCategories}
+        facilityOptions={currentDeptFacilities.map(f => f.name)}
       />
 
       {/* Messenger / KakaoTalk Share Modal */}

@@ -10,7 +10,8 @@ export default function TaskModal({
   task,
   editingTask,
   selectedDepartment = '남양주체육문화센터',
-  budgetCategories = BUDGET_TYPES
+  budgetCategories = BUDGET_TYPES,
+  facilityOptions = []
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
@@ -184,11 +185,17 @@ export default function TaskModal({
               </label>
               <input
                 type="text"
+                list="facility-options-list"
                 value={formData.facility}
                 onChange={(e) => setFormData({ ...formData, facility: e.target.value })}
                 placeholder="예: 남양주센터, 다목적체육관 등"
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
               />
+              <datalist id="facility-options-list">
+                {(facilityOptions && facilityOptions.length > 0 ? facilityOptions : FACILITIES).map((f) => (
+                  <option key={f} value={f} />
+                ))}
+              </datalist>
             </div>
 
             <div>

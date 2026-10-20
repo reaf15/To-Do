@@ -50,6 +50,7 @@ export default function Sidebar({
   onOpenConnectModal,
   currentUser,
   tasksCount = 0,
+  facilitiesCount = 0,
   serverInfo,
   submissionStats = { totalCount: 20, submittedCount: 1, unsubmittedCount: 19, rate: '5.0', submittedDepts: [], unsubmittedDepts: [] },
   submissionMap = {}
@@ -92,7 +93,9 @@ export default function Sidebar({
   const handleDeptSelect = (divId, deptName) => {
     if (onSelectDivision) onSelectDivision(divId);
     if (onSelectDepartment) onSelectDepartment(deptName);
-    onModuleChange('databases');
+    if (currentModule !== 'facility-overview') {
+      onModuleChange('databases');
+    }
     setIsDeptPickerOpen(false); // 부서 선택 후 나머지 부서들은 즉시 숨김!
   };
 
@@ -329,6 +332,26 @@ export default function Sidebar({
                   )}
                 </div>
 
+                {/* 2. 부서별 시설 현황 및 개요 */}
+                <div className="space-y-0.5 pt-1">
+                  <button
+                    onClick={() => {
+                      onModuleChange('facility-overview');
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition text-left ${
+                      currentModule === 'facility-overview'
+                        ? 'bg-teal-600 text-white shadow-sm'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                    }`}
+                  >
+                    <Building2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span className="truncate flex-1">부서별 시설 현황 및 개요</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900 text-amber-300 font-extrabold">
+                      {facilitiesCount}개소
+                    </span>
+                  </button>
+                </div>
+
               </div>
 
             </div>
@@ -348,6 +371,20 @@ export default function Sidebar({
                 }`}
               >
                 <Hammer className="w-5 h-5 text-teal-400" />
+              </button>
+
+              <button
+                onClick={() => {
+                  onModuleChange('facility-overview');
+                }}
+                title={`부서별 시설 현황 및 개요 (${selectedDepartment} - ${facilitiesCount}개소)`}
+                className={`w-full p-2.5 rounded-lg flex justify-center transition ${
+                  currentModule === 'facility-overview'
+                    ? 'bg-teal-600 text-white font-bold'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Building2 className="w-5 h-5 text-amber-400" />
               </button>
             </div>
           )}
