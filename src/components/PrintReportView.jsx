@@ -65,7 +65,7 @@ export default function PrintReportView({
           <div>
             <div className="text-xs font-bold text-teal-700 mb-1 flex items-center gap-1">
               <Building2 className="w-3.5 h-3.5" />
-              <span>남양주도시공사 남양주체육문화센터</span>
+              <span>남양주도시공사 시설관리 시스템</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               시설·수선유지 공사 추진 현황 보고서
