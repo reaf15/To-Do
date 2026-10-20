@@ -26,8 +26,10 @@ export default function Header({
   onModuleChange,
   dbCount,
   selectedDepartment,
-  selectedDbId
+  selectedDbId,
+  managers = MANAGERS
 }) {
+  const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   return (
     <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-30 no-print border-b border-slate-800">
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -71,7 +73,7 @@ export default function Header({
                 className="bg-transparent text-white font-medium focus:outline-none cursor-pointer border-none py-0"
               >
                 <option value="ALL" className="bg-slate-800 text-white">전체 보기 (관리자)</option>
-                {MANAGERS.map((m) => (
+                {activeManagers.map((m) => (
                   <option key={m} value={m} className="bg-slate-800 text-white">
                     {m} (담당)
                   </option>
@@ -155,7 +157,7 @@ export default function Header({
             className="bg-slate-900 text-white font-medium px-2 py-1 rounded border border-slate-700 text-xs"
           >
             <option value="ALL">전체 보기 (관리자)</option>
-            {MANAGERS.map((m) => (
+            {activeManagers.map((m) => (
               <option key={m} value={m}>
                 {m}
               </option>

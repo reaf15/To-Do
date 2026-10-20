@@ -17,10 +17,12 @@ import LoginHistoryView from './components/LoginHistoryView';
 import OrgDepartmentBar from './components/OrgDepartmentBar';
 import FacilityOverviewView from './components/FacilityOverviewView';
 import BackupRestoreView from './components/BackupRestoreView';
+import DepartmentManagersModal from './components/DepartmentManagersModal';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
 import { INITIAL_LOGIN_HISTORY } from './data/initialLoginHistory';
 import { INITIAL_DEPARTMENT_FACILITIES } from './data/initialFacilities';
+import { INITIAL_DEPARTMENT_MANAGERS } from './data/initialDepartmentManagers';
 import { 
   ORGANIZATION_TREE, 
   DEFAULT_DEPARTMENT, 
@@ -39,6 +41,7 @@ const LOCAL_STORAGE_SUBMISSIONS = 'nyj_submissions_status_v1';
 const LOCAL_STORAGE_BUDGETS = 'nyj_budget_allocations_v1';
 const LOCAL_STORAGE_BUDGET_CATEGORIES = 'nyj_budget_categories_v2';
 const LOCAL_STORAGE_FACILITIES = 'nyj_facilities_v1';
+const LOCAL_STORAGE_DEPT_MANAGERS = 'nyj_dept_managers_v1';
 
 export function flattenFacilities(data) {
   if (Array.isArray(data)) return data;
@@ -199,6 +202,29 @@ export default function App() {
     return facilities.filter(f => (f.department || '남양주체육문화센터') === selectedDepartment);
   }, [facilities, selectedDepartment]);
 
+  // Department Managers state with LocalStorage & Central Server API persistence
+  const [departmentManagers, setDepartmentManagers] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_DEPT_MANAGERS);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) {
+          return { ...INITIAL_DEPARTMENT_MANAGERS, ...parsed };
+        }
+      }
+    } catch (e) {}
+    return INITIAL_DEPARTMENT_MANAGERS;
+  });
+
+  // Current selected department's active managers list
+  const currentDeptManagers = useMemo(() => {
+    const list = departmentManagers[selectedDepartment];
+    if (Array.isArray(list) && list.length > 0) return list;
+    return INITIAL_DEPARTMENT_MANAGERS[selectedDepartment] || ['담당자1', '담당자2'];
+  }, [departmentManagers, selectedDepartment]);
+
+  const [isDeptManagersModalOpen, setIsDeptManagersModalOpen] = useState(false);
+
   // Current persona / logged in user
   const [currentUser, setCurrentUser] = useState(() => {
     try {
@@ -345,6 +371,27 @@ export default function App() {
     persistFacilities(updated);
     showToast(`'${target?.name || ''}' 시설이 삭제되었습니다.`, 'info');
     addAuditLog(`시설 삭제: [${selectedDepartment}] ${target?.name || ''}`);
+  };
+
+  // Sync department managers to LocalStorage & Central Server API
+  const persistDepartmentManagers = async (newMap) => {
+    setDepartmentManagers(newMap);
+    try {
+      localStorage.setItem(LOCAL_STORAGE_DEPT_MANAGERS, JSON.stringify(newMap));
+      await fetch('/api/department-managers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newMap)
+      });
+    } catch (e) {
+      console.warn('Network sync for department-managers failed, saved locally:', e.message);
+    }
+  };
+
+  const handleSaveDepartmentManagers = async (updatedMap) => {
+    await persistDepartmentManagers(updatedMap);
+    showToast(`부서별 담당자 정보가 성공적으로 저장되었습니다.`, 'success');
+    addAuditLog(`[부서 담당자 변경] ${selectedDepartment} 등 부서별 담당자 목록 업데이트`);
   };
 
   // Handle register a new task pre-filled with a specific facility
@@ -555,6 +602,18 @@ export default function App() {
           }
         }
       } catch (e) {}
+
+      try {
+        const mgrRes = await fetch('/api/department-managers');
+        if (mgrRes.ok) {
+          const remoteMgrs = await mgrRes.json();
+          if (remoteMgrs && typeof remoteMgrs === 'object' && Object.keys(remoteMgrs).length > 0) {
+            const merged = { ...INITIAL_DEPARTMENT_MANAGERS, ...remoteMgrs };
+            setDepartmentManagers(merged);
+            localStorage.setItem(LOCAL_STORAGE_DEPT_MANAGERS, JSON.stringify(merged));
+          }
+        }
+      } catch (e) {}
     };
 
     fetchInitialData();
@@ -563,12 +622,13 @@ export default function App() {
   // Global refresh function called after restore or bulk operations
   const refreshAllData = async () => {
     try {
-      const [tasksRes, dbRes, budgetRes, catRes, facRes] = await Promise.all([
+      const [tasksRes, dbRes, budgetRes, catRes, facRes, mgrRes] = await Promise.all([
         fetch('/api/tasks'),
         fetch('/api/databases'),
         fetch('/api/budgets'),
         fetch('/api/budget-categories'),
-        fetch('/api/facilities')
+        fetch('/api/facilities'),
+        fetch('/api/department-managers')
       ]);
 
       if (tasksRes.ok) {
@@ -612,6 +672,15 @@ export default function App() {
           localStorage.setItem(LOCAL_STORAGE_FACILITIES, JSON.stringify(flat));
         }
       }
+
+      if (mgrRes && mgrRes.ok) {
+        const remoteMgrs = await mgrRes.json();
+        if (remoteMgrs && typeof remoteMgrs === 'object' && Object.keys(remoteMgrs).length > 0) {
+          const merged = { ...INITIAL_DEPARTMENT_MANAGERS, ...remoteMgrs };
+          setDepartmentManagers(merged);
+          localStorage.setItem(LOCAL_STORAGE_DEPT_MANAGERS, JSON.stringify(merged));
+        }
+      }
     } catch (e) {
       console.error('refreshAllData error:', e);
     }
@@ -620,6 +689,22 @@ export default function App() {
   // Real-time synchronization polling (every 4 seconds)
   useEffect(() => {
     const pollInterval = setInterval(async () => {
+      try {
+        const mgrRes = await fetch('/api/department-managers');
+        if (mgrRes.ok) {
+          const latestMgrs = await mgrRes.json();
+          if (latestMgrs && typeof latestMgrs === 'object' && Object.keys(latestMgrs).length > 0) {
+            setDepartmentManagers(prev => {
+              if (JSON.stringify(prev) !== JSON.stringify(latestMgrs)) {
+                localStorage.setItem(LOCAL_STORAGE_DEPT_MANAGERS, JSON.stringify(latestMgrs));
+                return { ...INITIAL_DEPARTMENT_MANAGERS, ...latestMgrs };
+              }
+              return prev;
+            });
+          }
+        }
+      } catch (e) {}
+
       try {
         const catRes = await fetch('/api/budget-categories');
         if (catRes.ok) {
@@ -1139,6 +1224,8 @@ export default function App() {
                 selectedDepartment={selectedDepartment}
                 currentUser={currentUser}
                 onUserChange={handleUserChange}
+                managers={currentDeptManagers}
+                onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
@@ -1189,6 +1276,7 @@ export default function App() {
                     onExportAllExcel={handleExportAllExcel}
                     budgetCategories={currentDeptCategories}
                     facilities={currentDeptFacilities.map(f => f.name)}
+                    managers={currentDeptManagers}
                   />
 
                   {/* Dynamic Views */}
@@ -1202,6 +1290,7 @@ export default function App() {
                       onDeleteTask={handleDeleteTask}
                       onQuickStatusChange={handleQuickStatusChange}
                       onQuickManagerChange={handleQuickManagerChange}
+                      managers={currentDeptManagers}
                     />
                   )}
 
@@ -1242,6 +1331,9 @@ export default function App() {
                         setIsTaskModalOpen(true);
                       }}
                       onQuickManagerChange={handleQuickManagerChange}
+                      managers={currentDeptManagers}
+                      selectedDepartment={selectedDepartment}
+                      onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
                     />
                   )}
 
@@ -1285,6 +1377,16 @@ export default function App() {
         currentUser={currentUser}
         budgetCategories={currentDeptCategories}
         facilityOptions={currentDeptFacilities.map(f => f.name)}
+        managers={currentDeptManagers}
+      />
+
+      {/* Department Managers Modal */}
+      <DepartmentManagersModal
+        isOpen={isDeptManagersModalOpen}
+        onClose={() => setIsDeptManagersModalOpen(false)}
+        departmentManagers={departmentManagers}
+        selectedDepartment={selectedDepartment}
+        onSaveManagers={handleSaveDepartmentManagers}
       />
 
       {/* Messenger / KakaoTalk Share Modal */}

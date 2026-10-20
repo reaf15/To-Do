@@ -39,9 +39,11 @@ export default function FilterBar({
   onExportExcel,
   onExportAllExcel,
   budgetCategories = BUDGET_TYPES,
-  facilities = []
+  facilities = [],
+  managers = MANAGERS
 }) {
   const facilityList = facilities && facilities.length > 0 ? facilities : FACILITIES;
+  const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   const [isExcelMenuOpen, setIsExcelMenuOpen] = useState(false);
   const excelMenuRef = useRef(null);
 
@@ -325,7 +327,7 @@ export default function FilterBar({
             className="w-full py-1.5 px-2.5 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium text-slate-700"
           >
             <option value="">전체 담당자</option>
-            {MANAGERS.map((m) => (
+            {activeManagers.map((m) => (
               <option key={m} value={m}>
                 {m}
               </option>

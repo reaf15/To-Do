@@ -14,6 +14,7 @@ const FACILITIES_FILE = path.resolve(DATA_DIR, 'facilities.json');
 const BUDGETS_FILE = path.resolve(DATA_DIR, 'budgets.json');
 const BUDGET_CATEGORIES_FILE = path.resolve(DATA_DIR, 'budget_categories.json');
 const CUSTOM_DB_FILE = path.resolve(DATA_DIR, 'custom_databases.json');
+const DEPT_MANAGERS_FILE = path.resolve(DATA_DIR, 'department_managers.json');
 
 // Ensure backup dir exists
 if (!fs.existsSync(BACKUP_DIR)) {
@@ -45,6 +46,7 @@ export function getCurrentLiveData() {
   const budgets = fs.existsSync(BUDGETS_FILE) ? JSON.parse(fs.readFileSync(BUDGETS_FILE, 'utf-8')) : {};
   const budgetCategories = fs.existsSync(BUDGET_CATEGORIES_FILE) ? JSON.parse(fs.readFileSync(BUDGET_CATEGORIES_FILE, 'utf-8')) : [];
   const customDatabases = fs.existsSync(CUSTOM_DB_FILE) ? JSON.parse(fs.readFileSync(CUSTOM_DB_FILE, 'utf-8')) : [];
+  const departmentManagers = fs.existsSync(DEPT_MANAGERS_FILE) ? JSON.parse(fs.readFileSync(DEPT_MANAGERS_FILE, 'utf-8')) : {};
 
   // Count facilities
   let facCount = 0;
@@ -66,10 +68,12 @@ export function getCurrentLiveData() {
     budgets,
     budgetCategories,
     customDatabases,
+    departmentManagers,
     summary: {
       tasksCount: tasks.length,
       facilitiesCount: facCount,
       budgetsCount: Object.keys(budgets).length,
+      departmentManagersCount: Object.keys(departmentManagers).length,
       totalEstimatedCost: totalCost
     }
   };
@@ -112,7 +116,8 @@ export function createSnapshot({ type = 'daily', note = '' } = {}) {
       facilities: live.facilities,
       budgets: live.budgets,
       budgetCategories: live.budgetCategories,
-      customDatabases: live.customDatabases
+      customDatabases: live.customDatabases,
+      departmentManagers: live.departmentManagers
     }
   };
 
@@ -304,7 +309,7 @@ export function restoreBackup(backupSource) {
     throw new Error('올바른 백업 파일 형식이 아닙니다 (data 필드 부재).');
   }
 
-  const { tasks, facilities, budgets, budgetCategories, customDatabases } = payload.data;
+  const { tasks, facilities, budgets, budgetCategories, customDatabases, departmentManagers } = payload.data;
 
   // 1. CREATE PRE-RESTORE SAFETY CHECKPOINT FIRST!
   const checkpoint = createSnapshot({
@@ -331,6 +336,10 @@ export function restoreBackup(backupSource) {
 
   if (Array.isArray(customDatabases)) {
     fs.writeFileSync(CUSTOM_DB_FILE, JSON.stringify(customDatabases, null, 2), 'utf-8');
+  }
+
+  if (departmentManagers && typeof departmentManagers === 'object') {
+    fs.writeFileSync(DEPT_MANAGERS_FILE, JSON.stringify(departmentManagers, null, 2), 'utf-8');
   }
 
   // 3. REGENERATE MASTER EXCEL

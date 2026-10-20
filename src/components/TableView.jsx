@@ -67,8 +67,10 @@ export default function TableView({
   onEditTask,
   onDeleteTask,
   onQuickStatusChange,
-  onQuickManagerChange
+  onQuickManagerChange,
+  managers = MANAGERS
 }) {
+  const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   const [sortField, setSortField] = useState('id');
   const [sortAsc, setSortAsc] = useState(true);
   const [copiedId, setCopiedId] = useState(null);
@@ -1076,7 +1078,7 @@ export default function TableView({
                           }`}
                         >
                           <option value="">미정</option>
-                          {MANAGERS.map((m) => (
+                          {Array.from(new Set([...activeManagers, ...(t.manager ? [t.manager] : [])])).map((m) => (
                             <option key={m} value={m}>{m}</option>
                           ))}
                         </select>

@@ -11,10 +11,16 @@ export default function TaskModal({
   editingTask,
   selectedDepartment = '남양주체육문화센터',
   budgetCategories = BUDGET_TYPES,
-  facilityOptions = []
+  facilityOptions = [],
+  managers = MANAGERS
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
+  const baseManagers = managers && managers.length > 0 ? managers : MANAGERS;
+  const activeManagers = Array.from(new Set([
+    ...baseManagers,
+    ...(formData?.manager ? [formData.manager] : [])
+  ]));
 
   const [formData, setFormData] = useState({
     department: selectedDepartment,
@@ -279,7 +285,7 @@ export default function TaskModal({
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
               >
                 <option value="">미정 (선택안함)</option>
-                {MANAGERS.map((m) => (
+                {activeManagers.map((m) => (
                   <option key={m} value={m}>{m}</option>
                 ))}
               </select>

@@ -27,10 +27,12 @@ export default function TaskDetailDrawer({
   onEdit,
   onAddLog,
   currentUser,
-  onQuickStatusChange
+  onQuickStatusChange,
+  managers = MANAGERS
 }) {
+  const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   const [newLogMessage, setNewLogMessage] = useState('');
-  const [logAuthor, setLogAuthor] = useState(currentUser !== 'ALL' ? currentUser : '김일호');
+  const [logAuthor, setLogAuthor] = useState(currentUser !== 'ALL' ? currentUser : (activeManagers[0] || '관리자'));
   const [copiedShare, setCopiedShare] = useState(false);
 
   if (!isOpen || !task) return null;
@@ -263,7 +265,7 @@ export default function TaskDetailDrawer({
                   onChange={(e) => setLogAuthor(e.target.value)}
                   className="bg-white border border-slate-300 rounded px-2 py-0.5 text-[11px] font-semibold"
                 >
-                  {MANAGERS.map((m) => (
+                  {activeManagers.map((m) => (
                     <option key={m} value={m}>{m} (작성자)</option>
                   ))}
                   <option value="관리자">관리자</option>
