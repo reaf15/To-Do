@@ -441,7 +441,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "시설비(야구장)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "성인야구장 관람석 보수",
@@ -917,7 +917,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "시설비(파크골프장)",
     "facility": "파크골프",
     "location": "",
     "title": "조명 각도 조정",

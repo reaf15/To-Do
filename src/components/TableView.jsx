@@ -992,7 +992,8 @@ export default function TableView({
                 return (
                   <tr 
                     key={t.id}
-                    onClick={() => onSelectTask(t)}
+                    onClick={() => onEditTask && onEditTask(t)}
+                    title="클릭하여 공사 정보 수정"
                     className="hover:bg-teal-50/40 cursor-pointer transition group"
                   >
                     {/* Number */}
@@ -1123,23 +1124,16 @@ export default function TableView({
                     <td className="py-2.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-center gap-1">
                         <button
-                          onClick={() => onSelectTask(t)}
-                          title="상세보기 & 일지"
-                          className="p-1 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded transition"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-                        <button
                           onClick={() => onEditTask(t)}
-                          title="수정"
-                          className="p-1 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded transition"
+                          title="공사 정보 수정"
+                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => onDeleteTask(t.id, t.title)}
                           title="삭제"
-                          className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition"
+                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>

@@ -9,7 +9,6 @@ import FacilityView from './components/FacilityView';
 import StaffView from './components/StaffView';
 import CalendarView from './components/CalendarView';
 import TaskModal from './components/TaskModal';
-import TaskDetailDrawer from './components/TaskDetailDrawer';
 import MessengerShareModal from './components/MessengerShareModal';
 import PrintReportView from './components/PrintReportView';
 import ConnectStaffModal from './components/ConnectStaffModal';
@@ -964,7 +963,6 @@ export default function App() {
                   {viewMode === 'table' && (
                     <TableView
                       tasks={filteredTasks}
-                      onSelectTask={(task) => setSelectedTask(task)}
                       onEditTask={(task) => {
                         setEditingTask(task);
                         setIsTaskModalOpen(true);
@@ -978,7 +976,10 @@ export default function App() {
                   {viewMode === 'kanban' && (
                     <KanbanView
                       tasks={filteredTasks}
-                      onSelectTask={(task) => setSelectedTask(task)}
+                      onSelectTask={(task) => {
+                        setEditingTask(task);
+                        setIsTaskModalOpen(true);
+                      }}
                       onQuickStatusChange={handleQuickStatusChange}
                       onNewTask={() => {
                         setEditingTask(null);
@@ -990,7 +991,10 @@ export default function App() {
                   {viewMode === 'facility' && (
                     <FacilityView
                       tasks={filteredTasks}
-                      onSelectTask={(task) => setSelectedTask(task)}
+                      onSelectTask={(task) => {
+                        setEditingTask(task);
+                        setIsTaskModalOpen(true);
+                      }}
                       onNewTask={() => {
                         setEditingTask(null);
                         setIsTaskModalOpen(true);
@@ -1001,7 +1005,10 @@ export default function App() {
                   {viewMode === 'staff' && (
                     <StaffView
                       tasks={filteredTasks}
-                      onSelectTask={(task) => setSelectedTask(task)}
+                      onSelectTask={(task) => {
+                        setEditingTask(task);
+                        setIsTaskModalOpen(true);
+                      }}
                       onQuickManagerChange={handleQuickManagerChange}
                     />
                   )}
@@ -1009,7 +1016,10 @@ export default function App() {
                   {viewMode === 'calendar' && (
                     <CalendarView
                       tasks={filteredTasks}
-                      onSelectTask={(task) => setSelectedTask(task)}
+                      onSelectTask={(task) => {
+                        setEditingTask(task);
+                        setIsTaskModalOpen(true);
+                      }}
                       onEditTask={(task) => {
                         setEditingTask(task);
                         setIsTaskModalOpen(true);
@@ -1042,23 +1052,6 @@ export default function App() {
         selectedDepartment={selectedDepartment}
         currentUser={currentUser}
         budgetCategories={currentDeptCategories}
-      />
-
-      {/* Task Detail & Staff Log Drawer */}
-      <TaskDetailDrawer
-        task={selectedTask}
-        isOpen={Boolean(selectedTask)}
-        onClose={() => setSelectedTask(null)}
-        onEdit={(task) => {
-          setEditingTask(task);
-          setIsTaskModalOpen(true);
-        }}
-        onDelete={(id, title) => {
-          handleDeleteTask(id, title);
-          setSelectedTask(null);
-        }}
-        onAddLog={handleAddLog}
-        currentUser={currentUser}
       />
 
       {/* Messenger / KakaoTalk Share Modal */}
