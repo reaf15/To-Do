@@ -3,6 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { fileURLToPath } from 'url';
+import { 
+  createSnapshot, 
+  listBackups, 
+  restoreBackup, 
+  startAutoBackupSchedule 
+} from './backupManager.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -250,6 +256,93 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // 7-4. API: GET /api/backups (List all backups)
+  if (req.url === '/api/backups' && req.method === 'GET') {
+    try {
+      const list = listBackups();
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(list));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
+  // 7-5. API: POST /api/backups/create (Create new snapshot)
+  if (req.url === '/api/backups/create' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = body ? JSON.parse(body) : {};
+        const result = createSnapshot({
+          type: parsed.type || 'manual',
+          note: parsed.note || '사용자 수동 백업'
+        });
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify(result));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 7-6. API: POST /api/backups/restore (Restore from backup)
+  if (req.url === '/api/backups/restore' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        const source = parsed.fileName || parsed.backupData;
+        if (!source) {
+          throw new Error('복구할 대상 백업 파일명(fileName) 또는 데이터가 없습니다.');
+        }
+        const result = restoreBackup(source);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify(result));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 7-7. API: GET /api/backups/download?file=... (Download backup file)
+  if (req.url.startsWith('/api/backups/download') && req.method === 'GET') {
+    const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const file = urlObj.searchParams.get('file');
+    if (!file || file.includes('..') || file.includes('/') || file.includes('\\')) {
+      res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('잘못된 백업 파일 요청입니다.');
+      return;
+    }
+    const target = path.resolve(__dirname, 'data/backups', file);
+    if (fs.existsSync(target)) {
+      const stat = fs.statSync(target);
+      const ext = path.extname(target).toLowerCase();
+      const contentType = ext === '.xlsx'
+        ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        : 'application/json; charset=utf-8';
+      const enc = encodeURIComponent(file);
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Content-Length': stat.size,
+        'Content-Disposition': `attachment; filename="${enc}"; filename*=UTF-8''${enc}`
+      });
+      fs.createReadStream(target).pipe(res);
+      return;
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('백업 파일을 찾을 수 없습니다.');
+      return;
+    }
+  }
+
   // 8. Static File Serving (dist)
   let rawPath = req.url.split('?')[0];
   let reqPath = rawPath;
@@ -318,4 +411,7 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log(`  ▶ 다른 직원 접속:    http://${ip}:${PORT}`);
   });
   console.log('================================================================');
+
+  // Start automated daily backup schedule
+  startAutoBackupSchedule();
 });

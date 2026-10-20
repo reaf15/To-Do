@@ -16,6 +16,7 @@ import DatabaseHub from './components/database/DatabaseHub';
 import LoginHistoryView from './components/LoginHistoryView';
 import OrgDepartmentBar from './components/OrgDepartmentBar';
 import FacilityOverviewView from './components/FacilityOverviewView';
+import BackupRestoreView from './components/BackupRestoreView';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
 import { INITIAL_LOGIN_HISTORY } from './data/initialLoginHistory';
@@ -559,6 +560,63 @@ export default function App() {
     fetchInitialData();
   }, []);
 
+  // Global refresh function called after restore or bulk operations
+  const refreshAllData = async () => {
+    try {
+      const [tasksRes, dbRes, budgetRes, catRes, facRes] = await Promise.all([
+        fetch('/api/tasks'),
+        fetch('/api/databases'),
+        fetch('/api/budgets'),
+        fetch('/api/budget-categories'),
+        fetch('/api/facilities')
+      ]);
+
+      if (tasksRes.ok) {
+        const remoteTasks = await tasksRes.json();
+        if (Array.isArray(remoteTasks)) {
+          setTasks(remoteTasks);
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(remoteTasks));
+        }
+      }
+
+      if (dbRes.ok) {
+        const remoteDbs = await dbRes.json();
+        if (Array.isArray(remoteDbs)) {
+          const filtered = remoteDbs.filter(d => d.id !== 'db-equipment' && d.id !== 'db-vehicles');
+          setCustomDatabases(filtered);
+          localStorage.setItem(LOCAL_STORAGE_DBS, JSON.stringify(filtered));
+        }
+      }
+
+      if (budgetRes.ok) {
+        const remoteBudgets = await budgetRes.json();
+        if (remoteBudgets && typeof remoteBudgets === 'object') {
+          setBudgets(remoteBudgets);
+          localStorage.setItem(LOCAL_STORAGE_BUDGETS, JSON.stringify(remoteBudgets));
+        }
+      }
+
+      if (catRes.ok) {
+        const remoteCats = await catRes.json();
+        if (Array.isArray(remoteCats)) {
+          setBudgetCategories(remoteCats);
+          localStorage.setItem(LOCAL_STORAGE_BUDGET_CATEGORIES, JSON.stringify(remoteCats));
+        }
+      }
+
+      if (facRes.ok) {
+        const remoteFacs = await facRes.json();
+        const flat = flattenFacilities(remoteFacs);
+        if (flat.length > 0) {
+          setFacilities(flat);
+          localStorage.setItem(LOCAL_STORAGE_FACILITIES, JSON.stringify(flat));
+        }
+      }
+    } catch (e) {
+      console.error('refreshAllData error:', e);
+    }
+  };
+
   // Real-time synchronization polling (every 4 seconds)
   useEffect(() => {
     const pollInterval = setInterval(async () => {
@@ -1038,6 +1096,15 @@ export default function App() {
             <LoginHistoryView
               history={loginHistory}
               onRefresh={() => addAuditLog('로그인이력 새로고침 조회')}
+            />
+          )}
+
+          {/* Module 1-B: 시스템관리 > 데이터 백업 및 복구 안전 센터 */}
+          {currentModule === 'backup-restore' && (
+            <BackupRestoreView
+              onRefreshAllData={refreshAllData}
+              addAuditLog={addAuditLog}
+              currentUser={currentUser}
             />
           )}
 

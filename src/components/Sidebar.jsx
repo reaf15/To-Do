@@ -447,6 +447,19 @@ export default function Sidebar({
               </button>
 
               <button
+                onClick={() => onModuleChange('backup-restore')}
+                title="시스템관리 > 데이터 백업 및 복구 관리"
+                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
+                  currentModule === 'backup-restore'
+                    ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+                }`}
+              >
+                <Database className="w-4 h-4 shrink-0 text-amber-400" />
+                {!isCollapsed && <span className="truncate">데이터 백업 및 복구</span>}
+              </button>
+
+              <button
                 onClick={onOpenConnectModal}
                 title="사내망 공유 및 호스트 IP 확인"
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 transition"
