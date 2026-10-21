@@ -388,9 +388,83 @@ export default function App() {
     }
   };
 
-  const handleSaveDepartmentManagers = async (updatedMap) => {
+  const handleSaveDepartmentManagers = async (updatedMap, explicitRenames = []) => {
+    const prevMap = { ...INITIAL_DEPARTMENT_MANAGERS, ...departmentManagers };
+    const deptReplacementMap = {};
+
+    // 1. Apply explicit inline renames from DepartmentManagersModal
+    if (Array.isArray(explicitRenames)) {
+      explicitRenames.forEach(({ dept, oldName, newName }) => {
+        if (!dept || !oldName || !newName) return;
+        if (!deptReplacementMap[dept]) deptReplacementMap[dept] = {};
+        deptReplacementMap[dept][oldName] = newName;
+      });
+    }
+
+    // 2. Detect positional or 1-to-1 replacements per department
+    Object.keys(updatedMap).forEach((dept) => {
+      const oldList = prevMap[dept] || [];
+      const newList = updatedMap[dept] || [];
+      if (!deptReplacementMap[dept]) deptReplacementMap[dept] = {};
+
+      const removed = oldList.filter((m) => !newList.includes(m));
+      const added = newList.filter((m) => !oldList.includes(m));
+
+      if (removed.length === 1 && added.length === 1) {
+        deptReplacementMap[dept][removed[0]] = added[0];
+      } else if (oldList.length === newList.length) {
+        oldList.forEach((oldM, idx) => {
+          const newM = newList[idx];
+          if (oldM !== newM && !newList.includes(oldM) && !oldList.includes(newM)) {
+            deptReplacementMap[dept][oldM] = newM;
+          }
+        });
+      }
+    });
+
+    // 3. Cascade manager updates to tasks so '담당자 업무 현황' stays in sync
+    let tasksChanged = false;
+    const syncedTasks = tasks.map((t) => {
+      const dept = t.department || '남양주체육문화센터';
+      const newList = updatedMap[dept] || [];
+      const replacements = deptReplacementMap[dept] || {};
+      if (!t.manager) return t;
+
+      if (replacements[t.manager]) {
+        tasksChanged = true;
+        return { ...t, manager: replacements[t.manager] };
+      }
+      if (newList.length > 0 && !newList.includes(t.manager)) {
+        tasksChanged = true;
+        return { ...t, manager: '' };
+      }
+      return t;
+    });
+
+    if (tasksChanged) {
+      persistTasks(syncedTasks);
+    }
+
+    // 4. Sync currentUser and selectedManager filter if affected in selectedDepartment
+    const currentDeptReplacements = deptReplacementMap[selectedDepartment] || {};
+    const currentDeptNewList = updatedMap[selectedDepartment] || [];
+    if (currentUser !== 'ALL') {
+      if (currentDeptReplacements[currentUser]) {
+        handleUserChange(currentDeptReplacements[currentUser]);
+      } else if (currentDeptNewList.length > 0 && !currentDeptNewList.includes(currentUser)) {
+        handleUserChange('ALL');
+      }
+    }
+    if (selectedManager && selectedManager !== 'unassigned') {
+      if (currentDeptReplacements[selectedManager]) {
+        setSelectedManager(currentDeptReplacements[selectedManager]);
+      } else if (currentDeptNewList.length > 0 && !currentDeptNewList.includes(selectedManager)) {
+        setSelectedManager('');
+      }
+    }
+
     await persistDepartmentManagers(updatedMap);
-    showToast(`부서별 담당자 정보가 성공적으로 저장되었습니다.`, 'success');
+    showToast(`부서별 담당자 정보 및 업무 현황이 업데이트되었습니다.`, 'success');
     addAuditLog(`[부서 담당자 변경] ${selectedDepartment} 등 부서별 담당자 목록 업데이트`);
   };
 
@@ -1249,6 +1323,8 @@ export default function App() {
                     onAddCategory={handleAddDeptCategory}
                     onRenameCategory={handleRenameDeptCategory}
                     onDeleteCategory={handleDeleteDeptCategory}
+                    managers={currentDeptManagers}
+                    onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
                   />
 
                   {/* Filter and View mode Toolbar */}

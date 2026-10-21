@@ -1068,13 +1068,15 @@ export default function TableView({
                           value={t.manager || ''}
                           onChange={(e) => onQuickManagerChange(t.id, e.target.value)}
                           className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer ${
-                            t.manager === '김일호'
+                            !t.manager
+                              ? 'bg-slate-50 text-slate-400 border-slate-200'
+                              : activeManagers.indexOf(t.manager) === 0
                               ? 'bg-teal-50 text-teal-700 border-teal-200'
-                              : t.manager === '권병학'
+                              : activeManagers.indexOf(t.manager) === 1
                               ? 'bg-blue-50 text-blue-700 border-blue-200'
-                              : t.manager === '조현호'
+                              : activeManagers.indexOf(t.manager) === 2
                               ? 'bg-purple-50 text-purple-700 border-purple-200'
-                              : 'bg-slate-50 text-slate-400 border-slate-200'
+                              : 'bg-indigo-50 text-indigo-700 border-indigo-200'
                           }`}
                         >
                           <option value="">미정</option>

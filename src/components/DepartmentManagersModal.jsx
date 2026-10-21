@@ -30,6 +30,7 @@ export default function DepartmentManagersModal({
   const [newManagerName, setNewManagerName] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingName, setEditingName] = useState('');
+  const [renamedList, setRenamedList] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -41,6 +42,7 @@ export default function DepartmentManagersModal({
       setActiveDept(selectedDepartment || '남양주체육문화센터');
       setNewManagerName('');
       setEditingIndex(null);
+      setRenamedList([]);
       setErrorMsg('');
       setSuccessMsg('');
     }
@@ -106,12 +108,16 @@ export default function DepartmentManagersModal({
       return;
     }
 
+    const oldName = currentList[index];
     const updatedList = [...currentList];
     updatedList[index] = trimmed;
     setLocalManagersMap(prev => ({
       ...prev,
       [activeDept]: updatedList
     }));
+    if (oldName && oldName !== trimmed) {
+      setRenamedList(prev => [...prev, { dept: activeDept, oldName, newName: trimmed }]);
+    }
     setEditingIndex(null);
     setEditingName('');
     setErrorMsg('');
@@ -148,7 +154,7 @@ export default function DepartmentManagersModal({
   const handleSaveAll = async () => {
     try {
       if (onSaveManagers) {
-        await onSaveManagers(localManagersMap);
+        await onSaveManagers(localManagersMap, renamedList);
       }
       setSuccessMsg('담당자 정보가 성공적으로 저장되었습니다.');
       setTimeout(() => {

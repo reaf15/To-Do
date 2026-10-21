@@ -27,7 +27,9 @@ export default function StatsCards({
   budgetCategories = ['수선유지비'],
   onAddCategory,
   onRenameCategory,
-  onDeleteCategory
+  onDeleteCategory,
+  managers = ['김일호', '권병학', '조현호'],
+  onOpenDeptManagersModal
 }) {
   const totalCount = tasks.length;
   
@@ -91,10 +93,18 @@ export default function StatsCards({
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   // Manager workload (Card 4: 담당자 업무 현황) for this department
-  const kimCount = tasks.filter((t) => t.manager === '김일호').length;
-  const kwonCount = tasks.filter((t) => t.manager === '권병학').length;
-  const choCount = tasks.filter((t) => t.manager === '조현호').length;
-  const unassignedCount = tasks.filter((t) => !t.manager).length;
+  const activeManagers = Array.isArray(managers) && managers.length > 0
+    ? managers
+    : ['김일호', '권병학', '조현호'];
+  const unassignedCount = tasks.filter((t) => !t.manager || !activeManagers.includes(t.manager)).length;
+  const managerColors = [
+    { text: 'text-teal-600', hover: 'hover:bg-teal-50' },
+    { text: 'text-blue-600', hover: 'hover:bg-blue-50' },
+    { text: 'text-purple-600', hover: 'hover:bg-purple-50' },
+    { text: 'text-indigo-600', hover: 'hover:bg-indigo-50' },
+    { text: 'text-emerald-600', hover: 'hover:bg-emerald-50' },
+    { text: 'text-amber-600', hover: 'hover:bg-amber-50' }
+  ];
 
   // Handle inline quick amount edit on Card 2
   const handleStartInlineEdit = () => {
@@ -337,41 +347,50 @@ export default function StatsCards({
         {/* ======================================================== */}
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              담당자 업무 현황
-            </span>
-            <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                담당자 업무 현황
+              </span>
+              {onOpenDeptManagersModal && (
+                <button
+                  onClick={onOpenDeptManagersModal}
+                  className="p-1 rounded-md text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition"
+                  title="부서 담당자 관리 (추가/수정/삭제)"
+                >
+                  <Pencil className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+            <div
+              onClick={onOpenDeptManagersModal}
+              className={`w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center ${
+                onOpenDeptManagersModal ? 'cursor-pointer hover:bg-purple-100 transition' : ''
+              }`}
+              title="부서 담당자 관리"
+            >
               <Users className="w-4 h-4" />
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-1 text-center mt-1">
-            <div 
-              onClick={() => onFilterClick && onFilterClick('김일호')}
-              className="p-1.5 rounded-lg bg-slate-50 hover:bg-teal-50 cursor-pointer transition border border-slate-100"
-              title="김일호 담당 공사 필터링"
-            >
-              <div className="text-[11px] font-bold text-slate-700">김일호</div>
-              <div className="text-base font-extrabold text-teal-600">{kimCount}</div>
-            </div>
-
-            <div 
-              onClick={() => onFilterClick && onFilterClick('권병학')}
-              className="p-1.5 rounded-lg bg-slate-50 hover:bg-teal-50 cursor-pointer transition border border-slate-100"
-              title="권병학 담당 공사 필터링"
-            >
-              <div className="text-[11px] font-bold text-slate-700">권병학</div>
-              <div className="text-base font-extrabold text-blue-600">{kwonCount}</div>
-            </div>
-
-            <div 
-              onClick={() => onFilterClick && onFilterClick('조현호')}
-              className="p-1.5 rounded-lg bg-slate-50 hover:bg-teal-50 cursor-pointer transition border border-slate-100"
-              title="조현호 담당 공사 필터링"
-            >
-              <div className="text-[11px] font-bold text-slate-700">조현호</div>
-              <div className="text-base font-extrabold text-purple-600">{choCount}</div>
-            </div>
+          <div
+            className="grid gap-1 text-center mt-1"
+            style={{ gridTemplateColumns: `repeat(${Math.min(activeManagers.length + 1, 6)}, minmax(0, 1fr))` }}
+          >
+            {activeManagers.map((managerName, idx) => {
+              const count = tasks.filter((t) => t.manager === managerName).length;
+              const colorObj = managerColors[idx % managerColors.length];
+              return (
+                <div
+                  key={managerName}
+                  onClick={() => onFilterClick && onFilterClick(managerName)}
+                  className={`p-1.5 rounded-lg bg-slate-50 ${colorObj.hover} cursor-pointer transition border border-slate-100`}
+                  title={`${managerName} 담당 공사 필터링`}
+                >
+                  <div className="text-[11px] font-bold text-slate-700 truncate">{managerName}</div>
+                  <div className={`text-base font-extrabold ${colorObj.text}`}>{count}</div>
+                </div>
+              );
+            })}
 
             <div 
               onClick={() => onFilterClick && onFilterClick('unassigned')}

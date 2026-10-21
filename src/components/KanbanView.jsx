@@ -181,13 +181,15 @@ export default function KanbanView({
                       {/* Footer: Manager & Step Action Buttons */}
                       <div className="flex items-center justify-between pt-1 text-[11px]">
                         <span className={`px-1.5 py-0.5 rounded font-bold ${
-                          t.manager === '김일호'
+                          !t.manager
+                            ? 'bg-slate-100 text-slate-400'
+                            : t.manager === '김일호'
                             ? 'bg-teal-50 text-teal-700'
                             : t.manager === '권병학'
                             ? 'bg-blue-50 text-blue-700'
                             : t.manager === '조현호'
                             ? 'bg-purple-50 text-purple-700'
-                            : 'bg-slate-100 text-slate-400'
+                            : 'bg-teal-50 text-teal-700'
                         }`}>
                           {t.manager ? `@${t.manager}` : '미정'}
                         </span>

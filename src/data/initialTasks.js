@@ -41,6 +41,56 @@ export const STATUS_COLORS = {
 
 export const INITIAL_TASKS = [
   {
+    "department": "와부체육문화센터",
+    "budget": "운영경비",
+    "facility": "와부센터",
+    "location": "2층 남자 체온실",
+    "title": "체온실 바닥타일 보수",
+    "estimatedCost": 950000,
+    "estimatedCostNote": "",
+    "manager": "김수관",
+    "status": "견적방문",
+    "startDate": "2026-11-08",
+    "endDate": "2026-11-08",
+    "quoteAmount": 880000,
+    "contractAmount": 880000,
+    "vendor": "삼현",
+    "memo": "",
+    "id": "TASK-1792547947875",
+    "logs": [
+      {
+        "date": "2026-10-21",
+        "author": "김수관",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-21",
+        "author": "김일호",
+        "message": "진행 상태를 [접수/대기](으)로 변경"
+      },
+      {
+        "date": "2026-10-21",
+        "author": "김일호",
+        "message": "진행 상태를 [검토중](으)로 변경"
+      },
+      {
+        "date": "2026-10-21",
+        "author": "김일호",
+        "message": "진행 상태를 [견적의뢰](으)로 변경"
+      },
+      {
+        "date": "2026-10-21",
+        "author": "김일호",
+        "message": "진행 상태를 [견적방문](으)로 변경"
+      },
+      {
+        "date": "2026-10-21",
+        "author": "관리자",
+        "message": "담당자 지정 해제"
+      }
+    ]
+  },
+  {
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
@@ -125,7 +175,7 @@ export const INITIAL_TASKS = [
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "안전사고 예방을 위한 화단 안전 펜스 난간대 ���치",
+    "memo": "안전사고 예방을 위한 화단 안전 펜스 난간대 설치",
     "logs": [],
     "startDate": "2026-10-05",
     "endDate": "2026-10-12",
@@ -371,7 +421,7 @@ export const INITIAL_TASKS = [
       {
         "date": "2026-10-15",
         "author": "조현호",
-        "message": "현장 실측 완료. 견적서 금주 내 제출 ���정"
+        "message": "현장 실측 완료. 견적서 금주 내 제출 예정"
       },
       {
         "date": "2026-10-19",
@@ -430,9 +480,9 @@ export const INITIAL_TASKS = [
     "status": "견적의뢰",
     "quoteAmount": null,
     "contractAmount": null,
-    "vendor": "서��전력",
+    "vendor": "서진전력",
     "contact": "010-9175-7701",
-    "memo": "야구장 메��할라이드 투광기 점검 및 불량 안정기/램프 ���� / 야외공연장 조명탑 공사와 동시 진행",
+    "memo": "야구장 메탈할라이드 투광기 점검 및 불량 안정기/램프 교체 / 야외공연장 조명탑 공사와 동시 진행",
     "id": "TASK-15",
     "logs": [
       {
@@ -482,7 +532,7 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "시설비(야구장)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "성인야구장 관람석 보수",
@@ -759,7 +809,7 @@ export const INITIAL_TASKS = [
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "컨퍼런스룸 음향·조명 콘���트 추가 및 장애인 체육관 조명 컨트롤러 정비",
+    "memo": "컨퍼런스룸 음향·조명 콘센트 추가 및 장애인 체육관 조명 컨트롤러 정비",
     "logs": [
       {
         "date": "2026-10-14",
@@ -820,7 +870,7 @@ export const INITIAL_TASKS = [
     ],
     "startDate": "2026-10-17",
     "endDate": "2026-10-26",
-    "department": "남양주체���문화센터"
+    "department": "남양주체육문화센터"
   },
   {
     "id": "TASK-30",
@@ -879,7 +929,7 @@ export const INITIAL_TASKS = [
     "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
-    "title": "장애인체육관 에어 컴푸레서 설치",
+    "title": "장애인체육관 에어 컴프레서 설치",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
@@ -912,7 +962,7 @@ export const INITIAL_TASKS = [
     "logs": [
       {
         "date": "2026-10-14",
-        "author": "권���학",
+        "author": "권병학",
         "message": "도색 도료 및 스토퍼 8개 구매 품의 준비"
       }
     ],
@@ -958,13 +1008,13 @@ export const INITIAL_TASKS = [
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "시설비(파크골프장)",
     "facility": "파크골프",
     "location": "",
     "title": "조명 각도 조정",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "",
+    "manager": "조현호",
     "status": "계약체결",
     "startDate": "2026-10-09",
     "endDate": "2026-10-16",
@@ -978,6 +1028,11 @@ export const INITIAL_TASKS = [
         "date": "2026-10-19",
         "author": "관리자",
         "message": "진행 상태를 [계약체결](으)로 변경"
+      },
+      {
+        "date": "2026-10-20",
+        "author": "관리자",
+        "message": "담당자를 [조현호](으)로 지정"
       }
     ]
   },
@@ -987,10 +1042,10 @@ export const INITIAL_TASKS = [
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
     "location": "지하 수영장",
-    "title": "수영장 여과기 여재(활��탄·모래) 전면 교체",
+    "title": "수영장 여과기 여재(활성탄·모래) 전면 교체",
     "estimatedCost": 14500000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "정다은",
     "status": "계약체결",
     "quoteAmount": 13800000,
     "contractAmount": 13500000,
@@ -1015,7 +1070,7 @@ export const INITIAL_TASKS = [
     "title": "헬스장 프리웨이트존 고무블럭 바닥 교체",
     "estimatedCost": 4800000,
     "estimatedCostNote": "",
-    "manager": "권병학",
+    "manager": "강현우",
     "status": "견적의뢰",
     "startDate": "2026-10-21",
     "endDate": "2026-10-24",
@@ -1032,10 +1087,10 @@ export const INITIAL_TASKS = [
     "budget": "수선유지비",
     "facility": "오남체육문화센터",
     "location": "지하 기계실",
-    "title": "기계실 배수펌프 2기 ���후 교체 및 제어반 점검",
+    "title": "기계실 배수펌프 2기 노후 교체 및 제어반 점검",
     "estimatedCost": 6500000,
     "estimatedCostNote": "",
-    "manager": "조현호",
+    "manager": "한지훈",
     "status": "공사진행",
     "quoteAmount": 6200000,
     "contractAmount": 6000000,
@@ -1046,7 +1101,7 @@ export const INITIAL_TASKS = [
       {
         "date": "2026-10-15",
         "author": "조현호",
-        "message": "1호��� 펌프 안착 완료"
+        "message": "1호기 펌프 안착 완료"
       }
     ],
     "startDate": "2026-10-15",
@@ -1058,14 +1113,14 @@ export const INITIAL_TASKS = [
     "budget": "수선유지비",
     "facility": "진접체육문화센터",
     "location": "수영장 풀장",
-    "title": "수영장 바닥 및 벽면 타일 박��구간 긴급 보수",
+    "title": "수영장 바닥 및 벽면 타일 박리구간 긴급 보수",
     "estimatedCost": 5200000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "오세훈",
     "status": "완료",
     "quoteAmount": 4900000,
     "contractAmount": 4800000,
-    "vendor": "신일타���",
+    "vendor": "신일타일",
     "contact": "010-7712-4450",
     "memo": "이용객 발 끼임 방지 긴급 수중 본드 타일 보수 완료",
     "logs": [
@@ -1086,14 +1141,14 @@ export const INITIAL_TASKS = [
     "title": "다목적실 시스템에어컨 실외기 팬 모터 교체",
     "estimatedCost": 3800000,
     "estimatedCostNote": "",
-    "manager": "권병학",
+    "manager": "배성민",
     "status": "공사진행",
     "startDate": "2026-10-19",
     "endDate": "2026-10-31",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "겨울철 난방 가동 대비 실외��� 2호기 팬 모터 이상 소음 점검",
+    "memo": "겨울철 난방 가동 대비 실외기 2호기 팬 모터 이상 소음 점검",
     "id": "TASK-PN-01",
     "logs": []
   },
@@ -1106,7 +1161,7 @@ export const INITIAL_TASKS = [
     "title": "승강장 안전발판(안전갭) 보수 및 경고등 설치",
     "estimatedCost": 19500000,
     "estimatedCostNote": "",
-    "manager": "조현호",
+    "manager": "장민석",
     "status": "계약체결",
     "quoteAmount": 18500000,
     "contractAmount": 18000000,
@@ -1116,7 +1171,7 @@ export const INITIAL_TASKS = [
     "logs": [
       {
         "date": "2026-10-14",
-        "author": "조현���",
+        "author": "조현호",
         "message": "자재 검수 및 야간 차단작업 계획 수립"
       }
     ],
@@ -1132,7 +1187,7 @@ export const INITIAL_TASKS = [
     "title": "전동차 객실 냉난방 공기정화 필터 전면 교체",
     "estimatedCost": 8500000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "김태호",
     "status": "공사진행",
     "quoteAmount": 8100000,
     "contractAmount": 7900000,
@@ -1152,7 +1207,7 @@ export const INITIAL_TASKS = [
     "title": "공영주차장 출차 차단기 및 루프코일 센서 교체",
     "estimatedCost": 5500000,
     "estimatedCostNote": "",
-    "manager": "권병학",
+    "manager": "정원석",
     "status": "견적의뢰",
     "quoteAmount": 5100000,
     "contractAmount": null,
@@ -1169,16 +1224,16 @@ export const INITIAL_TASKS = [
     "budget": "수선유지비",
     "facility": "에코랜드운영부",
     "location": "주민편익시설",
-    "title": "에코랜드 수영장 ��수보일러 세관 ��� 버너 노즐 교체",
+    "title": "에코랜드 수영장 온수보일러 세관 및 버너 노즐 교체",
     "estimatedCost": 11000000,
     "estimatedCostNote": "",
-    "manager": "조현호",
+    "manager": "조영택",
     "status": "검토중",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "동절기 난방 및 온수 효율 제고를 위�� 주기적 보일러 세관 공사",
+    "memo": "동절기 난방 및 온수 효율 제고를 위한 주기적 보일러 세관 공사",
     "logs": [],
     "startDate": "2026-10-07",
     "endDate": "2026-10-15"
@@ -1192,7 +1247,7 @@ export const INITIAL_TASKS = [
     "title": "어린이 안전 벽면쿠션 전면 교체 및 바닥 매트 보수",
     "estimatedCost": 7500000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "박보검",
     "status": "계약체결",
     "quoteAmount": 7100000,
     "contractAmount": 6900000,
@@ -1208,17 +1263,17 @@ export const INITIAL_TASKS = [
     "department": "남양주시청소년수련관",
     "budget": "수선유지비",
     "facility": "남양주시청소년수련관",
-    "location": "���하 대강당",
+    "location": "지하 대강당",
     "title": "대강당 무대 조명 제어반 콘솔 및 LED 스포트라이트 보수",
     "estimatedCost": 6800000,
     "estimatedCostNote": "",
-    "manager": "권병학",
+    "manager": "문소연",
     "status": "견적방문",
     "quoteAmount": 6500000,
     "contractAmount": null,
     "vendor": "한빛무대음향",
     "contact": "010-8899-1234",
-    "memo": "청소년 축제 대비 노후 조명 콘솔 점검 및 ���명기기 수리",
+    "memo": "청소년 축제 대비 노후 조명 콘솔 점검 및 조명기기 수리",
     "logs": [],
     "startDate": "2026-10-11",
     "endDate": "2026-10-21"
@@ -1232,7 +1287,7 @@ export const INITIAL_TASKS = [
     "title": "별내 수영장 오버풀 트렌치 그레이팅 전면 교체",
     "estimatedCost": 8200000,
     "estimatedCostNote": "",
-    "manager": "조현호",
+    "manager": "윤서준",
     "status": "공사진행",
     "quoteAmount": 7800000,
     "contractAmount": 7600000,
@@ -1249,10 +1304,10 @@ export const INITIAL_TASKS = [
     "budget": "수선유지비",
     "facility": "별내커뮤니티센터",
     "location": "지하주차장",
-    "title": "지하주차��� LED 고효율 조명 및 디밍 시스템 설치",
+    "title": "지하주차장 LED 고효율 조명 및 디밍 시스템 설치",
     "estimatedCost": 12000000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "윤서준",
     "status": "견적의뢰",
     "quoteAmount": 11200000,
     "contractAmount": null,
@@ -1266,25 +1321,30 @@ export const INITIAL_TASKS = [
   {
     "id": "TASK-WB-01",
     "department": "와부체육문화센터",
-    "budget": "수선유지비",
+    "budget": "운영경비",
     "facility": "와부체육문화센터",
     "location": "다목적체육관",
     "title": "다목적체육관 마루 샌딩 및 우레탄 라인마킹",
     "estimatedCost": 18000000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "",
     "status": "공사진행",
     "quoteAmount": 16800000,
     "contractAmount": 16500000,
     "vendor": "성진플로어",
     "contact": "010-5231-9981",
-    "memo": "체육관 ���루 샌딩 공사 진행 중 (주말 작업)",
-    "logs": [],
+    "memo": "체육관 마루 샌딩 공사 진행 중 (주말 작업)",
+    "logs": [
+      {
+        "date": "2026-10-21",
+        "author": "관리자",
+        "message": "담당자 지정 해제"
+      }
+    ],
     "startDate": "2026-10-17",
     "endDate": "2026-10-22"
   },
   {
-    "id": "TASK-WB-02",
     "department": "와부체육문화센터",
     "budget": "수선유지비",
     "facility": "와부체육문화센터",
@@ -1292,27 +1352,38 @@ export const INITIAL_TASKS = [
     "title": "옥상 냉각탑 소음 저감장치 및 방음벽 설치",
     "estimatedCost": 11500000,
     "estimatedCostNote": "",
-    "manager": "권병학",
+    "manager": "송영진",
     "status": "검토중",
+    "startDate": "2026-10-19",
+    "endDate": "2026-10-25",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "인근 주민 소음 민원 해소를 위한 소음기 설치 검토",
-    "logs": [],
-    "startDate": "2026-10-19",
-    "endDate": "2026-10-25"
+    "id": "TASK-WB-02",
+    "logs": [
+      {
+        "date": "2026-10-21",
+        "author": "김일호",
+        "message": "진행 상태를 [견적방문](으)로 변경"
+      },
+      {
+        "date": "2026-10-21",
+        "author": "김일호",
+        "message": "진행 상태를 [검토중](으)로 변경"
+      }
+    ]
   },
   {
     "id": "TASK-HD-01",
     "department": "화도체육문화센터",
-    "budget": "수선유지비",
+    "budget": "운영경비",
     "facility": "화도체육문화센터",
     "location": "수영장 샤워실",
-    "title": "수영장 샤���실 온수탱크 배관 및 감압밸브 교체",
+    "title": "수영장 샤워실 온수탱크 배관 및 감압밸브 교체",
     "estimatedCost": 7200000,
     "estimatedCostNote": "",
-    "manager": "조현호",
+    "manager": "최민우",
     "status": "견적방문",
     "quoteAmount": 6900000,
     "contractAmount": null,
@@ -1326,13 +1397,13 @@ export const INITIAL_TASKS = [
   {
     "id": "TASK-HD-02",
     "department": "화도체육문화센터",
-    "budget": "수선유지비",
+    "budget": "운영경비",
     "facility": "화도체육문화센터",
     "location": "야외주차장",
     "title": "야외주차장 카스토퍼 및 노면 차선 도색 공사",
     "estimatedCost": 4500000,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "김민현",
     "status": "접수/대기",
     "quoteAmount": null,
     "contractAmount": null,
