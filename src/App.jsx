@@ -1386,6 +1386,7 @@ export default function App() {
                       onQuickManagerChange={handleQuickManagerChange}
                       managers={currentDeptManagers}
                       facilities={currentDeptFacilities.map(f => f.name)}
+                      budgetCategories={currentDeptCategories}
                     />
                   )}
 
