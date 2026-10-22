@@ -453,6 +453,30 @@
       "floorCount": "",
       "buildingArea": "",
       "totalFloorArea": ""
+    },
+    {
+      "id": "fac-1792656154742-32bag",
+      "department": "남양주체육문화센터",
+      "name": "성인야구장",
+      "fullName": "성인야구장",
+      "category": "종합체육시설",
+      "location": "",
+      "completionDate": "",
+      "landArea": "",
+      "facilityArea": "",
+      "floorCount": "",
+      "buildingArea": "",
+      "totalFloorArea": "",
+      "scale": "",
+      "majorFacilities": "",
+      "manager": "",
+      "contact": "",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
     }
   ],
   "호평체육문화센터": [

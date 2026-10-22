@@ -97,9 +97,9 @@ export default function TableView({
   const [isBudgetColDropdownOpen, setIsBudgetColDropdownOpen] = useState(false);
   const [isStatusColDropdownOpen, setIsStatusColDropdownOpen] = useState(false);
 
-  // Row filters state (budgets & statuses support multi-select of 2 or more items)
+  // Row filters state (budget is single-select, statuses is multi-select)
   const INITIAL_ROW_FILTERS = {
-    budgets: [],
+    budget: '',
     statuses: [],
     facility: '',
     location: '',
@@ -128,7 +128,7 @@ export default function TableView({
   // Active filter count
   const activeRowFilterCount = useMemo(() => {
     let count = 0;
-    if (Array.isArray(rowFilters.budgets)) count += rowFilters.budgets.length;
+    if (rowFilters.budget) count++;
     if (Array.isArray(rowFilters.statuses)) count += rowFilters.statuses.length;
     if (rowFilters.facility) count++;
     if (rowFilters.location.trim()) count++;
@@ -144,14 +144,14 @@ export default function TableView({
   // Row filtering logic
   const rowFilteredTasks = useMemo(() => {
     return tasks.filter((t) => {
-      // Multi-select Budget filter (2개 이상 선택 시 OR 조건으로 매칭)
-      if (Array.isArray(rowFilters.budgets) && rowFilters.budgets.length > 0) {
-        if (!rowFilters.budgets.includes(t.budget)) return false;
+      // Single-select Budget filter (중복 없이 1개만 선택)
+      if (rowFilters.budget && t.budget !== rowFilters.budget) {
+        return false;
       }
 
       // Multi-select Status filter (2개 이상 선택 시 OR 조건으로 매칭)
       if (Array.isArray(rowFilters.statuses) && rowFilters.statuses.length > 0) {
-        const taskStatus = t.status || '접수/대기';
+        const taskStatus = t.status || '검토';
         if (!rowFilters.statuses.includes(taskStatus)) return false;
       }
 
@@ -213,16 +213,12 @@ export default function TableView({
     setRowFilters(INITIAL_ROW_FILTERS);
   };
 
-  // Multi-select toggle for Budget item
+  // Single-select toggle for Budget item (중복 없이 1개만 선택, 재클릭 시 해제)
   const handleToggleBudgetFilter = (budgetItem) => {
-    setRowFilters((prev) => {
-      const current = Array.isArray(prev.budgets) ? prev.budgets : [];
-      const exists = current.includes(budgetItem);
-      return {
-        ...prev,
-        budgets: exists ? current.filter((b) => b !== budgetItem) : [...current, budgetItem]
-      };
-    });
+    setRowFilters((prev) => ({
+      ...prev,
+      budget: prev.budget === budgetItem ? '' : budgetItem
+    }));
   };
 
   // Multi-select toggle for Status item
@@ -481,7 +477,7 @@ export default function TableView({
 
       </div>
 
-      {/* 2. Row Filter Multi-Select Chips (예산 & 진행 다중 선택) */}
+      {/* 2. Row Filter Chips (예산 단일 선택 & 진행 다중 선택) */}
       <div className="bg-white border-b border-slate-200 px-4 py-2.5 flex flex-col gap-2 text-xs">
         
         {/* Top sub-row: Title, Reset/All button, Budget Chips, and Row Count */}
@@ -489,7 +485,7 @@ export default function TableView({
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1 mr-1">
               <Filter className="w-3.5 h-3.5 text-teal-600" />
-              행 필터 <span className="text-[10px] font-normal text-slate-400">(다중선택 가능)</span>:
+              행 필터:
             </span>
 
             <button
@@ -506,12 +502,12 @@ export default function TableView({
 
             <span className="text-slate-300 mx-0.5">|</span>
 
-            {/* Budget Multi-Select Chips */}
+            {/* Budget Single-Select Chips (중복 없이 1개만 선택) */}
             <span className="text-[11px] font-extrabold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
               💰 예산
             </span>
             {uniqueBudgets.map((b) => {
-              const isSelected = (rowFilters.budgets || []).includes(b);
+              const isSelected = rowFilters.budget === b;
               const count = tasks.filter((t) => t.budget === b).length;
               return (
                 <button
@@ -523,7 +519,7 @@ export default function TableView({
                       ? 'bg-cyan-600 text-white border-cyan-600 shadow-xs'
                       : 'bg-cyan-50/60 hover:bg-cyan-100 text-cyan-900 border-cyan-200'
                   }`}
-                  title={`예산 [${b}] 필터 추가/해제 (다중 선택 가능)`}
+                  title={`예산 [${b}] 선택 (클릭 시 선택, 재클릭 시 전체)`}
                 >
                   {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                   <span>{b}</span>
@@ -554,10 +550,10 @@ export default function TableView({
           </div>
         </div>
 
-        {/* Second sub-row: Progress/Status Multi-Select Chips */}
+        {/* Second sub-row: Progress/Status Multi-Select Chips (검토, 설계, 진행, 완료) */}
         <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-slate-100">
           <span className="text-[11px] font-extrabold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 mr-0.5">
-            ⚡ 진행
+            ⚡ 진행 <span className="text-[10px] font-normal text-indigo-600">(다중선택 가능)</span>
           </span>
 
           <button
@@ -568,7 +564,7 @@ export default function TableView({
                 ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
                 : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200'
             }`}
-            title="완료 제외 모든 미완료 진행 상태 일괄 선택/해제"
+            title="완료 제외 모든 미완료(검토, 설계, 진행) 상태 일괄 선택/해제"
           >
             {isAllUnfinishedSelected && <Check className="w-3 h-3 stroke-[3]" />}
             <span>🚨 미완료 전체</span>
@@ -579,7 +575,7 @@ export default function TableView({
 
           {STATUS_LIST.map((s) => {
             const isSelected = (rowFilters.statuses || []).includes(s);
-            const count = tasks.filter((t) => (t.status || '접수/대기') === s).length;
+            const count = tasks.filter((t) => (t.status || '검토') === s).length;
             const style = STATUS_COLORS[s] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200' };
             return (
               <button
@@ -612,10 +608,16 @@ export default function TableView({
             <Filter className="w-3 h-3 text-amber-600" />
             적용 조건 ({activeRowFilterCount}개):
           </span>
-          {(rowFilters.budgets || []).map((b) => (
-            <span key={`budget-${b}`} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-900 border border-cyan-300 text-[11px] shadow-2xs">
-              예산: <strong>{b}</strong>
-              <button type="button" onClick={() => handleToggleBudgetFilter(b)} className="text-cyan-500 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
+          {rowFilters.budget && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-900 border border-cyan-300 text-[11px] shadow-2xs">
+              예산: <strong>{rowFilters.budget}</strong>
+              <button type="button" onClick={() => setRowFilters(p => ({ ...p, budget: '' }))} className="text-cyan-500 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
+            </span>
+          )}
+          {(rowFilters.statuses || []).map((s) => (
+            <span key={`status-${s}`} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-50 text-teal-900 border border-teal-300 text-[11px] shadow-2xs">
+              진행: <strong>{s}</strong>
+              <button type="button" onClick={() => handleToggleStatusFilter(s)} className="text-teal-500 hover:text-rose-600 ml-0.5"><X className="w-3 h-3" /></button>
             </span>
           ))}
           {(rowFilters.statuses || []).map((s) => (
@@ -807,69 +809,21 @@ export default function TableView({
                     </div>
                   </th>
 
-                  {/* budget (multi-select dropdown) */}
+                  {/* budget (single-select dropdown: 1개만 선택) */}
                   {visibleColumns.includes('budget') && (
-                    <th scope="col" className="py-1.5 px-2 font-normal relative">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsBudgetColDropdownOpen(!isBudgetColDropdownOpen);
-                          setIsStatusColDropdownOpen(false);
-                        }}
-                        className={`w-full text-[11px] px-2 py-1 rounded border transition font-medium flex items-center justify-between gap-1 ${
-                          (rowFilters.budgets || []).length > 0
-                            ? 'border-teal-500 bg-teal-50 text-teal-900 font-bold'
-                            : 'border-slate-300 bg-white text-slate-700'
+                    <th scope="col" className="py-1.5 px-2 font-normal">
+                      <select
+                        value={rowFilters.budget}
+                        onChange={(e) => setRowFilters({ ...rowFilters, budget: e.target.value })}
+                        className={`w-full text-[11px] px-1.5 py-1 rounded border transition font-medium focus:outline-none focus:ring-1 focus:ring-teal-500 ${
+                          rowFilters.budget ? 'border-teal-500 bg-teal-50 text-teal-900 font-bold' : 'border-slate-300 bg-white text-slate-700'
                         }`}
                       >
-                        <span className="truncate">
-                          {(rowFilters.budgets || []).length === 0
-                            ? '전체 예산'
-                            : (rowFilters.budgets || []).length === 1
-                            ? rowFilters.budgets[0]
-                            : `예산 ${rowFilters.budgets.length}개`}
-                        </span>
-                        <span className="text-[9px] text-slate-400">▼</span>
-                      </button>
-
-                      {isBudgetColDropdownOpen && (
-                        <>
-                          <div className="fixed inset-0 z-30" onClick={() => setIsBudgetColDropdownOpen(false)} />
-                          <div className="absolute left-1 top-full mt-1 w-48 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-40 text-xs">
-                            <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-slate-100">
-                              <span className="font-bold text-slate-700 text-[11px]">예산 다중 선택</span>
-                              {(rowFilters.budgets || []).length > 0 && (
-                                <button
-                                  type="button"
-                                  onClick={() => setRowFilters(p => ({ ...p, budgets: [] }))}
-                                  className="text-[10px] text-rose-600 font-bold hover:underline"
-                                >
-                                  선택해제
-                                </button>
-                              )}
-                            </div>
-                            <div className="space-y-1 max-h-48 overflow-y-auto">
-                              {uniqueBudgets.map((b) => {
-                                const checked = (rowFilters.budgets || []).includes(b);
-                                return (
-                                  <label
-                                    key={b}
-                                    className="flex items-center gap-2 px-2 py-1 rounded hover:bg-slate-50 cursor-pointer"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={checked}
-                                      onChange={() => handleToggleBudgetFilter(b)}
-                                      className="w-3.5 h-3.5 rounded text-teal-600 focus:ring-teal-500 cursor-pointer"
-                                    />
-                                    <span className={`truncate flex-1 ${checked ? 'font-bold text-teal-900' : 'text-slate-700'}`}>{b}</span>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </>
-                      )}
+                        <option value="">전체 예산</option>
+                        {uniqueBudgets.map((b) => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
+                      </select>
                     </th>
                   )}
 

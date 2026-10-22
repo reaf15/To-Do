@@ -179,15 +179,17 @@ export default function CalendarView({
       return s.startsWith(monthPrefix) || e.startsWith(monthPrefix) || (s <= `${monthPrefix}-31` && e >= `${monthPrefix}-01`);
     });
 
-    const ongoingCount = thisMonthTasks.filter(t => t.status === '공사진행' || t.status === '계약체결').length;
+    const ongoingCount = thisMonthTasks.filter(t => t.status === '진행' || t.status === '공사진행').length;
     const completedCount = thisMonthTasks.filter(t => t.status === '완료').length;
-    const pendingCount = thisMonthTasks.filter(t => t.status === '견적의뢰' || t.status === '견적방문' || t.status === '제안서 협의').length;
+    const designCount = thisMonthTasks.filter(t => t.status === '설계' || t.status === '견적의뢰' || t.status === '계약체결').length;
+    const reviewCount = thisMonthTasks.filter(t => t.status === '검토' || t.status === '접수/대기').length;
 
     return {
       total: thisMonthTasks.length,
       ongoingCount,
       completedCount,
-      pendingCount
+      designCount,
+      reviewCount
     };
   }, [scheduledTasks, year, month]);
 
@@ -237,14 +239,17 @@ export default function CalendarView({
           <span className="px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 text-slate-300">
             이달의 공사: <strong className="text-white font-extrabold">{monthStats.total}건</strong>
           </span>
-          <span className="px-2.5 py-1 rounded-md bg-orange-950/60 border border-orange-700/60 text-orange-300">
-            공사진행: <strong className="font-extrabold">{monthStats.ongoingCount}건</strong>
-          </span>
-          <span className="px-2.5 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/60 text-emerald-300">
-            준공완료: <strong className="font-extrabold">{monthStats.completedCount}건</strong>
+          <span className="px-2.5 py-1 rounded-md bg-amber-950/60 border border-amber-700/60 text-amber-300">
+            검토: <strong className="font-extrabold">{monthStats.reviewCount}건</strong>
           </span>
           <span className="px-2.5 py-1 rounded-md bg-blue-950/60 border border-blue-700/60 text-blue-300">
-            견적·협의: <strong className="font-extrabold">{monthStats.pendingCount}건</strong>
+            설계: <strong className="font-extrabold">{monthStats.designCount}건</strong>
+          </span>
+          <span className="px-2.5 py-1 rounded-md bg-indigo-950/60 border border-indigo-700/60 text-indigo-300">
+            진행: <strong className="font-extrabold">{monthStats.ongoingCount}건</strong>
+          </span>
+          <span className="px-2.5 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/60 text-emerald-300">
+            완료: <strong className="font-extrabold">{monthStats.completedCount}건</strong>
           </span>
         </div>
 

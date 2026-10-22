@@ -87,9 +87,10 @@ export default function StatsCards({
 
   // Status counts (Card 1) for this department
   const completedCount = tasks.filter((t) => t.status === '완료').length;
-  const quoteCount = tasks.filter((t) => t.status === '견적의뢰').length;
-  const visitCount = tasks.filter((t) => t.status === '견적방문').length;
-  const inProgressCount = tasks.filter((t) => t.status !== '완료').length;
+  const inProgressCount = tasks.filter((t) => t.status === '진행' || t.status === '공사진행').length;
+  const designCount = tasks.filter((t) => t.status === '설계').length;
+  const reviewCount = tasks.filter((t) => t.status === '검토').length;
+  const uncompletedCount = tasks.filter((t) => t.status !== '완료').length;
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   // Manager workload (Card 4: 담당자 업무 현황) for this department
@@ -159,7 +160,7 @@ export default function StatsCards({
           {/* Progress bar */}
           <div className="mt-3">
             <div className="flex justify-between text-[11px] font-medium text-slate-500 mb-1">
-              <span>진행 중 ({inProgressCount}건)</span>
+              <span>미완료 ({uncompletedCount}건)</span>
               <span>완료율 {completionRate}%</span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden flex">
@@ -170,8 +171,8 @@ export default function StatsCards({
               />
               <div 
                 className="bg-teal-500 h-2 opacity-70 transition-all duration-500" 
-                style={{ width: `${totalCount > 0 ? Math.round(((quoteCount + visitCount) / totalCount) * 100) : 0}%` }}
-                title={`견적단계 ${quoteCount + visitCount}건`}
+                style={{ width: `${totalCount > 0 ? Math.round((inProgressCount / totalCount) * 100) : 0}%` }}
+                title={`공사진행 ${inProgressCount}건`}
               />
             </div>
           </div>

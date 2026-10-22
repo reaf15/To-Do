@@ -142,25 +142,25 @@ export default function FilterBar({
           )}
 
           <button
-            onClick={() => onStatusChange(selectedStatus === '견적의뢰' ? '' : '견적의뢰')}
+            onClick={() => onStatusChange(selectedStatus === '설계' ? '' : '설계')}
             className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition shrink-0 ${
-              selectedStatus === '견적의뢰'
+              selectedStatus === '설계'
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
-            견적의뢰 건
+            설계 단계 건
           </button>
 
           <button
-            onClick={() => onStatusChange(selectedStatus === '견적방문' ? '' : '견적방문')}
+            onClick={() => onStatusChange(selectedStatus === '진행' ? '' : '진행')}
             className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition shrink-0 ${
-              selectedStatus === '견적방문'
+              selectedStatus === '진행'
                 ? 'bg-indigo-600 text-white border-indigo-600'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
-            견적방문 예정 건
+            공사진행 건
           </button>
 
           <button

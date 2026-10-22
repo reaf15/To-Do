@@ -490,7 +490,7 @@ export default function App() {
       department: selectedDepartment,
       facility: facilityName,
       budget: currentDeptCategories[0] || '수선유지비',
-      status: '접수/대기',
+      status: '검토',
       manager: currentUser !== 'ALL' ? currentUser : ''
     });
     setIsTaskModalOpen(true);

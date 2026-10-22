@@ -670,13 +670,9 @@ export default function FacilityOverviewView({
                           className="text-[11px] font-semibold bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer"
                         >
                           <option value="">진행상태 전체</option>
-                          <option value="접수/대기">접수/대기</option>
-                          <option value="검토중">검토중</option>
-                          <option value="견적의뢰">견적의뢰</option>
-                          <option value="견적방문">견적방문</option>
-                          <option value="제안서 협의">제안서 협의</option>
-                          <option value="계약체결">계약체결</option>
-                          <option value="공사진행">공사진행</option>
+                          <option value="검토">검토</option>
+                          <option value="설계">설계</option>
+                          <option value="진행">진행</option>
                           <option value="완료">완료</option>
                         </select>
 

@@ -1,0 +1,2489 @@
+{
+  "backupId": "BKP-2026-10-22_00-10-03-PR08",
+  "type": "daily",
+  "title": "2026-10-22 일일 정기 자동 백업",
+  "note": "일일 정기 자동 백업",
+  "createdAt": "2026-10-21T15:10:03.525Z",
+  "createdDate": "2026-10-22 00:10:03",
+  "summary": {
+    "tasksCount": 59,
+    "facilitiesCount": 28,
+    "budgetsCount": 20,
+    "departmentManagersCount": 20,
+    "totalEstimatedCost": 361850000
+  },
+  "data": {
+    "tasks": [
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "전체시설",
+        "title": "통신설비유지관리 성능점검",
+        "estimatedCost": 2000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "",
+        "id": "TASK-1792571752500",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "시스템",
+            "message": "신규 공사 업무 등록"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자를 [권병학](으)로 지정"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "파크골프",
+        "location": "다목적잔디광장",
+        "title": "야외운동기구 안내판 제작 설치",
+        "estimatedCost": 4000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "접수/대기",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "야외 운동기구 안전점검을 위한 협조 요청에 따른 안내판 제작 부착",
+        "id": "TASK-1792571609338",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "시스템",
+            "message": "신규 공사 업무 등록"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "조현호",
+            "message": "담당자를 [조현호](으)로 지정"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "방송실",
+        "title": "천장 보수공사",
+        "estimatedCost": 4000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "견적의뢰",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "한빈디자인앤플랜",
+        "memo": "",
+        "id": "TASK-1792571113972",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "권병학",
+            "message": "신규 공사 업무 등록"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "삼패야구장",
+        "title": "삼패 풋살구장 조명교체공사",
+        "estimatedCost": 23000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "견적의뢰",
+        "startDate": "2026-11-02",
+        "endDate": "2026-11-09",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "대한조명",
+        "memo": "",
+        "id": "TASK-1792570253659",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "권병학",
+            "message": "신규 공사 업무 등록"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "시설비(전광판)",
+        "facility": "남양주센터",
+        "location": "보조경기장",
+        "title": "보조경기장 전기공사",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "접수/대기",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": 10000000,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "",
+        "id": "TASK-1792557060486",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "시스템",
+            "message": "신규 공사 업무 등록"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "조현호",
+            "message": "담당자를 [조현호](으)로 지정"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "시설비(전광판)",
+        "facility": "남양주센터",
+        "location": "보조경기장",
+        "title": "전광판 통신공사",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "접수/대기",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": 7770000,
+        "contractAmount": 0,
+        "vendor": "이노펌프",
+        "memo": "",
+        "id": "TASK-1792556996453",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "시스템",
+            "message": "신규 공사 업무 등록"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "조현호",
+            "message": "담당자를 [조현호](으)로 지정"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "시설비(전광판)",
+        "facility": "남양주센터",
+        "location": "보조경기장",
+        "title": "보조경기장 전광판 제작설치",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "계약체결",
+        "startDate": "",
+        "endDate": "2026-12-10",
+        "quoteAmount": null,
+        "contractAmount": 437500000,
+        "vendor": "(주)오라시스템",
+        "memo": "",
+        "id": "TASK-1792556893646",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "조현호",
+            "message": "신규 공사 업무 등록"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "파크골프",
+        "location": "다목적잔디광장",
+        "title": "퍼걸러 보수",
+        "estimatedCost": 4000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "검토중",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "",
+        "id": "TASK-1792556324287",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "시스템",
+            "message": "신규 공사 업무 등록"
+          }
+        ]
+      },
+      {
+        "department": "와부체육문화센터",
+        "budget": "운영경비",
+        "facility": "와부센터",
+        "location": "2층 남자 ����온실",
+        "title": "체온실 바닥타일 보수",
+        "estimatedCost": 950000,
+        "estimatedCostNote": "",
+        "manager": "김수관",
+        "status": "제안서 협의",
+        "startDate": "2026-11-08",
+        "endDate": "2026-11-08",
+        "quoteAmount": 880000,
+        "contractAmount": 880000,
+        "vendor": "삼현",
+        "memo": "",
+        "id": "TASK-1792547947875",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "김수관",
+            "message": "신규 공사 업무 등록"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "김일호",
+            "message": "진행 상태를 [접수/대기](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "김일호",
+            "message": "진행 상태를 [검토중](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "김일호",
+            "message": "진행 상태를 [견적의뢰](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "김일호",
+            "message": "진행 상태를 [견적방문](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자 지정 해제"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [완료](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [제안서 협의](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [완료](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [견적의뢰](으)로 변경"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [제안서 협의](으)로 변경"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "",
+        "title": "화단 통행로 이동",
+        "estimatedCost": 500000,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "완료",
+        "startDate": "",
+        "endDate": "",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "",
+        "id": "TASK-1792459522047",
+        "logs": [
+          {
+            "date": "2026-10-20",
+            "author": "시스템",
+            "message": "신규 공사 업��� 등록"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [완료](으)로 변경"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "옥상",
+        "title": "체육관 옥상 방수(콘크리트면)",
+        "estimatedCost": 10000000,
+        "estimatedCostNote": "",
+        "manager": "김일호",
+        "status": "견적의뢰",
+        "startDate": "2026-10-01",
+        "endDate": "2026-10-06",
+        "quoteAmount": 13185000,
+        "contractAmount": null,
+        "vendor": "진산종합환경",
+        "memo": "체육관 옥상 콘크리트면 우레탄 방수 견적 의뢰 중",
+        "id": "TASK-01",
+        "logs": [
+          {
+            "date": "2026-10-10",
+            "author": "김일호",
+            "message": "진산종합환경 현장 실측 및 견적서 ���������출 요청"
+          }
+        ]
+      },
+      {
+        "id": "TASK-02",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "게이트볼장",
+        "title": "게이트볼장 옥상 방수",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "우천 시 누수 여부 점검 후 보수 계�� 수립 필요",
+        "logs": [],
+        "startDate": "2026-10-03",
+        "endDate": "2026-10-09",
+        "department": "남양주체육������센터"
+      },
+      {
+        "id": "TASK-03",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "야외공연장 주차장",
+        "title": "화단 난간대 설치",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "안전사고 예�����을 위한 화단 안전 펜스 난간대 설치",
+        "logs": [],
+        "startDate": "2026-10-05",
+        "endDate": "2026-10-12",
+        "department": "남양주체육문화센터"
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "청수관 교차로",
+        "title": "회전교차로 사고석 보수",
+        "estimatedCost": 10000000,
+        "estimatedCostNote": "",
+        "manager": "김일호",
+        "status": "�����적의뢰",
+        "startDate": "2026-10-07",
+        "endDate": "2026-10-15",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "에스엠",
+        "memo": "교차로 차량 충돌로 인한 사고석 이탈 및 파손 보수",
+        "id": "TASK-04",
+        "logs": [
+          {
+            "date": "2026-10-12",
+            "author": "김일호",
+            "message": "에스엠에 사고석 규격 및 시공 견적 문의"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "야구장 3면",
+        "title": "야구장 그물망 및 주루베이스 교체",
+        "estimatedCost": 15000000,
+        "estimatedCostNote": "",
+        "manager": "김일호",
+        "status": "견적의뢰",
+        "startDate": "2026-10-09",
+        "endDate": "2026-10-18",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "현 eng",
+        "memo": "야구장 3면 정규 투수마운드 흙 교체 및 레벨링 평탄화 작업",
+        "id": "TASK-05",
+        "logs": [
+          {
+            "date": "2026-10-11",
+            "author": "김일���",
+            "message": "현 eng 업체��� 현장 답사 및 견적 요청"
+          }
+        ]
+      },
+      {
+        "id": "TASK-06",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "3층 방송실",
+        "title": "방송실 천정재 설치",
+        "estimatedCost": 10000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "방송실 텍스 천정재 노후 교체 및 방음재 보강",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자를 [권병학](으)로 지정"
+          }
+        ],
+        "startDate": "2026-10-11",
+        "endDate": "2026-10-21",
+        "department": "남양주체육문화센터"
+      },
+      {
+        "id": "TASK-07",
+        "budget": "수선유지비",
+        "facility": "남양������",
+        "location": "각층 화장실",
+        "title": "화장실 대변기 커버 교체",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "센터 각 층 남녀 화장실 변기 커버 전수 교체 조사",
+        "logs": [
+          {
+            "date": "2026-10-13",
+            "author": "권병학",
+            "message": "각 층별 필요 수량(남 18개, 여 24개) 파악 중"
+          }
+        ],
+        "startDate": "2026-10-13",
+        "endDate": "2026-10-24",
+        "department": "남양주���육문화센터"
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "남녀 탈의실",
+        "title": "탈의실 락커 수 칸막이 공사",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "접수/대기",
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-27",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "이용객 프라이버시 보호를 위���� 락커 칸막이 증설",
+        "id": "TASK-08",
+        "logs": []
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "3층 로비",
+        "title": "체육관 3층 로비 난간 증설 공사(1.2m 까지)",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "접수/대기",
+        "startDate": "2026-10-17",
+        "endDate": "2026-10-22",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "추락 방지 안전기준 1.2m 상향에 따른 난간 증설",
+        "id": "TASK-09",
+        "logs": []
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "A축구장",
+        "title": "CCTV 증설",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "제안서 협의",
+        "startDate": "2026-10-19",
+        "endDate": "2026-10-25",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "A구장 사각지대 해소를 위한 감시카메라 4대 제안서 검토",
+        "id": "TASK-10",
+        "logs": [
+          {
+            "date": "2026-10-08",
+            "author": "조현호",
+            "message": "CCTV 설치 제안서 접수되어 설치 위치 조율 중"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "A구장 데크 계단",
+        "title": "데크 계단 철거",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "견적의���",
+        "startDate": "2026-10-01",
+        "endDate": "2026-10-08",
+        "quoteAmount": 2255000,
+        "contractAmount": null,
+        "vendor": "고려안전",
+        "memo": "노후 부식 데크 계단 철거 및 안전통로 확보 (견적 2,255,000원 접수)",
+        "id": "TASK-11",
+        "logs": [
+          {
+            "date": "2026-10-14",
+            "author": "김일호",
+            "message": "고려안전 견적서 수령 완료: 2,255,000원"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "B,C 축구장",
+        "title": "B,C축구장 와이어 파단 보수",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "견적의뢰",
+        "startDate": "2026-10-03",
+        "endDate": "2026-10-11",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "대신이엔지",
+        "memo": "안전 그물망 지지 ��이�� 파단 부위 긴급 보수 검토",
+        "id": "TASK-12",
+        "logs": [
+          {
+            "date": "2026-10-14",
+            "author": "권병학",
+            "message": "현장 와이어 규격 12mm 확인"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "B,C 축구장",
+        "title": "관람석 데크 들뜸 보수",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "다목적잔���광장 화장실 배관 공사 포함",
+        "manager": "조현호",
+        "status": "��적방��",
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-15",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "세한이앤지",
+        "memo": "10월 15일 견적방문 (다목적잔디광장 화장실 ���관 공사 포함)",
+        "id": "TASK-13",
+        "logs": [
+          {
+            "date": "2026-10-13",
+            "author": "조현호",
+            "message": "세한이앤지 담��자와 10�� 15�� 14시 현장 실측 약속"
+          },
+          {
+            "date": "2026-10-15",
+            "author": "조현호",
+            "message": "현장 실측 완료. 견적서 금주 내 제출 예정"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "조현호",
+            "message": "다목적잔디광장 화장실 배관 공사와 동시 진행"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "야외공연장 주차장",
+        "title": "주차장 조명  조명 수 및 회로분리 공사",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "���적����뢰",
+        "startDate": "2026-10-07",
+        "endDate": "2026-10-17",
+        "quoteAmount": 9634900,
+        "contractAmount": null,
+        "vendor": "서진전력",
+        "memo": "조명탑 서치라이트 교체 및 회로 개별 제어 분리 공사 / 야구장 조명공사 동시 진행",
+        "id": "TASK-14",
+        "logs": [
+          {
+            "date": "2026-10-12",
+            "author": "조현호",
+            "message": "서진전력 견적 접수 (9,634,900원). 예상비용(5,000,000원) 대비 상향되어 범위 ���� 협의 예정"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "조현호",
+            "message": "��구장 조명 보수 동��� 진행(합 9,634,900원)"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "조현호",
+            "message": "진행 상태를 [견적방문](으)로 변경"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "시설비(야구장)",
+        "facility": "남양주센터",
+        "location": "야구장 3면",
+        "title": "야구장 조명 보수",
+        "estimatedCost": 15000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "견적의뢰",
+        "startDate": "2026-10-09",
+        "endDate": "2026-10-20",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "서진전력",
+        "memo": "야구장 메탈할라이드 투광기 점검 및 불량 안정기/램프 교체 / 야외공연장 조명탑 공사와 동시 진행",
+        "id": "TASK-15",
+        "logs": [
+          {
+            "date": "2026-10-13",
+            "author": "조현호",
+            "message": "서진전력 크레인 ��업 ��적 ���출 ��"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "���현호",
+            "message": "야외공연장 조명탑 보수 동시 진행(합 9,634,900원)"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "조��호",
+            "message": "진행 상태를 [견적방문](으)로 변경"
+          }
+        ]
+      },
+      {
+        "id": "TASK-16",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "야구장(성인)",
+        "title": "야구장 더그아웃 평탄화",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "완료",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "더그아웃 1루/3루 바닥 흙 다짐 ��� 평탄화 시공 완��",
+        "logs": [
+          {
+            "date": "2026-10-05",
+            "author": "김일호",
+            "message": "공사 시공 �� 바닥 레벨 검수 완료"
+          }
+        ],
+        "startDate": "2026-10-11",
+        "endDate": "2026-10-23",
+        "department": "남양주체육문화센터"
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "시설비(야구장)",
+        "facility": "남양주센터",
+        "location": "야구장(성인)",
+        "title": "성인야구장 관람석 보수",
+        "estimatedCost": 13900000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "견적의뢰",
+        "startDate": "2026-10-13",
+        "endDate": "2026-10-18",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "관람석 의자 균열 및 페인트 박리 보수",
+        "id": "TASK-17",
+        "logs": [
+          {
+            "date": "2026-10-19",
+            "author": "관리자",
+            "message": "진행 상태��� [검토중](으)로 ���경"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "관��자",
+            "message": "��행 ���태����� [��적���뢰](으)�� 변경"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "관리자",
+            "message": "담당자를 [김일호](으)로 지정"
+          },
+          {
+            "date": "2026-10-20",
+            "author": "��리자",
+            "message": "담당자를 [권병학](으)로 지정"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "B,C 축구장",
+        "title": "B,C축구장 주차장 배수로 플륨관 교체",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "접수/대기",
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-21",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "",
+        "id": "TASK-18",
+        "logs": []
+      },
+      {
+        "id": "TASK-19",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "남양주센터",
+        "title": "정보통신유지관리자 성능점검",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "���현호",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "정보통신공사업법에 따른 연간 통신설비 성능점검 용역 발주",
+        "logs": [
+          {
+            "date": "2026-10-14",
+            "author": "조현호",
+            "message": "법정 점검 대상 장비 목록 작��"
+          }
+        ],
+        "startDate": "2026-10-17",
+        "endDate": "2026-10-24",
+        "department": "��양주체육��화센터"
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "주차장 배면 옹벽",
+        "title": "보강토 옹벽 보수",
+        "estimatedCost": 15000000,
+        "estimatedCostNote": "",
+        "manager": "김일호",
+        "status": "견적의뢰",
+        "startDate": "2026-10-19",
+        "endDate": "2026-10-27",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "에스엠",
+        "memo": "사면 옹벽 록 균열 및 토압에 의한 ",
+        "id": "TASK-20",
+        "logs": [
+          {
+            "date": "2026-10-12",
+            "author": "김��호",
+            "message": "에스엠과 구조 안전 보강 공법 협의 중"
+          }
+        ]
+      },
+      {
+        "id": "TASK-21",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "정문 구내도로",
+        "title": "정문 통행로 주차규제봉 설치 및 풋살 그물망 고정",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "견적의뢰",
+        "quoteAmount": 3300000,
+        "contractAmount": null,
+        "vendor": "고려안전",
+        "contact": "",
+        "memo": "정문 불법주차 방지 탄력봉 20개소 신�� 및 풋살장 ��물망 텐��� 재고정 (고려안전 견적 3,300,000원 접수)",
+        "logs": [
+          {
+            "date": "2026-10-15",
+            "author": "조현호",
+            "message": "고려안전 상세 내역서 접수 (3,300,000원)"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "조현호",
+            "message": "진행 상태를 [제안서 협의](으)로 변���"
+          }
+        ],
+        "startDate": "2026-10-01",
+        "endDate": "2026-10-10",
+        "department": "남양주���육문화센터"
+      },
+      {
+        "department": "남양주체육문화센��",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "인공암벽장",
+        "title": "등기구 교체",
+        "estimatedCost": 0,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "완료",
+        "startDate": "2026-10-03",
+        "endDate": "2026-10-13",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "���공암벽장 고천정 LED 투광등 불량품 ������체",
+        "id": "TASK-22",
+        "logs": [
+          {
+            "date": "2026-10-20",
+            "author": "관리자",
+            "message": "진행 상��를 [완료](으)로 변경"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "다산멀티",
+        "location": "남녀 탈의��",
+        "title": "다산멀티스포츠센터 탈의실 환풍기 설치 및 전기공사",
+        "estimatedCost": 12000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접���/대기",
+        "startDate": "2026-10-05",
+        "endDate": "2026-10-16",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "습기 배출을 위한 고��량 시로코팬 ��풍기 신설 및 전원 배선 작업",
+        "id": "TASK-23",
+        "logs": [
+          {
+            "date": "2026-10-11",
+            "author": "권병학",
+            "message": "다산센터 현장 분전반 여유 용량 확인"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "도농공원",
+        "location": "옥상",
+        "title": "도농공원 옥상 방수",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "접수/대기",
+        "startDate": "2026-10-07",
+        "endDate": "2026-10-19",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "도농공원 관리동 옥상 바닥 크랙 보수 및 탑코팅",
+        "id": "TASK-24",
+        "logs": []
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "도농공원",
+        "location": "탁구장",
+        "title": "바닥 매트 설치",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "",
+        "status": "��토중",
+        "startDate": "2026-10-09",
+        "endDate": "2026-10-14",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "",
+        "id": "TASK-25",
+        "logs": [
+          {
+            "date": "2026-10-10",
+            "author": "김일호",
+            "message": "타 시��� 시공���례 및 샘플 단가 취합"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "삼패야구장",
+        "location": "야구장 3면",
+        "title": "삼패야구장 바닥 정지 작업",
+        "estimatedCost": 15000000,
+        "estimatedCostNote": "",
+        "manager": "김일호",
+        "status": "견적의뢰",
+        "startDate": "2026-10-11",
+        "endDate": "2026-10-17",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "에스엠",
+        "memo": "한강 둔치 삼패야구장 그라운드 침하 정비 및 마사토 쇄석 포설 정지 작업",
+        "id": "TASK-26",
+        "logs": [
+          {
+            "date": "2026-10-13",
+            "author": "김일호",
+            "message": "에스엠 ���장��� 투입 일정 및 토사 물량 ���출 협의"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자를 [김일호](으)로 지정"
+          }
+        ]
+      },
+      {
+        "id": "TASK-27",
+        "budget": "수선유지비",
+        "facility": "컨퍼런스",
+        "location": "컨퍼런스장",
+        "title": "컨퍼런스장, 장애인 체육관 전기 공사",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "컨퍼런스룸 음향·조명 콘센트 추가 및 장애인 체육��� 조명 컨트롤러 ���비",
+        "logs": [
+          {
+            "date": "2026-10-14",
+            "author": "권병학",
+            "message": "공�� ���위 도면 표�� 작업 중"
+          }
+        ],
+        "startDate": "2026-10-13",
+        "endDate": "2026-10-20",
+        "department": "남양주체육문화센터"
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "컨퍼런스",
+        "location": "컨퍼런스장",
+        "title": "컨퍼런스장 주차장 잡석 포설",
+        "estimatedCost": 8000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-23",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "우천 시 진흙탕 방����� 위한 25mm 쇄석 골재 50톤 포�� 및 다짐",
+        "id": "TASK-28",
+        "logs": []
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "장애인체육관",
+        "title": "장애인체육관 민원 캐노피 설치",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "견���의���",
+        "startDate": "2026-10-17",
+        "endDate": "2026-10-26",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "153",
+        "memo": "휠체어 이용객 비가림용 알루미늄 복합판넬 캐노피 설치 견적",
+        "id": "TASK-29",
+        "logs": [
+          {
+            "date": "2026-10-12",
+            "author": "김일호",
+            "message": "153 업체에 출입구 캐노피 디자인 시안 요청"
+          },
+          {
+            "date": "2026-10-20",
+            "author": "김일호",
+            "message": "담당자를 [권병학](으)로 지정"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "컨퍼런스",
+        "location": "장애인체육관",
+        "title": "컨퍼런스 방풍비닐",
+        "estimatedCost": 3000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "startDate": "2026-10-01",
+        "endDate": "2026-10-12",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "동절기 외풍 차��� 투명 방풍비닐 커튼(지퍼식) 제작 설치",
+        "id": "TASK-31",
+        "logs": [
+          {
+            "date": "2026-10-15",
+            "author": "권병학",
+            "message": "출입구 치수 실측: 가로 4.2m x 높이 3.5m"
+          }
+        ]
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "수선유지비",
+        "facility": "남양주센터",
+        "location": "���애인체육관",
+        "title": "장애인체육관 에어 컴프레서 설치",
+        "estimatedCost": 3000000,
+        "estimatedCostNote": "",
+        "manager": "권병학",
+        "status": "접수/대기",
+        "startDate": "2026-10-03",
+        "endDate": "2026-10-15",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "휠체어 바�� 공기압 주입 및 먼지 털이용 저소음 콤���레샤 설치",
+        "id": "TASK-32",
+        "logs": []
+      },
+      {
+        "department": "남양주체육문화센��",
+        "budget": "수선유지비",
+        "facility": "파크골프",
+        "location": "화장실",
+        "title": "다목적잔디광장 화장실 배관 공사",
+        "estimatedCost": 5000000,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "견적방문",
+        "quoteAmount": 2754000,
+        "contractAmount": null,
+        "vendor": "세한이앤지",
+        "contact": "010-6397-1914",
+        "memo": "10�� 15일 견적방문",
+        "id": "TASK-34",
+        "logs": [
+          {
+            "date": "2026-10-13",
+            "author": "��현호",
+            "message": "���한이앤지 담당자와 현장 미팅 일정 조율"
+          },
+          {
+            "date": "2026-10-15",
+            "author": "조현호",
+            "message": "현장 배관 동파부위 확인. 배관 교체 견적 접수 예정"
+          },
+          {
+            "date": "2026-10-19",
+            "author": "조현호",
+            "message": "B,C 축구장 데크 들뜸 공사와 동시 진행"
+          }
+        ],
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-15"
+      },
+      {
+        "department": "남양주체육문화센터",
+        "budget": "시설비(파크골프장)",
+        "facility": "파크골프",
+        "location": "",
+        "title": "조명 각도 조정",
+        "estimatedCost": null,
+        "estimatedCostNote": "",
+        "manager": "조현호",
+        "status": "완료",
+        "startDate": "2026-10-09",
+        "endDate": "2026-10-16",
+        "quoteAmount": null,
+        "contractAmount": 1529000,
+        "vendor": "",
+        "memo": "야간 이용객 눈부심 방지 및 코스 조도 확보를 ���한 투광등 각도 재��정 (시설비 과목 집행 검토)",
+        "id": "TASK-35",
+        "logs": [
+          {
+            "date": "2026-10-19",
+            "author": "관리자",
+            "message": "진행 상태를 [계약체결](으)로 ��경"
+          },
+          {
+            "date": "2026-10-20",
+            "author": "관리자",
+            "message": "담당자를 [조현호](으)��� 지정"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "진행 상태를 [완료](으)로 변경"
+          }
+        ]
+      },
+      {
+        "id": "TASK-HP-01",
+        "department": "호평체육문화센터",
+        "budget": "수선유지비",
+        "facility": "호평체육문화센터",
+        "location": "지하 수영장",
+        "title": "수영장 여과기 여재(활성탄·모래) 전면 교체",
+        "estimatedCost": 14500000,
+        "estimatedCostNote": "",
+        "manager": "정�����",
+        "status": "계약체결",
+        "quoteAmount": 13800000,
+        "contractAmount": 13500000,
+        "vendor": "대경워터텍",
+        "contact": "010-3341-8890",
+        "memo": "수질 개선을 위한 주기적 여과사 및 활성탄 교체",
+        "logs": [
+          {
+            "date": "2026-10-12",
+            "author": "김일호",
+            "message": "대경워터텍 계약 체결 완료"
+          }
+        ],
+        "startDate": "2026-10-11",
+        "endDate": "2026-10-19"
+      },
+      {
+        "department": "호평체육문화센터",
+        "budget": "수선유지비",
+        "facility": "호평체육문화센터",
+        "location": "2층 헬스장",
+        "title": "헬스장 프리웨���트존 ���무블��� 바닥 교체",
+        "estimatedCost": 4800000,
+        "estimatedCostNote": "",
+        "manager": "��현��",
+        "status": "견�����뢰",
+        "startDate": "2026-10-21",
+        "endDate": "2026-10-24",
+        "quoteAmount": 4500000,
+        "contractAmount": null,
+        "vendor": "경향매트",
+        "memo": "충격 흡수 매트 노후화로 인한 교체 견적 접수 중",
+        "id": "TASK-HP-02",
+        "logs": []
+      },
+      {
+        "id": "TASK-ON-01",
+        "department": "오남체육문화센터",
+        "budget": "�����선유지비",
+        "facility": "오남체��문화센터",
+        "location": "지하 기��실",
+        "title": "기계실 배수펌프 2기 노후 교체 및 제어반 점검",
+        "estimatedCost": 6500000,
+        "estimatedCostNote": "",
+        "manager": "한지훈",
+        "status": "공사진행",
+        "quoteAmount": 6200000,
+        "contractAmount": 6000000,
+        "vendor": "동원펌프엔지니어링",
+        "contact": "010-4490-1122",
+        "memo": "침수 예방을 위한 집수정 수중 배수펌�� 교체",
+        "logs": [
+          {
+            "date": "2026-10-15",
+            "author": "조현호",
+            "message": "1호���������� ���프 안�� 완료"
+          }
+        ],
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-25"
+      },
+      {
+        "id": "TASK-JJ-01",
+        "department": "진접체육문화센터",
+        "budget": "수선유지비",
+        "facility": "진접체육문화센터",
+        "location": "수영장 풀장",
+        "title": "수영장 바닥 및 ��면 타일 박리구간 긴급 보수",
+        "estimatedCost": 5200000,
+        "estimatedCostNote": "",
+        "manager": "오세훈",
+        "status": "완료",
+        "quoteAmount": 4900000,
+        "contractAmount": 4800000,
+        "vendor": "신일타일",
+        "contact": "010-7712-4450",
+        "memo": "이용객 발 끼임 방지 긴급 수중 본드 타일 보수 완료",
+        "logs": [
+          {
+            "date": "2026-10-16",
+            "author": "김일호",
+            "message": "보수공사 완료 및 현장 점검 이���무"
+          }
+        ],
+        "startDate": "2026-10-17",
+        "endDate": "2026-10-28"
+      },
+      {
+        "department": "평내체육문화센터",
+        "budget": "수선유지비",
+        "facility": "평내체육문화센터",
+        "location": "옥상 실외기실",
+        "title": "다목적실 시스템에어컨 실외기 ��� 모터 ��체",
+        "estimatedCost": 3800000,
+        "estimatedCostNote": "",
+        "manager": "배성민",
+        "status": "공사진행",
+        "startDate": "2026-10-19",
+        "endDate": "2026-10-31",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "memo": "겨울철 난방 가��� 대비 실���기 2호기 팬 모터 이상 소음 점검",
+        "id": "TASK-PN-01",
+        "logs": []
+      },
+      {
+        "id": "TASK-RS-01",
+        "department": "철도안전부",
+        "budget": "수선유지비",
+        "facility": "철도안전부",
+        "location": "역사 승강장 ���� 구역",
+        "title": "���강장 ��전����판(안전갭) ���수 ��� 경고등 설치",
+        "estimatedCost": 19500000,
+        "estimatedCostNote": "",
+        "manager": "장���석",
+        "status": "계약체���",
+        "quoteAmount": 18500000,
+        "contractAmount": 18000000,
+        "vendor": "삼영레일시스템",
+        "contact": "010-2390-8811",
+        "memo": "휠체어 및 발빠짐 사고 방지 고무발판 교체",
+        "logs": [
+          {
+            "date": "2026-10-14",
+            "author": "조���호",
+            "message": "자�� 검수 및 야간 차단작업 계획 수립"
+          }
+        ],
+        "startDate": "2026-10-01",
+        "endDate": "2026-10-06"
+      },
+      {
+        "id": "TASK-RO-01",
+        "department": "철도운영부",
+        "budget": "수선유지��",
+        "facility": "���도운영부",
+        "location": "���량기��",
+        "title": "전동차 객실 냉난방 공기정화 필터 전면 교체",
+        "estimatedCost": 8500000,
+        "estimatedCostNote": "",
+        "manager": "김태호",
+        "status": "공사진행",
+        "quoteAmount": 8100000,
+        "contractAmount": 7900000,
+        "vendor": "클린��어테크",
+        "contact": "010-5511-9022",
+        "memo": "추계 전동차 �������기점검 및 미��먼지 필터 교체",
+        "logs": [],
+        "startDate": "2026-10-03",
+        "endDate": "2026-10-09"
+      },
+      {
+        "id": "TASK-PF-01",
+        "department": "주차시설부",
+        "budget": "수선유지비",
+        "facility": "주차시설부",
+        "location": "평내호평역 공영주차장",
+        "title": "공영��차장 출차 차단기 및 루프코일 센서 교체",
+        "estimatedCost": 5500000,
+        "estimatedCostNote": "",
+        "manager": "정원석",
+        "status": "견적의뢰",
+        "quoteAmount": 5100000,
+        "contractAmount": null,
+        "vendor": "아마노코리아",
+        "contact": "010-3112-9900",
+        "memo": "����량 ���인식 오류 개선을 위한 루프코일 재매설",
+        "logs": [],
+        "startDate": "2026-10-05",
+        "endDate": "2026-10-12"
+      },
+      {
+        "id": "TASK-EL-01",
+        "department": "에코��드운영부",
+        "budget": "수선유지비",
+        "facility": "에코랜드운영부",
+        "location": "주민편익시설",
+        "title": "에코랜드 ���영장 온수보일러 세관 및 버너 노즐 교���",
+        "estimatedCost": 11000000,
+        "estimatedCostNote": "",
+        "manager": "조영택",
+        "status": "검토중",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "동절기 난방 및 온수 효율 제고를 위한 주기적 보일러 세��� 공사",
+        "logs": [],
+        "startDate": "2026-10-07",
+        "endDate": "2026-10-15"
+      },
+      {
+        "id": "TASK-CV-01",
+        "department": "어린이비전센터",
+        "budget": "수선유지비",
+        "facility": "어린이비전센터",
+        "location": "1층 놀이자율체��관",
+        "title": "어린��� 안전 벽면쿠션 전면 ���체 및 바�� 매트 보수",
+        "estimatedCost": 7500000,
+        "estimatedCostNote": "",
+        "manager": "박보검",
+        "status": "계약체결",
+        "quoteAmount": 7100000,
+        "contractAmount": 6900000,
+        "vendor": "키즈세이프",
+        "contact": "010-6677-2234",
+        "memo": "KC인증 친환경 난연 쿠션재 교체 시공",
+        "logs": [],
+        "startDate": "2026-10-09",
+        "endDate": "2026-10-18"
+      },
+      {
+        "id": "TASK-YC-01",
+        "department": "남양주시청소년수련관",
+        "budget": "수선유지비",
+        "facility": "남양주시청소년수련관",
+        "location": "지하 대강당",
+        "title": "대강당 무대 ���명 제�����반 콘솔 �� LED 스포트��이트 보수",
+        "estimatedCost": 6800000,
+        "estimatedCostNote": "",
+        "manager": "문소연",
+        "status": "견적방문",
+        "quoteAmount": 6500000,
+        "contractAmount": null,
+        "vendor": "한빛무대음향",
+        "contact": "010-8899-1234",
+        "memo": "���소년 축제 대비 노후 조명 콘솔 점검 및 조명기기 수리",
+        "logs": [],
+        "startDate": "2026-10-11",
+        "endDate": "2026-10-21"
+      },
+      {
+        "id": "TASK-BN-01",
+        "department": "별내커뮤니티센터",
+        "budget": "수선유지비",
+        "facility": "별내커뮤니티센터",
+        "location": "수영장 풀장",
+        "title": "별내 수영장 오버풀 트렌치 그레���� �����면 교체",
+        "estimatedCost": 8200000,
+        "estimatedCostNote": "",
+        "manager": "윤서준",
+        "status": "공사���행",
+        "quoteAmount": 7800000,
+        "contractAmount": 7600000,
+        "vendor": "한양건설",
+        "contact": "010-3344-5566",
+        "memo": "수영장 미끄럼 방지 논슬립 그레이팅 교체",
+        "logs": [],
+        "startDate": "2026-10-13",
+        "endDate": "2026-10-24"
+      },
+      {
+        "id": "TASK-BN-02",
+        "department": "별내커뮤니티센터",
+        "budget": "수선유지비",
+        "facility": "별내커뮤니티센터",
+        "location": "지하주차장",
+        "title": "지하주차장 LED 고효율 조명 및 디밍 시스템 설치",
+        "estimatedCost": 12000000,
+        "estimatedCostNote": "",
+        "manager": "��서준",
+        "status": "견적의뢰",
+        "quoteAmount": 11200000,
+        "contractAmount": null,
+        "vendor": "서진전력",
+        "contact": "010-8899-7711",
+        "memo": "에너지 절감 사업 일�� LED 디밍 설비 공사",
+        "logs": [],
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-27"
+      },
+      {
+        "id": "TASK-WB-01",
+        "department": "와부체육문화���터",
+        "budget": "운���경비",
+        "facility": "와부체육문화센��",
+        "location": "다목적체육관",
+        "title": "다목적체육관 마루 샌��� 및 우레탄 ��인마킹",
+        "estimatedCost": 18000000,
+        "estimatedCostNote": "",
+        "manager": "임태호",
+        "status": "공���진행",
+        "quoteAmount": 16800000,
+        "contractAmount": 16500000,
+        "vendor": "성진플로어",
+        "contact": "010-5231-9981",
+        "memo": "체육관 마루 ���딩 공사 ��행 중 (주말 작업)",
+        "logs": [
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자 지정 해제"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자를 [송영진](으)로 지정"
+          },
+          {
+            "date": "2026-10-21",
+            "author": "관리자",
+            "message": "담당자를 [임태호](으)로 지정"
+          }
+        ],
+        "startDate": "2026-10-17",
+        "endDate": "2026-10-22"
+      },
+      {
+        "id": "TASK-HD-01",
+        "department": "화도��육문화센터",
+        "budget": "운영경비",
+        "facility": "화도체육문화센터",
+        "location": "수영장 샤워실",
+        "title": "수영장 샤워실 ��수탱크 배관 �� 감���밸브 교체",
+        "estimatedCost": 7200000,
+        "estimatedCostNote": "",
+        "manager": "최민�����",
+        "status": "���적방���",
+        "quoteAmount": 6900000,
+        "contractAmount": null,
+        "vendor": "한강설비",
+        "contact": "010-9112-7411",
+        "memo": "샤워실 온수 공급 수압 일정 유지를 위한 밸브 교체",
+        "logs": [],
+        "startDate": "2026-10-01",
+        "endDate": "2026-10-08"
+      },
+      {
+        "id": "TASK-HD-02",
+        "department": "화도체육문화센터",
+        "budget": "운영경비",
+        "facility": "화도체육문화센터",
+        "location": "야외주차장",
+        "title": "야외주차장 카스토퍼 및 노면 차선 도색 공사",
+        "estimatedCost": 4500000,
+        "estimatedCostNote": "",
+        "manager": "김���현",
+        "status": "접수/대기",
+        "quoteAmount": null,
+        "contractAmount": null,
+        "vendor": "",
+        "contact": "",
+        "memo": "노후 차선 재도색 및 카스토퍼 신규 설치",
+        "logs": [],
+        "startDate": "2026-10-03",
+        "endDate": "2026-10-11"
+      }
+    ],
+    "facilities": {
+      "남양주체육문화센터": [
+        {
+          "id": "fac-nyj-1",
+          "department": "남양주체육문화센터",
+          "name": "남양주센터",
+          "fullName": "남양주체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (이패동)",
+          "scale": "지하 1층 / 지상 3층 (대지 56,198㎡, 연면적 12,450㎡)",
+          "completionDate": "2008년 10월",
+          "majorFacilities": "실내체육관, 수영장(25m 6레인), 헬스장, 실내골프연습장, 에어로빅실, 다목적강좌실, 야외공연장, 인공암벽장",
+          "manager": "김일호",
+          "contact": "031-560-1200",
+          "zones": [
+            "옥상",
+            "3층 방송실",
+            "3층 로비",
+            "남녀 탈의실",
+            "각층 화장실",
+            "A구장",
+            "A구장 데크 계단",
+            "B,C 축구장",
+            "야외공연장 주차장",
+            "청수관 교차로",
+            "정문 구내도로",
+            "주차장 배면 옹벽",
+            "인공암벽장"
+          ],
+          "description": "남양주도시공사 시설본부 거점 복합체육시설로 시민 생활체육 강좌, 대규모 문화행사, 수영 및 구기종목 시설을 총괄 운영 및 유지보수합니다.",
+          "landArea": "56,198㎡",
+          "facilityArea": "12,450㎡",
+          "floorCount": "지하 1층 / 지상 3층",
+          "buildingArea": "5,124㎡",
+          "totalFloorArea": "12,450㎡"
+        },
+        {
+          "id": "fac-nyj-2",
+          "department": "남양주체육문화센터",
+          "name": "삼패야구장",
+          "fullName": "삼패 한강시민공원 야구장",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 고산로 254 (삼패동 한강시민공원 내)",
+          "scale": "부지면적 약 35,000㎡ (야구장 3면: 성인 1면, 유소년 2면)",
+          "completionDate": "2011년 5월",
+          "majorFacilities": "성인 야구장 1면, 유소년 야구장 2면, 투수마운드, 야간 조명탑, 더그아웃, 관람석, 전용 주차장(30대)",
+          "manager": "김일호",
+          "contact": "031-560-1240",
+          "zones": [
+            "야구장 3면",
+            "야구장(성인)",
+            "더그아웃",
+            "투수마운드",
+            "조명탑",
+            "주차장"
+          ],
+          "description": "한강변 삼패시민공원에 위치한 야외 야구전용 구장으로 성인 주말리그 및 유소년 야구경기, 시민 대관을 운영합니다.",
+          "landArea": "35,000㎡",
+          "facilityArea": "",
+          "floorCount": "지상 1층 (야외체육시설)",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-nyj-3",
+          "department": "남양주체육문화센터",
+          "name": "다산멀티",
+          "fullName": "다산멀티스포츠센터",
+          "category": "복합체육시설",
+          "location": "경기도 남양주시 다산순환로 115 (다산동)",
+          "scale": "지하 1층 / 지상 3층 (연면적 4,200㎡)",
+          "completionDate": "2021년 3월",
+          "majorFacilities": "다목적체육관(배드민턴, 탁구, 농구), 남녀 탈의실 및 샤워실, GX룸, 스피닝실, 휴게로비",
+          "manager": "권병학",
+          "contact": "031-560-1250",
+          "zones": [
+            "남녀 탈의실",
+            "체육관",
+            "환풍기실",
+            "샤워실",
+            "로비"
+          ],
+          "description": "다산신도시 주민들의 생활체육 수요 충족을 위해 건립된 최신 복합 스포츠센터입니다.",
+          "landArea": "",
+          "facilityArea": "4,200㎡",
+          "floorCount": "지하 1층 / 지상 3층",
+          "buildingArea": "",
+          "totalFloorArea": "4,200㎡"
+        },
+        {
+          "id": "fac-nyj-4",
+          "department": "남양주체육문화센터",
+          "name": "도농공원",
+          "fullName": "도농체육공원",
+          "category": "체육공원시설",
+          "location": "경기도 남양주시 미금로 65 (다산동)",
+          "scale": "부지면적 18,500㎡",
+          "completionDate": "2015년 9월",
+          "majorFacilities": "탁구장, 야외 배드민턴장, 옥상 전망데크, 산책로, 야외 운동기구, 화장실",
+          "manager": "권병학",
+          "contact": "031-560-1260",
+          "zones": [
+            "옥상",
+            "탁구장",
+            "화장실",
+            "산책로"
+          ],
+          "description": "도농지역 주민들의 생활체육 및 건강증진을 위한 휴식 공원 및 부대 체육시설입니다.",
+          "landArea": "18,500㎡",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-nyj-5",
+          "department": "남양주체육문화센터",
+          "name": "컨퍼런스 A",
+          "fullName": "컨퍼런스홀 A (본관 대회의실 및 문화관)",
+          "category": "문화·집회시설",
+          "location": "경기도 남양주시 다산지금로 91 (체육문화센터 내)",
+          "scale": "지상 2층 (연면적 1,800㎡)",
+          "completionDate": "2012년 4월",
+          "majorFacilities": "대회의실(200석), 무대 및 영상음향 방송조정실, 전시로비, 세미나룸",
+          "manager": "조현호",
+          "contact": "031-560-1270",
+          "zones": [
+            "컨퍼런스 A홀",
+            "방송조정실",
+            "무대시설",
+            "로비",
+            "음향설비"
+          ],
+          "description": "도시공사 및 남양주시 주요 포럼, 공청회, 문화행사, 세미나 및 사내 직무교육을 진행하는 전문 문화·회의 공간입니다.",
+          "landArea": "",
+          "facilityArea": "1,800㎡",
+          "floorCount": "지상 2층",
+          "buildingArea": "",
+          "totalFloorArea": "1,800㎡"
+        },
+        {
+          "id": "fac-nyj-6",
+          "department": "남양주체육문화센터",
+          "name": "파크골프",
+          "fullName": "남양주 파크골프장 (18홀)",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 삼패동 639 (한강공원 인접)",
+          "scale": "천연잔디 18홀 코스 (부지면적 22,000㎡)",
+          "completionDate": "2019년 6월",
+          "majorFacilities": "18홀 천연잔디 코스(A·B코스), 클럽하우스, 장비대여 및 보관실, 휴게파고라, 전용 주차장",
+          "manager": "권병학",
+          "contact": "031-560-1280",
+          "zones": [
+            "1코스(A)",
+            "2코스(B)",
+            "클럽하우스",
+            "장비대여실",
+            "주차장"
+          ],
+          "description": "어르신 및 남녀노소 누구나 즐길 수 있는 한강변 천연 잔디 18홀 규격 파크골프 시설입니다.",
+          "landArea": "22,000㎡",
+          "facilityArea": "",
+          "floorCount": "지상 1층 (야외체육시설)",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792468056152-6xojh",
+          "department": "남양주체육문화센터",
+          "name": "게이트볼장",
+          "fullName": "남양주체육문화센터 전천후 게이트볼장",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (이패동 종합운동장 부지 내)",
+          "scale": "전천후 비가림 막구조 3면 (부지면적 약 1,200㎡)",
+          "completionDate": "2008년 10월 (전천후 캐노피 리뉴얼)",
+          "majorFacilities": "게이트볼 코트 3면(마사토/인조잔디), 전천후 비가림 막구조 지붕, 선수대기 벤치, 야간 조명시설, 전용 화장실",
+          "manager": "김일호",
+          "contact": "031-560-1200",
+          "zones": [
+            "1코트",
+            "2코트",
+            "3코트",
+            "막구조 캐노피",
+            "선수대기실",
+            "주차장"
+          ],
+          "description": "어르신 생활체육 활성화를 위한 전천후 비가림 막구조 게이트볼장 3면으로 우천 및 동절기에도 사계절 경기 이용이 가능합니다.",
+          "landArea": "1,200㎡",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792468097869-cynxc",
+          "department": "남양주체육문화센터",
+          "name": "컨퍼런스 B(장애인)",
+          "fullName": "남양주체육문화센터 장애인 다목적경기장",
+          "category": "장애인체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (체육문화센터 구내)",
+          "scale": "지상 1층 (연면적 약 850㎡, 배리어프리 전면 리모델링)",
+          "completionDate": "2021년 4월",
+          "majorFacilities": "장애인 다목적 체육경기장(배드민턴, 보치아, 탁구, 농구), 휠체어 진입 경사로, 무장애(BF) 전용 화장실, 전용 탈의실·샤워실, 냉난방 및 방송설비",
+          "manager": "조현호",
+          "contact": "031-560-1270",
+          "zones": [
+            "다목적 경기장",
+            "휠체어 경사로",
+            "무장애 화장실",
+            "탈의실/샤워실",
+            "방송조정실"
+          ],
+          "description": "구 컨퍼런스/씨름장 공간을 휠체어 경사로와 전용 편의시설을 갖춘 배리어프리 장애인 맞춤형 다목적 경기장으로 전면 리모델링하여 운영 중입니다.",
+          "landArea": "",
+          "facilityArea": "850㎡",
+          "floorCount": "지상 1층",
+          "buildingArea": "",
+          "totalFloorArea": "850㎡"
+        },
+        {
+          "id": "fac-1792468127333-mrckl",
+          "department": "남양주체육문화센터",
+          "name": "축구장A",
+          "fullName": "남양주체육문화센터 축구장 A구장 (보조경기장)",
+          "category": "전문·생활체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (종합운동장 일원)",
+          "scale": "국제공인 규격 필드 106m × 68m, 400m 8레인 우레탄 육상트랙, 관람석 2,892석",
+          "completionDate": "2008년 10월",
+          "majorFacilities": "국제규격 인조잔디 축구장 1면, 400m 8레인 육상트랙, 전광판, 야간 메인 조명타워 4기, 본부석, 선수 락커룸 및 샤워장",
+          "manager": "김일호",
+          "contact": "031-560-1200",
+          "zones": [
+            "축구장 필드",
+            "400m 육상트랙(8레인)",
+            "관람석(2,892석)",
+            "본부석",
+            "선수대기석(더그아웃)",
+            "메인 조명탑",
+            "데크 계단"
+          ],
+          "description": "남양주시민구단 경기 및 대규모 시민 체육대회가 개최되는 메인급 보조경기장으로 8레인 육상트랙과 조명타워를 갖추고 있습니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "지상 1층 (야외체육시설)",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792468136970-9uagl",
+          "department": "남양주체육문화센터",
+          "name": "축구장B",
+          "fullName": "남양주체육문화센터 야외 축구장 B구장",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (체육문화센터 구내)",
+          "scale": "정규 인조잔디 필드 100m × 64m",
+          "completionDate": "2008년 10월",
+          "majorFacilities": "정규 인조잔디 축구장 1면, 안전보호망 펜스, 선수대기석(더그아웃), 야간 조명탑, 배수시설, 진입로",
+          "manager": "권병학",
+          "contact": "031-560-1200",
+          "zones": [
+            "인조잔디 필드",
+            "선수 대기석",
+            "안전 펜스/그물망",
+            "야간 조명탑",
+            "진입로"
+          ],
+          "description": "지역 축구 동호인 및 유소년 축구 리그, 시민 주말 대관으로 활발히 이용되는 정규 규격 인조잔디 축구장입니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "지상 1층 (야외체육시설)",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792468144633-jacov",
+          "department": "남양주체육문화센터",
+          "name": "축구장C",
+          "fullName": "남양주체육문화센터 야외 축구장 C구장",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (체육문화센터 구내)",
+          "scale": "정규 인조잔디 필드 100m × 64m",
+          "completionDate": "2008년 10월",
+          "majorFacilities": "인조잔디 축구장 1면, 안전보호망 펜스, 선수 대기석, 야간 조명시설, 배수 집수정",
+          "manager": "권병학",
+          "contact": "031-560-1200",
+          "zones": [
+            "인조잔디 필드",
+            "선수 대기석",
+            "안전망",
+            "조명시설",
+            "배수 집수정"
+          ],
+          "description": "동호인 축구 및 유소년 스포츠 클럽 대관 경기장으로 안정적인 배수 시스템과 야간 조명설비를 갖추고 있습니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "지상 1층 (야외체육시설)",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792469584802-6a6n7",
+          "department": "남양주체육문화센터",
+          "name": "다산야구장",
+          "fullName": "남양주 다산야구장 (성인 정규구장)",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 삼패동 630번지 일원 (한강시민공원 구역)",
+          "scale": "성인 정규 규격 (외야 좌우 98m, 중앙 115m, 인조잔디)",
+          "completionDate": "2019년 8월",
+          "majorFacilities": "성인 전용 인조잔디 필드, 투수 마운드, 백스톱 그물망, 1·3루 더그아웃, 전광판, 야간 조명탑, 전용 주차장",
+          "manager": "김일호",
+          "contact": "031-560-1240",
+          "zones": [
+            "내야/외야 인조잔디",
+            "투수 마운드",
+            "1·3루 더그아웃",
+            "백스톱 펜스",
+            "야간 조명탑",
+            "주차장"
+          ],
+          "description": "남양주시 사회인 야구리그 공식 경기장으로 펜스 거리 좌우 98m, 중앙 115m의 쾌적한 한강변 정규 성인 야구장입니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792469592655-qnexy",
+          "department": "남양주체육문화센터",
+          "name": "리틀야구장",
+          "fullName": "남양주 삼패 한강리틀야구장 (유소년 전용)",
+          "category": "유소년체육시설",
+          "location": "경기도 남양주시 고산로 254 (삼패 한강시민공원 내)",
+          "scale": "유소년 국제 규격 (외야 좌우 65m, 중앙 70m, 인조잔디)",
+          "completionDate": "2011년 5월",
+          "majorFacilities": "유소년 전용 인조잔디 필드, 유소년 규격 투수마운드, 관람 펜스, 안전 더그아웃, 장비 보관실",
+          "manager": "김일호",
+          "contact": "031-560-1240",
+          "zones": [
+            "유소년 내/외야 필드",
+            "유소년 투수마운드",
+            "더그아웃",
+            "관람석 펜스",
+            "장비 보관실"
+          ],
+          "description": "남양주 한강리틀야구단 공식 홈구장이자 유소년 야구 육성 전용 구장으로 안전 쿠션 펜스를 완비하고 있습니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792469600521-45j1b",
+          "department": "남양주체육문화센터",
+          "name": "족구장",
+          "fullName": "남양주체육문화센터 야외 족구장",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (체육문화센터 종합운동장 일원)",
+          "scale": "정규 족구 코트 3면 (우레탄/인조잔디 바닥)",
+          "completionDate": "2008년 10월",
+          "majorFacilities": "족구 코트 3면, 심판대, 안전 그물망 펜스, 야간 조명탑, 휴게 파고라",
+          "manager": "조현호",
+          "contact": "031-560-1200",
+          "zones": [
+            "1번 코트",
+            "2번 코트",
+            "3번 코트",
+            "안전 펜스망",
+            "야간 조명",
+            "휴게 벤치"
+          ],
+          "description": "지역 족구 동호회 및 직장인 친선경기를 위한 전용 족구장 3면으로 야간 조명이 완비되어 있습니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792469606771-3cxej",
+          "department": "남양주체육문화센터",
+          "name": "테니스장",
+          "fullName": "남양주체육문화센터 테니스장 (국제규격)",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 다산지금로 91 (체육문화센터 내)",
+          "scale": "부지 약 3,985㎡, 국제공인 규격 5면 (인조잔디 코트)",
+          "completionDate": "2008년 10월 (코트 리뉴얼)",
+          "majorFacilities": "인조잔디 코트 5면, 관리동(락커룸, 샤워장, 휴게실), 야간 조명탑, 심판석, 관람 스탠드",
+          "manager": "조현호",
+          "contact": "031-560-1200",
+          "zones": [
+            "1~3번 코트",
+            "4~5번 코트",
+            "테니스 관리동",
+            "라커룸/샤워실",
+            "조명탑",
+            "주차장"
+          ],
+          "description": "국제공인 규격 인조잔디 코트 5면과 쾌적한 샤워실, 야간 라이트 시설을 갖춘 남양주 대표 테니스장입니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792469617282-qqn5a",
+          "department": "남양주체육문화센터",
+          "name": "풋살장",
+          "fullName": "남양주체육문화센터/삼패 풋살구장",
+          "category": "야외체육시설",
+          "location": "경기도 남양주시 고산로 254 (삼패 한강공원 체육시설 구역)",
+          "scale": "국제규격 풋살구장 1면 (40m × 20m, 인조잔디)",
+          "completionDate": "2013년 6월",
+          "majorFacilities": "고밀도 인조잔디 필드, 안전 쿠션 패드 및 펜스망, 정규 풋살 골대, 야간 고효율 LED 조명탑, 선수 대기석",
+          "manager": "김일호",
+          "contact": "031-560-1240",
+          "zones": [
+            "풋살장 경기장",
+            "안전 보호패드 펜스",
+            "LED 조명탑",
+            "선수 대기석",
+            "주차장"
+          ],
+          "description": "동호인 및 청소년 풋살 경기를 위한 국제규격 1면 인조잔디 풋살구장으로 야간 LED 라이트가 완비되어 있습니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "지상 1층 (야외체육시설)",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        },
+        {
+          "id": "fac-1792474685221-agzqa",
+          "department": "남양주체육문화센터",
+          "name": "야외공연장",
+          "fullName": "야외공연장",
+          "category": "종합체육시설",
+          "location": "",
+          "scale": "",
+          "completionDate": "",
+          "majorFacilities": "",
+          "manager": "",
+          "contact": "",
+          "zones": [
+            "본관",
+            "부대시설",
+            "주차장"
+          ],
+          "description": "",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        }
+      ],
+      "호평체육문화센터": [
+        {
+          "id": "fac-hp-1",
+          "department": "호평체육문화센터",
+          "name": "호평체육문화센터",
+          "fullName": "호평체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 천마산로 21 (호평동)",
+          "scale": "지하 1층 / 지상 3층 (연면적 약 6,100㎡)",
+          "completionDate": "2009년 11월 2일",
+          "majorFacilities": "수영장(성인풀 25m 6레인, 유아풀 2레인, 체온회복실), 실내체육관, 헬스장, 다목적실, 야외주차장",
+          "manager": "호평담당",
+          "contact": "031-560-1300",
+          "zones": [
+            "수영장",
+            "체육관",
+            "헬스장",
+            "기계실",
+            "주차장"
+          ],
+          "description": "호평·평내 권역 주민들의 건강 증진을 위한 거점 종합 체육문화시설입니다.",
+          "landArea": "8,820㎡",
+          "facilityArea": "6,100㎡",
+          "floorCount": "지하 1층 / 지상 3층",
+          "buildingArea": "2,650㎡",
+          "totalFloorArea": "6,100㎡"
+        }
+      ],
+      "오남체육문화센터": [
+        {
+          "id": "fac-onam-1",
+          "department": "오남체육문화센터",
+          "name": "오남체육문화센터",
+          "fullName": "오남체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 오남읍 진건오남로 808",
+          "scale": "지하 1층 / 지상 4층 (연면적 4,762.42㎡)",
+          "completionDate": "2014년 3월",
+          "majorFacilities": "실내수영장(25m 6레인), 다목적체육관, 스피닝룸, 에어로빅실, 헬스장, 주차장",
+          "manager": "오남담당",
+          "contact": "031-560-1320",
+          "zones": [
+            "수영장",
+            "체육관",
+            "에어로빅실",
+            "기계실",
+            "주차장"
+          ],
+          "description": "오남읍 주민 생활체육 지원 거점 시설로 수영장 및 다목적 체육 프로그램을 운영합니다.",
+          "landArea": "5,820㎡",
+          "facilityArea": "4,762.42㎡",
+          "floorCount": "지하 1층 / 지상 4층",
+          "buildingArea": "1,740㎡",
+          "totalFloorArea": "4,762.42㎡"
+        }
+      ],
+      "화도체육문화센터": [
+        {
+          "id": "fac-hwado-1",
+          "department": "화도체육문화센터",
+          "name": "화도체육문화센터",
+          "fullName": "화도체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 화도읍 수레로 1259",
+          "scale": "지하 1층 / 지상 4층 (연면적 12,693㎡)",
+          "completionDate": "2015년 11월 2일",
+          "majorFacilities": "수영장(성인풀 25m 6레인, 유아풀 4레인, 온탕/사우나), 다목적체육관, 라켓볼장, 헬스장, 문화교실",
+          "manager": "화도담당",
+          "contact": "031-560-1340",
+          "zones": [
+            "수영장",
+            "체육관",
+            "라켓볼장",
+            "온탕/사우나",
+            "주차장"
+          ],
+          "description": "화도 권역 종합 생활체육 및 라켓볼, 수영 등 복합 여가활동을 지원하는 대규모 복합시설입니다.",
+          "landArea": "32,710㎡",
+          "facilityArea": "12,693㎡",
+          "floorCount": "지하 1층 / 지상 4층",
+          "buildingArea": "4,215㎡",
+          "totalFloorArea": "12,693㎡"
+        }
+      ],
+      "별내커뮤니티센터": [
+        {
+          "id": "fac-bn-1",
+          "department": "별내커뮤니티센터",
+          "name": "별내커뮤니티센터",
+          "fullName": "별내커뮤니티센터 (아쿠아 아레나 50)",
+          "category": "복합체육·문화시설",
+          "location": "경기도 남양주시 별내5로 66 (별내동)",
+          "scale": "지하 1층 / 지상 2층 (연면적 5,814.27㎡)",
+          "completionDate": "2018년 6월 1일",
+          "majorFacilities": "50m 국제공인 규격 10레인 수영장, 다목적체육관, 문화교실, 헬스장, 지하주차장",
+          "manager": "별내담당",
+          "contact": "031-560-1360",
+          "zones": [
+            "50m 수영장",
+            "체육관",
+            "문화교실",
+            "헬스장",
+            "주차장"
+          ],
+          "description": "남양주시 최초의 50m 국제공인 규격 수영장을 갖춘 별내신도시 랜드마크 스포츠 커뮤니티 센터입니다.",
+          "landArea": "7,100㎡",
+          "facilityArea": "5,814.27㎡",
+          "floorCount": "지하 1층 / 지상 2층",
+          "buildingArea": "2,820㎡",
+          "totalFloorArea": "5,814.27㎡"
+        }
+      ],
+      "와부체육문화센터": [
+        {
+          "id": "fac-wb-1",
+          "department": "와부체육문화센터",
+          "name": "와부체육문화센터",
+          "fullName": "와부체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 와부읍 덕소로 97번길 17",
+          "scale": "지하 1층 / 지상 3층 (연면적 4,269㎡)",
+          "completionDate": "2010년 10월 1일",
+          "majorFacilities": "수영장(성인풀 25m 6레인, 유아풀 4레인, 체온조절 버블탕), 실내체육관, 헬스장, 소강당, 주차장",
+          "manager": "와부담당",
+          "contact": "031-560-1380",
+          "zones": [
+            "수영장",
+            "체육관",
+            "헬스장",
+            "버블탕",
+            "기계실"
+          ],
+          "description": "와부읍 생활체육 중심 거점으로 쾌적한 수영장과 버블탕, 실내체육관을 운영하는 복합센터입니다.",
+          "landArea": "6,450㎡",
+          "facilityArea": "4,269㎡",
+          "floorCount": "지하 1층 / 지상 3층",
+          "buildingArea": "1,890㎡",
+          "totalFloorArea": "4,269㎡"
+        }
+      ],
+      "진접체육문화센터": [
+        {
+          "id": "fac-jj-1",
+          "department": "진접체육문화센터",
+          "name": "진접체육문화센터",
+          "fullName": "진접체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 진접읍 해밀예당1로 67",
+          "scale": "지하 1층 / 지상 3층 (연면적 3,869㎡)",
+          "completionDate": "2011년 8월 1일",
+          "majorFacilities": "수영장(성인풀 25m 6레인, 유아풀 2레인), 다목적체육관(배드민턴), 헬스장, 스피닝룸, 주차장",
+          "manager": "진접담당",
+          "contact": "031-560-1400",
+          "zones": [
+            "수영장",
+            "체육관",
+            "헬스장",
+            "스피닝룸",
+            "주차장"
+          ],
+          "description": "진접지구 주민 생활체육 공간으로 배드민턴 전용 체육관과 수영장 프로그램을 운영합니다.",
+          "landArea": "5,200㎡",
+          "facilityArea": "3,869㎡",
+          "floorCount": "지하 1층 / 지상 3층",
+          "buildingArea": "1,600㎡",
+          "totalFloorArea": "3,869㎡"
+        }
+      ],
+      "평내체육문화센터": [
+        {
+          "id": "fac-pn-1",
+          "department": "평내체육문화센터",
+          "name": "평내체육문화센터",
+          "fullName": "평내체육문화센터 본관",
+          "category": "종합체육시설",
+          "location": "경기도 남양주시 평내동 587-1",
+          "scale": "지하 2층 / 지상 2층 (연면적 약 11,548㎡)",
+          "completionDate": "2026년 3월",
+          "majorFacilities": "수영장(25m 8레인 일반풀, 아쿠아로빅풀 3레인), 다목적체육관, 유아체육실, 헬스장, 지하주차장",
+          "manager": "평내담당",
+          "contact": "031-560-1420",
+          "zones": [
+            "8레인 수영장",
+            "아쿠아로빅풀",
+            "체육관",
+            "유아체육실",
+            "지하주차장"
+          ],
+          "description": "평내동 주민들을 위해 2026년 3월 개관한 최신 대규모 복합 체육문화센터입니다.",
+          "landArea": "10,138㎡",
+          "facilityArea": "11,548㎡",
+          "floorCount": "지하 2층 / 지상 2층",
+          "buildingArea": "3,450㎡",
+          "totalFloorArea": "11,548㎡"
+        }
+      ],
+      "철도안전부": [
+        {
+          "id": "fac-rail-1",
+          "department": "철도안전부",
+          "name": "철도안전부",
+          "fullName": "철도안전 통합관제 및 점검시설",
+          "category": "철도안전시설",
+          "location": "경기도 남양주시 별내동 진접선 역사 일원",
+          "scale": "진접선 3개 역사(별내별가람, 오남, 진접) 및 종합관제소 시설",
+          "completionDate": "2022년 3월",
+          "majorFacilities": "철도종합관제실, 신호보안기기실, 궤도보수 장비고, 전기실, 역무안전설비",
+          "manager": "철도안전관",
+          "contact": "031-560-1500",
+          "zones": [
+            "통합관제실",
+            "신호통신실",
+            "전력공급실",
+            "선로구간"
+          ],
+          "description": "남양주 관내 진접선 등 도시철도 안전운행 및 철도시설물 유지관리 총괄 부서입니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        }
+      ],
+      "주차시설부": [
+        {
+          "id": "fac-park-1",
+          "department": "주차시설부",
+          "name": "주차시설부",
+          "fullName": "남양주시 공영주차장 통합관리센터",
+          "category": "교통주차시설",
+          "location": "경기도 남양주시 다산동 공영주차장 일원",
+          "scale": "남양주시 공영주차장 62개소 통합관리 (노외 35개소, 노상 22개소, 타워 5개소)",
+          "completionDate": "2018년 1월",
+          "majorFacilities": "공영주차장 통합관제센터, 24시간 무인정산기 시스템, 스마트 주차유도시스템, 전기차 급속충전기, CCTV 서버실",
+          "manager": "주차시설담당",
+          "contact": "031-560-1600",
+          "zones": [
+            "노외주차장",
+            "노상주차장",
+            "타워형주차장",
+            "관제실"
+          ],
+          "description": "남양주시 관내 공영주차장 62개소 시설 유지보수, 차단기 및 무인정산기 관리를 전담합니다.",
+          "landArea": "",
+          "facilityArea": "",
+          "floorCount": "",
+          "buildingArea": "",
+          "totalFloorArea": ""
+        }
+      ],
+      "어린이비전센터": [
+        {
+          "id": "fac-vision-1",
+          "department": "어린이비전센터",
+          "name": "어린이비전센터",
+          "fullName": "어린이비전센터 및 사계절썰매장",
+          "category": "어린이체험·놀이시설",
+          "location": "경기도 남양주시 진접읍 해밀예당1로 96",
+          "scale": "지하 1층 / 지상 4층 (부지 14,000㎡, 연면적 7,300㎡)",
+          "completionDate": "2015년 7월",
+          "majorFacilities": "어린이 창의체험 전시실(1~3층), 라바파크 야외 테마파크, 사계절 썰매장, 옥상정원, 주차장",
+          "manager": "비전센터담당",
+          "contact": "031-560-1700",
+          "zones": [
+            "체험전시관",
+            "라바파크",
+            "사계절썰매장",
+            "기계실",
+            "주차장"
+          ],
+          "description": "어린이 창의체험 및 놀이문화 공간으로 사계절 썰매장과 야외 테마파크를 운영·관리합니다.",
+          "landArea": "14,000㎡",
+          "facilityArea": "7,300㎡",
+          "floorCount": "지하 1층 / 지상 4층",
+          "buildingArea": "",
+          "totalFloorArea": "7,300㎡"
+        }
+      ],
+      "남양주시청소년수련관": [
+        {
+          "id": "fac-youth-1",
+          "department": "남양주시청소년수련관",
+          "name": "남양주시청소년수련관",
+          "fullName": "남양주시청소년수련관 본관",
+          "category": "청소년수련시설",
+          "location": "경기도 남양주시 일패동 45-2",
+          "scale": "지하 1층 / 지상 3층 (연면적 6,100㎡)",
+          "completionDate": "2010년 4월",
+          "majorFacilities": "실내수영장(25m), 대공연장(280석), 댄스연습실, 밴드동아리실, 청소년 북카페, 체력단련실",
+          "manager": "청소년수련담당",
+          "contact": "031-560-1800",
+          "zones": [
+            "수영장",
+            "대공연장",
+            "동아리실",
+            "북카페",
+            "주차장"
+          ],
+          "description": "청소년 문화예술, 자치활동, 체육프로그램 및 시설 유지보수를 전담합니다.",
+          "landArea": "",
+          "facilityArea": "6,100㎡",
+          "floorCount": "지하 1층 / 지상 3층",
+          "buildingArea": "",
+          "totalFloorArea": "6,100㎡"
+        }
+      ]
+    },
+    "budgets": {
+      "남양주체육문화센터": {
+        "수선유지비": 150000000,
+        "시설비(야구장)": 359680000,
+        "시설비(파크골프장)": 40000000,
+        "시설비(전광판)": 480000000
+      },
+      "호평체육문화센터": {
+        "수선유지비": 95000000
+      },
+      "오남체육문화센터": {
+        "수선유지비": 70000000
+      },
+      "화도체육문화센터": {
+        "운영경비": 110000000,
+        "일상경비": 0
+      },
+      "별내커뮤니티센터": {
+        "수선유지비": 85000000
+      },
+      "와부체육문화센터": {
+        "운영경비": 90000000,
+        "일상경비": 50000000
+      },
+      "평내체육문화센터": {
+        "수선유지비": 65000000
+      },
+      "진접체육문화센터": {
+        "수선유지비": 80000000
+      },
+      "철도안전부": {
+        "수선유지비": 120000000
+      },
+      "철도운영부": {
+        "수선유지비": 100000000
+      },
+      "철도지원부": {
+        "수선유지비": 50000000
+      },
+      "주차운영부": {
+        "수선유지비": 80000000
+      },
+      "주차시설부": {
+        "수선유지비": 140000000
+      },
+      "에코랜드운영부": {
+        "수선유지비": 150000000
+      },
+      "화도푸른물센터": {
+        "수선유지비": 90000000
+      },
+      "남양주시청소년수련관": {
+        "수선유지비": 85000000
+      },
+      "정약용 펀그라운드": {
+        "수선유지비": 40000000
+      },
+      "펀그라운드 진접": {
+        "수선유지비": 50000000
+      },
+      "펀그라운드 수동": {
+        "수선유지비": 35000000
+      },
+      "어린이비전센터": {
+        "수선유지비": 75000000
+      }
+    },
+    "budgetCategories": [
+      "수선유지비"
+    ],
+    "customDatabases": [],
+    "departmentManagers": {
+      "남양주체육문화센터": [
+        "김일호",
+        "권병학",
+        "조현호"
+      ],
+      "화도체육문화센터": [
+        "김민현",
+        "박상철",
+        "최민우"
+      ],
+      "호평체육문화센터": [
+        "정다은",
+        "강현우"
+      ],
+      "와부체육문화센터": [
+        "김수관",
+        "송영진",
+        "임태호"
+      ],
+      "오남체육문화센터": [
+        "한지훈",
+        "유승민"
+      ],
+      "별내커뮤니티센터": [
+        "윤서준",
+        "신도현"
+      ],
+      "진접체육문화센터": [
+        "오세훈",
+        "노민우"
+      ],
+      "평내체육문화센터": [
+        "황준호",
+        "배성민",
+        "류해정"
+      ],
+      "철도안전부": [
+        "장민석",
+        "백운기"
+      ],
+      "철도운영부": [
+        "김태호",
+        "박재현"
+      ],
+      "철도지원부": [
+        "서동진",
+        "최준영"
+      ],
+      "주차운영부": [
+        "김진수",
+        "이민기"
+      ],
+      "주차시설부": [
+        "박성훈",
+        "정원석"
+      ],
+      "에코랜드운영부": [
+        "조영택",
+        "임채훈"
+      ],
+      "화도푸른물센터": [
+        "강동원",
+        "이재호"
+      ],
+      "남양주시청소년수련관": [
+        "신혜진",
+        "문소연"
+      ],
+      "정약용 펀그라운드": [
+        "안지훈",
+        "김태희"
+      ],
+      "펀그라운드 진접": [
+        "유재석",
+        "이지은"
+      ],
+      "펀그라운드 수동": [
+        "강호동",
+        "송중기"
+      ],
+      "어린이비전센터": [
+        "박보검",
+        "배수지"
+      ]
+    }
+  }
+}

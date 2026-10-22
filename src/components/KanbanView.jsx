@@ -14,35 +14,27 @@ import { formatCurrency } from '../utils/formatters';
 
 const KANBAN_COLUMNS = [
   {
-    id: 'pending',
-    title: '접수 / 대기',
-    statuses: ['접수/대기'],
-    color: 'border-slate-300 bg-slate-50/50',
-    headerBg: 'bg-slate-100 text-slate-800',
+    id: 'review',
+    title: '검토',
+    statuses: ['검토', '접수/대기', '검토중', '제안서 협의'],
+    color: 'border-amber-300 bg-amber-50/20',
+    headerBg: 'bg-amber-100 text-amber-900',
     icon: Clock,
   },
   {
-    id: 'review',
-    title: '검토 및 협의',
-    statuses: ['검토중', '제안서 협의'],
-    color: 'border-amber-300 bg-amber-50/20',
-    headerBg: 'bg-amber-100 text-amber-900',
+    id: 'design',
+    title: '설계',
+    statuses: ['설계', '견적의뢰', '견적방문', '계약체결'],
+    color: 'border-blue-300 bg-blue-50/20',
+    headerBg: 'bg-blue-100 text-blue-900',
     icon: FileText,
   },
   {
-    id: 'quote',
-    title: '견적의뢰 / 방문',
-    statuses: ['견적의뢰', '견적방문'],
-    color: 'border-blue-300 bg-blue-50/20',
-    headerBg: 'bg-blue-100 text-blue-900',
-    icon: Send,
-  },
-  {
-    id: 'contract',
-    title: '계약 / 공사진행',
-    statuses: ['계약체결', '공사진행'],
-    color: 'border-purple-300 bg-purple-50/20',
-    headerBg: 'bg-purple-100 text-purple-900',
+    id: 'progress',
+    title: '진행',
+    statuses: ['진행', '공사진행'],
+    color: 'border-indigo-300 bg-indigo-50/20',
+    headerBg: 'bg-indigo-100 text-indigo-900',
     icon: Hammer,
   },
   {
@@ -63,32 +55,43 @@ export default function KanbanView({
 }) {
   const getNextStatus = (currentStatus) => {
     switch (currentStatus) {
-      case '접수/대기': return '검토중';
-      case '검토중': return '견적의뢰';
-      case '제안서 협의': return '견적의뢰';
-      case '견적의뢰': return '공사진행';
-      case '견적방문': return '견적의뢰';
-      case '계약체결': return '공사진행';
-      case '공사진행': return '완료';
-      default: return null;
+      case '검토':
+      case '접수/대기':
+      case '검토중':
+      case '제안서 협의':
+        return '설계';
+      case '설계':
+      case '견적의뢰':
+      case '견적방문':
+      case '계약체결':
+        return '진행';
+      case '진행':
+      case '공사진행':
+        return '완료';
+      default:
+        return null;
     }
   };
 
   const getPrevStatus = (currentStatus) => {
     switch (currentStatus) {
-      case '완료': return '공사진행';
-      case '공사진행': return '견적의뢰';
-      case '계약체결': return '견적의뢰';
-      case '견적의뢰': return '접수/대기';
-      case '견적방문': return '접수/대기';
-      case '검토중': return '접수/대기';
-      case '제안서 협의': return '접수/대기';
-      default: return null;
+      case '완료':
+        return '진행';
+      case '진행':
+      case '공사진행':
+        return '설계';
+      case '설계':
+      case '견적의뢰':
+      case '견적방문':
+      case '계약체결':
+        return '검토';
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8 items-start">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 items-start">
       {KANBAN_COLUMNS.map((col) => {
         const columnTasks = tasks.filter((t) => col.statuses.includes(t.status));
         const colTotalCost = columnTasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
