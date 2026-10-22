@@ -12,15 +12,35 @@ export default function TaskModal({
   selectedDepartment = '남양주체육문화센터',
   budgetCategories = BUDGET_TYPES,
   facilityOptions = [],
+  allFacilities = [],
+  allBudgets = {},
+  allDepartmentManagers = {},
   managers = MANAGERS
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
+  const [isCustomFacility, setIsCustomFacility] = useState(false);
+
+  const getDeptFacilityList = (dept) => {
+    const targetDept = dept || selectedDepartment || '남양주체육문화센터';
+    if (Array.isArray(allFacilities) && allFacilities.length > 0) {
+      const matched = allFacilities
+        .filter((f) => (f.department || '남양주체육문화센터') === targetDept)
+        .map((f) => f.name)
+        .filter(Boolean);
+      if (matched.length > 0) return matched;
+    }
+    if (targetDept === selectedDepartment && Array.isArray(facilityOptions) && facilityOptions.length > 0) {
+      return facilityOptions;
+    }
+    if (targetDept === '남양주체육문화센터') return FACILITIES;
+    return [targetDept.includes('체육문화센터') ? targetDept.replace('체육문화센터', '센터') : targetDept];
+  };
 
   const [formData, setFormData] = useState({
     department: selectedDepartment,
     budget: defaultBudget,
-    facility: '남양주센터',
+    facility: getDeptFacilityList(selectedDepartment)[0] || '남양주센터',
     location: '',
     title: '',
     estimatedCost: '',
@@ -38,11 +58,14 @@ export default function TaskModal({
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    setIsCustomFacility(false);
     if (currentTask) {
+      const taskDept = currentTask.department || selectedDepartment || '남양주체육문화센터';
+      const deptFacs = getDeptFacilityList(taskDept);
       setFormData({
-        department: currentTask.department || selectedDepartment || '남양주체육문화센터',
+        department: taskDept,
         budget: currentTask.budget || defaultBudget,
-        facility: currentTask.facility || '남양주센터',
+        facility: currentTask.facility || deptFacs[0] || taskDept,
         location: currentTask.location || '',
         title: currentTask.title || '',
         estimatedCost: currentTask.estimatedCost ? String(currentTask.estimatedCost) : '',
@@ -57,10 +80,11 @@ export default function TaskModal({
         memo: currentTask.memo || '',
       });
     } else {
+      const deptFacs = getDeptFacilityList(selectedDepartment);
       setFormData({
         department: selectedDepartment || '남양주체육문화센터',
         budget: defaultBudget,
-        facility: selectedDepartment.includes('체육문화센터') ? selectedDepartment.replace('체육문화센터', '센터') : selectedDepartment,
+        facility: deptFacs[0] || (selectedDepartment.includes('체육문화센터') ? selectedDepartment.replace('체육문화센터', '센터') : selectedDepartment),
         location: '',
         title: '',
         estimatedCost: '',
@@ -76,11 +100,42 @@ export default function TaskModal({
       });
     }
     setErrors({});
-  }, [currentTask, isOpen, selectedDepartment, defaultBudget]);
+  }, [currentTask, isOpen, selectedDepartment, defaultBudget, allFacilities]);
 
   if (!isOpen) return null;
 
-  const baseManagers = managers && managers.length > 0 ? managers : MANAGERS;
+  const activeDept = formData.department || selectedDepartment || '남양주체육문화센터';
+
+  // Department-specific facilities (from 부서별 시설 현황)
+  const deptFacilityObjects = Array.isArray(allFacilities)
+    ? allFacilities.filter((f) => (f.department || '남양주체육문화센터') === activeDept)
+    : [];
+  const baseFacilities = getDeptFacilityList(activeDept);
+  const activeFacilityOptions = Array.from(
+    new Set([
+      ...baseFacilities,
+      ...(formData.facility && !isCustomFacility ? [formData.facility] : [])
+    ])
+  );
+
+  // Zones of the currently selected facility for location autocomplete
+  const selectedFacilityObj = deptFacilityObjects.find((f) => f.name === formData.facility);
+  const activeFacilityZones = Array.isArray(selectedFacilityObj?.zones) ? selectedFacilityObj.zones : [];
+
+  // Department-specific budget categories
+  const activeBudgetCategories = (() => {
+    const deptBudgetObj = allBudgets?.[activeDept];
+    if (deptBudgetObj && typeof deptBudgetObj === 'object' && Object.keys(deptBudgetObj).length > 0) {
+      return Array.from(new Set([...Object.keys(deptBudgetObj), ...(formData.budget ? [formData.budget] : [])]));
+    }
+    return Array.from(new Set([...(budgetCategories || BUDGET_TYPES), ...(formData.budget ? [formData.budget] : [])]));
+  })();
+
+  // Department-specific managers
+  const deptMgrList = allDepartmentManagers?.[activeDept];
+  const baseManagers = Array.isArray(deptMgrList) && deptMgrList.length > 0
+    ? deptMgrList
+    : (managers && managers.length > 0 ? managers : MANAGERS);
   const activeManagers = Array.from(new Set([
     ...baseManagers,
     ...(formData?.manager ? [formData.manager] : [])
@@ -159,7 +214,22 @@ export default function TaskModal({
               <span className="text-[11px] text-slate-500 font-semibold">부서 변경:</span>
               <select
                 value={formData.department}
-                onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
+                onChange={(e) => {
+                  const nextDept = e.target.value;
+                  const nextFacs = getDeptFacilityList(nextDept);
+                  const nextBudgetObj = allBudgets?.[nextDept];
+                  const nextBudget = nextBudgetObj && Object.keys(nextBudgetObj).length > 0
+                    ? Object.keys(nextBudgetObj)[0]
+                    : '수선유지비';
+                  setIsCustomFacility(false);
+                  setFormData(prev => ({
+                    ...prev,
+                    department: nextDept,
+                    facility: nextFacs[0] || nextDept,
+                    budget: nextBudget,
+                    manager: ''
+                  }));
+                }}
                 className="text-xs font-bold bg-white border border-amber-300 rounded-lg px-2.5 py-1 text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
               >
                 {ALL_DEPARTMENTS.map(d => (
@@ -180,29 +250,62 @@ export default function TaskModal({
                 onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
               >
-                {budgetCategories.map((b) => (
+                {activeBudgetCategories.map((b) => (
                   <option key={b} value={b}>{b}</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 mb-1">
-                분류 (센터/구역) <span className="text-rose-500">*</span>
-              </label>
-              <input
-                type="text"
-                list="facility-options-list"
-                value={formData.facility}
-                onChange={(e) => setFormData({ ...formData, facility: e.target.value })}
-                placeholder="예: 남양주센터, 다목적체육관 등"
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
-              />
-              <datalist id="facility-options-list">
-                {(facilityOptions && facilityOptions.length > 0 ? facilityOptions : FACILITIES).map((f) => (
-                  <option key={f} value={f} />
-                ))}
-              </datalist>
+              <div className="flex items-center justify-between mb-1">
+                <label className="font-bold text-slate-700">
+                  분류 (시설/센터) <span className="text-rose-500">*</span>
+                </label>
+                <span className="text-[10px] font-semibold text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded border border-teal-200">
+                  등록시설 {baseFacilities.length}개
+                </span>
+              </div>
+              {!isCustomFacility ? (
+                <select
+                  value={formData.facility}
+                  onChange={(e) => {
+                    if (e.target.value === '__CUSTOM__') {
+                      setIsCustomFacility(true);
+                      setFormData({ ...formData, facility: '' });
+                    } else {
+                      setFormData({ ...formData, facility: e.target.value });
+                    }
+                  }}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-bold text-slate-800 bg-white cursor-pointer"
+                >
+                  {activeFacilityOptions.map((f) => (
+                    <option key={f} value={f}>{f}</option>
+                  ))}
+                  <option value="__CUSTOM__">+ 직접 입력...</option>
+                </select>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <input
+                    type="text"
+                    value={formData.facility}
+                    onChange={(e) => setFormData({ ...formData, facility: e.target.value })}
+                    placeholder="시설/구역 직접 입력"
+                    autoFocus
+                    className="w-full px-2.5 py-2 rounded-lg border border-teal-500 focus:ring-2 focus:ring-teal-500/20 font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCustomFacility(false);
+                      setFormData({ ...formData, facility: baseFacilities[0] || activeDept });
+                    }}
+                    className="shrink-0 px-2 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-[11px] font-bold transition"
+                    title="등록된 시설 목록에서 선택"
+                  >
+                    목록
+                  </button>
+                </div>
+              )}
             </div>
 
             <div>
@@ -211,11 +314,19 @@ export default function TaskModal({
               </label>
               <input
                 type="text"
+                list="facility-zones-datalist"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="예: 옥상, 지하 기계실, 3층 로비"
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium"
               />
+              {activeFacilityZones.length > 0 && (
+                <datalist id="facility-zones-datalist">
+                  {activeFacilityZones.map((zone) => (
+                    <option key={zone} value={zone} />
+                  ))}
+                </datalist>
+              )}
             </div>
           </div>
 

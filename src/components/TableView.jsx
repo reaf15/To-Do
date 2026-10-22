@@ -68,7 +68,8 @@ export default function TableView({
   onDeleteTask,
   onQuickStatusChange,
   onQuickManagerChange,
-  managers = MANAGERS
+  managers = MANAGERS,
+  facilities = []
 }) {
   const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   const [sortField, setSortField] = useState('id');
@@ -111,9 +112,12 @@ export default function TableView({
   const [rowFilters, setRowFilters] = useState(INITIAL_ROW_FILTERS);
   const [isFilterRowVisible, setIsFilterRowVisible] = useState(true);
 
-  // Unique options extracted dynamically from tasks
+  // Unique options extracted dynamically from department facilities & tasks
   const uniqueBudgets = useMemo(() => Array.from(new Set(tasks.map(t => t.budget).filter(Boolean))), [tasks]);
-  const uniqueFacilities = useMemo(() => Array.from(new Set(tasks.map(t => t.facility).filter(Boolean))), [tasks]);
+  const uniqueFacilities = useMemo(
+    () => Array.from(new Set([...(Array.isArray(facilities) ? facilities.filter(Boolean) : []), ...tasks.map(t => t.facility).filter(Boolean)])),
+    [facilities, tasks]
+  );
   const uniqueManagers = useMemo(() => Array.from(new Set(tasks.map(t => t.manager).filter(Boolean))), [tasks]);
 
   // Active filter count

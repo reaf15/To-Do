@@ -353,7 +353,23 @@ export default function App() {
   const handleSaveFacility = (facilityData, isEdit) => {
     let updated;
     if (isEdit) {
+      const prevFac = facilities.find(f => f.id === facilityData.id);
       updated = facilities.map(f => f.id === facilityData.id ? facilityData : f);
+      // Cascade facility name change to tasks in the same department
+      if (prevFac && prevFac.name && facilityData.name && prevFac.name !== facilityData.name) {
+        const targetDept = facilityData.department || selectedDepartment;
+        let tasksUpdated = false;
+        const syncedTasks = tasks.map(t => {
+          if ((t.department || '남양주체육문화센터') === targetDept && t.facility === prevFac.name) {
+            tasksUpdated = true;
+            return { ...t, facility: facilityData.name };
+          }
+          return t;
+        });
+        if (tasksUpdated) {
+          persistTasks(syncedTasks);
+        }
+      }
       showToast(`'${facilityData.name}' 시설 정보가 저장되었습니다.`);
       addAuditLog(`시설 정보 수정: [${selectedDepartment}] ${facilityData.name}`);
     } else {
@@ -1353,7 +1369,7 @@ export default function App() {
                     onExportExcel={handleExportExcel}
                     onExportAllExcel={handleExportAllExcel}
                     budgetCategories={currentDeptCategories}
-                    facilities={currentDeptFacilities.map(f => f.name)}
+                    facilities={Array.from(new Set([...currentDeptFacilities.map(f => f.name), ...departmentTasks.map(t => t.facility).filter(Boolean)]))}
                     managers={currentDeptManagers}
                   />
 
@@ -1369,6 +1385,7 @@ export default function App() {
                       onQuickStatusChange={handleQuickStatusChange}
                       onQuickManagerChange={handleQuickManagerChange}
                       managers={currentDeptManagers}
+                      facilities={currentDeptFacilities.map(f => f.name)}
                     />
                   )}
 
@@ -1390,6 +1407,7 @@ export default function App() {
                   {viewMode === 'facility' && (
                     <FacilityView
                       tasks={filteredTasks}
+                      facilities={currentDeptFacilities}
                       onSelectTask={(task) => {
                         setEditingTask(task);
                         setIsTaskModalOpen(true);
@@ -1455,6 +1473,9 @@ export default function App() {
         currentUser={currentUser}
         budgetCategories={currentDeptCategories}
         facilityOptions={currentDeptFacilities.map(f => f.name)}
+        allFacilities={facilities}
+        allBudgets={budgets}
+        allDepartmentManagers={departmentManagers}
         managers={currentDeptManagers}
       />
 

@@ -12,28 +12,39 @@ import { FACILITIES, STATUS_COLORS } from '../data/initialTasks';
 import { formatCurrency } from '../utils/formatters';
 
 export default function FacilityView({
-  tasks,
+  tasks = [],
+  facilities = [],
   onSelectTask,
   onNewTask
 }) {
-  const [expandedFacilities, setExpandedFacilities] = useState(
-    FACILITIES.reduce((acc, f) => ({ ...acc, [f]: true }), {})
+  const facilityNames = Array.from(
+    new Set([
+      ...(Array.isArray(facilities) && facilities.length > 0
+        ? facilities.map((f) => (typeof f === 'string' ? f : f.name)).filter(Boolean)
+        : FACILITIES),
+      ...tasks.map((t) => t.facility).filter(Boolean)
+    ])
   );
+
+  const [expandedFacilities, setExpandedFacilities] = useState({});
 
   const toggleFacility = (facility) => {
     setExpandedFacilities((prev) => ({
       ...prev,
-      [facility]: !prev[facility]
+      [facility]: prev[facility] === false ? true : false
     }));
   };
 
   return (
     <div className="space-y-4 mb-8">
-      {FACILITIES.map((facility) => {
+      {facilityNames.map((facility) => {
+        const facObj = Array.isArray(facilities)
+          ? facilities.find((f) => typeof f === 'object' && f.name === facility)
+          : null;
         const facilityTasks = tasks.filter((t) => t.facility === facility);
         const totalCost = facilityTasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
         const totalQuote = facilityTasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
-        const isExpanded = expandedFacilities[facility];
+        const isExpanded = expandedFacilities[facility] !== false;
 
         return (
           <div
@@ -64,7 +75,7 @@ export default function FacilityView({
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    남양주도시공사 관리 시설구역
+                    {facObj?.fullName || facObj?.location || '남양주도시공사 관리 시설구역'}
                   </p>
                 </div>
               </div>
