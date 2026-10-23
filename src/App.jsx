@@ -904,15 +904,15 @@ export default function App() {
     }, 4000);
 
   
+    return () => clearInterval(pollInterval);
+  }, []);
+
   // Guard system modules for non-host
   useEffect(() => {
     if (!isHostClient && (currentModule === 'login-history' || currentModule === 'backup-restore' || currentModule === 'version-history')) {
       setCurrentModule('databases');
     }
   }, [isHostClient, currentModule]);
-
-  return () => clearInterval(pollInterval);
-  }, []);
 
   // Toggle submission status for a department (수동 제출 완료/미제출 처리 및 연동)
   const handleToggleSubmission = (deptName, targetStatus) => {
