@@ -238,6 +238,18 @@ export default function App() {
   // Server network info (for other staff connection)
   const [serverInfo, setServerInfo] = useState({ ip: '192.168.101.96', port: 5173 });
 
+  // Check if current browser is on the host computer
+  const isHostClient = useMemo(() => {
+    if (typeof window === 'undefined') return true;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return true;
+    }
+    if (serverInfo && typeof serverInfo.isHost === 'boolean') {
+      return serverInfo.isHost;
+    }
+    return false;
+  }, [serverInfo]);
+
   // UI state
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban' | 'facility' | 'staff'
   const [searchQuery, setSearchQuery] = useState('');
@@ -891,7 +903,15 @@ export default function App() {
       }
     }, 4000);
 
-    return () => clearInterval(pollInterval);
+  
+  // Guard system modules for non-host
+  useEffect(() => {
+    if (!isHostClient && (currentModule === 'login-history' || currentModule === 'backup-restore' || currentModule === 'version-history')) {
+      setCurrentModule('databases');
+    }
+  }, [isHostClient, currentModule]);
+
+  return () => clearInterval(pollInterval);
   }, []);
 
   // Toggle submission status for a department (수동 제출 완료/미제출 처리 및 연동)
@@ -1260,6 +1280,7 @@ export default function App() {
         submissionStats={submissionStats}
         submissionMap={submissionMap}
         onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
+        isHost={isHostClient}
       />
 
       {/* 2. Right Work Frame: Full Screen Container */}
@@ -1331,6 +1352,8 @@ export default function App() {
                 onUserChange={handleUserChange}
                 managers={currentDeptManagers}
                 onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
+                isHost={isHostClient}
+                onOpenVersion={() => setCurrentModule('version-history')}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}

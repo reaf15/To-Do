@@ -54,6 +54,22 @@ function getLocalIps() {
   return ips;
 }
 
+
+// Check if client is connecting from the host machine (내 컴퓨터)
+function isLocalClient(req) {
+  const remote = req.socket?.remoteAddress || '';
+  if (remote === '127.0.0.1' || remote === '::1' || remote.includes('127.0.0.1')) {
+    return true;
+  }
+  const localIps = getLocalIps();
+  for (const ip of localIps) {
+    if (remote === ip || remote === `::ffff:${ip}` || remote.endsWith(ip)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 const server = http.createServer((req, res) => {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -69,11 +85,14 @@ const server = http.createServer((req, res) => {
   // 1. API: Server Info
   if (req.url === '/api/server-info' && req.method === 'GET') {
     const ips = getLocalIps();
+    const isHost = isLocalClient(req);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({
       ip: ips[0] || 'localhost',
       allIps: ips,
-      port: PORT
+      port: PORT,
+      isHost,
+      clientIp: req.socket?.remoteAddress
     }));
     return;
   }

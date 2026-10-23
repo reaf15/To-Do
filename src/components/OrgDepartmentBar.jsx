@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 import { MANAGERS } from '../data/initialTasks';
+import { CURRENT_SYSTEM_VERSION } from '../data/initialVersionHistory';
 
 export default function OrgDepartmentBar({
   selectedDivision,
@@ -14,7 +15,9 @@ export default function OrgDepartmentBar({
   currentUser,
   onUserChange,
   managers = MANAGERS,
-  onOpenDeptManagersModal
+  onOpenDeptManagersModal,
+  isHost = true,
+  onOpenVersion
 }) {
   // Current active division object based on selectedDepartment
   const currentDiv = ORGANIZATION_TREE.find(div => 
@@ -50,6 +53,17 @@ export default function OrgDepartmentBar({
 
       {/* Right: User Selector & Dept Managers Button */}
       <div className="flex items-center gap-2 flex-wrap">
+        {isHost && onOpenVersion && (
+          <button
+            type="button"
+            onClick={onOpenVersion}
+            title="시스템 관리 > 버전 및 변경 이력 (내 컴퓨터 전용)"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 transition cursor-pointer"
+          >
+            <span>🏷️</span>
+            <span>{CURRENT_SYSTEM_VERSION}</span>
+          </button>
+        )}
         {onOpenDeptManagersModal && (
           <button
             type="button"

@@ -56,7 +56,8 @@ export default function Sidebar({
   serverInfo,
   submissionStats = { totalCount: 20, submittedCount: 1, unsubmittedCount: 19, rate: '5.0', submittedDepts: [], unsubmittedDepts: [] },
   submissionMap = {},
-  onOpenDeptManagersModal
+  onOpenDeptManagersModal,
+  isHost = true
 }) {
   const isHostPc = typeof window !== 'undefined' && (
     window.location.hostname === 'localhost' || 
@@ -446,53 +447,54 @@ export default function Sidebar({
           </a>
         </div>
 
-        {/* GROUP 3: 시스템 관리 (로그인이력조회) */}
-        <div>
-          {!isCollapsed ? (
-            <button
-              onClick={() => toggleGroup('system')}
-              className="w-full flex items-center justify-between px-2.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider hover:text-slate-200 transition"
-            >
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                시스템 관리
-              </span>
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expandedGroups.system ? '' : '-rotate-90'}`} />
-            </button>
-          ) : (
-            <div className="w-full border-t border-slate-800 my-2" />
-          )}
-
-          {(!isCollapsed ? expandedGroups.system : true) && (
-            <div className="space-y-0.5 mt-1">
+        {/* GROUP 3: 시스템 관리 (내 컴퓨터 / 관리자 전용) */}
+        {isHost && (
+          <div>
+            {!isCollapsed ? (
               <button
-                onClick={() => onModuleChange('login-history')}
-                title="시스템관리 > 로그인이력조회"
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
-                  currentModule === 'login-history'
-                    ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
-                }`}
+                onClick={() => toggleGroup('system')}
+                className="w-full flex items-center justify-between px-2.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider hover:text-slate-200 transition"
               >
-                <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
-                {!isCollapsed && <span className="truncate">로그인이력조회</span>}
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  시스템 관리
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expandedGroups.system ? '' : '-rotate-90'}`} />
               </button>
+            ) : (
+              <div className="w-full border-t border-slate-800 my-2" />
+            )}
 
-              <button
-                onClick={() => onModuleChange('backup-restore')}
-                title="시스템관리 > 데이터 백업 및 복구 관리"
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
-                  currentModule === 'backup-restore'
-                    ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
-                }`}
-              >
-                <Database className="w-4 h-4 shrink-0 text-amber-400" />
-                {!isCollapsed && <span className="truncate">데이터 백업 및 복구</span>}
-              </button>
+            {(!isCollapsed ? expandedGroups.system : true) && (
+              <div className="space-y-0.5 mt-1">
+                <button
+                  onClick={() => onModuleChange('login-history')}
+                  title="시스템관리 > 로그인이력조회"
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
+                    currentModule === 'login-history'
+                      ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+                  }`}
+                >
+                  <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
+                  {!isCollapsed && <span className="truncate">로그인이력조회</span>}
+                </button>
 
-              {/* 내 컴퓨터(호스트 PC) 전용: 시스템 버전 및 변경 이력 관리 */}
-              <button
+                <button
+                  onClick={() => onModuleChange('backup-restore')}
+                  title="시스템관리 > 데이터 백업 및 복구 관리"
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
+                    currentModule === 'backup-restore'
+                      ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+                  }`}
+                >
+                  <Database className="w-4 h-4 shrink-0 text-amber-400" />
+                  {!isCollapsed && <span className="truncate">데이터 백업 및 복구</span>}
+                </button>
+
+                {/* 내 컴퓨터(호스트 PC) 전용: 시스템 버전 및 변경 이력 관리 */}
+                <button
                   onClick={() => onModuleChange('version-history')}
                   title="시스템관리 > 버전 및 업데이트 관리 (내 컴퓨터 전용)"
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition ${
@@ -512,17 +514,18 @@ export default function Sidebar({
                   )}
                 </button>
 
-              <button
-                onClick={onOpenConnectModal}
-                title="사내망 공유 및 호스트 IP 확인"
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 transition"
-              >
-                <Wifi className="w-4 h-4 shrink-0 text-teal-400" />
-                {!isCollapsed && <span className="truncate">직원 접속 및 IP 안내</span>}
-              </button>
-            </div>
-          )}
-        </div>
+                <button
+                  onClick={onOpenConnectModal}
+                  title="사내망 공유 및 호스트 IP 확인"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 transition"
+                >
+                  <Wifi className="w-4 h-4 shrink-0 text-teal-400" />
+                  {!isCollapsed && <span className="truncate">직원 접속 및 IP 안내</span>}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
       </div>
 
