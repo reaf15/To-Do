@@ -24,7 +24,8 @@ import {
   Check,
   RotateCcw,
   Calendar,
-  GitBranch
+  GitBranch,
+  Eye
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 import { CURRENT_SYSTEM_VERSION } from '../data/initialVersionHistory';
@@ -57,7 +58,9 @@ export default function Sidebar({
   submissionStats = { totalCount: 20, submittedCount: 1, unsubmittedCount: 19, rate: '5.0', submittedDepts: [], unsubmittedDepts: [] },
   submissionMap = {},
   onOpenDeptManagersModal,
-  isHost = true
+  isHost = true,
+  isActualHost = false,
+  onToggleStaffPreview
 }) {
   const isHostPc = typeof window !== 'undefined' && (
     window.location.hostname === 'localhost' || 
@@ -513,6 +516,25 @@ export default function Sidebar({
                     </span>
                   )}
                 </button>
+
+                {/* 방법 1: 다른 직원 화면 미리보기 버튼 */}
+                {onToggleStaffPreview && (
+                  <button
+                    onClick={() => onToggleStaffPreview(true)}
+                    title="다른 PC 및 스마트폰 접속자에게 보이는 화면을 내 모니터에서 미리 확인합니다"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-amber-400 hover:text-white hover:bg-amber-900/30 border border-amber-500/30 transition text-left cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2.5 truncate">
+                      <Eye className="w-4 h-4 shrink-0 text-amber-400 group-hover:scale-110 transition" />
+                      {!isCollapsed && <span className="truncate">직원 화면 미리보기</span>}
+                    </div>
+                    {!isCollapsed && (
+                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">
+                        시뮬레이션
+                      </span>
+                    )}
+                  </button>
+                )}
 
                 <button
                   onClick={onOpenConnectModal}

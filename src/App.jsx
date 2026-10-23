@@ -238,8 +238,16 @@ export default function App() {
   // Server network info (for other staff connection)
   const [serverInfo, setServerInfo] = useState({ ip: '192.168.101.96', port: 5173 });
 
-  // Check if current browser is on the host computer
-  const isHostClient = useMemo(() => {
+  // Method 1: Staff view preview mode
+  const [previewAsStaff, setPreviewAsStaff] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return new URLSearchParams(window.location.search).get('preview') === 'staff';
+    }
+    return false;
+  });
+
+  // Check if current browser is physically on the host computer
+  const isActualHost = useMemo(() => {
     if (typeof window === 'undefined') return true;
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       return true;
@@ -247,8 +255,11 @@ export default function App() {
     if (serverInfo && typeof serverInfo.isHost === 'boolean') {
       return serverInfo.isHost;
     }
-    return false;
+    return true; // default optimistic
   }, [serverInfo]);
+
+  // isHostClient is false when simulating staff mode
+  const isHostClient = isActualHost && !previewAsStaff;
 
   // UI state
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban' | 'facility' | 'staff'
@@ -1254,6 +1265,31 @@ export default function App() {
         </div>
       )}
 
+      {/* 0. Staff Screen Preview Mode Banner (다른 PC / 직원 시점 미리보기 바) */}
+      {previewAsStaff && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white px-4 py-2 text-xs font-bold shadow-lg flex items-center justify-between animate-fade-in border-b border-amber-400/50">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-full bg-white/20 text-white animate-pulse text-sm">
+              👁️
+            </span>
+            <span>
+              [직원 화면 미리보기 모드] 다른 PC나 스마트폰으로 접속했을 때 보이는 화면입니다. (시스템 관리 메뉴가 완벽히 숨겨집니다)
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setPreviewAsStaff(false);
+              showToast('관리자 모드로 복귀했습니다.');
+            }}
+            className="px-3.5 py-1 rounded-lg bg-white text-slate-900 hover:bg-slate-100 font-black shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <span>관리자 모드로 돌아가기</span>
+            <span className="text-[11px] text-amber-700 font-bold">✕</span>
+          </button>
+        </div>
+      )}
+
       {/* 1. Left Frame: Collapsible Sidebar with Organization Tree */}
       <Sidebar
         currentModule={currentModule}
@@ -1281,6 +1317,8 @@ export default function App() {
         submissionMap={submissionMap}
         onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
         isHost={isHostClient}
+        isActualHost={isActualHost}
+        onToggleStaffPreview={setPreviewAsStaff}
       />
 
       {/* 2. Right Work Frame: Full Screen Container */}
@@ -1354,6 +1392,8 @@ export default function App() {
                 onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
                 isHost={isHostClient}
                 onOpenVersion={() => setCurrentModule('version-history')}
+                isActualHost={isActualHost}
+                onToggleStaffPreview={setPreviewAsStaff}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}

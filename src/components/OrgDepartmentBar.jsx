@@ -3,7 +3,8 @@ import {
   FolderOpen, 
   ChevronRight, 
   UserCheck,
-  Users
+  Users,
+  Eye
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 import { MANAGERS } from '../data/initialTasks';
@@ -17,7 +18,9 @@ export default function OrgDepartmentBar({
   managers = MANAGERS,
   onOpenDeptManagersModal,
   isHost = true,
-  onOpenVersion
+  onOpenVersion,
+  isActualHost = false,
+  onToggleStaffPreview
 }) {
   // Current active division object based on selectedDepartment
   const currentDiv = ORGANIZATION_TREE.find(div => 
@@ -62,6 +65,17 @@ export default function OrgDepartmentBar({
           >
             <span>🏷️</span>
             <span>{CURRENT_SYSTEM_VERSION}</span>
+          </button>
+        )}
+        {isHost && onToggleStaffPreview && (
+          <button
+            type="button"
+            onClick={() => onToggleStaffPreview(true)}
+            title="다른 직원/스마트폰 접속 시 화면 미리보기 (시스템 관리 숨김)"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition cursor-pointer"
+          >
+            <Eye className="w-3.5 h-3.5 text-amber-400" />
+            <span>직원 화면 보기</span>
           </button>
         )}
         {onOpenDeptManagersModal && (
