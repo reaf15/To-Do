@@ -11,6 +11,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { MANAGERS } from '../data/initialTasks';
+import { CURRENT_SYSTEM_VERSION } from '../data/initialVersionHistory';
 
 export default function Header({
   currentUser,
@@ -53,6 +54,14 @@ export default function Header({
                 <h1 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5 flex items-center gap-1.5">
                   <span>시설물종합관리</span>
                   <span className="text-xs text-teal-400 font-semibold">| 시설·공사 관리대장</span>
+                  <button
+                    type="button"
+                    onClick={() => onModuleChange && onModuleChange('version-history')}
+                    title="시스템 버전 및 변경 이력 보기"
+                    className="ml-1 text-[11px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition cursor-pointer"
+                  >
+                    {CURRENT_SYSTEM_VERSION}
+                  </button>
                 </h1>
               </div>
             </div>

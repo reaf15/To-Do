@@ -492,8 +492,7 @@ export default function Sidebar({
               </button>
 
               {/* 내 컴퓨터(호스트 PC) 전용: 시스템 버전 및 변경 이력 관리 */}
-              {isHostPc && (
-                <button
+              <button
                   onClick={() => onModuleChange('version-history')}
                   title="시스템관리 > 버전 및 업데이트 관리 (내 컴퓨터 전용)"
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition ${
@@ -512,7 +511,6 @@ export default function Sidebar({
                     </span>
                   )}
                 </button>
-              )}
 
               <button
                 onClick={onOpenConnectModal}
