@@ -17,6 +17,7 @@ import LoginHistoryView from './components/LoginHistoryView';
 import OrgDepartmentBar from './components/OrgDepartmentBar';
 import FacilityOverviewView from './components/FacilityOverviewView';
 import BackupRestoreView from './components/BackupRestoreView';
+import VersionManagementView from './components/VersionManagementView';
 import DepartmentManagersModal from './components/DepartmentManagersModal';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
@@ -1280,6 +1281,18 @@ export default function App() {
             <BackupRestoreView
               onRefreshAllData={refreshAllData}
               addAuditLog={addAuditLog}
+              currentUser={currentUser}
+            />
+          )}
+
+          {/* Module 1-C: 시스템관리 > 시스템 버전 및 변경 이력 관리 (내 컴퓨터 전용) */}
+          {currentModule === 'version-history' && (
+            <VersionManagementView
+              onNavigateToBackup={() => setCurrentModule('backup-restore')}
+              onNavigateBack={() => {
+                setCurrentModule('databases');
+                setSelectedDbId('facility');
+              }}
               currentUser={currentUser}
             />
           )}

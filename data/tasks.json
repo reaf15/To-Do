@@ -763,7 +763,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "설계",
+    "status": "진행",
     "startDate": "",
     "endDate": "2026-12-10",
     "quoteAmount": null,
@@ -776,6 +776,11 @@
         "date": "2026-10-21",
         "author": "조현호",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-22",
+        "author": "관리자",
+        "message": "진행 상태를 [진행](으)로 변경"
       }
     ]
   },
@@ -982,7 +987,7 @@
     "estimatedCost": 3000000,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-07",
     "endDate": "2026-10-15",
     "quoteAmount": null,
@@ -995,6 +1000,11 @@
         "date": "2026-10-12",
         "author": "김일호",
         "message": "에스엠에 사고석 규격 및 시공 견적 문의"
+      },
+      {
+        "date": "2026-10-22",
+        "author": "관리자",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -1577,7 +1587,7 @@
     "status": "설계",
     "startDate": "2026-10-11",
     "endDate": "2026-10-17",
-    "quoteAmount": null,
+    "quoteAmount": 43000000,
     "contractAmount": null,
     "vendor": "에스엠",
     "memo": "한강 둔치 삼패야구장 그라운드 침하 정비 및 마사토 쇄석 포설 정지 작업",

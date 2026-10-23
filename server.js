@@ -21,6 +21,7 @@ const BUDGET_FILE = path.resolve(__dirname, 'data/budgets.json');
 const BUDGET_CATEGORIES_FILE = path.resolve(__dirname, 'data/budget_categories.json');
 const FACILITIES_FILE = path.resolve(__dirname, 'data/facilities.json');
 const DEPT_MANAGERS_FILE = path.resolve(__dirname, 'data/department_managers.json');
+const VERSION_HISTORY_FILE = path.resolve(__dirname, 'data/version_history.json');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -259,6 +260,37 @@ const server = http.createServer((req, res) => {
         fs.writeFileSync(DEPT_MANAGERS_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 7-2d. API: GET /api/version-history
+  if (req.url === '/api/version-history' && req.method === 'GET') {
+    if (fs.existsSync(VERSION_HISTORY_FILE)) {
+      const data = fs.readFileSync(VERSION_HISTORY_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
+  // 7-2e. API: POST /api/version-history
+  if (req.url === '/api/version-history' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(VERSION_HISTORY_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ error: err.message }));

@@ -23,9 +23,11 @@ import {
   Sparkles,
   Check,
   RotateCcw,
-  Calendar
+  Calendar,
+  GitBranch
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
+import { CURRENT_SYSTEM_VERSION } from '../data/initialVersionHistory';
 
 const DB_ICONS = {
   Package: Package,
@@ -56,6 +58,11 @@ export default function Sidebar({
   submissionMap = {},
   onOpenDeptManagersModal
 }) {
+  const isHostPc = typeof window !== 'undefined' && (
+    window.location.hostname === 'localhost' || 
+    window.location.hostname === '127.0.0.1'
+  );
+
   const [isCollapsed, setIsCollapsed] = useState(() => {
     return localStorage.getItem('nyj_sidebar_collapsed') === 'true';
   });
@@ -483,6 +490,29 @@ export default function Sidebar({
                 <Database className="w-4 h-4 shrink-0 text-amber-400" />
                 {!isCollapsed && <span className="truncate">데이터 백업 및 복구</span>}
               </button>
+
+              {/* 내 컴퓨터(호스트 PC) 전용: 시스템 버전 및 변경 이력 관리 */}
+              {isHostPc && (
+                <button
+                  onClick={() => onModuleChange('version-history')}
+                  title="시스템관리 > 버전 및 업데이트 관리 (내 컴퓨터 전용)"
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition ${
+                    currentModule === 'version-history'
+                      ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 truncate">
+                    <GitBranch className="w-4 h-4 shrink-0 text-indigo-400" />
+                    {!isCollapsed && <span className="truncate">버전 및 변경 이력</span>}
+                  </div>
+                  {!isCollapsed && (
+                    <span className="text-[10px] font-black px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      {CURRENT_SYSTEM_VERSION}
+                    </span>
+                  )}
+                </button>
+              )}
 
               <button
                 onClick={onOpenConnectModal}
