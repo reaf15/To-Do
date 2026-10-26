@@ -61,6 +61,127 @@ export const VIEW_PRESETS = [
   }
 ];
 
+
+// ============================================================================
+// Spreadsheet Inline Editable Components (화면에서 바로 클릭하여 직접 수정)
+// ============================================================================
+function InlineAmountInput({ value, onSave, colorClass = 'text-slate-800', placeholder = '-' }) {
+  const [currentVal, setCurrentVal] = useState(
+    value !== null && value !== undefined && value !== '' ? String(value) : ''
+  );
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setCurrentVal(value !== null && value !== undefined && value !== '' ? String(value) : '');
+    }
+  }, [value, isFocused]);
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    const cleanNum = currentVal.replace(/[^0-9]/g, '');
+    const num = cleanNum ? parseInt(cleanNum, 10) : null;
+    if (num !== (value ?? null)) {
+      onSave(num);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.target.blur();
+    } else if (e.key === 'Escape') {
+      setCurrentVal(value !== null && value !== undefined && value !== '' ? String(value) : '');
+      setIsFocused(false);
+      e.target.blur();
+    }
+  };
+
+  // Formatted display: show formatted raw number while focused, formatted with "원" when not focused
+  const displayVal = isFocused
+    ? (currentVal ? Number(currentVal.replace(/[^0-9]/g, '')).toLocaleString() : '')
+    : (value !== null && value !== undefined && value !== '' && Number(value) > 0 
+        ? Number(value).toLocaleString() + '원' 
+        : '');
+
+  return (
+    <div className="flex items-center justify-end w-full" onClick={(e) => e.stopPropagation()}>
+      <input
+        type="text"
+        value={displayVal}
+        placeholder={placeholder}
+        onFocus={(e) => {
+          setIsFocused(true);
+          e.target.select();
+        }}
+        onChange={(e) => {
+          const raw = e.target.value.replace(/[^0-9]/g, '');
+          setCurrentVal(raw);
+        }}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        className={`w-28 text-right text-xs font-bold px-2 py-1 rounded-md transition border cursor-pointer focus:cursor-text focus:outline-none ${colorClass} ${
+          isFocused 
+            ? 'bg-white border-teal-500 ring-2 ring-teal-200 shadow-sm z-10' 
+            : 'bg-slate-50/70 hover:bg-white border-slate-200/90 hover:border-teal-400'
+        }`}
+        title="클릭하여 금액 직접 수정 (Enter 또는 다른 곳 클릭 시 자동 저장)"
+      />
+    </div>
+  );
+}
+
+function InlineTextInput({ value, onSave, placeholder = '-', className = '' }) {
+  const [currentVal, setCurrentVal] = useState(value || '');
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setCurrentVal(value || '');
+    }
+  }, [value, isFocused]);
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    const trimmed = currentVal.trim();
+    if (trimmed !== (value || '')) {
+      onSave(trimmed);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.target.blur();
+    } else if (e.key === 'Escape') {
+      setCurrentVal(value || '');
+      setIsFocused(false);
+      e.target.blur();
+    }
+  };
+
+  return (
+    <div className="flex items-center w-full" onClick={(e) => e.stopPropagation()}>
+      <input
+        type="text"
+        value={currentVal}
+        placeholder={placeholder}
+        onFocus={(e) => {
+          setIsFocused(true);
+          e.target.select();
+        }}
+        onChange={(e) => setCurrentVal(e.target.value)}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        className={`w-full max-w-[140px] text-left text-xs font-semibold px-2 py-1 rounded-md transition border cursor-pointer focus:cursor-text focus:outline-none text-slate-800 ${className} ${
+          isFocused 
+            ? 'bg-white border-teal-500 ring-2 ring-teal-200 shadow-sm z-10' 
+            : 'bg-slate-50/70 hover:bg-white border-slate-200/90 hover:border-teal-400'
+        }`}
+        title="클릭하여 직접 수정 (Enter 또는 다른 곳 클릭 시 자동 저장)"
+      />
+    </div>
+  );
+}
+
 export default function TableView({
   tasks,
   onSelectTask,
@@ -74,39 +195,6 @@ export default function TableView({
   budgetCategories = []
 }) {
   const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
-
-  // Inline editing state for spreadsheet mode: { taskId, field }
-  const [editingCell, setEditingCell] = useState(null);
-  const [editValue, setEditValue] = useState('');
-
-  const startEditing = (e, taskId, field, initialVal) => {
-    e.stopPropagation();
-    setEditingCell({ taskId, field });
-    setEditValue(initialVal !== null && initialVal !== undefined ? String(initialVal) : '');
-  };
-
-  const cancelEditing = () => {
-    setEditingCell(null);
-    setEditValue('');
-  };
-
-  const saveEditing = (taskId, field, isNumeric = false) => {
-    if (!editingCell || editingCell.taskId !== taskId || editingCell.field !== field) return;
-    
-    let finalValue = editValue;
-    if (isNumeric) {
-      const cleanNum = editValue.replace(/[^0-9]/g, '');
-      finalValue = cleanNum ? parseInt(cleanNum, 10) : null;
-    } else {
-      finalValue = editValue.trim();
-    }
-
-    if (onQuickFieldChange) {
-      onQuickFieldChange(taskId, field, finalValue);
-    }
-    setEditingCell(null);
-    setEditValue('');
-  };
 
   const [sortField, setSortField] = useState('id');
   const [sortAsc, setSortAsc] = useState(true);
@@ -1145,29 +1233,27 @@ export default function TableView({
                 return (
                   <tr 
                     key={t.id}
-                    onClick={() => onEditTask && onEditTask(t)}
-                    title="클릭하여 공사 정보 수정"
-                    className="hover:bg-teal-50/40 cursor-pointer transition group"
+                    className="hover:bg-teal-50/30 transition group border-b border-slate-100"
                   >
                     {/* Number */}
-                    <td className="py-2.5 px-3 text-center text-slate-400 font-medium">
+                    <td className="py-2 px-3 text-center text-slate-400 font-medium">
                       {index + 1}
                     </td>
 
                     {/* Budget (Inline dropdown) */}
                     {visibleColumns.includes('budget') && (
-                      <td className="py-2 px-2.5 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                      <td className="py-1.5 px-2 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                         <select
                           value={t.budget || ''}
                           onChange={(e) => onQuickFieldChange && onQuickFieldChange(t.id, 'budget', e.target.value)}
                           className={`text-[11px] font-bold px-2 py-1 rounded-md border focus:outline-none transition cursor-pointer shadow-2xs ${
                             t.budget === '수선유지비' 
-                              ? 'bg-blue-50/90 text-blue-700 border-blue-200' 
+                              ? 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-300' 
                               : t.budget === '시설비' || (t.budget && t.budget.includes('시설비'))
-                              ? 'bg-purple-50/90 text-purple-700 border-purple-200'
+                              ? 'bg-purple-50 text-purple-700 border-purple-200 hover:border-purple-300'
                               : t.budget === '운영경비' || t.budget === '일상경비'
-                              ? 'bg-amber-50/90 text-amber-700 border-amber-200'
-                              : 'bg-emerald-50/90 text-emerald-700 border-emerald-200'
+                              ? 'bg-amber-50 text-amber-700 border-amber-200 hover:border-amber-300'
+                              : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:border-emerald-300'
                           }`}
                           title="예산 과목 직접 변경"
                         >
@@ -1180,12 +1266,12 @@ export default function TableView({
 
                     {/* Facility (Inline dropdown) */}
                     {visibleColumns.includes('facility') && (
-                      <td className="py-2 px-2.5 font-semibold text-slate-800 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                      <td className="py-1.5 px-2 font-semibold text-slate-800 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                         {uniqueFacilities.length > 0 ? (
                           <select
                             value={t.facility || ''}
                             onChange={(e) => onQuickFieldChange && onQuickFieldChange(t.id, 'facility', e.target.value)}
-                            className="text-[11px] font-bold px-2 py-1 rounded-md border border-slate-200 bg-white hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer shadow-2xs text-slate-800"
+                            className="text-[11px] font-bold px-2 py-1 rounded-md border border-slate-200 bg-slate-50/70 hover:bg-white hover:border-teal-400 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer shadow-2xs text-slate-800"
                             title="시설 분류 직접 변경"
                           >
                             <option value="">- 미지정 -</option>
@@ -1199,47 +1285,30 @@ export default function TableView({
                       </td>
                     )}
 
-                    {/* Location (Inline click-to-edit) */}
+                    {/* Location (Inline directly editable text input) */}
                     {visibleColumns.includes('location') && (
-                      <td 
-                        className="py-2.5 px-3 text-slate-600 whitespace-nowrap"
-                        onClick={(e) => startEditing(e, t.id, 'location', t.location)}
-                      >
-                        {editingCell?.taskId === t.id && editingCell?.field === 'location' ? (
-                          <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
-                            <input
-                              type="text"
-                              autoFocus
-                              value={editValue}
-                              onChange={(e) => setEditValue(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') saveEditing(t.id, 'location', false);
-                                if (e.key === 'Escape') cancelEditing();
-                              }}
-                              onBlur={() => saveEditing(t.id, 'location', false)}
-                              placeholder="위치 입력"
-                              className="w-32 text-left text-xs font-bold px-2 py-1 bg-white border-2 border-teal-500 rounded-md shadow-sm focus:outline-none"
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-slate-100 hover:border-slate-300 border border-transparent transition cursor-text group/loc"
-                            title="클릭하여 상세위치 직접 수정 (Enter 저장)"
-                          >
-                            <span>{t.location || '-'}</span>
-                            <Edit3 className="w-2.5 h-2.5 text-slate-300 opacity-0 group-hover/loc:opacity-100 transition shrink-0" />
-                          </div>
-                        )}
+                      <td className="py-1.5 px-2 text-slate-600 whitespace-nowrap">
+                        <InlineTextInput
+                          value={t.location}
+                          onSave={(newVal) => onQuickFieldChange && onQuickFieldChange(t.id, 'location', newVal)}
+                          placeholder="위치 입력"
+                        />
                       </td>
                     )}
 
                     {/* Work Title */}
                     {visibleColumns.includes('title') && (
-                      <td className="py-2.5 px-4 font-bold text-slate-900 group-hover:text-teal-700 transition">
+                      <td className="py-2 px-3 font-bold text-slate-900">
                         <div className="flex items-center gap-1.5">
-                          <span>{t.title}</span>
+                          <span 
+                            onClick={() => onEditTask && onEditTask(t)}
+                            className="cursor-pointer hover:text-teal-700 hover:underline transition"
+                            title="클릭: 상세 정보 모달 열기"
+                          >
+                            {t.title}
+                          </span>
                           {t.logs && t.logs.length > 0 && (
-                            <span className="text-[10px] bg-slate-100 text-slate-600 px-1 rounded font-normal" title={`${t.logs.length}개 업무 일지 있음`}>
+                            <span className="text-[10px] bg-slate-100 text-slate-600 px-1 rounded font-normal shrink-0" title={`${t.logs.length}개 업무 일지 있음`}>
                               💬{t.logs.length}
                             </span>
                           )}
@@ -1247,60 +1316,34 @@ export default function TableView({
                       </td>
                     )}
 
-                    {/* Estimated Cost (Inline click-to-edit) */}
+                    {/* Estimated Cost (Inline directly editable amount input) */}
                     {visibleColumns.includes('estimatedCost') && (
-                      <td 
-                        className="py-2.5 px-3 text-right font-semibold text-slate-800 whitespace-nowrap"
-                        onClick={(e) => startEditing(e, t.id, 'estimatedCost', t.estimatedCost)}
-                      >
-                        {editingCell?.taskId === t.id && editingCell?.field === 'estimatedCost' ? (
-                          <div className="flex items-center justify-end" onClick={(e) => e.stopPropagation()}>
-                            <input
-                              type="text"
-                              autoFocus
-                              value={editValue ? Number(editValue.replace(/[^0-9]/g, '')).toLocaleString() : ''}
-                              onChange={(e) => setEditValue(e.target.value.replace(/[^0-9]/g, ''))}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') saveEditing(t.id, 'estimatedCost', true);
-                                if (e.key === 'Escape') cancelEditing();
-                              }}
-                              onBlur={() => saveEditing(t.id, 'estimatedCost', true)}
-                              placeholder="예상비용 입력"
-                              className="w-28 text-right text-xs font-bold px-2 py-1 bg-white border-2 border-teal-500 rounded-md shadow-sm focus:outline-none"
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="inline-flex items-center justify-end gap-1 px-1.5 py-0.5 rounded hover:bg-teal-50 hover:border-teal-300 border border-transparent transition cursor-text group/est"
-                            title="클릭하여 예상비용 직접 수정 (Enter 저장)"
-                          >
-                            <span>
-                              {t.estimatedCost ? formatCurrency(t.estimatedCost) : (
-                                <span className="text-slate-400 italic">{t.estimatedCostNote || '-'}</span>
-                              )}
-                            </span>
-                            <Edit3 className="w-2.5 h-2.5 text-slate-300 opacity-0 group-hover/est:opacity-100 transition shrink-0" />
-                          </div>
-                        )}
+                      <td className="py-1.5 px-2 text-right whitespace-nowrap">
+                        <InlineAmountInput
+                          value={t.estimatedCost}
+                          onSave={(num) => onQuickFieldChange && onQuickFieldChange(t.id, 'estimatedCost', num)}
+                          colorClass="text-slate-800"
+                          placeholder="-"
+                        />
                       </td>
                     )}
 
                     {/* Manager (Inline change dropdown) */}
                     {visibleColumns.includes('manager') && (
-                      <td className="py-2.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                      <td className="py-1.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                         <select
                           value={t.manager || ''}
                           onChange={(e) => onQuickManagerChange(t.id, e.target.value)}
-                          className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer ${
+                          className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer shadow-2xs ${
                             !t.manager
                               ? 'bg-slate-50 text-slate-400 border-slate-200'
                               : activeManagers.indexOf(t.manager) === 0
-                              ? 'bg-teal-50 text-teal-700 border-teal-200'
+                              ? 'bg-teal-50 text-teal-700 border-teal-200 hover:border-teal-300'
                               : activeManagers.indexOf(t.manager) === 1
-                              ? 'bg-blue-50 text-blue-700 border-blue-200'
+                              ? 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-300'
                               : activeManagers.indexOf(t.manager) === 2
-                              ? 'bg-purple-50 text-purple-700 border-purple-200'
-                              : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                              ? 'bg-purple-50 text-purple-700 border-purple-200 hover:border-purple-300'
+                              : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:border-indigo-300'
                           }`}
                         >
                           <option value="">미정</option>
@@ -1313,11 +1356,11 @@ export default function TableView({
 
                     {/* Status (Inline change dropdown) */}
                     {visibleColumns.includes('status') && (
-                      <td className="py-2.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                      <td className="py-1.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                         <select
-                          value={t.status || '접수/대기'}
+                          value={t.status || '검토'}
                           onChange={(e) => onQuickStatusChange(t.id, e.target.value)}
-                          className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}
+                          className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer shadow-2xs ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}
                         >
                           {STATUS_LIST.map((s) => (
                             <option key={s} value={s}>{s}</option>
@@ -1326,123 +1369,55 @@ export default function TableView({
                       </td>
                     )}
 
-                    {/* Quoted Amount (Inline click-to-edit) */}
+                    {/* Quoted Amount (Inline directly editable amount input) */}
                     {visibleColumns.includes('quoteAmount') && (
-                      <td 
-                        className="py-2.5 px-3 text-right whitespace-nowrap font-bold text-indigo-700"
-                        onClick={(e) => startEditing(e, t.id, 'quoteAmount', t.quoteAmount)}
-                      >
-                        {editingCell?.taskId === t.id && editingCell?.field === 'quoteAmount' ? (
-                          <div className="flex items-center justify-end" onClick={(e) => e.stopPropagation()}>
-                            <input
-                              type="text"
-                              autoFocus
-                              value={editValue ? Number(editValue.replace(/[^0-9]/g, '')).toLocaleString() : ''}
-                              onChange={(e) => setEditValue(e.target.value.replace(/[^0-9]/g, ''))}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') saveEditing(t.id, 'quoteAmount', true);
-                                if (e.key === 'Escape') cancelEditing();
-                              }}
-                              onBlur={() => saveEditing(t.id, 'quoteAmount', true)}
-                              placeholder="견적가 입력"
-                              className="w-28 text-right text-xs font-bold px-2 py-1 bg-white border-2 border-indigo-500 rounded-md shadow-sm focus:outline-none text-indigo-800"
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="inline-flex items-center justify-end gap-1 px-1.5 py-0.5 rounded hover:bg-indigo-50 hover:border-indigo-300 border border-transparent transition cursor-text group/quote"
-                            title="클릭하여 견적가 직접 수정 (Enter 저장)"
-                          >
-                            <span>{t.quoteAmount ? formatCurrency(t.quoteAmount) : '-'}</span>
-                            <Edit3 className="w-2.5 h-2.5 text-indigo-300 opacity-0 group-hover/quote:opacity-100 transition shrink-0" />
-                          </div>
-                        )}
+                      <td className="py-1.5 px-2 text-right whitespace-nowrap">
+                        <InlineAmountInput
+                          value={t.quoteAmount}
+                          onSave={(num) => onQuickFieldChange && onQuickFieldChange(t.id, 'quoteAmount', num)}
+                          colorClass="text-indigo-700"
+                          placeholder="-"
+                        />
                       </td>
                     )}
 
-                    {/* Contract Amount (Inline click-to-edit) */}
+                    {/* Contract Amount (Inline directly editable amount input) */}
                     {visibleColumns.includes('contractAmount') && (
-                      <td 
-                        className="py-2.5 px-3 text-right whitespace-nowrap font-bold text-emerald-700"
-                        onClick={(e) => startEditing(e, t.id, 'contractAmount', t.contractAmount)}
-                      >
-                        {editingCell?.taskId === t.id && editingCell?.field === 'contractAmount' ? (
-                          <div className="flex items-center justify-end" onClick={(e) => e.stopPropagation()}>
-                            <input
-                              type="text"
-                              autoFocus
-                              value={editValue ? Number(editValue.replace(/[^0-9]/g, '')).toLocaleString() : ''}
-                              onChange={(e) => setEditValue(e.target.value.replace(/[^0-9]/g, ''))}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') saveEditing(t.id, 'contractAmount', true);
-                                if (e.key === 'Escape') cancelEditing();
-                              }}
-                              onBlur={() => saveEditing(t.id, 'contractAmount', true)}
-                              placeholder="계약금액 입력"
-                              className="w-28 text-right text-xs font-bold px-2 py-1 bg-white border-2 border-emerald-500 rounded-md shadow-sm focus:outline-none text-emerald-800"
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="inline-flex items-center justify-end gap-1 px-1.5 py-0.5 rounded hover:bg-emerald-50 hover:border-emerald-300 border border-transparent transition cursor-text group/contract"
-                            title="클릭하여 계약금액 직접 수정 (Enter 저장)"
-                          >
-                            <span>{t.contractAmount ? formatCurrency(t.contractAmount) : '-'}</span>
-                            <Edit3 className="w-2.5 h-2.5 text-emerald-300 opacity-0 group-hover/contract:opacity-100 transition shrink-0" />
-                          </div>
-                        )}
+                      <td className="py-1.5 px-2 text-right whitespace-nowrap">
+                        <InlineAmountInput
+                          value={t.contractAmount}
+                          onSave={(num) => onQuickFieldChange && onQuickFieldChange(t.id, 'contractAmount', num)}
+                          colorClass="text-emerald-700 font-extrabold"
+                          placeholder="-"
+                        />
                       </td>
                     )}
 
-                    {/* Contractor / Vendor (Inline click-to-edit) */}
+                    {/* Contractor / Vendor (Inline directly editable text input) */}
                     {visibleColumns.includes('vendor') && (
-                      <td 
-                        className="py-2.5 px-3 font-semibold text-slate-800 whitespace-nowrap"
-                        onClick={(e) => startEditing(e, t.id, 'vendor', t.vendor)}
-                      >
-                        {editingCell?.taskId === t.id && editingCell?.field === 'vendor' ? (
-                          <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
-                            <input
-                              type="text"
-                              autoFocus
-                              value={editValue}
-                              onChange={(e) => setEditValue(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') saveEditing(t.id, 'vendor', false);
-                                if (e.key === 'Escape') cancelEditing();
-                              }}
-                              onBlur={() => saveEditing(t.id, 'vendor', false)}
-                              placeholder="업체명 입력"
-                              className="w-28 text-left text-xs font-bold px-2 py-1 bg-white border-2 border-teal-500 rounded-md shadow-sm focus:outline-none"
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-slate-100 hover:border-slate-300 border border-transparent transition cursor-text group/vendor"
-                            title="클릭하여 업체명 직접 수정 (Enter 저장)"
-                          >
-                            <span>{t.vendor || '-'}</span>
-                            <Edit3 className="w-2.5 h-2.5 text-slate-300 opacity-0 group-hover/vendor:opacity-100 transition shrink-0" />
-                          </div>
-                        )}
+                      <td className="py-1.5 px-2 whitespace-nowrap">
+                        <InlineTextInput
+                          value={t.vendor}
+                          onSave={(newVal) => onQuickFieldChange && onQuickFieldChange(t.id, 'vendor', newVal)}
+                          placeholder="업체명 입력"
+                        />
                       </td>
                     )}
-
 
                     {/* Action buttons */}
-                    <td className="py-2.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-1.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-center gap-1">
                         <button
                           onClick={() => onEditTask(t)}
-                          title="공사 정보 수정"
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                          title="공사 정보 상세 수정"
+                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition cursor-pointer"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => onDeleteTask(t.id, t.title)}
                           title="삭제"
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
