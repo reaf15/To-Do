@@ -1,6 +1,96 @@
 [
   {
     "department": "남양주체육문화센터",
+    "budget": "수선유지비",
+    "facility": "남양주센터",
+    "location": "야외공연장 주차장",
+    "title": "야외공연장 주차장 울타리 조달 구매 설치",
+    "estimatedCost": 3420000,
+    "estimatedCostNote": "",
+    "manager": "조현호",
+    "status": "검토",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": 3420000,
+    "contractAmount": 3420000,
+    "vendor": "",
+    "memo": "",
+    "id": "TASK-1792738481308",
+    "logs": [
+      {
+        "date": "2026-10-23",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-23",
+        "author": "조현호",
+        "message": "담당자를 [조현호](으)로 지정"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
+    "budget": "시설비(파크골프장)",
+    "facility": "남양주센터",
+    "location": "",
+    "title": "그물망 교체",
+    "estimatedCost": 3000000,
+    "estimatedCostNote": "",
+    "manager": "김일호",
+    "status": "검토",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "id": "TASK-1792731673878",
+    "logs": [
+      {
+        "date": "2026-10-23",
+        "author": "김일호",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
+    "budget": "시설비(파크골프장)",
+    "facility": "남양주센터",
+    "location": "",
+    "title": "옥외용벤치 구매",
+    "estimatedCost": null,
+    "estimatedCostNote": "",
+    "manager": "김일호",
+    "status": "설계",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": 1440000,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "id": "TASK-1792731319838",
+    "logs": [
+      {
+        "date": "2026-10-23",
+        "author": "시��템",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-23",
+        "author": "관리자",
+        "message": "담���자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-10-23",
+        "author": "관리자",
+        "message": "진행 상태를 [설계](으)로 변경"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
     "budget": "시설비(야구장)",
     "facility": "성인야구장",
     "location": "",
@@ -225,7 +315,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "진행 상태를 [완료](으)로 변경"
+        "message": "진행 상태�� [완료](으)로 변경"
       }
     ]
   },
@@ -294,7 +384,7 @@
       },
       {
         "date": "2026-10-22",
-        "author": "관리자",
+        "author": "관리��",
         "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
@@ -459,7 +549,7 @@
     "logs": [
       {
         "date": "2026-10-22",
-        "author": "김일호",
+        "author": "김���호",
         "message": "신규 공사 업무 등록"
       },
       {
@@ -618,7 +708,7 @@
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "파크골프",
-    "location": "다목적잔디광장",
+    "location": "다목적잔디��장",
     "title": "야외운동기구 안내판 제작 설치",
     "estimatedCost": 4000000,
     "estimatedCostNote": "",
@@ -810,7 +900,7 @@
     ]
   },
   {
-    "department": "와부체육문화센터",
+    "department": "와부체육���화센터",
     "budget": "운영경비",
     "facility": "와부센터",
     "location": "2층 남자 ����온실",
@@ -850,7 +940,7 @@
       {
         "date": "2026-10-21",
         "author": "김일호",
-        "message": "진행 상태를 [견적방문](으)로 변경"
+        "message": "진��� 상태를 [견적방문](으)로 변경"
       },
       {
         "date": "2026-10-21",
@@ -892,7 +982,7 @@
     "title": "화단 통행로 이동",
     "estimatedCost": 500000,
     "estimatedCostNote": "",
-    "manager": "",
+    "manager": "권병학",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -911,6 +1001,11 @@
         "date": "2026-10-21",
         "author": "관리자",
         "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-10-23",
+        "author": "조현호",
+        "message": "담당자를 [권병학](으)로 지정"
       }
     ]
   },
@@ -958,25 +1053,6 @@
     "startDate": "2026-10-03",
     "endDate": "2026-10-09",
     "department": "남양주체육������센터"
-  },
-  {
-    "department": "남양주체육문화센터",
-    "budget": "보류",
-    "facility": "남양주센터",
-    "location": "야외공연장 주차장",
-    "title": "화단 난간대 설치",
-    "estimatedCost": null,
-    "estimatedCostNote": "",
-    "manager": "",
-    "status": "검토",
-    "startDate": "2026-10-05",
-    "endDate": "2026-10-12",
-    "quoteAmount": null,
-    "contractAmount": null,
-    "vendor": "",
-    "memo": "안전사고 예�����을 위한 화단 안전 펜스 난간대 설치",
-    "id": "TASK-03",
-    "logs": []
   },
   {
     "department": "남양주체육문화센터",
@@ -1127,7 +1203,7 @@
     "department": "남양주체육문화센터",
     "budget": "보류",
     "facility": "남양주센터",
-    "location": "A축구장",
+    "location": "A축구��",
     "title": "CCTV 증설",
     "estimatedCost": null,
     "estimatedCostNote": "",
@@ -1188,7 +1264,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "대신이엔지",
-    "memo": "안전 그물망 지지 ��이�� 파단 부위 긴급 보수 검토",
+    "memo": "안전 그물망 지지 ��이�� 파단 부�� 긴급 보수 검토",
     "id": "TASK-12",
     "logs": [
       {
@@ -1237,41 +1313,6 @@
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
-    "location": "야외공연장 주차장",
-    "title": "주차장 조명  조명 수 및 회로분리 공사",
-    "estimatedCost": 5000000,
-    "estimatedCostNote": "",
-    "manager": "조현호",
-    "status": "검토",
-    "startDate": "2026-10-07",
-    "endDate": "2026-10-17",
-    "quoteAmount": 9634900,
-    "contractAmount": null,
-    "vendor": "서진전력",
-    "memo": "조명탑 서치라이트 교체 및 회로 개별 제어 분리 공사 / 야구장 조명공사 동시 진행",
-    "id": "TASK-14",
-    "logs": [
-      {
-        "date": "2026-10-12",
-        "author": "조현호",
-        "message": "서진전력 견적 접수 (9,634,900원). 예상비용(5,000,000원) 대비 상향되어 범위 ���� 협의 예정"
-      },
-      {
-        "date": "2026-10-19",
-        "author": "조현호",
-        "message": "��구장 조명 보수 동��� 진행(합 9,634,900원)"
-      },
-      {
-        "date": "2026-10-19",
-        "author": "조현호",
-        "message": "진행 상태를 [견적방문](으)로 변경"
-      }
-    ]
-  },
-  {
-    "department": "남양주체육문화센터",
-    "budget": "수선유지비",
-    "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
     "estimatedCost": 15000000,
@@ -1280,7 +1321,7 @@
     "status": "설계",
     "startDate": "2026-10-09",
     "endDate": "2026-10-20",
-    "quoteAmount": null,
+    "quoteAmount": 9600000,
     "contractAmount": null,
     "vendor": "서진전력",
     "memo": "야구장 메탈할라이드 투광기 점검 및 불량 안정기/램프 교체 / 야외공연장 조명탑 공사와 동시 진행",
@@ -1344,7 +1385,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "관람석 의자 균열 및 페인트 박리 보수",
+    "memo": "관람석 의자 균열 및 페���트 박리 보수",
     "id": "TASK-17",
     "logs": [
       {
@@ -1799,7 +1840,7 @@
     "id": "TASK-HP-01",
     "department": "호평체육문화센터",
     "budget": "수선유지비",
-    "facility": "호평체육문화센터",
+    "facility": "호���체육문화센터",
     "location": "지하 수영장",
     "title": "수영장 여과기 여재(활성탄·모래) 전면 교체",
     "estimatedCost": 14500000,
@@ -1854,7 +1895,7 @@
     "endDate": "2026-10-25",
     "quoteAmount": 6200000,
     "contractAmount": 6000000,
-    "vendor": "동원펌프엔지니어링",
+    "vendor": "동원펌���엔지니어링",
     "memo": "침수 예방을 위한 집수정 수중 배수펌�� 교체",
     "id": "TASK-ON-01",
     "logs": [
