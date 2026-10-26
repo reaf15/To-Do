@@ -1,7 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { X, Save, AlertCircle, Building2, Calendar } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Save, AlertCircle, Building2, Calendar, Camera, Image, Eye, Trash2, Plus, Upload } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
+
+// 클라이언트 측 이미지 압축 헬퍼 (스마트폰 원본 사진을 1280px, ~150KB 이하로 자동 리사이징)
+function compressImageFile(file, maxWidth = 1280, maxHeight = 1280, quality = 0.78) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.src = e.target.result;
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve({
+          id: `IMG-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          name: file.name,
+          url: dataUrl,
+          date: new Date().toISOString().split('T')[0]
+        });
+      };
+      img.onerror = () => {
+        resolve({
+          id: `IMG-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          name: file.name,
+          url: e.target.result,
+          date: new Date().toISOString().split('T')[0]
+        });
+      };
+    };
+    reader.onerror = () => resolve(null);
+  });
+}
 
 export default function TaskModal({
   isOpen,
@@ -53,9 +99,39 @@ export default function TaskModal({
     contractAmount: '',
     vendor: '',
     memo: '',
+    photos: [],
   });
 
   const [errors, setErrors] = useState({});
+  const fileInputRef = useRef(null);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [selectedPreviewPhoto, setSelectedPreviewPhoto] = useState(null);
+
+  const handlePhotoUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    setIsUploadingPhoto(true);
+    try {
+      const promises = files.map(file => compressImageFile(file));
+      const newPhotos = (await Promise.all(promises)).filter(Boolean);
+      setFormData(prev => ({
+        ...prev,
+        photos: [...(prev.photos || []), ...newPhotos]
+      }));
+    } catch (err) {
+      console.error('Photo processing error:', err);
+    } finally {
+      setIsUploadingPhoto(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleRemovePhoto = (photoId) => {
+    setFormData(prev => ({
+      ...prev,
+      photos: (prev.photos || []).filter(p => (p.id ? p.id !== photoId : p.url !== photoId))
+    }));
+  };
 
   useEffect(() => {
     setIsCustomFacility(false);
@@ -78,6 +154,7 @@ export default function TaskModal({
         contractAmount: currentTask.contractAmount ? String(currentTask.contractAmount) : '',
         vendor: currentTask.vendor || '',
         memo: currentTask.memo || '',
+        photos: Array.isArray(currentTask.photos) ? currentTask.photos : [],
       });
     } else {
       const deptFacs = getDeptFacilityList(selectedDepartment);
@@ -97,6 +174,7 @@ export default function TaskModal({
         contractAmount: '',
         vendor: '',
         memo: '',
+        photos: [],
       });
     }
     setErrors({});
@@ -529,6 +607,93 @@ export default function TaskModal({
             />
           </div>
 
+          {/* Row 7.5: Photos / Site Images Section */}
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 font-bold text-slate-800">
+                <Camera className="w-4 h-4 text-teal-600" />
+                <span>현장 및 공사 사진</span>
+                <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
+                  {(formData.photos || []).length}장
+                </span>
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  ref={fileInputRef}
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                  id="task-photo-upload-input"
+                />
+                <label
+                  htmlFor="task-photo-upload-input"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>{isUploadingPhoto ? '사진 처리 중...' : '사진 첨부'}</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Photo Thumbnails Grid */}
+            {(formData.photos && formData.photos.length > 0) ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1">
+                {formData.photos.map((photo, index) => {
+                  const photoUrl = typeof photo === 'string' ? photo : photo.url;
+                  const photoName = typeof photo === 'string' ? `사진 ${index + 1}` : (photo.name || `사진 ${index + 1}`);
+                  const photoId = typeof photo === 'string' ? photo : (photo.id || index);
+
+                  return (
+                    <div 
+                      key={photoId} 
+                      className="group relative rounded-xl border border-slate-200 overflow-hidden bg-white shadow-2xs hover:shadow-md transition aspect-4/3 flex flex-col"
+                    >
+                      <img
+                        src={photoUrl}
+                        alt={photoName}
+                        onClick={() => setSelectedPreviewPhoto(photoUrl)}
+                        className="w-full h-full object-cover cursor-pointer group-hover:scale-105 transition duration-300"
+                        title="클릭하여 큰 사진으로 보기"
+                      />
+                      {/* Delete button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemovePhoto(photoId);
+                        }}
+                        className="absolute top-1.5 right-1.5 p-1 rounded-full bg-slate-900/70 hover:bg-rose-600 text-white transition cursor-pointer shadow-xs"
+                        title="사진 삭제"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                      {/* Enlarge overlay badge */}
+                      <div 
+                        onClick={() => setSelectedPreviewPhoto(photoUrl)}
+                        className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer pointer-events-none"
+                      >
+                        <span className="bg-slate-900/80 text-white text-[10px] px-2 py-1 rounded-md font-semibold flex items-center gap-1">
+                          <Eye className="w-3 h-3" /> 크게 보기
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="py-4 px-3 border border-dashed border-slate-300 hover:border-teal-400 bg-white hover:bg-teal-50/30 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-teal-700"
+              >
+                <Upload className="w-5 h-5 text-slate-400 group-hover:text-teal-600" />
+                <span className="text-xs font-semibold">클릭하여 공사 전/후 현장 사진을 첨부하세요</span>
+                <span className="text-[10px] text-slate-400">스마트폰 사진, 캡처 이미지 등 여러 장 선택 가능 (시트 미반영)</span>
+              </div>
+            )}
+          </div>
+
           {/* Row 8: Logs Timeline if present */}
           {currentTask?.logs && currentTask.logs.length > 0 && (
             <div className="pt-2 border-t border-slate-200">
@@ -569,6 +734,41 @@ export default function TaskModal({
       </form>
 
     </div>
+
+    {/* Photo Lightbox Preview Modal */}
+    {selectedPreviewPhoto && (
+      <div 
+        className="fixed inset-0 z-60 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150"
+        onClick={() => setSelectedPreviewPhoto(null)}
+      >
+        <div 
+          className="relative max-w-4xl max-h-[90vh] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-slate-700"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="p-3 bg-slate-950 flex items-center justify-between text-white shrink-0 border-b border-slate-800">
+            <span className="text-xs font-bold flex items-center gap-1.5 text-teal-300">
+              <Camera className="w-4 h-4 text-teal-400" />
+              현장 사진 원본 크게 보기
+            </span>
+            <button
+              type="button"
+              onClick={() => setSelectedPreviewPhoto(null)}
+              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="p-3 flex items-center justify-center overflow-auto max-h-[80vh] bg-slate-950/50">
+            <img 
+              src={selectedPreviewPhoto} 
+              alt="확대 사진" 
+              className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    )}
+
   </div>
 );
 }

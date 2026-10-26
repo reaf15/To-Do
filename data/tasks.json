@@ -1,6 +1,36 @@
 [
   {
     "department": "남양주체육문화센터",
+    "budget": "자체수선",
+    "facility": "남양주센터",
+    "location": "축구장",
+    "title": "현수막 제거",
+    "estimatedCost": 50000,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "완료",
+    "startDate": "2026-10-26",
+    "endDate": "2026-10-26",
+    "quoteAmount": null,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "id": "TASK-1792995208181",
+    "logs": [
+      {
+        "date": "2026-10-26",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-26",
+        "author": "관리자",
+        "message": "진행 상태를 [완료](으)로 변경"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",

@@ -1307,6 +1307,15 @@ export default function TableView({
                           >
                             {t.title}
                           </span>
+                          {t.photos && t.photos.length > 0 && (
+                            <span 
+                              onClick={() => onEditTask && onEditTask(t)}
+                              className="text-[10px] bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 px-1 rounded font-bold shrink-0 cursor-pointer transition" 
+                              title={`현장 사진 ${t.photos.length}장 첨부됨 (클릭: 확인)`}
+                            >
+                              📷{t.photos.length}
+                            </span>
+                          )}
                           {t.logs && t.logs.length > 0 && (
                             <span className="text-[10px] bg-slate-100 text-slate-600 px-1 rounded font-normal shrink-0" title={`${t.logs.length}개 업무 일지 있음`}>
                               💬{t.logs.length}
