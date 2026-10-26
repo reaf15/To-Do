@@ -2,6 +2,33 @@
   {
     "department": "남양주체육문화센터",
     "budget": "자체수선",
+    "facility": "남양주센터",
+    "location": "수영장",
+    "title": "수영장 입구 콘센트 교체",
+    "estimatedCost": 547352,
+    "estimatedCostNote": "",
+    "manager": "조현호",
+    "status": "완료",
+    "startDate": "2026-10-26",
+    "endDate": "2026-10-26",
+    "quoteAmount": 547352,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "지하1층 입구 수영장 콘센트 접촉 불량에 의한 교체",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1792999707450",
+    "logs": [
+      {
+        "date": "2026-10-26",
+        "author": "조현호",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
+    "budget": "자체수선",
     "facility": "축구장A",
     "location": "",
     "title": "현수막 제거",
@@ -1252,7 +1279,7 @@
     "logs": []
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남���주체육문화센터",
     "budget": "보류",
     "facility": "남양주센터",
     "location": "3층 로비",
@@ -1371,7 +1398,7 @@
       {
         "date": "2026-10-15",
         "author": "조현호",
-        "message": "현장 실측 완료. 견적서 금주 내 제출 예정"
+        "message": "현장 실측 완료. 견적서 ���주 내 제출 예정"
       },
       {
         "date": "2026-10-19",
@@ -1874,7 +1901,7 @@
     "endDate": "2026-10-15"
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양주��육문화센터",
     "budget": "시설비(파크골프장)",
     "facility": "파크골프",
     "location": "",
@@ -2043,7 +2070,7 @@
       {
         "date": "2026-10-14",
         "author": "조���호",
-        "message": "자�� 검수 및 야간 차단작업 계획 수립"
+        "message": "���� 검수 및 야간 차단작업 계획 수립"
       }
     ],
     "startDate": "2026-10-01",
@@ -2095,7 +2122,7 @@
     "budget": "수선유지비",
     "facility": "에코랜드운영부",
     "location": "주민편익시설",
-    "title": "에코랜드 ���영장 온수보일러 세관 및 버너 노즐 교���",
+    "title": "에코랜드 ���영장 온수보일러 세관 및 버너 노��� 교���",
     "estimatedCost": 11000000,
     "estimatedCostNote": "",
     "manager": "조영택",
