@@ -102,6 +102,17 @@ export default function TaskModal({
     setErrors({});
   }, [currentTask, isOpen, selectedDepartment, defaultBudget, allFacilities]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const activeDept = formData.department || selectedDepartment || '남양주체육문화센터';
@@ -175,31 +186,41 @@ export default function TaskModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200">
+    <div 
+      className="fixed inset-0 z-50 overflow-hidden bg-slate-950/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200"
+      onClick={onClose}
+    >
       <div 
-        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
+        className="w-full max-w-xl sm:max-w-2xl bg-white h-full shadow-2xl flex flex-col border-l border-slate-200 overflow-hidden animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Header */}
-        <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between">
+        {/* Slide-out Header */}
+        <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between shrink-0 shadow-sm border-b border-slate-800">
           <div>
-            <h3 className="text-base sm:text-lg font-bold">
-              {currentTask ? '공사 업무 정보 수정' : '신규 시설·공사 업무 등록'}
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                {currentTask ? '공사 업무 상세 수정' : '신규 업무 등록'}
+              </span>
+              <span className="text-[11px] font-semibold text-slate-300">
+                {formData.department}
+              </span>
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-md sm:max-w-lg">
+              {currentTask ? (formData.title || '공사 정보 수정') : '신규 시설·공사 업무 등록'}
             </h3>
-            <p className="text-xs text-teal-400 mt-0.5">
-              시설본부 • {formData.department}
-            </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            title="닫기 (ESC)"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Form */}
-        <form onSubmit={handleSubmit} className="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
+        {/* Scrollable Form Body */}
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          <div className="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
           
           {/* Row 0: Department Indicator & Switcher */}
           <div className="flex items-center justify-between p-3 bg-amber-50/70 rounded-xl border border-amber-200/90">
@@ -508,27 +529,46 @@ export default function TaskModal({
             />
           </div>
 
-          {/* Modal Footer */}
-          <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold transition"
-            >
-              취소
-            </button>
-            <button
-              type="submit"
-              className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-teal-600 text-white hover:bg-teal-700 font-bold shadow-md transition"
-            >
-              <Save className="w-4 h-4" />
-              <span>{currentTask ? '수정사항 저장' : '신규 업무 등록'}</span>
-            </button>
-          </div>
+          {/* Row 8: Logs Timeline if present */}
+          {currentTask?.logs && currentTask.logs.length > 0 && (
+            <div className="pt-2 border-t border-slate-200">
+              <span className="font-bold text-slate-700 block mb-2">📜 업무 진행 일지 및 변경 이력 ({currentTask.logs.length}건)</span>
+              <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {currentTask.logs.map((log, idx) => (
+                  <div key={idx} className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 text-[11px]">
+                    <div className="flex items-center justify-between font-bold text-slate-800 mb-0.5">
+                      <span>{log.author}</span>
+                      <span className="text-[10px] text-slate-400 font-normal">{log.date}</span>
+                    </div>
+                    <p className="whitespace-pre-wrap">{log.message}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
-        </form>
+        {/* Slide-out Sticky Footer */}
+        <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2.5 shrink-0 shadow-xs">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold transition cursor-pointer text-xs"
+          >
+            취소
+          </button>
+          <button
+            type="submit"
+            className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-teal-600 text-white hover:bg-teal-700 font-bold shadow-md hover:shadow-lg transition cursor-pointer text-xs"
+          >
+            <Save className="w-4 h-4" />
+            <span>{currentTask ? '수정사항 저장' : '신규 업무 등록'}</span>
+          </button>
+        </div>
 
-      </div>
+      </form>
+
     </div>
-  );
+  </div>
+);
 }

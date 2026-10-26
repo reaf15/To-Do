@@ -1303,7 +1303,7 @@ export default function TableView({
                           <span 
                             onClick={() => onEditTask && onEditTask(t)}
                             className="cursor-pointer hover:text-teal-700 hover:underline transition"
-                            title="클릭: 상세 정보 모달 열기"
+                            title="클릭: 상세 정보 우측 슬라이드 열기"
                           >
                             {t.title}
                           </span>
