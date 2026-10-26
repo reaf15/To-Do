@@ -1,6 +1,35 @@
 import * as XLSX from 'xlsx';
 
 /**
+ * 브라우저 및 Node 환경에서 안전하게 엑셀 파일 다운로드 실행
+ */
+export function saveWorkbookAsFile(workbook, fileName) {
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    try {
+      const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        try {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        } catch (e) {}
+      }, 500);
+      return;
+    } catch (err) {
+      console.warn('Browser Blob download fallback to XLSX.writeFile:', err);
+    }
+  }
+  XLSX.writeFile(workbook, fileName);
+}
+
+/**
  * 업무 목록을 Excel (.xlsx) 파일로 내보내기
  */
 export function exportToExcel(tasks, fileName = '남양주체육문화센터_공사업무현황.xlsx') {
@@ -57,7 +86,7 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, '공사업무현황');
 
-  XLSX.writeFile(workbook, fileName);
+  saveWorkbookAsFile(workbook, fileName);
 }
 
 /**
@@ -326,7 +355,7 @@ export function exportMasterDataToExcel({
     XLSX.utils.book_append_sheet(workbook, wsHistory, '접속및작업감사이력');
   }
 
-  XLSX.writeFile(workbook, fileName);
+  saveWorkbookAsFile(workbook, fileName);
 }
 
 /**

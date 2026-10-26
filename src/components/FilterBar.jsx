@@ -187,45 +187,60 @@ export default function FilterBar({
 
           {/* Action buttons: Excel & New Task */}
           {onExportExcel && (
-            <div className="relative ml-auto md:ml-0" ref={excelMenuRef}>
+            <div className="relative inline-flex items-center rounded-lg shadow-2xs shrink-0" ref={excelMenuRef}>
+              {/* Main Button: Directly triggers immediate download */}
               <button
-                onClick={() => setIsExcelMenuOpen(!isExcelMenuOpen)}
-                title="엑셀 다운로드 옵션 선택"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 transition shadow-2xs shrink-0"
+                type="button"
+                onClick={onExportExcel}
+                title="클릭 시 현재 부서 공사목록을 엑셀(.xlsx)로 즉시 다운로드"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-l-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white border border-emerald-600 transition cursor-pointer"
               >
-                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                <FileSpreadsheet className="w-3.5 h-3.5 text-white" />
                 <span>엑셀 다운로드</span>
-                <ChevronDown className="w-3 h-3 text-emerald-700" />
               </button>
 
+              {/* Dropdown Toggle: Options for full master export */}
+              {onExportAllExcel && (
+                <button
+                  type="button"
+                  onClick={() => setIsExcelMenuOpen(!isExcelMenuOpen)}
+                  title="엑셀 다운로드 추가 옵션 (전체 통합 엑셀 등)"
+                  className="px-1.5 py-1.5 rounded-r-lg bg-emerald-700 hover:bg-emerald-800 text-white border-t border-r border-b border-emerald-700 border-l border-emerald-500/50 transition cursor-pointer"
+                >
+                  <ChevronDown className="w-3.5 h-3.5 text-emerald-100" />
+                </button>
+              )}
+
               {isExcelMenuOpen && (
-                <div className="absolute right-0 mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+                <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
                   <button
+                    type="button"
                     onClick={() => {
                       setIsExcelMenuOpen(false);
                       onExportExcel();
                     }}
-                    className="w-full px-3.5 py-2 text-left hover:bg-slate-50 transition flex items-center gap-2.5 text-xs text-slate-800"
+                    className="w-full px-3.5 py-2 text-left hover:bg-emerald-50 transition flex items-center gap-2.5 text-xs text-slate-800 cursor-pointer"
                   >
                     <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0" />
                     <div>
-                      <div className="font-bold">현재 부서 공사목록 (.xlsx)</div>
+                      <div className="font-bold text-emerald-900">현재 부서 공사목록 (.xlsx)</div>
                       <div className="text-[10px] text-slate-400">현재 선택된 부서의 공사 업무 엑셀 파일</div>
                     </div>
                   </button>
 
                   {onExportAllExcel && (
                     <button
+                      type="button"
                       onClick={() => {
                         setIsExcelMenuOpen(false);
                         onExportAllExcel();
                       }}
-                      className="w-full px-3.5 py-2 text-left hover:bg-teal-50 transition flex items-center gap-2.5 text-xs text-teal-900 border-t border-slate-100"
+                      className="w-full px-3.5 py-2 text-left hover:bg-teal-50 transition flex items-center gap-2.5 text-xs text-teal-900 border-t border-slate-100 cursor-pointer"
                     >
                       <Building2 className="w-4 h-4 text-teal-600 shrink-0" />
                       <div>
                         <div className="font-bold text-teal-700">시설본부 전체 통합 엑셀 (.xlsx)</div>
-                        <div className="text-[10px] text-slate-400">전 부서 공사 + 시설현황 + 예산 3개 시트 통합</div>
+                        <div className="text-[10px] text-slate-400">전 부서 공사 + 시설현황 + 예산 등 4개 시트 통합</div>
                       </div>
                     </button>
                   )}

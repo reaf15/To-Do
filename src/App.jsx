@@ -1250,9 +1250,14 @@ export default function App() {
 
   // Excel Export: Current Department Tasks
   const handleExportExcel = () => {
-    exportToExcel(filteredTasks, `${selectedDepartment}_공사업무현황_${new Date().toISOString().split('T')[0]}.xlsx`);
-    showToast(`[${selectedDepartment}] 공사 목록이 Excel로 다운로드되었습니다.`);
-    addAuditLog(`공사현황 엑셀 다운로드: [${selectedDepartment}] (총 ${filteredTasks.length}건)`);
+    const targetTasks = (filteredTasks && filteredTasks.length > 0) 
+      ? filteredTasks 
+      : (departmentTasks && departmentTasks.length > 0) 
+      ? departmentTasks 
+      : tasks;
+    exportToExcel(targetTasks || [], `${selectedDepartment || '남양주체육문화센터'}_공사업무현황_${new Date().toISOString().split('T')[0]}.xlsx`);
+    showToast(`[${selectedDepartment || '전체'}] 공사 목록(${targetTasks?.length || 0}건)이 Excel로 다운로드되었습니다.`);
+    addAuditLog(`공사현황 엑셀 다운로드: [${selectedDepartment}] (총 ${targetTasks?.length || 0}건)`);
   };
 
   // Excel Export: Master All Data (전 부서 공사 + 시설현황 + 예산 종합)
