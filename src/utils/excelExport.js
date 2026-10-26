@@ -70,9 +70,24 @@ export function exportMasterDataToExcel({
   allTasks = [],
   facilities = [],
   budgets = {},
+  loginHistory = [],
   fileName = `남양주도시공사_시설본부_전체통합데이터_${new Date().toISOString().split('T')[0]}.xlsx`
 }) {
   const workbook = XLSX.utils.book_new();
+
+  // Normalize facilities to a safe flat array
+  let flatFacilities = [];
+  if (Array.isArray(facilities)) {
+    flatFacilities = facilities;
+  } else if (facilities && typeof facilities === 'object') {
+    Object.entries(facilities).forEach(([dept, list]) => {
+      if (Array.isArray(list)) {
+        list.forEach((f) => {
+          flatFacilities.push(typeof f === 'string' ? { department: dept, name: f } : { ...f, department: dept });
+        });
+      }
+    });
+  }
 
   // 1. Sheet 1: 공사 관리대장
   const tasksSheetData = allTasks.map((t) => ({
@@ -130,8 +145,8 @@ export function exportMasterDataToExcel({
   XLSX.utils.book_append_sheet(workbook, wsTasks, '공사관리대장');
 
   // 2. Sheet 2: 부서별 시설 현황
-  if (Array.isArray(facilities) && facilities.length > 0) {
-    const facSheetData = facilities.map((f) => ({
+  if (flatFacilities.length > 0) {
+    const facSheetData = flatFacilities.map((f) => ({
       '소속부서': f.department || '',
       '시설약칭': f.name || '',
       '정식명칭': f.fullName || '',
@@ -251,7 +266,7 @@ export function exportMasterDataToExcel({
   const orgSheetData = [];
   DIVISIONS.forEach(div => {
     div.departments.forEach(dept => {
-      const facCount = facilities.filter(f => (f.department || '남양주체육문화센터') === dept).length;
+      const facCount = flatFacilities.filter(f => (f.department || '남양주체육문화센터') === dept).length;
       const deptTasks = allTasks.filter(t => (t.department || '남양주체육문화센터') === dept).length;
       const deptBudget = budgets[dept] ? Object.values(budgets[dept]).reduce((s, v) => s + (Number(v) || 0), 0) : 100000000;
       orgSheetData.push({
