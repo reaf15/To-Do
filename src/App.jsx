@@ -1133,6 +1133,36 @@ export default function App() {
     addAuditLog(`상태 변경: [${targetTitle}] -> [${newStatus}]`);
   };
 
+
+  // Quick Inline Task Field Update (스프레드시트에서 바로 수정)
+  const handleQuickFieldChange = (id, field, value) => {
+    let targetTitle = '';
+    const updated = tasks.map((t) => {
+      if (t.id === id) {
+        targetTitle = t.title;
+        const item = {
+          ...t,
+          [field]: value,
+          logs: [
+            ...(t.logs || []),
+            {
+              date: new Date().toISOString().split('T')[0],
+              author: currentUser !== 'ALL' ? currentUser : '관리자',
+              message: `[${field}] 직접 수정: ${value !== null && value !== undefined && value !== '' ? (typeof value === 'number' ? value.toLocaleString() + '원' : value) : '삭제'}`
+            }
+          ]
+        };
+        if (selectedTask?.id === id) {
+          setSelectedTask(item);
+        }
+        return item;
+      }
+      return t;
+    });
+    persistTasks(updated);
+    addAuditLog(`스프레드시트 셀 수정: [${targetTitle}] ${field} = ${value}`);
+  };
+
   // Quick Inline Manager Change
   const handleQuickManagerChange = (id, newManager) => {
     let targetTitle = '';
@@ -1460,6 +1490,7 @@ export default function App() {
                       onDeleteTask={handleDeleteTask}
                       onQuickStatusChange={handleQuickStatusChange}
                       onQuickManagerChange={handleQuickManagerChange}
+                      onQuickFieldChange={handleQuickFieldChange}
                       managers={currentDeptManagers}
                       facilities={currentDeptFacilities.map(f => f.name)}
                       budgetCategories={currentDeptCategories}
