@@ -1,7 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Save, AlertCircle, Building2, Calendar, Camera, Image, Eye, Trash2, Plus, Upload } from 'lucide-react';
+import { 
+  X, Save, AlertCircle, Building2, Calendar, Camera, Image, Eye, Trash2, Plus, Upload,
+  FileText, Paperclip, Download, FileCode, File
+} from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
+
+// 파일 크기 포맷 헬퍼 (예: 1.2 MB, 450 KB)
+function formatFileSize(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+// 첨부 문서(PDF, CAD 도면 .dwg/.dxf, 한글, 기타) 읽기 헬퍼
+function readDocumentFile(file) {
+  return new Promise((resolve) => {
+    // 25MB 용량 제한
+    if (file.size > 25 * 1024 * 1024) {
+      alert(`[${file.name}] 파일 용량이 너무 큽니다 (25MB 이하 권장).`);
+      resolve(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      const ext = file.name.split('.').pop().toLowerCase();
+      resolve({
+        id: `DOC-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        name: file.name,
+        size: file.size,
+        sizeStr: formatFileSize(file.size),
+        ext: ext,
+        url: e.target.result,
+        date: new Date().toISOString().split('T')[0]
+      });
+    };
+    reader.onerror = () => resolve(null);
+  });
+}
 
 // 클라이언트 측 이미지 압축 헬퍼 (스마트폰 원본 사진을 1280px, ~150KB 이하로 자동 리사이징)
 function compressImageFile(file, maxWidth = 1280, maxHeight = 1280, quality = 0.78) {
@@ -100,12 +139,16 @@ export default function TaskModal({
     vendor: '',
     memo: '',
     photos: [],
+    documents: [],
   });
 
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [selectedPreviewPhoto, setSelectedPreviewPhoto] = useState(null);
+
+  const docInputRef = useRef(null);
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
 
   const handlePhotoUpload = async (e) => {
     const files = Array.from(e.target.files || []);
@@ -133,6 +176,46 @@ export default function TaskModal({
     }));
   };
 
+  const handleDocumentUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    setIsUploadingDoc(true);
+    try {
+      const promises = files.map(file => readDocumentFile(file));
+      const newDocs = (await Promise.all(promises)).filter(Boolean);
+      setFormData(prev => ({
+        ...prev,
+        documents: [...(prev.documents || []), ...newDocs]
+      }));
+    } catch (err) {
+      console.error('Document upload error:', err);
+    } finally {
+      setIsUploadingDoc(false);
+      if (docInputRef.current) docInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveDocument = (docId) => {
+    setFormData(prev => ({
+      ...prev,
+      documents: (prev.documents || []).filter(d => (d.id ? d.id !== docId : d.name !== docId))
+    }));
+  };
+
+  const handleDownloadDocument = (doc) => {
+    if (!doc || !doc.url) return;
+    const a = document.createElement('a');
+    a.href = doc.url;
+    a.download = doc.name || `문서_${Date.now()}.${doc.ext || 'bin'}`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      try {
+        document.body.removeChild(a);
+      } catch (e) {}
+    }, 100);
+  };
+
   useEffect(() => {
     setIsCustomFacility(false);
     if (currentTask) {
@@ -155,6 +238,7 @@ export default function TaskModal({
         vendor: currentTask.vendor || '',
         memo: currentTask.memo || '',
         photos: Array.isArray(currentTask.photos) ? currentTask.photos : [],
+        documents: Array.isArray(currentTask.documents) ? currentTask.documents : (Array.isArray(currentTask.attachments) ? currentTask.attachments : []),
       });
     } else {
       const deptFacs = getDeptFacilityList(selectedDepartment);
@@ -175,6 +259,7 @@ export default function TaskModal({
         vendor: '',
         memo: '',
         photos: [],
+        documents: [],
       });
     }
     setErrors({});
@@ -690,6 +775,115 @@ export default function TaskModal({
                 <Upload className="w-5 h-5 text-slate-400 group-hover:text-teal-600" />
                 <span className="text-xs font-semibold">클릭하여 공사 전/후 현장 사진을 첨부하세요</span>
                 <span className="text-[10px] text-slate-400">스마트폰 사진, 캡처 이미지 등 여러 장 선택 가능 (시트 미반영)</span>
+              </div>
+            )}
+          </div>
+
+          {/* Row 7.6: Documents & Blueprints Section (PDF / CAD .dwg .dxf / HWP / Excel) */}
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 font-bold text-slate-800">
+                <Paperclip className="w-4 h-4 text-indigo-600" />
+                <span>도면 및 공사 문서 첨부 (PDF / CAD / 한글 등)</span>
+                <span className="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                  {(formData.documents || []).length}건
+                </span>
+              </div>
+              <div>
+                <input
+                  type="file"
+                  multiple
+                  ref={docInputRef}
+                  onChange={handleDocumentUpload}
+                  className="hidden"
+                  id="task-doc-upload-input"
+                  accept=".pdf,.dwg,.dxf,.hwp,.hwpx,.xlsx,.xls,.docx,.doc,.zip,.txt"
+                />
+                <label
+                  htmlFor="task-doc-upload-input"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>{isUploadingDoc ? '파일 읽는 중...' : '문서/도면 첨부'}</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Documents List */}
+            {(formData.documents && formData.documents.length > 0) ? (
+              <div className="space-y-2 pt-1">
+                {formData.documents.map((doc, index) => {
+                  const docExt = (doc.ext || doc.name?.split('.').pop() || '').toLowerCase();
+                  const isPdf = docExt === 'pdf';
+                  const isCad = docExt === 'dwg' || docExt === 'dxf';
+                  const isHwp = docExt === 'hwp' || docExt === 'hwpx';
+                  const isXls = docExt === 'xlsx' || docExt === 'xls';
+                  const isZip = docExt === 'zip' || docExt === 'rar' || docExt === '7z';
+
+                  const badgeClass = isPdf 
+                    ? 'bg-rose-100 text-rose-700 border-rose-300'
+                    : isCad
+                    ? 'bg-indigo-100 text-indigo-700 border-indigo-300'
+                    : isHwp
+                    ? 'bg-blue-100 text-blue-700 border-blue-300'
+                    : isXls
+                    ? 'bg-emerald-100 text-emerald-700 border-emerald-300'
+                    : isZip
+                    ? 'bg-amber-100 text-amber-700 border-amber-300'
+                    : 'bg-slate-200 text-slate-700 border-slate-300';
+
+                  const badgeLabel = isPdf ? 'PDF' : isCad ? 'CAD' : isHwp ? '한글' : isXls ? '엑셀' : isZip ? '압축' : docExt.toUpperCase() || '문서';
+
+                  return (
+                    <div 
+                      key={doc.id || index}
+                      className="flex items-center justify-between p-2.5 bg-white rounded-xl border border-slate-200 hover:border-indigo-300 transition shadow-2xs group"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold border shrink-0 uppercase ${badgeClass}`}>
+                          {badgeLabel}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-slate-800 truncate" title={doc.name}>
+                            {doc.name}
+                          </p>
+                          <p className="text-[10px] text-slate-400">
+                            {doc.sizeStr || formatFileSize(doc.size)} • {doc.date || '등록됨'}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadDocument(doc)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 text-xs font-bold transition cursor-pointer"
+                          title="내 컴퓨터로 다운로드"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>받기</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveDocument(doc.id || doc.name)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                          title="삭제"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div 
+                onClick={() => docInputRef.current?.click()}
+                className="py-4 px-3 border border-dashed border-slate-300 hover:border-indigo-400 bg-white hover:bg-indigo-50/30 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-indigo-700"
+              >
+                <FileCode className="w-5 h-5 text-slate-400 group-hover:text-indigo-600" />
+                <span className="text-xs font-semibold">도면(.dwg, .dxf) 또는 공사 문서(.pdf, .hwp)를 첨부하세요</span>
+                <span className="text-[10px] text-slate-400">설계도면, 시방서, 준공검사원, 견적서 PDF 파일 등 보관 및 다운로드 지원</span>
               </div>
             )}
           </div>
