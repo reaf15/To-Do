@@ -13,7 +13,7 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 5173;
+const PORT = process.env.PORT || 5173;
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const DATA_FILE = path.resolve(__dirname, 'data/tasks.json');
 const DB_FILE = path.resolve(__dirname, 'data/custom_databases.json');
