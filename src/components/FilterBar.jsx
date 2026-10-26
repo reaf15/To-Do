@@ -35,6 +35,7 @@ export default function FilterBar({
   currentUser,
   onQuickFilterMyTasks,
   isMyTasksActive,
+  isReadOnly = false,
   onNewTask,
   onExportExcel,
   onExportAllExcel,
@@ -249,7 +250,7 @@ export default function FilterBar({
             </div>
           )}
 
-          {onNewTask && (
+          {!isReadOnly && onNewTask && (
             <button
               onClick={onNewTask}
               title="새로운 공사 업무 등록"

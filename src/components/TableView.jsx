@@ -65,7 +65,7 @@ export const VIEW_PRESETS = [
 // ============================================================================
 // Spreadsheet Inline Editable Components (화면에서 바로 클릭하여 직접 수정)
 // ============================================================================
-function InlineAmountInput({ value, onSave, colorClass = 'text-slate-800', placeholder = '-' }) {
+function InlineAmountInput({ value, onSave, colorClass = 'text-slate-800', placeholder = '-', readOnly = false }) {
   const [currentVal, setCurrentVal] = useState(
     value !== null && value !== undefined && value !== '' ? String(value) : ''
   );
@@ -76,6 +76,17 @@ function InlineAmountInput({ value, onSave, colorClass = 'text-slate-800', place
       setCurrentVal(value !== null && value !== undefined && value !== '' ? String(value) : '');
     }
   }, [value, isFocused]);
+
+  if (readOnly) {
+    const formatted = value !== null && value !== undefined && value !== '' && Number(value) > 0 
+      ? Number(value).toLocaleString() + '원' 
+      : placeholder;
+    return (
+      <div className="flex items-center justify-end w-full px-2 py-1 text-right text-xs font-bold text-slate-700">
+        <span className={colorClass}>{formatted}</span>
+      </div>
+    );
+  }
 
   const handleBlur = () => {
     setIsFocused(false);
@@ -130,7 +141,7 @@ function InlineAmountInput({ value, onSave, colorClass = 'text-slate-800', place
   );
 }
 
-function InlineTextInput({ value, onSave, placeholder = '-', className = '' }) {
+function InlineTextInput({ value, onSave, placeholder = '-', className = '', readOnly = false }) {
   const [currentVal, setCurrentVal] = useState(value || '');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -139,6 +150,14 @@ function InlineTextInput({ value, onSave, placeholder = '-', className = '' }) {
       setCurrentVal(value || '');
     }
   }, [value, isFocused]);
+
+  if (readOnly) {
+    return (
+      <div className={`flex items-center w-full px-2 py-1 text-left text-xs font-semibold text-slate-700 truncate ${className}`}>
+        <span>{value || placeholder}</span>
+      </div>
+    );
+  }
 
   const handleBlur = () => {
     setIsFocused(false);
@@ -192,7 +211,8 @@ export default function TableView({
   onQuickFieldChange,
   managers = MANAGERS,
   facilities = [],
-  budgetCategories = []
+  budgetCategories = [],
+  isReadOnly = false
 }) {
   const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
 
@@ -1292,6 +1312,7 @@ export default function TableView({
                           value={t.location}
                           onSave={(newVal) => onQuickFieldChange && onQuickFieldChange(t.id, 'location', newVal)}
                           placeholder="위치 입력"
+                          readOnly={isReadOnly}
                         />
                       </td>
                     )}
@@ -1342,48 +1363,65 @@ export default function TableView({
                           onSave={(num) => onQuickFieldChange && onQuickFieldChange(t.id, 'estimatedCost', num)}
                           colorClass="text-slate-800"
                           placeholder="-"
+                          readOnly={isReadOnly}
                         />
                       </td>
                     )}
 
-                    {/* Manager (Inline change dropdown) */}
+                    {/* Manager (Inline change dropdown or read-only badge) */}
                     {visibleColumns.includes('manager') && (
                       <td className="py-1.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                        <select
-                          value={t.manager || ''}
-                          onChange={(e) => onQuickManagerChange(t.id, e.target.value)}
-                          className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer shadow-2xs ${
+                        {isReadOnly ? (
+                          <span className={`inline-block text-[11px] font-bold px-2 py-0.5 rounded border ${
                             !t.manager
                               ? 'bg-slate-50 text-slate-400 border-slate-200'
-                              : activeManagers.indexOf(t.manager) === 0
-                              ? 'bg-teal-50 text-teal-700 border-teal-200 hover:border-teal-300'
-                              : activeManagers.indexOf(t.manager) === 1
-                              ? 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-300'
-                              : activeManagers.indexOf(t.manager) === 2
-                              ? 'bg-purple-50 text-purple-700 border-purple-200 hover:border-purple-300'
-                              : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:border-indigo-300'
-                          }`}
-                        >
-                          <option value="">미정</option>
-                          {Array.from(new Set([...activeManagers, ...(t.manager ? [t.manager] : [])])).map((m) => (
-                            <option key={m} value={m}>{m}</option>
-                          ))}
-                        </select>
+                              : 'bg-teal-50 text-teal-700 border-teal-200'
+                          }`}>
+                            {t.manager || '미정'}
+                          </span>
+                        ) : (
+                          <select
+                            value={t.manager || ''}
+                            onChange={(e) => onQuickManagerChange(t.id, e.target.value)}
+                            className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer shadow-2xs ${
+                              !t.manager
+                                ? 'bg-slate-50 text-slate-400 border-slate-200'
+                                : activeManagers.indexOf(t.manager) === 0
+                                ? 'bg-teal-50 text-teal-700 border-teal-200 hover:border-teal-300'
+                                : activeManagers.indexOf(t.manager) === 1
+                                ? 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-300'
+                                : activeManagers.indexOf(t.manager) === 2
+                                ? 'bg-purple-50 text-purple-700 border-purple-200 hover:border-purple-300'
+                                : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:border-indigo-300'
+                            }`}
+                          >
+                            <option value="">미정</option>
+                            {Array.from(new Set([...activeManagers, ...(t.manager ? [t.manager] : [])])).map((m) => (
+                              <option key={m} value={m}>{m}</option>
+                            ))}
+                          </select>
+                        )}
                       </td>
                     )}
 
-                    {/* Status (Inline change dropdown) */}
+                    {/* Status (Inline change dropdown or read-only badge) */}
                     {visibleColumns.includes('status') && (
                       <td className="py-1.5 px-2 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                        <select
-                          value={t.status || '검토'}
-                          onChange={(e) => onQuickStatusChange(t.id, e.target.value)}
-                          className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer shadow-2xs ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}
-                        >
-                          {STATUS_LIST.map((s) => (
-                            <option key={s} value={s}>{s}</option>
-                          ))}
-                        </select>
+                        {isReadOnly ? (
+                          <span className={`inline-block text-[11px] font-bold px-2 py-0.5 rounded border ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}>
+                            {t.status || '검토'}
+                          </span>
+                        ) : (
+                          <select
+                            value={t.status || '검토'}
+                            onChange={(e) => onQuickStatusChange(t.id, e.target.value)}
+                            className={`text-[11px] font-bold px-2 py-1 rounded border focus:outline-none transition cursor-pointer shadow-2xs ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}
+                          >
+                            {STATUS_LIST.map((s) => (
+                              <option key={s} value={s}>{s}</option>
+                            ))}
+                          </select>
+                        )}
                       </td>
                     )}
 
@@ -1395,6 +1433,7 @@ export default function TableView({
                           onSave={(num) => onQuickFieldChange && onQuickFieldChange(t.id, 'quoteAmount', num)}
                           colorClass="text-indigo-700"
                           placeholder="-"
+                          readOnly={isReadOnly}
                         />
                       </td>
                     )}
@@ -1407,6 +1446,7 @@ export default function TableView({
                           onSave={(num) => onQuickFieldChange && onQuickFieldChange(t.id, 'contractAmount', num)}
                           colorClass="text-emerald-700 font-extrabold"
                           placeholder="-"
+                          readOnly={isReadOnly}
                         />
                       </td>
                     )}
@@ -1418,6 +1458,7 @@ export default function TableView({
                           value={t.vendor}
                           onSave={(newVal) => onQuickFieldChange && onQuickFieldChange(t.id, 'vendor', newVal)}
                           placeholder="업체명 입력"
+                          readOnly={isReadOnly}
                         />
                       </td>
                     )}
@@ -1427,18 +1468,27 @@ export default function TableView({
                       <div className="flex items-center justify-center gap-1">
                         <button
                           onClick={() => onEditTask(t)}
-                          title="공사 정보 상세 수정"
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition cursor-pointer"
+                          title={isReadOnly ? "상세 정보 열람" : "공사 정보 상세 수정"}
+                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition cursor-pointer flex items-center gap-1 text-[11px] font-bold"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
+                          {isReadOnly ? (
+                            <>
+                              <Eye className="w-3.5 h-3.5 text-blue-600" />
+                              <span className="text-blue-600">열람</span>
+                            </>
+                          ) : (
+                            <Edit3 className="w-3.5 h-3.5" />
+                          )}
                         </button>
-                        <button
-                          onClick={() => onDeleteTask(t.id, t.title)}
-                          title="삭제"
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        {!isReadOnly && (
+                          <button
+                            onClick={() => onDeleteTask(t.id, t.title)}
+                            title="삭제"
+                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
                       </div>
                     </td>
 

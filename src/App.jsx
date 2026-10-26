@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import confetti from 'canvas-confetti';
+import { ExternalLink } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import StatsCards from './components/StatsCards';
 import FilterBar from './components/FilterBar';
@@ -258,8 +259,21 @@ export default function App() {
     return true; // default optimistic
   }, [serverInfo]);
 
-  // isHostClient is false when simulating staff mode
-  const isHostClient = isActualHost && !previewAsStaff;
+  // Read-Only mode detection: When accessed on Render cloud
+  const isRenderEnvironment = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return Boolean(
+      window.location.hostname.includes('onrender.com') ||
+      window.location.hostname.includes('render') ||
+      serverInfo?.isRender
+    );
+  }, [serverInfo]);
+
+  // Render cloud operates strictly in safe Read-Only mode
+  const isReadOnly = isRenderEnvironment;
+
+  // isHostClient is false when simulating staff mode or on Render
+  const isHostClient = isActualHost && !previewAsStaff && !isReadOnly;
 
   // UI state
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban' | 'facility' | 'staff'
@@ -1287,7 +1301,7 @@ export default function App() {
   const hasActiveFilters = Boolean(searchQuery || selectedFacility || selectedBudget || selectedStatus || selectedManager);
 
   return (
-    <div className="min-h-screen flex bg-slate-100 font-sans">
+    <div className={`min-h-screen flex bg-slate-100 font-sans ${(previewAsStaff || isReadOnly) ? 'pt-9' : ''}`}>
       
       {/* Toast Notification */}
       {toast && (
@@ -1297,6 +1311,31 @@ export default function App() {
             : 'bg-teal-600 text-white border-teal-500'
         }`}>
           <span>{toast.message}</span>
+        </div>
+      )}
+
+      {/* 0-A. Render Cloud Read-Only Mode Banner */}
+      {isReadOnly && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-700 text-white px-4 py-2 text-xs font-bold shadow-lg flex items-center justify-between animate-fade-in border-b border-blue-400/50">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-full bg-white/20 text-white animate-pulse text-sm">
+              ☁️
+            </span>
+            <span>
+              [클라우드 안전 열람 모드] Render 클라우드에 접속 중입니다. 메인 PC 데이터의 안전한 보호를 위해 <strong>열람 전용(Read-Only)</strong>으로 동작합니다. (도면/사진/엑셀 다운로드 가능)
+            </span>
+          </div>
+          {serverInfo?.localHostUrl && (
+            <a
+              href={serverInfo.localHostUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="px-3 py-1 rounded-lg bg-white text-slate-900 hover:bg-slate-100 font-bold shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer shrink-0 text-[11px]"
+            >
+              <span>메인 PC 접속</span>
+              <ExternalLink className="w-3.5 h-3.5 text-blue-700" />
+            </a>
+          )}
         </div>
       )}
 
@@ -1473,6 +1512,7 @@ export default function App() {
                     currentUser={currentUser}
                     onQuickFilterMyTasks={handleQuickFilterMyTasks}
                     isMyTasksActive={isMyTasksActive}
+                    isReadOnly={isReadOnly}
                     onNewTask={() => {
                       setEditingTask(null);
                       setIsTaskModalOpen(true);
@@ -1499,6 +1539,7 @@ export default function App() {
                       managers={currentDeptManagers}
                       facilities={currentDeptFacilities.map(f => f.name)}
                       budgetCategories={currentDeptCategories}
+                      isReadOnly={isReadOnly}
                     />
                   )}
 
@@ -1590,6 +1631,7 @@ export default function App() {
         allBudgets={budgets}
         allDepartmentManagers={departmentManagers}
         managers={currentDeptManagers}
+        isReadOnly={isReadOnly}
       />
 
       {/* Department Managers Modal */}

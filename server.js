@@ -2,6 +2,7 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
 import { 
   createSnapshot, 
@@ -22,6 +23,49 @@ const BUDGET_CATEGORIES_FILE = path.resolve(__dirname, 'data/budget_categories.j
 const FACILITIES_FILE = path.resolve(__dirname, 'data/facilities.json');
 const DEPT_MANAGERS_FILE = path.resolve(__dirname, 'data/department_managers.json');
 const VERSION_HISTORY_FILE = path.resolve(__dirname, 'data/version_history.json');
+
+// ============================================================================
+// Cloud (GitHub ➔ Render) Auto-Sync Engine
+// 내 PC에서 데이터 변경 후 15초 동안 추가 입력이 없으면 백그라운드 자동 Git Push
+// ============================================================================
+let autoSyncTimer = null;
+let isSyncing = false;
+let lastCloudSyncTime = null;
+
+export function triggerAutoCloudSync(delayMs = 15000) {
+  // Render 환경이거나 git 저장소가 없는 경우 건너뜀
+  if (process.env.RENDER || !fs.existsSync(path.resolve(__dirname, '.git'))) {
+    return;
+  }
+
+  if (autoSyncTimer) {
+    clearTimeout(autoSyncTimer);
+  }
+
+  autoSyncTimer = setTimeout(() => {
+    if (isSyncing) return;
+    isSyncing = true;
+    console.log('[Cloud Auto-Sync] 데이터 변경 감지 ➔ 클라우드(GitHub ➔ Render) 자동 동기화 시작...');
+    
+    const now = new Date();
+    const timeStr = now.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    const cmd = `git add data/ && git commit -m "auto: 실시간 데이터 자동 동기화 (${timeStr})" && git push origin main`;
+    
+    exec(cmd, { cwd: __dirname }, (error, stdout, stderr) => {
+      isSyncing = false;
+      if (error) {
+        if ((stderr && stderr.includes('nothing to commit')) || (stdout && stdout.includes('nothing to commit'))) {
+          console.log('[Cloud Auto-Sync] 변경 사항 없음 (최신 상태 유지 중)');
+        } else {
+          console.warn('[Cloud Auto-Sync] 알림:', stderr || error.message);
+        }
+      } else {
+        lastCloudSyncTime = timeStr;
+        console.log(`[Cloud Auto-Sync] ✅ 클라우드(GitHub ➔ Render) 자동 동기화 완료! (${timeStr})`);
+      }
+    });
+  }, delayMs);
+}
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -86,13 +130,29 @@ const server = http.createServer((req, res) => {
   if (req.url === '/api/server-info' && req.method === 'GET') {
     const ips = getLocalIps();
     const isHost = isLocalClient(req);
+    const isRender = Boolean(process.env.RENDER || req.headers.host?.includes('onrender.com'));
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({
       ip: ips[0] || 'localhost',
       allIps: ips,
       port: PORT,
       isHost,
+      isRender,
+      lastSyncTime: lastCloudSyncTime,
+      renderUrl: 'https://to-do-hxmd.onrender.com/',
+      localHostUrl: `http://${ips[0] || '192.168.101.96'}:${PORT}`,
       clientIp: req.socket?.remoteAddress
+    }));
+    return;
+  }
+
+  // 1-1. Guard: Render 클라우드는 원격 열람 전용(Read-Only)으로 작동 (쓰기 요청 차단)
+  const isRenderRequest = Boolean(process.env.RENDER || req.headers.host?.includes('onrender.com'));
+  if (isRenderRequest && req.method === 'POST') {
+    res.writeHead(403, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ 
+      error: 'Render 클라우드는 안전한 열람 전용(Read-Only) 모드입니다. 데이터 추가/수정은 사내 메인 PC에서만 가능합니다.',
+      readOnly: true 
     }));
     return;
   }
@@ -118,6 +178,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(DATA_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {
@@ -149,6 +210,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {
@@ -180,6 +242,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(BUDGET_CATEGORIES_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {
@@ -215,6 +278,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(BUDGET_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
       } catch (err) {
@@ -246,6 +310,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(FACILITIES_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
       } catch (err) {
@@ -277,6 +342,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(DEPT_MANAGERS_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, updatedAt: Date.now() }));
       } catch (err) {
@@ -308,6 +374,7 @@ const server = http.createServer((req, res) => {
       try {
         const parsed = JSON.parse(body);
         fs.writeFileSync(VERSION_HISTORY_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {

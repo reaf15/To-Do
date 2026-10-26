@@ -100,7 +100,8 @@ export default function TaskModal({
   allFacilities = [],
   allBudgets = {},
   allDepartmentManagers = {},
-  managers = MANAGERS
+  managers = MANAGERS,
+  isReadOnly = false
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
@@ -361,15 +362,19 @@ export default function TaskModal({
         <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between shrink-0 shadow-sm border-b border-slate-800">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/30">
-                {currentTask ? '공사 업무 상세 수정' : '신규 업무 등록'}
+              <span className={`text-[11px] font-bold px-2 py-0.5 rounded ${
+                isReadOnly 
+                  ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
+                  : 'bg-teal-500/20 text-teal-300 border border-teal-500/30'
+              }`}>
+                {isReadOnly ? '공사 업무 상세 열람 (Read-Only)' : (currentTask ? '공사 업무 상세 수정' : '신규 업무 등록')}
               </span>
               <span className="text-[11px] font-semibold text-slate-300">
                 {formData.department}
               </span>
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-md sm:max-w-lg">
-              {currentTask ? (formData.title || '공사 정보 수정') : '신규 시설·공사 업무 등록'}
+              {currentTask ? (formData.title || '공사 정보 상세') : '신규 시설·공사 업무 등록'}
             </h3>
           </div>
           <button
@@ -702,24 +707,26 @@ export default function TaskModal({
                   {(formData.photos || []).length}장
                 </span>
               </div>
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  ref={fileInputRef}
-                  onChange={handlePhotoUpload}
-                  className="hidden"
-                  id="task-photo-upload-input"
-                />
-                <label
-                  htmlFor="task-photo-upload-input"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>{isUploadingPhoto ? '사진 처리 중...' : '사진 첨부'}</span>
-                </label>
-              </div>
+              {!isReadOnly && (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    ref={fileInputRef}
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                    id="task-photo-upload-input"
+                  />
+                  <label
+                    htmlFor="task-photo-upload-input"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>{isUploadingPhoto ? '사진 처리 중...' : '사진 첨부'}</span>
+                  </label>
+                </div>
+              )}
             </div>
 
             {/* Photo Thumbnails Grid */}
@@ -743,17 +750,19 @@ export default function TaskModal({
                         title="클릭하여 큰 사진으로 보기"
                       />
                       {/* Delete button */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleRemovePhoto(photoId);
-                        }}
-                        className="absolute top-1.5 right-1.5 p-1 rounded-full bg-slate-900/70 hover:bg-rose-600 text-white transition cursor-pointer shadow-xs"
-                        title="사진 삭제"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
+                      {!isReadOnly && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemovePhoto(photoId);
+                          }}
+                          className="absolute top-1.5 right-1.5 p-1 rounded-full bg-slate-900/70 hover:bg-rose-600 text-white transition cursor-pointer shadow-xs"
+                          title="사진 삭제"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                       {/* Enlarge overlay badge */}
                       <div 
                         onClick={() => setSelectedPreviewPhoto(photoUrl)}
@@ -767,7 +776,7 @@ export default function TaskModal({
                   );
                 })}
               </div>
-            ) : (
+            ) : !isReadOnly ? (
               <div 
                 onClick={() => fileInputRef.current?.click()}
                 className="py-4 px-3 border border-dashed border-slate-300 hover:border-teal-400 bg-white hover:bg-teal-50/30 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-teal-700"
@@ -775,6 +784,10 @@ export default function TaskModal({
                 <Upload className="w-5 h-5 text-slate-400 group-hover:text-teal-600" />
                 <span className="text-xs font-semibold">클릭하여 공사 전/후 현장 사진을 첨부하세요</span>
                 <span className="text-[10px] text-slate-400">스마트폰 사진, 캡처 이미지 등 여러 장 선택 가능 (시트 미반영)</span>
+              </div>
+            ) : (
+              <div className="py-3 px-3 text-center text-xs text-slate-400 bg-white rounded-xl border border-dashed border-slate-200">
+                등록된 현장 사진이 없습니다.
               </div>
             )}
           </div>
@@ -789,24 +802,26 @@ export default function TaskModal({
                   {(formData.documents || []).length}건
                 </span>
               </div>
-              <div>
-                <input
-                  type="file"
-                  multiple
-                  ref={docInputRef}
-                  onChange={handleDocumentUpload}
-                  className="hidden"
-                  id="task-doc-upload-input"
-                  accept=".pdf,.dwg,.dxf,.hwp,.hwpx,.xlsx,.xls,.docx,.doc,.zip,.txt"
-                />
-                <label
-                  htmlFor="task-doc-upload-input"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>{isUploadingDoc ? '파일 읽는 중...' : '문서/도면 첨부'}</span>
-                </label>
-              </div>
+              {!isReadOnly && (
+                <div>
+                  <input
+                    type="file"
+                    multiple
+                    ref={docInputRef}
+                    onChange={handleDocumentUpload}
+                    className="hidden"
+                    id="task-doc-upload-input"
+                    accept=".pdf,.dwg,.dxf,.hwp,.hwpx,.xlsx,.xls,.docx,.doc,.zip,.txt"
+                  />
+                  <label
+                    htmlFor="task-doc-upload-input"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>{isUploadingDoc ? '파일 읽는 중...' : '문서/도면 첨부'}</span>
+                  </label>
+                </div>
+              )}
             </div>
 
             {/* Documents List */}
@@ -863,20 +878,22 @@ export default function TaskModal({
                           <Download className="w-3.5 h-3.5" />
                           <span>받기</span>
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveDocument(doc.id || doc.name)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
-                          title="삭제"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        {!isReadOnly && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveDocument(doc.id || doc.name)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                            title="삭제"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
                 })}
               </div>
-            ) : (
+            ) : !isReadOnly ? (
               <div 
                 onClick={() => docInputRef.current?.click()}
                 className="py-4 px-3 border border-dashed border-slate-300 hover:border-indigo-400 bg-white hover:bg-indigo-50/30 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-indigo-700"
@@ -884,6 +901,10 @@ export default function TaskModal({
                 <FileCode className="w-5 h-5 text-slate-400 group-hover:text-indigo-600" />
                 <span className="text-xs font-semibold">도면(.dwg, .dxf) 또는 공사 문서(.pdf, .hwp)를 첨부하세요</span>
                 <span className="text-[10px] text-slate-400">설계도면, 시방서, 준공검사원, 견적서 PDF 파일 등 보관 및 다운로드 지원</span>
+              </div>
+            ) : (
+              <div className="py-3 px-3 text-center text-xs text-slate-400 bg-white rounded-xl border border-dashed border-slate-200">
+                등록된 첨부 문서나 도면이 없습니다.
               </div>
             )}
           </div>
@@ -914,15 +935,17 @@ export default function TaskModal({
             onClick={onClose}
             className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold transition cursor-pointer text-xs"
           >
-            취소
+            {isReadOnly ? '닫기' : '취소'}
           </button>
-          <button
-            type="submit"
-            className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-teal-600 text-white hover:bg-teal-700 font-bold shadow-md hover:shadow-lg transition cursor-pointer text-xs"
-          >
-            <Save className="w-4 h-4" />
-            <span>{currentTask ? '수정사항 저장' : '신규 업무 등록'}</span>
-          </button>
+          {!isReadOnly && (
+            <button
+              type="submit"
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-teal-600 text-white hover:bg-teal-700 font-bold shadow-md hover:shadow-lg transition cursor-pointer text-xs"
+            >
+              <Save className="w-4 h-4" />
+              <span>{currentTask ? '수정사항 저장' : '신규 업무 등록'}</span>
+            </button>
+          )}
         </div>
 
       </form>
