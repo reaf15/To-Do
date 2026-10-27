@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793088648573-461",
+    "timestamp": "2026-10-27 17:10:48",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.105.4",
+    "device": "Edge / Windows 10/11",
+    "action": "부서 예산 설정: [와부체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088646169-600",
+    "timestamp": "2026-10-27 17:10:46",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.105.4",
+    "device": "Edge / Windows 10/11",
+    "action": "부서 예산과목 변경: [와부체육문화센터] [일상경비] -> [수선유지비] (2건)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088622339-672",
+    "timestamp": "2026-10-27 17:10:22",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "별내커뮤니티센터",
+    "ip": "192.168.105.4",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [와부체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088603235-155",
+    "timestamp": "2026-10-27 17:10:03",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "화도체육문화센터",
+    "ip": "192.168.105.4",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [별내커뮤니티센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088592542-149",
+    "timestamp": "2026-10-27 17:09:52",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.105.4",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [화도체육문화센터]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793088552641-485",
     "timestamp": "2026-10-27 17:09:12",
     "userId": "admin_fms",
