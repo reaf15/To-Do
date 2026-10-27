@@ -1,5 +1,37 @@
 [
   {
+    "department": "와부체육문화센터",
+    "budget": "일상경비",
+    "facility": "와부체육문화센터",
+    "location": "",
+    "title": "주차장 보도블럭 보수 공사",
+    "estimatedCost": 770000,
+    "estimatedCostNote": "",
+    "manager": "대리 김수관",
+    "status": "설계",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": 770000,
+    "contractAmount": 770000,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793088422914",
+    "logs": [
+      {
+        "date": "2026-10-27",
+        "author": "대리 김수관",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-27",
+        "author": "관리자",
+        "message": "[contractAmount] 직접 수정: 770,000원"
+      }
+    ]
+  },
+  {
     "department": "남양주체육문화센터",
     "budget": "자체수선",
     "facility": "남양주센터",
@@ -275,7 +307,7 @@
     "logs": [
       {
         "date": "2026-10-22",
-        "author": "시스템",
+        "author": "시스���",
         "message": "신규 공사 업무 등록"
       },
       {
@@ -1037,7 +1069,7 @@
       },
       {
         "date": "2026-10-21",
-        "author": "김일호",
+        "author": "김��호",
         "message": "진행 상태를 [접수/대기](으)로 변경"
       },
       {
@@ -1365,7 +1397,7 @@
   {
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
-    "facility": "남양주센터",
+    "facility": "남양주��터",
     "location": "B,C 축구장",
     "title": "B,C축구장 와이어 파단 보수",
     "estimatedCost": 5000000,
@@ -1485,7 +1517,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비(야구장)",
+    "budget": "��설비(야구장)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "성인야구장 관람석 보수",
@@ -1551,7 +1583,7 @@
     "title": "정보통신유지관리자 성능점검",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
-    "manager": "���현호",
+    "manager": "����현호",
     "status": "검토",
     "quoteAmount": null,
     "contractAmount": null,
@@ -1671,7 +1703,7 @@
       {
         "date": "2026-10-11",
         "author": "권병학",
-        "message": "다산센터 현장 분전반 여유 용량 확인"
+        "message": "다산센터 ���장 분전반 여유 용량 확인"
       }
     ]
   },
