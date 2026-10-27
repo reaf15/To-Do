@@ -15,10 +15,16 @@ import {
   Users
 } from 'lucide-react';
 
-export default function LoginHistoryView({ history = [], onRefresh }) {
+export default function LoginHistoryView({ history = [], onRefresh, serverInfo }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState('ALL');
   const [dateFilter, setDateFilter] = useState('ALL'); // 'ALL' | 'TODAY' | '7DAYS' | '30DAYS'
+
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }, []);
 
   // Filtered logs
   const filteredLogs = useMemo(() => {
@@ -83,7 +89,7 @@ export default function LoginHistoryView({ history = [], onRefresh }) {
     XLSX.writeFile(wb, `FMS_로그인이력조회_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
-  const todayCount = history.filter(h => h.timestamp.startsWith('2026-10-19')).length;
+  const todayCount = history.filter(h => h.timestamp && (h.timestamp.startsWith(todayStr) || h.timestamp.startsWith('2026-10-19'))).length;
   const uniqueUsers = Array.from(new Set(history.map(h => h.userName)));
 
   return (
@@ -174,7 +180,7 @@ export default function LoginHistoryView({ history = [], onRefresh }) {
         <div className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <div className="text-[11px] font-bold text-slate-400">현재 호스트 IP</div>
-            <div className="text-sm font-black text-slate-800 mt-1">192.168.101.96</div>
+            <div className="text-sm font-black text-slate-800 mt-1">{serverInfo?.ip || '192.168.101.96'}</div>
           </div>
           <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600">
             <Monitor className="w-4 h-4" />
@@ -297,7 +303,23 @@ export default function LoginHistoryView({ history = [], onRefresh }) {
                     </td>
 
                     <td className="py-2.5 px-3 font-mono font-medium text-slate-700 whitespace-nowrap">
-                      {log.ip}
+                      {log.ip === '127.0.0.1' || log.ip === 'localhost' ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                          🏠 내 PC (127.0.0.1)
+                        </span>
+                      ) : log.ip === (serverInfo?.ip || '192.168.101.96') ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-teal-50 text-teal-700 border border-teal-200">
+                          🏠 메인 서버 ({log.ip})
+                        </span>
+                      ) : (log.ip?.startsWith('192.168.') || log.ip?.startsWith('10.') || log.ip?.startsWith('172.')) ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs">
+                          💻 다른 PC ({log.ip})
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                          ☁️ 외부/클라우드 ({log.ip})
+                        </span>
+                      )}
                     </td>
 
                     <td className="py-2.5 px-3 text-slate-500 whitespace-nowrap text-[11px]">

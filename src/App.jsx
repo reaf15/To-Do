@@ -318,21 +318,54 @@ export default function App() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  // Add real-time audit log entry
-  const addAuditLog = (action) => {
+  // Fetch centralized login & access history from server
+  const fetchLoginHistory = async (showNotification = false) => {
+    try {
+      const res = await fetch('/api/login-history');
+      if (res.ok) {
+        const remoteHist = await res.json();
+        if (Array.isArray(remoteHist) && remoteHist.length > 0) {
+          setLoginHistory(remoteHist);
+          try {
+            localStorage.setItem(LOCAL_STORAGE_HISTORY, JSON.stringify(remoteHist));
+          } catch {}
+          if (showNotification) {
+            showToast('최신 접속 및 로그인이력을 불러왔습니다.');
+          }
+          return;
+        }
+      }
+    } catch (e) {
+      if (showNotification) {
+        showToast('로그인이력 조회 실패 (오프라인 상태)', 'info');
+      }
+    }
+  };
+
+  // Add real-time audit log entry and sync to central server
+  const addAuditLog = async (action) => {
     const now = new Date();
     const pad = (n) => String(n).padStart(2, '0');
     const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+    const isMobile = /Android|iPhone|iPad/i.test(ua);
+    const isEdge = /Edg\//i.test(ua);
+    const isWhale = /Whale\//i.test(ua);
+    const isChrome = /Chrome\//i.test(ua) && !isEdge;
+    const browserName = isWhale ? 'Whale' : isEdge ? 'Edge' : isChrome ? 'Chrome' : isMobile ? 'Mobile' : 'Web';
+    const osName = /Windows NT 10/i.test(ua) ? 'Windows 10/11' : /Macintosh/i.test(ua) ? 'macOS' : isMobile ? 'Mobile' : 'PC';
+    const deviceStr = `${browserName} / ${osName}`;
+
     const newEntry = {
-      id: `LOG-${Date.now()}`,
+      id: `LOG-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       timestamp: timeStr,
       userId: currentUser === '김일호' ? 'kim_ilho' : currentUser === '권병학' ? 'kwon_bh' : currentUser === '조현호' ? 'cho_hh' : 'admin_fms',
       userName: currentUser !== 'ALL' ? currentUser : '관리자',
       role: currentUser === '권병학' ? '시설담당 (대리)' : currentUser === 'ALL' ? '시스템 관리자' : '시설담당 (주임)',
-      dept: '체육문화센터 시설팀',
-      ip: serverInfo.ip || '192.168.101.96',
-      device: 'Chrome 128 / Windows 11 Pro',
+      dept: selectedDepartment || '체육문화센터 시설팀',
+      ip: serverInfo?.clientIp || serverInfo?.ip || '127.0.0.1',
+      device: deviceStr,
       action: action,
       status: '성공'
     };
@@ -342,7 +375,22 @@ export default function App() {
     try {
       localStorage.setItem(LOCAL_STORAGE_HISTORY, JSON.stringify(updated));
     } catch (e) {}
+
+    try {
+      await fetch('/api/login-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry)
+      });
+    } catch {}
   };
+
+  // Re-fetch login history whenever switching to login-history module
+  useEffect(() => {
+    if (currentModule === 'login-history') {
+      fetchLoginHistory();
+    }
+  }, [currentModule]);
 
   // Sync tasks to LocalStorage & Central Server API
   const persistTasks = async (newTasks) => {
@@ -760,6 +808,57 @@ export default function App() {
           }
         }
       } catch (e) {}
+
+      // Fetch centralized login & access history
+      try {
+        const histRes = await fetch('/api/login-history');
+        if (histRes.ok) {
+          const remoteHist = await histRes.json();
+          if (Array.isArray(remoteHist) && remoteHist.length > 0) {
+            setLoginHistory(remoteHist);
+            localStorage.setItem(LOCAL_STORAGE_HISTORY, JSON.stringify(remoteHist));
+          }
+        }
+      } catch (e) {}
+
+      // Record this client's connection in central login history
+      try {
+        const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+        const isMobile = /Android|iPhone|iPad/i.test(ua);
+        const isEdge = /Edg\//i.test(ua);
+        const isWhale = /Whale\//i.test(ua);
+        const isChrome = /Chrome\//i.test(ua) && !isEdge;
+        const browserName = isWhale ? 'Whale' : isEdge ? 'Edge' : isChrome ? 'Chrome' : isMobile ? 'Mobile' : 'Web';
+        const osName = /Windows NT 10/i.test(ua) ? 'Windows 10/11' : /Macintosh/i.test(ua) ? 'macOS' : isMobile ? 'Mobile' : 'PC';
+        const deviceStr = `${browserName} / ${osName}`;
+
+        const isLocalHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        const accessDesc = isLocalHost 
+          ? '메인 컴퓨터 시스템 접속' 
+          : window.location.hostname.includes('render') 
+          ? 'Render 클라우드 원격 접속'
+          : `사내 다른 PC 접속 (${window.location.hostname})`;
+
+        const res = await fetch('/api/login-history', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: currentUser === '김일호' ? 'kim_ilho' : currentUser === '권병학' ? 'kwon_bh' : currentUser === '조현호' ? 'cho_hh' : 'staff',
+            userName: currentUser !== 'ALL' ? currentUser : '접속자',
+            role: currentUser === '권병학' ? '시설담당 (대리)' : currentUser === 'ALL' ? '직원/방문자' : '시설담당 (주임)',
+            dept: selectedDepartment || '체육문화센터 시설팀',
+            action: accessDesc,
+            device: deviceStr
+          })
+        });
+
+        if (res.ok) {
+          const resData = await res.json();
+          if (resData.entry) {
+            setLoginHistory(prev => [resData.entry, ...prev.filter(x => x.id !== resData.entry.id)]);
+          }
+        }
+      } catch (e) {}
     };
 
     fetchInitialData();
@@ -827,6 +926,8 @@ export default function App() {
           localStorage.setItem(LOCAL_STORAGE_DEPT_MANAGERS, JSON.stringify(merged));
         }
       }
+
+      await fetchLoginHistory();
     } catch (e) {
       console.error('refreshAllData error:', e);
     }
@@ -1423,7 +1524,8 @@ export default function App() {
           {currentModule === 'login-history' && (
             <LoginHistoryView
               history={loginHistory}
-              onRefresh={() => addAuditLog('로그인이력 새로고침 조회')}
+              onRefresh={() => fetchLoginHistory(true)}
+              serverInfo={serverInfo}
             />
           )}
 

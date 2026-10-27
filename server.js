@@ -23,6 +23,22 @@ const BUDGET_CATEGORIES_FILE = path.resolve(__dirname, 'data/budget_categories.j
 const FACILITIES_FILE = path.resolve(__dirname, 'data/facilities.json');
 const DEPT_MANAGERS_FILE = path.resolve(__dirname, 'data/department_managers.json');
 const VERSION_HISTORY_FILE = path.resolve(__dirname, 'data/version_history.json');
+const LOGIN_HISTORY_FILE = path.resolve(__dirname, 'data/login_history.json');
+
+// Helper: Extract clean IPv4/IPv6 client IP
+function getClientIp(req) {
+  let ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '';
+  if (ip.includes(',')) {
+    ip = ip.split(',')[0].trim();
+  }
+  if (ip.startsWith('::ffff:')) {
+    ip = ip.replace('::ffff:', '');
+  }
+  if (ip === '::1') {
+    ip = '127.0.0.1';
+  }
+  return ip || '127.0.0.1';
+}
 
 // ============================================================================
 // Cloud (GitHub ➔ Render) Auto-Sync Engine
@@ -131,6 +147,7 @@ const server = http.createServer((req, res) => {
     const ips = getLocalIps();
     const isHost = isLocalClient(req);
     const isRender = Boolean(process.env.RENDER || req.headers.host?.includes('onrender.com'));
+    const clientIp = getClientIp(req);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({
       ip: ips[0] || 'localhost',
@@ -141,14 +158,14 @@ const server = http.createServer((req, res) => {
       lastSyncTime: lastCloudSyncTime,
       renderUrl: 'https://to-do-hxmd.onrender.com/',
       localHostUrl: `http://${ips[0] || '192.168.101.96'}:${PORT}`,
-      clientIp: req.socket?.remoteAddress
+      clientIp: clientIp
     }));
     return;
   }
 
-  // 1-1. Guard: Render 클라우드는 원격 열람 전용(Read-Only)으로 작동 (쓰기 요청 차단)
+  // 1-1. Guard: Render 클라우드는 원격 열람 전용(Read-Only)으로 작동 (쓰기 요청 차단, 단 접속 이력 저장은 허용)
   const isRenderRequest = Boolean(process.env.RENDER || req.headers.host?.includes('onrender.com'));
-  if (isRenderRequest && req.method === 'POST') {
+  if (isRenderRequest && req.method === 'POST' && req.url !== '/api/login-history') {
     res.writeHead(403, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({ 
       error: 'Render 클라우드는 안전한 열람 전용(Read-Only) 모드입니다. 데이터 추가/수정은 사내 메인 PC에서만 가능합니다.',
@@ -377,6 +394,90 @@ const server = http.createServer((req, res) => {
         triggerAutoCloudSync(15000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 7-2. API: GET /api/login-history (통합 접속 및 감사 이력 조회)
+  if (req.url === '/api/login-history' && req.method === 'GET') {
+    if (fs.existsSync(LOGIN_HISTORY_FILE)) {
+      try {
+        const data = fs.readFileSync(LOGIN_HISTORY_FILE, 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(data);
+      } catch (e) {
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify([]));
+      }
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
+  // 7-2-B. API: POST /api/login-history (다른 PC/관리자 실시간 접속 및 작업 로그 중앙 기록)
+  if (req.url === '/api/login-history' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const clientIp = getClientIp(req);
+
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+        // Parse user-agent if device string not provided
+        const userAgent = req.headers['user-agent'] || '';
+        let device = payload.device;
+        if (!device && userAgent) {
+          const isMobile = /Android|iPhone|iPad/i.test(userAgent);
+          const isEdge = /Edg\//i.test(userAgent);
+          const isChrome = /Chrome\//i.test(userAgent) && !isEdge;
+          const isWhale = /Whale\//i.test(userAgent);
+          const browserName = isWhale ? 'Whale' : isEdge ? 'Edge' : isChrome ? 'Chrome' : isMobile ? 'Mobile Safari' : 'Browser';
+          const osName = /Windows NT 10/i.test(userAgent) ? 'Windows 10/11' : /Macintosh/i.test(userAgent) ? 'macOS' : isMobile ? 'Mobile OS' : 'PC';
+          device = `${browserName} / ${osName}`;
+        }
+
+        const newEntry = {
+          id: payload.id || `LOG-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          timestamp: payload.timestamp || timeStr,
+          userId: payload.userId || 'guest',
+          userName: payload.userName || '접속자',
+          role: payload.role || '직원',
+          dept: payload.dept || '체육문화센터 시설팀',
+          ip: clientIp,
+          device: device || 'Chrome / Windows',
+          action: payload.action || '시스템 접속',
+          status: payload.status || '성공'
+        };
+
+        let logs = [];
+        if (fs.existsSync(LOGIN_HISTORY_FILE)) {
+          try {
+            logs = JSON.parse(fs.readFileSync(LOGIN_HISTORY_FILE, 'utf-8'));
+          } catch {
+            logs = [];
+          }
+        }
+        if (!Array.isArray(logs)) logs = [];
+
+        // Prepend new entry
+        logs.unshift(newEntry);
+        if (logs.length > 500) {
+          logs = logs.slice(0, 500);
+        }
+
+        fs.writeFileSync(LOGIN_HISTORY_FILE, JSON.stringify(logs, null, 2), 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, entry: newEntry, count: logs.length }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ error: err.message }));
