@@ -1,5 +1,53 @@
 [
   {
+    "id": "LOG-1793088552641-485",
+    "timestamp": "2026-10-27 17:09:12",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.105.4",
+    "device": "Edge / Windows 10/11",
+    "action": "공사 업무 신규등록: [2층 남 체온실 타일 보수 공사] (와부체육문화센터)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088555444-746",
+    "timestamp": "2026-10-27 17:09:15",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "정약용 펀그라운드",
+    "ip": "192.168.108.133",
+    "device": "Chrome / Windows 10/11",
+    "action": "[부서 담당자 변경] 정약용 펀그라운드 등 부서별 담당자 목록 업데이트",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088555424-714",
+    "timestamp": "2026-10-27 17:09:15",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "정약용 펀그라운드",
+    "ip": "192.168.108.133",
+    "device": "Chrome / Windows 10/11",
+    "action": "사용자 변경: [ALL] 계정으로 전환",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088521238-819",
+    "timestamp": "2026-10-27 17:08:41",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.108.133",
+    "device": "Chrome / Windows 10/11",
+    "action": "사이드바 조직도 이동: [정약용 펀그라운드]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793088457068-165",
     "timestamp": "2026-10-27 17:07:37",
     "userId": "admin_fms",

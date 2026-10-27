@@ -3,6 +3,33 @@
     "department": "와부체육문화센터",
     "budget": "일상경비",
     "facility": "와부체육문화센터",
+    "location": "2층 남 체온실(사우나)",
+    "title": "2층 남 체온실 타일 보수 공사",
+    "estimatedCost": 880000,
+    "estimatedCostNote": "",
+    "manager": "대리 김수관",
+    "status": "설계",
+    "startDate": "2026-11-08",
+    "endDate": "2026-11-08",
+    "quoteAmount": 880000,
+    "contractAmount": 880000,
+    "vendor": "삼현",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793088552641",
+    "logs": [
+      {
+        "date": "2026-10-27",
+        "author": "대리 김수관",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "와부체육문화센터",
+    "budget": "일상경비",
+    "facility": "와부체육문화센터",
     "location": "주차장",
     "title": "주차장 보도블럭 보수 공사",
     "estimatedCost": 770000,
@@ -202,7 +229,7 @@
     "budget": "시설비(파크골프장)",
     "facility": "남양주센터",
     "location": "",
-    "title": "옥외용벤치 구매",
+    "title": "옥외용벤치 구���",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -1262,7 +1289,7 @@
     "title": "방송실 천정재 설치",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
-    "manager": "���병학",
+    "manager": "",
     "status": "검토",
     "quoteAmount": null,
     "contractAmount": null,
@@ -1440,7 +1467,7 @@
       {
         "date": "2026-10-13",
         "author": "조현호",
-        "message": "세한이앤지 담��자와 10�� 15�� 14시 현장 실측 약속"
+        "message": "세한이앤지 담����자와 10�� 15�� 14시 현장 실측 약속"
       },
       {
         "date": "2026-10-15",
@@ -1520,7 +1547,7 @@
     "budget": "��설비(야구장)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
-    "title": "성인야구장 관람석 보수",
+    "title": "성인��구장 관람석 보수",
     "estimatedCost": 13900000,
     "estimatedCostNote": "",
     "manager": "권병학",
@@ -2213,7 +2240,7 @@
     "estimatedCost": 6800000,
     "estimatedCostNote": "",
     "manager": "문소연",
-    "status": "설계",
+    "status": "���계",
     "quoteAmount": 6500000,
     "contractAmount": null,
     "vendor": "한빛무대음향",
