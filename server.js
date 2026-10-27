@@ -139,7 +139,7 @@ const server = http.createServer((req, res) => {
       isHost,
       isRender,
       lastSyncTime: lastCloudSyncTime,
-      renderUrl: 'https://to-do-hxmd.onrender.com/',
+      renderUrl: 'https://ncuc-fms.onrender.com/',
       localHostUrl: `http://${ips[0] || '192.168.101.96'}:${PORT}`,
       clientIp: req.socket?.remoteAddress
     }));

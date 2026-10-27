@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: to-do-fms
+    name: ncuc-fms
     env: node
     plan: free
     region: singapore
