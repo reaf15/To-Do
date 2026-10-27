@@ -4,7 +4,7 @@
     "budget": "자체수선",
     "facility": "남양주센터",
     "location": "수영장",
-    "title": "수영장 입구 콘센트 교체",
+    "title": "수영장 입구 스위치 교체",
     "estimatedCost": 547352,
     "estimatedCostNote": "",
     "manager": "조현호",
@@ -35,7 +35,7 @@
       {
         "date": "2026-10-26",
         "author": "조현호",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 업무 등��"
       }
     ]
   },
@@ -328,7 +328,7 @@
   {
     "department": "남양주체육문화센터",
     "budget": "시설비(야구장)",
-    "facility": "성인야구장",
+    "facility": "��인야구장",
     "location": "",
     "title": "관급자재 조달구매(철근)",
     "estimatedCost": null,
@@ -421,7 +421,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "담당자를 [김일호](으)로 지정"
+        "message": "담당자를 [김일호](으)�� 지정"
       },
       {
         "date": "2026-10-22",
@@ -496,7 +496,7 @@
       {
         "date": "2026-10-22",
         "author": "관리��",
-        "message": "진행 상태를 [완료](으)로 변경"
+        "message": "진행 상태��� [완료](으)로 변경"
       }
     ]
   },
@@ -556,7 +556,7 @@
       {
         "date": "2026-10-22",
         "author": "시스템",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 ��무 등록"
       },
       {
         "date": "2026-10-22",
@@ -575,7 +575,7 @@
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
-    "title": "나라장터 이용수수료",
+    "title": "나라��터 이용수수료",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -636,7 +636,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "진행 상태를 [공사진행](으)로 변경"
+        "message": "진행 상��를 [공사진행](으)로 변경"
       }
     ]
   },
@@ -736,7 +736,7 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양주체육문���센터",
     "budget": "시설비(파크골프장)",
     "facility": "파크골프",
     "location": "",
@@ -816,7 +816,7 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양주체��문화센터",
     "budget": "수선유지비",
     "facility": "파크골프",
     "location": "다목적잔디��장",
@@ -990,17 +990,19 @@
     "budget": "수선유지비",
     "facility": "파크골프",
     "location": "다목적잔디광장",
-    "title": "퍼걸러 보수",
+    "title": "그늘막 원단 교체",
     "estimatedCost": 4000000,
     "estimatedCostNote": "",
     "manager": "조현호",
     "status": "검토",
     "startDate": "",
     "endDate": "",
-    "quoteAmount": null,
+    "quoteAmount": 3719160,
     "contractAmount": null,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
     "id": "TASK-1792556324287",
     "logs": [
       {
@@ -2093,7 +2095,7 @@
     "id": "TASK-RO-01",
     "department": "철도운영부",
     "budget": "수선유지��",
-    "facility": "���도운영부",
+    "facility": "���도운��부",
     "location": "���량기��",
     "title": "전동차 객실 냉난방 공기정화 필터 전면 교체",
     "estimatedCost": 8500000,
@@ -2144,7 +2146,7 @@
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "동절기 난방 및 온수 효율 제고를 위한 주기적 보일러 세��� ��사",
+    "memo": "동절기 난방 및 온수 ���율 제고를 위한 주기적 보일러 세��� ��사",
     "logs": [],
     "startDate": "2026-10-07",
     "endDate": "2026-10-15"
