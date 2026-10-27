@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793084884036-47",
+    "timestamp": "2026-10-27 16:08:04",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "화도체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [와부체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793084880545-701",
+    "timestamp": "2026-10-27 16:08:00",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "호평체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [화도체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793084877550-716",
+    "timestamp": "2026-10-27 16:07:57",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [호평체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793084792831-944",
+    "timestamp": "2026-10-27 16:06:32",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "공사현황 엑셀 다운로드: [남양주체육문화센터] (총 53건)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793084786242-687",
+    "timestamp": "2026-10-27 16:06:26",
+    "userId": "staff",
+    "userName": "접속자",
+    "role": "직원/방문자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793081328055-798",
     "timestamp": "2026-10-27 15:08:48",
     "userId": "staff_guest",

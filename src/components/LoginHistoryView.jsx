@@ -346,7 +346,7 @@ export default function LoginHistoryView({ history = [], onRefresh, serverInfo }
         {/* Bottom Status bar */}
         <div className="bg-slate-50 px-4 py-2.5 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
           <span>💡 시스템관리자 전용: 공공기관 정보보안 감사 지침에 따라 모든 사용자의 접속 일시와 IP를 기록합니다.</span>
-          <span>남양주도시공사 시설물종합관리시스템</span>
+          <span>남양주도시공사 시설물종합관리시스템 (NCUC-FMS)</span>
         </div>
       </div>
 
