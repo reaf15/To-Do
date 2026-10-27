@@ -820,7 +820,7 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "��양주체육문화센터",
     "budget": "시설비(파크골프장)",
     "facility": "파크골프",
     "location": "",
@@ -889,7 +889,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "야외 운동기구 안전점검을 위한 협조 요청에 따른 안내판 제작 부착",
+    "memo": "야외 운동기구 안전점검을 위한 협조 요청에 따른 안내판 제작 부���",
     "id": "TASK-1792571609338",
     "logs": [
       {
@@ -1040,7 +1040,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "진행 상태를 [진행](으)로 변경"
+        "message": "진행 상태를 [���행](으)로 변경"
       }
     ]
   },
@@ -1190,7 +1190,7 @@
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "설계",
+    "status": "설��",
     "startDate": "2026-10-01",
     "endDate": "2026-10-06",
     "quoteAmount": 13185000,
@@ -1496,7 +1496,7 @@
     "quoteAmount": 9600000,
     "contractAmount": null,
     "vendor": "서진전력",
-    "memo": "야구장 메탈할라이드 투광기 점검 및 불량 안정기/램프 교체 / 야외공연장 조명탑 공사와 동시 진행",
+    "memo": "야구장 메탈할라이드 투광기 점검 및 불량 안��기/램프 교체 / 야외공연장 조명탑 공사와 동시 진행",
     "id": "TASK-15",
     "logs": [
       {
@@ -2057,7 +2057,7 @@
   {
     "department": "오남체육문화센터",
     "budget": "수선유지비",
-    "facility": "오남체��문화센터",
+    "facility": "오남체육문화센터",
     "location": "지하 기��실",
     "title": "기계실 배수펌프 2기 노후 교체 및 제어반 점검",
     "estimatedCost": 6500000,
@@ -2076,6 +2076,11 @@
         "date": "2026-10-15",
         "author": "조현호",
         "message": "1호���������� ���프 안�� 완료"
+      },
+      {
+        "date": "2026-10-27",
+        "author": "관리자",
+        "message": "[facility] 직접 수정: 오남체육문화센터"
       }
     ]
   },
