@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793088958632-137",
+    "timestamp": "2026-10-27 17:15:58",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "오남체육문화센터",
+    "ip": "192.168.109.7",
+    "device": "Edge / Windows 10/11",
+    "action": "[부서 담당자 변경] 오남체육문화센터 등 부서별 담당자 목록 업데이트",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088958609-663",
+    "timestamp": "2026-10-27 17:15:58",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "오남체육문화센터",
+    "ip": "192.168.109.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사용자 변경: [ALL] 계정으로 전환",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088932151-299",
+    "timestamp": "2026-10-27 17:15:32",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.109.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [오남체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088909812-484",
+    "timestamp": "2026-10-27 17:15:09",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.109.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793088850679-876",
+    "timestamp": "2026-10-27 17:14:10",
+    "userId": "staff",
+    "userName": "접속자",
+    "role": "직원/방문자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793088781683-136",
     "timestamp": "2026-10-27 17:13:01",
     "userId": "kim_ilho",

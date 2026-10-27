@@ -475,7 +475,7 @@
       {
         "date": "2026-10-22",
         "author": "시스템",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 업��� 등록"
       },
       {
         "date": "2026-10-22",
@@ -630,7 +630,7 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양���체육문화센터",
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
@@ -955,7 +955,7 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양주체��문화센터",
     "budget": "시설비(전광판)",
     "facility": "남양주센터",
     "location": "보조경기장",
@@ -1182,7 +1182,7 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양주���육문화센터",
     "budget": "보류",
     "facility": "남양주센터",
     "location": "옥상",
@@ -1241,7 +1241,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "에스엠",
-    "memo": "교차로 차량 충돌로 인한 사고석 이탈 및 파손 보수",
+    "memo": "교차로 ���량 충돌로 인한 사고석 이탈 및 파손 보수",
     "id": "TASK-04",
     "logs": [
       {
@@ -1616,7 +1616,7 @@
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "정보통신공사업법에 따른 연간 통신설비 성능점검 용역 발주",
+    "memo": "정보통신공사업법에 따른 연간 통신설�� 성능점검 용역 발주",
     "logs": [
       {
         "date": "2026-10-14",
@@ -1989,7 +1989,7 @@
     "quoteAmount": null,
     "contractAmount": 1529000,
     "vendor": "",
-    "memo": "야간 이용객 눈부심 방지 및 코스 조도 확보를 ���한 투광등 각도 재��정 (시설비 과목 집행 검토)",
+    "memo": "야간 이용객 눈��심 방지 및 코스 조도 확보를 ���한 투광등 각도 재��정 (시설비 과목 집행 검토)",
     "id": "TASK-35",
     "logs": [
       {
@@ -2062,7 +2062,7 @@
     "title": "기계실 배수펌프 2기 노후 교체 및 제어반 점검",
     "estimatedCost": 6500000,
     "estimatedCostNote": "",
-    "manager": "한지훈",
+    "manager": "",
     "status": "진행",
     "startDate": "2026-10-15",
     "endDate": "2026-10-25",
