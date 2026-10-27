@@ -3,17 +3,17 @@
     "department": "와부체육문화센터",
     "budget": "일상경비",
     "facility": "와부체육문화센터",
-    "location": "",
+    "location": "주차장",
     "title": "주차장 보도블럭 보수 공사",
     "estimatedCost": 770000,
     "estimatedCostNote": "",
     "manager": "대리 김수관",
     "status": "설계",
-    "startDate": "",
-    "endDate": "",
+    "startDate": "2026-11-08",
+    "endDate": "2026-11-08",
     "quoteAmount": 770000,
     "contractAmount": 770000,
-    "vendor": "",
+    "vendor": "두오",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -133,7 +133,7 @@
       {
         "date": "2026-10-26",
         "author": "시스템",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 업�� 등록"
       },
       {
         "date": "2026-10-26",
@@ -598,7 +598,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "담당자를 [김일호](으)로 지정"
+        "message": "담당자�� [김일호](으)로 지정"
       }
     ]
   },
@@ -677,7 +677,7 @@
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
-    "title": "조경공사(최초)",
+    "title": "조경���사(최초)",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -983,7 +983,7 @@
       {
         "date": "2026-10-21",
         "author": "조현호",
-        "message": "담당자를 [조현호](으)로 지정"
+        "message": "담당자를 [조현호](���)로 지정"
       }
     ]
   },
@@ -1200,7 +1200,7 @@
     "department": "남양주체육������센터"
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남양주체육���화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "청수관 교차로",
@@ -1262,7 +1262,7 @@
     "title": "방송실 천정재 설치",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
-    "manager": "권병학",
+    "manager": "���병학",
     "status": "검토",
     "quoteAmount": null,
     "contractAmount": null,
@@ -2009,7 +2009,7 @@
     "endDate": "2026-10-19"
   },
   {
-    "department": "호평체육문화센터",
+    "department": "호��체육문화센터",
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
     "location": "2층 헬스장",
@@ -2116,7 +2116,7 @@
     "logs": [
       {
         "date": "2026-10-14",
-        "author": "조���호",
+        "author": "조����호",
         "message": "���� 검수 및 야간 차단작업 계획 수립"
       }
     ],
@@ -2169,7 +2169,7 @@
     "budget": "수선유지비",
     "facility": "에코랜드운영부",
     "location": "주민편익시설",
-    "title": "에코랜드 ���영장 온수보일러 세관 및 버너 노��� 교���",
+    "title": "에코랜드 ���영장 온수보일��� 세관 및 버너 노��� 교���",
     "estimatedCost": 11000000,
     "estimatedCostNote": "",
     "manager": "조영택",
@@ -2218,7 +2218,7 @@
     "contractAmount": null,
     "vendor": "한빛무대음향",
     "contact": "010-8899-1234",
-    "memo": "���소년 축제 대비 노후 조명 콘솔 점검 및 조명기기 수리",
+    "memo": "���소년 축제 대비 노후 조명 콘솔 ��검 및 조명기기 수리",
     "logs": [],
     "startDate": "2026-10-11",
     "endDate": "2026-10-21"
