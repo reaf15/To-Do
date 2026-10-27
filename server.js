@@ -655,7 +655,7 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, '0.0.0.0', () => {
   const ips = getLocalIps();
   console.log('================================================================');
-  console.log('  남양주도시공사 시설물종합관리시스템 (NCUC-FMS) 서버 실행 중');
+  console.log('  남양주체육문화센터 시설·공사 업무 공유 서버 실행 중');
   console.log('================================================================');
   console.log(`  ▶ 내 컴퓨터 접속:    http://localhost:${PORT}`);
   ips.forEach(ip => {

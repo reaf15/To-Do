@@ -141,11 +141,8 @@ export default function Sidebar({
               <div className="text-[10px] font-bold text-teal-400 uppercase tracking-wider">
                 남양주도시공사 • 시설본부
               </div>
-              <div className="text-sm font-extrabold text-white truncate flex items-center gap-1.5">
-                <span>시설물종합관리</span>
-                <span className="text-[10px] text-teal-300 font-bold bg-teal-500/20 px-1 py-0.2 rounded border border-teal-500/30">
-                  NCUC-FMS
-                </span>
+              <div className="text-sm font-extrabold text-white truncate">
+                시설물종합관리시스템
               </div>
             </div>
           )}

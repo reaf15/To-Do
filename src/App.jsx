@@ -277,15 +277,15 @@ export default function App() {
     if (typeof document !== 'undefined') {
       const dept = selectedDepartment || '남양주체육문화센터';
       if (currentModule === 'login-history') {
-        document.title = `로그인이력조회 | ${dept} | NCUC-FMS`;
+        document.title = `로그인이력조회 | ${dept} | 시설·공사 업무 시스템`;
       } else if (currentModule === 'backup-restore') {
-        document.title = `데이터 백업 및 복구 | ${dept} | NCUC-FMS`;
+        document.title = `데이터 백업 및 복구 | ${dept} | 시설·공사 업무 시스템`;
       } else if (currentModule === 'version-history') {
-        document.title = `버전 및 변경 이력 | ${dept} | NCUC-FMS`;
+        document.title = `버전 및 변경 이력 | ${dept} | 시설·공사 업무 시스템`;
       } else if (currentModule === 'facility-overview') {
-        document.title = `${dept} 시설 개요 | NCUC-FMS`;
+        document.title = `${dept} 시설 개요 | 시설·공사 업무 시스템`;
       } else {
-        document.title = `${dept} | 시설물종합관리 (NCUC-FMS)`;
+        document.title = `${dept} | 시설·공사 업무 관리 시스템`;
       }
     }
   }, [selectedDepartment, currentModule]);
