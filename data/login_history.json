@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793150302132-199",
+    "timestamp": "2026-10-28 10:18:22",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주시청소년수련관",
+    "ip": "192.168.104.7",
+    "device": "Edge / Windows 10/11",
+    "action": "시설 정보 수정: [남양주시청소년수련관] 남양주시청소년수련관",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150169376-618",
+    "timestamp": "2026-10-28 10:16:09",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150168521-793",
+    "timestamp": "2026-10-28 10:16:08",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주시청소년수련관",
+    "ip": "192.168.104.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주시청소년수련관]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150126614-373",
+    "timestamp": "2026-10-28 10:15:26",
+    "userId": "staff",
+    "userName": "접속자",
+    "role": "직원/방문자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150115743-501",
+    "timestamp": "2026-10-28 10:15:15",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.104.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주시청소년수련관]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793150110064-999",
     "timestamp": "2026-10-28 10:15:10",
     "userId": "admin_fms",
