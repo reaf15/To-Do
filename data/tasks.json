@@ -178,7 +178,7 @@
     "estimatedCost": 3420000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "검토",
+    "status": "설계",
     "startDate": "",
     "endDate": "",
     "quoteAmount": 3420000,
@@ -196,12 +196,17 @@
         "date": "2026-10-23",
         "author": "조현호",
         "message": "담당자를 [조현호](으)로 지정"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "조현호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비(파크골프장)",
+    "budget": "시설비(파크���프장)",
     "facility": "남양주센터",
     "location": "",
     "title": "그물망 교체",
@@ -358,7 +363,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "완료",
+    "status": "���료",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -510,7 +515,7 @@
       {
         "date": "2026-10-22",
         "author": "시스템",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 업무 ��록"
       },
       {
         "date": "2026-10-22",
@@ -1564,7 +1569,7 @@
       {
         "date": "2026-10-19",
         "author": "관리자",
-        "message": "진행 상태��� [검토중](으)로 ���경"
+        "message": "진행 상태��� [검토중](으)로 �����경"
       },
       {
         "date": "2026-10-19",
@@ -1879,7 +1884,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "153",
-    "memo": "휠체어 이용객 비가림용 알루미늄 복합판넬 캐노피 설치 견적",
+    "memo": "휠체어 이용객 비��림용 알루미늄 복합판넬 캐노피 설치 견적",
     "id": "TASK-29",
     "logs": [
       {
@@ -1941,7 +1946,7 @@
   {
     "department": "남양주체육문화센��",
     "budget": "수선유지비",
-    "facility": "파크골프",
+    "facility": "��크골프",
     "location": "화장실",
     "title": "다목적잔디광장 화장실 배관 ��사",
     "estimatedCost": 5000000,
@@ -2000,7 +2005,7 @@
       {
         "date": "2026-10-20",
         "author": "관리자",
-        "message": "담당자를 [조현호](으)��� 지정"
+        "message": "담당자를 [조현호](으)��� 지��"
       },
       {
         "date": "2026-10-21",
@@ -2221,7 +2226,7 @@
     "budget": "수선유지비",
     "facility": "어린이비전센터",
     "location": "1층 놀이���율체��관",
-    "title": "어린��� 안전 벽면쿠션 전면 ���체 및 바�� 매트 보수",
+    "title": "어린��� 안전 벽면쿠션 전면 �����체 및 바�� 매트 보수",
     "estimatedCost": 7500000,
     "estimatedCostNote": "",
     "manager": "박보검",
