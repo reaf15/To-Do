@@ -13,7 +13,7 @@
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 4564560,
-    "vendor": "",
+    "vendor": "하나건설",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -28,6 +28,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[vendor] 직접 수정: 하나건설"
       }
     ]
   },
@@ -282,7 +287,7 @@
     "endDate": "",
     "quoteAmount": 4593000,
     "contractAmount": 4000000,
-    "vendor": "",
+    "vendor": "삼현",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -302,6 +307,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "진행 상태를 [진행](으)로 변경"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[vendor] 직접 수정: 삼현"
       }
     ]
   },
@@ -851,7 +861,7 @@
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 15000000,
-    "vendor": "",
+    "vendor": "하나건설",
     "memo": "",
     "id": "TASK-1792655342334",
     "logs": [
@@ -869,6 +879,16 @@
         "date": "2026-10-22",
         "author": "관리자",
         "message": "담당자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[vendor] 직접 수정: 하나건선"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[vendor] 직접 수정: 하나건설"
       }
     ]
   },
@@ -886,7 +906,7 @@
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 4000000,
-    "vendor": "",
+    "vendor": "삼현",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -901,6 +921,11 @@
         "date": "2026-10-22",
         "author": "���리자",
         "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[vendor] 직접 수정: 삼현"
       }
     ]
   },
@@ -2260,11 +2285,11 @@
     "contractAmount": 18000000,
     "vendor": "삼영레일시스템",
     "contact": "010-2390-8811",
-    "memo": "휠체어 및 발빠짐 사고 방지 고무발판 교체",
+    "memo": "휠��어 및 발빠짐 사고 방지 고무발판 교체",
     "logs": [
       {
         "date": "2026-10-14",
-        "author": "조����호",
+        "author": "조�����호",
         "message": "���� 검수 및 야간 차단작업 계획 수립"
       }
     ],
