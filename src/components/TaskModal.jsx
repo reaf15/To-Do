@@ -15,19 +15,13 @@ function formatFileSize(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }
 
-// 첨부 문서(PDF, CAD 도면 .dwg/.dxf, 한글, 기타) 읽기 헬퍼
+// 첨부 문서(PDF, CAD 도면 .dwg/.dxf, 한글, 엑셀 등 모든 파일) 읽기 헬퍼 (용량 제한 없음)
 function readDocumentFile(file) {
   return new Promise((resolve) => {
-    // 25MB 용량 제한
-    if (file.size > 25 * 1024 * 1024) {
-      alert(`[${file.name}] 파일 용량이 너무 큽니다 (25MB 이하 권장).`);
-      resolve(null);
-      return;
-    }
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
-      const ext = file.name.split('.').pop().toLowerCase();
+      const ext = (file.name || '').split('.').pop().toLowerCase();
       resolve({
         id: `DOC-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         name: file.name,
@@ -152,33 +146,72 @@ export default function TaskModal({
   const docInputRef = useRef(null);
   const [isUploadingDoc, setIsUploadingDoc] = useState(false);
 
-  // Core helper to process, resize and add photo files
-  const processImageFiles = async (files) => {
+  // Universal file processor: intelligently handles any file without size or extension limits
+  const processAnyFiles = async (files) => {
     if (!files || files.length === 0) return;
-    setIsUploadingPhoto(true);
-    try {
-      const promises = files.map(file => compressImageFile(file));
-      const newPhotos = (await Promise.all(promises)).filter(Boolean);
-      if (newPhotos.length > 0) {
-        setFormData(prev => ({
-          ...prev,
-          photos: [...(prev.photos || []), ...newPhotos]
-        }));
+
+    const imageFiles = [];
+    const docFiles = [];
+
+    const isImageFile = (f) => {
+      if (f.type && f.type.startsWith('image/')) return true;
+      const ext = (f.name || '').split('.').pop()?.toLowerCase();
+      return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg', 'heic', 'tiff'].includes(ext);
+    };
+
+    for (const f of files) {
+      if (isImageFile(f)) {
+        imageFiles.push(f);
+      } else {
+        docFiles.push(f);
       }
-    } catch (err) {
-      console.error('Photo processing error:', err);
-    } finally {
-      setIsUploadingPhoto(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+
+    if (imageFiles.length > 0) {
+      setIsUploadingPhoto(true);
+      try {
+        const promises = imageFiles.map(file => compressImageFile(file));
+        const newPhotos = (await Promise.all(promises)).filter(Boolean);
+        if (newPhotos.length > 0) {
+          setFormData(prev => ({
+            ...prev,
+            photos: [...(prev.photos || []), ...newPhotos]
+          }));
+        }
+      } catch (err) {
+        console.error('Photo processing error:', err);
+      } finally {
+        setIsUploadingPhoto(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      }
+    }
+
+    if (docFiles.length > 0) {
+      setIsUploadingDoc(true);
+      try {
+        const promises = docFiles.map(file => readDocumentFile(file));
+        const newDocs = (await Promise.all(promises)).filter(Boolean);
+        if (newDocs.length > 0) {
+          setFormData(prev => ({
+            ...prev,
+            documents: [...(prev.documents || []), ...newDocs]
+          }));
+        }
+      } catch (err) {
+        console.error('Document upload error:', err);
+      } finally {
+        setIsUploadingDoc(false);
+        if (docInputRef.current) docInputRef.current.value = '';
+      }
     }
   };
 
   const handlePhotoUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    await processImageFiles(files);
+    await processAnyFiles(files);
   };
 
-  // Clipboard paste listener: allows Ctrl+V to paste captured screenshots or copied images
+  // Clipboard paste listener: allows Ctrl+V to paste captured screenshots or copied files
   useEffect(() => {
     if (!isOpen || isReadOnly) return;
 
@@ -189,10 +222,10 @@ export default function TaskModal({
       const items = clipboardData.items;
       if (!items || items.length === 0) return;
 
-      const imageFiles = [];
+      const pastedFiles = [];
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        if (item.type && item.type.startsWith('image/')) {
+        if (item.kind === 'file') {
           const file = item.getAsFile();
           if (file) {
             const now = new Date();
@@ -202,14 +235,14 @@ export default function TaskModal({
               file.name && file.name !== 'image.png' ? file.name : `캡처사진_${now.toISOString().split('T')[0]}_${timeStr}.jpg`,
               { type: file.type || 'image/jpeg' }
             );
-            imageFiles.push(namedFile);
+            pastedFiles.push(namedFile);
           }
         }
       }
 
-      if (imageFiles.length > 0) {
+      if (pastedFiles.length > 0) {
         e.preventDefault();
-        await processImageFiles(imageFiles);
+        await processAnyFiles(pastedFiles);
       }
     };
 
@@ -231,9 +264,9 @@ export default function TaskModal({
     setIsDraggingPhoto(false);
     if (isReadOnly) return;
 
-    const droppedFiles = Array.from(e.dataTransfer?.files || []).filter(f => f.type && f.type.startsWith('image/'));
+    const droppedFiles = Array.from(e.dataTransfer?.files || []);
     if (droppedFiles.length > 0) {
-      await processImageFiles(droppedFiles);
+      await processAnyFiles(droppedFiles);
     }
   };
 
@@ -246,21 +279,7 @@ export default function TaskModal({
 
   const handleDocumentUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
-    setIsUploadingDoc(true);
-    try {
-      const promises = files.map(file => readDocumentFile(file));
-      const newDocs = (await Promise.all(promises)).filter(Boolean);
-      setFormData(prev => ({
-        ...prev,
-        documents: [...(prev.documents || []), ...newDocs]
-      }));
-    } catch (err) {
-      console.error('Document upload error:', err);
-    } finally {
-      setIsUploadingDoc(false);
-      if (docInputRef.current) docInputRef.current.value = '';
-    }
+    await processAnyFiles(files);
   };
 
   const handleRemoveDocument = (docId) => {
@@ -792,7 +811,6 @@ export default function TaskModal({
                 <div className="flex items-center gap-1.5">
                   <input
                     type="file"
-                    accept="image/*"
                     multiple
                     ref={fileInputRef}
                     onChange={handlePhotoUpload}
@@ -804,7 +822,7 @@ export default function TaskModal({
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs transition active:scale-95"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>{isUploadingPhoto ? '사진 처리 중...' : '사진 첨부'}</span>
+                    <span>{isUploadingPhoto ? '사진 처리 중...' : '사진/파일 첨부'}</span>
                   </label>
                 </div>
               )}
@@ -880,16 +898,16 @@ export default function TaskModal({
                     ? 'border-teal-500 bg-teal-50 text-teal-800 ring-2 ring-teal-200'
                     : 'border-slate-300 hover:border-teal-400 bg-white hover:bg-teal-50/30 text-slate-500 hover:text-teal-700'
                 }`}
-                title="클릭하여 사진 파일 선택 또는 화면 캡처 후 Ctrl+V로 바로 붙여넣기"
+                title="클릭하여 파일 선택 또는 화면 캡처 후 Ctrl+V로 바로 붙여넣기 (용량·개수 무제한)"
               >
                 <div className="flex items-center gap-2">
                   <Upload className="w-5 h-5 text-teal-600" />
                   <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    클릭하여 사진 선택 또는 <kbd className="px-1.5 py-0.5 text-[11px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200 rounded shadow-2xs">Ctrl + V</kbd> 로 바로 붙여넣기
+                    클릭하여 사진/파일 첨부 또는 <kbd className="px-1.5 py-0.5 text-[11px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200 rounded shadow-2xs">Ctrl + V</kbd> 로 바로 붙여넣기
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-400">
-                  화면 캡처 이미지(클립보드) 즉시 붙여넣기, 스마트폰 사진 여러 장 선택 및 드래그 앤 드롭 지원
+                <span className="text-[10px] text-teal-700 font-bold bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200 shadow-2xs">
+                  ⚡ 용량·개수·확장자 제한 없음 (사진, 캡처, 스마트폰 원본, 도면/문서 무제한 첨부)
                 </span>
               </div>
             ) : (
@@ -908,6 +926,11 @@ export default function TaskModal({
                 <span className="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
                   {(formData.documents || []).length}건
                 </span>
+                {!isReadOnly && (
+                  <span className="text-[10px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-md border border-indigo-200 shadow-2xs">
+                    용량 제한 없음
+                  </span>
+                )}
               </div>
               {!isReadOnly && (
                 <div>
@@ -918,7 +941,6 @@ export default function TaskModal({
                     onChange={handleDocumentUpload}
                     className="hidden"
                     id="task-doc-upload-input"
-                    accept=".pdf,.dwg,.dxf,.hwp,.hwpx,.xlsx,.xls,.docx,.doc,.zip,.txt"
                   />
                   <label
                     htmlFor="task-doc-upload-input"

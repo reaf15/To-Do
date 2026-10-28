@@ -392,18 +392,33 @@ export default function App() {
     }
   }, [currentModule]);
 
-  // Sync tasks to LocalStorage & Central Server API
+  // Sync tasks to LocalStorage & Central Server API (with unlimited attachment support)
   const persistTasks = async (newTasks) => {
     setTasks(newTasks);
+    // 1. Try to cache in localStorage (safely ignore if browser quota is exceeded)
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
+    } catch (localErr) {
+      console.warn('localStorage quota exceeded (large attachments), storing lightweight cache locally:', localErr);
+      try {
+        const lightweightTasks = newTasks.map(t => ({
+          ...t,
+          photos: (t.photos || []).map(p => typeof p === 'string' ? '' : { ...p, url: '' }),
+          documents: (t.documents || []).map(d => ({ ...d, url: '' }))
+        }));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lightweightTasks));
+      } catch {}
+    }
+
+    // 2. Always persist the full data with all attachments to Central Server API (no quota limit)
+    try {
       await fetch('/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTasks)
       });
-    } catch (e) {
-      console.warn('Network sync failed, saved locally:', e.message);
+    } catch (netErr) {
+      console.warn('Network sync failed:', netErr.message);
     }
   };
 
