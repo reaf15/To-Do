@@ -217,7 +217,7 @@
     "startDate": "",
     "endDate": "",
     "quoteAmount": 4593000,
-    "contractAmount": null,
+    "contractAmount": 4000000,
     "vendor": "",
     "memo": "",
     "photos": [],
@@ -228,6 +228,11 @@
         "date": "2026-10-23",
         "author": "김일호",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[contractAmount] 직접 수정: 4,000,000원"
       }
     ]
   },
@@ -236,7 +241,7 @@
     "budget": "시설비(파크골프장)",
     "facility": "남양주센터",
     "location": "",
-    "title": "그물망 교체 공사",
+    "title": "옥외 벤치",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -1564,7 +1569,7 @@
     "department": "남양주체육문화센터"
   },
   {
-    "department": "남양주체육문화센터",
+    "department": "남��주체육문화센터",
     "budget": "시설비(야구장)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
