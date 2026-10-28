@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793150110064-999",
+    "timestamp": "2026-10-28 10:15:10",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "펀그라운드 진접",
+    "ip": "192.168.104.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [와부체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150106525-225",
+    "timestamp": "2026-10-28 10:15:06",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [와부체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150103462-140",
+    "timestamp": "2026-10-28 10:15:03",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150102836-374",
+    "timestamp": "2026-10-28 10:15:02",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주시청소년수련관",
+    "ip": "192.168.104.7",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [펀그라운드 진접]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793150099220-51",
+    "timestamp": "2026-10-28 10:14:59",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주시청소년수련관",
+    "ip": "192.168.104.7",
+    "device": "Edge / Windows 10/11",
+    "action": "[부서 담당자 변경] 남양주시청소년수련관 등 부서별 담당자 목록 업데이트",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793150080576-690",
     "timestamp": "2026-10-28 10:14:40",
     "userId": "kim_ilho",
