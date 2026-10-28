@@ -1,5 +1,32 @@
 [
   {
+    "department": "남양주시청소년수련관",
+    "budget": "수선유지비(운영)",
+    "facility": "남양주시청소년수련관",
+    "location": "2층 미디어스튜디오",
+    "title": "미디어스튜디오 바닥 시공 공사",
+    "estimatedCost": 5060000,
+    "estimatedCostNote": "",
+    "manager": "이규찬",
+    "status": "완료",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": 5060000,
+    "contractAmount": 4730000,
+    "vendor": "윌크디자인",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793150536113",
+    "logs": [
+      {
+        "date": "2026-10-28",
+        "author": "이규찬",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
     "department": "남양주체육문화센터",
     "budget": "시설비(파크골프장)",
     "facility": "파크골프",
