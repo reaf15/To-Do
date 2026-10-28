@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793149883304-531",
+    "timestamp": "2026-10-28 10:11:23",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "와부체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [평내체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149876510-924",
+    "timestamp": "2026-10-28 10:11:16",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "별내커뮤니티센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [와부체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149864664-927",
+    "timestamp": "2026-10-28 10:11:04",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [별내커뮤니티센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149778505-138",
+    "timestamp": "2026-10-28 10:09:38",
+    "userId": "staff",
+    "userName": "접속자",
+    "role": "직원/방문자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149736543-294",
+    "timestamp": "2026-10-28 10:08:56",
+    "userId": "staff",
+    "userName": "접속자",
+    "role": "직원/방문자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793149517284-488",
     "timestamp": "2026-10-28 10:05:17",
     "userId": "admin_fms",

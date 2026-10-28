@@ -316,28 +316,12 @@ export default function StatsCards({
                 {selectedDepartment}
               </span>
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                if (onBudgetChange) {
-                  const target = selectedBudget === selectedBudgetItem ? '' : selectedBudgetItem;
-                  onBudgetChange(target);
-                }
-              }}
-              className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border transition cursor-pointer flex items-center gap-1 shadow-2xs ${
-                selectedBudget === selectedBudgetItem
-                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs ring-2 ring-indigo-200'
-                  : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100 hover:border-indigo-300'
-              }`}
-              title={
-                selectedBudget === selectedBudgetItem
-                  ? `현재 하단 스프레드시트가 [${selectedBudgetItem}] 필터링 상태입니다 (클릭 시 전체 표시)`
-                  : `클릭 시 하단 스프레드시트 행 필터를 [${selectedBudgetItem}]으로 선택합니다`
-              }
+            <span 
+              className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200"
+              title="현재 선택된 예산종목 기준 집계"
             >
-              {selectedBudget === selectedBudgetItem && <Check className="w-2.5 h-2.5 stroke-[3]" />}
-              <span>{selectedBudgetItem === 'ALL' ? '전체 종목' : selectedBudgetItem}</span>
-            </button>
+              {selectedBudgetItem === 'ALL' ? '전체 종목' : selectedBudgetItem}
+            </span>
           </div>
 
           <div className="flex items-baseline gap-2">
