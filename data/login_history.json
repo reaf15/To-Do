@@ -1,5 +1,29 @@
 [
   {
+    "id": "LOG-1793149308001-520",
+    "timestamp": "2026-10-28 10:01:48",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [옥외 벤치] quoteAmount = 1440000",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149304313-653",
+    "timestamp": "2026-10-28 10:01:44",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [옥외 벤치] estimatedCost = 1440000",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793149253574-797",
     "timestamp": "2026-10-28 10:00:53",
     "userId": "admin_fms",

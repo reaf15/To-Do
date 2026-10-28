@@ -311,13 +311,13 @@
     "facility": "남양주센터",
     "location": "",
     "title": "옥외 벤치",
-    "estimatedCost": null,
+    "estimatedCost": 1440000,
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "검토",
     "startDate": "",
     "endDate": "",
-    "quoteAmount": null,
+    "quoteAmount": 1440000,
     "contractAmount": null,
     "vendor": "",
     "memo": "",
@@ -354,6 +354,16 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "진행 상태를 [검토](으)로 변경"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[estimatedCost] 직접 수정: 1,440,000원"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[quoteAmount] 직접 수정: 1,440,000원"
       }
     ]
   },
