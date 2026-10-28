@@ -247,7 +247,7 @@
     },
     {
       "id": "fac-1792468136970-9uagl",
-      "department": "남양주체육문화센터",
+      "department": "남��주체육문화센터",
       "name": "축구장B",
       "fullName": "남양주체육문화센터 야외 축구장 B구장",
       "category": "야외체육시설",
@@ -366,7 +366,7 @@
         "1번 코트",
         "2번 코트",
         "3번 코트",
-        "안전 펜��망",
+        "안전 펜���망",
         "야간 조명",
         "휴게 벤치"
       ],
@@ -783,6 +783,30 @@
       "floorCount": "지하 1층 / 지상 3층",
       "buildingArea": "4797㎡",
       "totalFloorArea": "9397㎡"
+    },
+    {
+      "id": "fac-1793150661309-v2sw3",
+      "department": "남양주시청소년수련관",
+      "name": "남양주시청년창업센터",
+      "fullName": "남양주시청년창업센터",
+      "category": "일반관리시설",
+      "location": "경기도 남양주시 평내동 660-1",
+      "completionDate": "2021. 5. 14.",
+      "landArea": "495",
+      "facilityArea": "",
+      "floorCount": "지하1층, 지상5층",
+      "buildingArea": "234",
+      "totalFloorArea": "1345",
+      "scale": "지하1층, 지상5층 (대지 495, 연면적 1345)",
+      "majorFacilities": "",
+      "manager": "청년창업센터 담당",
+      "contact": "031-560-1493",
+      "zones": [
+        "본관",
+        "부대시설",
+        "주차장"
+      ],
+      "description": ""
     }
   ]
 }
