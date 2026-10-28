@@ -4,11 +4,43 @@
     "budget": "시설비(파크골프장)",
     "facility": "파크골프",
     "location": "",
+    "title": "잔디 시비",
+    "estimatedCost": null,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "완료",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": 4564560,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793149227566",
+    "logs": [
+      {
+        "date": "2026-10-28",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "진행 상태를 [완료](으)로 변경"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
+    "budget": "시설비(파크골프장)",
+    "facility": "파크골프",
+    "location": "",
     "title": "조경유지관리 공사",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "검토",
+    "status": "완료",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -23,6 +55,11 @@
         "date": "2026-10-28",
         "author": "김일호",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
   },
@@ -240,7 +277,7 @@
     "estimatedCost": 3000000,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "검토",
+    "status": "진행",
     "startDate": "",
     "endDate": "",
     "quoteAmount": 4593000,
@@ -260,6 +297,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[contractAmount] 직접 수정: 4,000,000원"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "진행 상태를 [진행](으)로 변경"
       }
     ]
   },
@@ -272,7 +314,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "설계",
+    "status": "검토",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -307,6 +349,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[quoteAmount] 직접 수정: 삭제"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "진행 상태를 [검토](으)로 변경"
       }
     ]
   },
