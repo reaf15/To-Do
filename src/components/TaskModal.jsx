@@ -146,27 +146,94 @@ export default function TaskModal({
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
   const [selectedPreviewPhoto, setSelectedPreviewPhoto] = useState(null);
 
   const docInputRef = useRef(null);
   const [isUploadingDoc, setIsUploadingDoc] = useState(false);
 
-  const handlePhotoUpload = async (e) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
+  // Core helper to process, resize and add photo files
+  const processImageFiles = async (files) => {
+    if (!files || files.length === 0) return;
     setIsUploadingPhoto(true);
     try {
       const promises = files.map(file => compressImageFile(file));
       const newPhotos = (await Promise.all(promises)).filter(Boolean);
-      setFormData(prev => ({
-        ...prev,
-        photos: [...(prev.photos || []), ...newPhotos]
-      }));
+      if (newPhotos.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          photos: [...(prev.photos || []), ...newPhotos]
+        }));
+      }
     } catch (err) {
       console.error('Photo processing error:', err);
     } finally {
       setIsUploadingPhoto(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handlePhotoUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    await processImageFiles(files);
+  };
+
+  // Clipboard paste listener: allows Ctrl+V to paste captured screenshots or copied images
+  useEffect(() => {
+    if (!isOpen || isReadOnly) return;
+
+    const handleWindowPaste = async (e) => {
+      const clipboardData = e.clipboardData;
+      if (!clipboardData) return;
+
+      const items = clipboardData.items;
+      if (!items || items.length === 0) return;
+
+      const imageFiles = [];
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.type && item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) {
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
+            const namedFile = new File(
+              [file], 
+              file.name && file.name !== 'image.png' ? file.name : `캡처사진_${now.toISOString().split('T')[0]}_${timeStr}.jpg`,
+              { type: file.type || 'image/jpeg' }
+            );
+            imageFiles.push(namedFile);
+          }
+        }
+      }
+
+      if (imageFiles.length > 0) {
+        e.preventDefault();
+        await processImageFiles(imageFiles);
+      }
+    };
+
+    window.addEventListener('paste', handleWindowPaste);
+    return () => window.removeEventListener('paste', handleWindowPaste);
+  }, [isOpen, isReadOnly]);
+
+  const handlePhotoDragOver = (e) => {
+    e.preventDefault();
+    if (!isReadOnly) setIsDraggingPhoto(true);
+  };
+
+  const handlePhotoDragLeave = () => {
+    setIsDraggingPhoto(false);
+  };
+
+  const handlePhotoDrop = async (e) => {
+    e.preventDefault();
+    setIsDraggingPhoto(false);
+    if (isReadOnly) return;
+
+    const droppedFiles = Array.from(e.dataTransfer?.files || []).filter(f => f.type && f.type.startsWith('image/'));
+    if (droppedFiles.length > 0) {
+      await processImageFiles(droppedFiles);
     }
   };
 
@@ -698,17 +765,31 @@ export default function TaskModal({
           </div>
 
           {/* Row 7.5: Photos / Site Images Section */}
-          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+          <div 
+            onDragOver={handlePhotoDragOver}
+            onDragLeave={handlePhotoDragLeave}
+            onDrop={handlePhotoDrop}
+            className={`p-3.5 rounded-xl border transition space-y-2.5 ${
+              isDraggingPhoto 
+                ? 'bg-teal-50/70 border-teal-500 ring-2 ring-teal-200' 
+                : 'bg-slate-50 border-slate-200'
+            }`}
+          >
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 font-bold text-slate-800">
+              <div className="flex items-center gap-1.5 font-bold text-slate-800 flex-wrap">
                 <Camera className="w-4 h-4 text-teal-600" />
                 <span>현장 및 공사 사진</span>
                 <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
                   {(formData.photos || []).length}장
                 </span>
+                {!isReadOnly && (
+                  <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold text-teal-700 bg-white px-2 py-0.5 rounded-md border border-teal-200 shadow-2xs" title="화면 캡처 후 키보드 Ctrl+V를 누르면 바로 사진이 첨부됩니다">
+                    <kbd className="font-black text-[9px] bg-teal-50 px-1 py-0.2 rounded border border-teal-300">Ctrl + V</kbd> 붙여넣기 지원
+                  </span>
+                )}
               </div>
               {!isReadOnly && (
-                <div>
+                <div className="flex items-center gap-1.5">
                   <input
                     type="file"
                     accept="image/*"
@@ -775,15 +856,41 @@ export default function TaskModal({
                     </div>
                   );
                 })}
+
+                {/* Additional Tile in Grid for quick add & Ctrl+V hint */}
+                {!isReadOnly && (
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="rounded-xl border border-dashed border-slate-300 hover:border-teal-400 bg-white hover:bg-teal-50/40 transition aspect-4/3 flex flex-col items-center justify-center gap-1 cursor-pointer text-slate-400 hover:text-teal-700 shadow-2xs group"
+                    title="클릭하여 사진 추가 또는 화면 캡처 후 Ctrl+V 로 바로 붙여넣기"
+                  >
+                    <Plus className="w-5 h-5 text-teal-600 group-hover:scale-110 transition" />
+                    <span className="text-[11px] font-bold text-slate-600">사진 추가</span>
+                    <span className="text-[9px] text-teal-700 font-extrabold bg-teal-50 px-1.5 py-0.5 rounded border border-teal-200 shadow-2xs">
+                      Ctrl + V 붙여넣기
+                    </span>
+                  </div>
+                )}
               </div>
             ) : !isReadOnly ? (
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="py-4 px-3 border border-dashed border-slate-300 hover:border-teal-400 bg-white hover:bg-teal-50/30 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-teal-700"
+                className={`py-4 px-3 border border-dashed rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5 ${
+                  isDraggingPhoto
+                    ? 'border-teal-500 bg-teal-50 text-teal-800 ring-2 ring-teal-200'
+                    : 'border-slate-300 hover:border-teal-400 bg-white hover:bg-teal-50/30 text-slate-500 hover:text-teal-700'
+                }`}
+                title="클릭하여 사진 파일 선택 또는 화면 캡처 후 Ctrl+V로 바로 붙여넣기"
               >
-                <Upload className="w-5 h-5 text-slate-400 group-hover:text-teal-600" />
-                <span className="text-xs font-semibold">클릭하여 공사 전/후 현장 사진을 첨부하세요</span>
-                <span className="text-[10px] text-slate-400">스마트폰 사진, 캡처 이미지 등 여러 장 선택 가능 (시트 미반영)</span>
+                <div className="flex items-center gap-2">
+                  <Upload className="w-5 h-5 text-teal-600" />
+                  <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    클릭하여 사진 선택 또는 <kbd className="px-1.5 py-0.5 text-[11px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200 rounded shadow-2xs">Ctrl + V</kbd> 로 바로 붙여넣기
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-400">
+                  화면 캡처 이미지(클립보드) 즉시 붙여넣기, 스마트폰 사진 여러 장 선택 및 드래그 앤 드롭 지원
+                </span>
               </div>
             ) : (
               <div className="py-3 px-3 text-center text-xs text-slate-400 bg-white rounded-xl border border-dashed border-slate-200">
