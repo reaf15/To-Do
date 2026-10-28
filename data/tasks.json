@@ -9,8 +9,8 @@
     "estimatedCostNote": "",
     "manager": "이규찬",
     "status": "완료",
-    "startDate": "",
-    "endDate": "",
+    "startDate": "2026-01-26",
+    "endDate": "2026-01-30",
     "quoteAmount": 5060000,
     "contractAmount": 4730000,
     "vendor": "윌크디자인",
@@ -145,7 +145,7 @@
       {
         "date": "2026-10-27",
         "author": "대리 김수관",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 업�� 등록"
       },
       {
         "date": "2026-10-27",
@@ -395,7 +395,7 @@
       {
         "date": "2026-10-28",
         "author": "관리자",
-        "message": "[estimatedCost] 직접 수정: 1,440,000원"
+        "message": "[estimatedCost] 직접 수��: 1,440,000원"
       },
       {
         "date": "2026-10-28",
@@ -799,7 +799,7 @@
     "logs": [
       {
         "date": "2026-10-22",
-        "author": "시스템",
+        "author": "시스��",
         "message": "신규 공사 업무 등록"
       },
       {
@@ -958,7 +958,7 @@
       },
       {
         "date": "2026-10-28",
-        "author": "관리자",
+        "author": "���리자",
         "message": "[vendor] 직접 수정: 삼현"
       }
     ]
@@ -1524,7 +1524,7 @@
   {
     "department": "남���주체육문화센터",
     "budget": "보류",
-    "facility": "남양주센터",
+    "facility": "남��주센터",
     "location": "3층 로비",
     "title": "체육관 3층 로비 난간 증설 공사(1.2m 까지)",
     "estimatedCost": null,
@@ -1905,7 +1905,7 @@
       {
         "date": "2026-10-11",
         "author": "권병학",
-        "message": "다산센터 ���장 분전반 여유 용량 확인"
+        "message": "다산센터 ���장 분전반 여�� 용량 확인"
       }
     ]
   },
@@ -2035,7 +2035,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "우천 시 진흙탕 방����� 위한 25mm 쇄석 골재 50톤 포�� 및 다짐",
+    "memo": "우천 시 진흙탕 방����� 위한 25mm 쇄�� 골재 50톤 포�� 및 다짐",
     "id": "TASK-28",
     "logs": []
   },
@@ -2288,7 +2288,7 @@
   {
     "department": "평내체육문화센터",
     "budget": "수선유지비",
-    "facility": "평내체육문화센터",
+    "facility": "평내체��문화센터",
     "location": "옥상 실외기실",
     "title": "다목적실 시스템에어컨 실외기 ��� 모터 ��체",
     "estimatedCost": 3800000,
