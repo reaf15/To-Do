@@ -779,12 +779,14 @@
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "완료",
-    "startDate": "",
+    "startDate": "2026-11-04",
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 4000000,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
     "id": "TASK-1792655321808",
     "logs": [
       {
