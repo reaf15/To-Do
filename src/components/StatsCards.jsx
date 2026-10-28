@@ -337,11 +337,6 @@ export default function StatsCards({
             >
               {selectedBudget === selectedBudgetItem && <Check className="w-2.5 h-2.5 stroke-[3]" />}
               <span>{selectedBudgetItem === 'ALL' ? '전체 종목' : selectedBudgetItem}</span>
-              <span className={`text-[9px] font-semibold px-1 rounded ${
-                selectedBudget === selectedBudgetItem ? 'bg-indigo-700 text-indigo-100' : 'bg-white/80 text-indigo-600'
-              }`}>
-                {selectedBudget === selectedBudgetItem ? '필터중' : '행필터 선택'}
-              </span>
             </button>
           </div>
 

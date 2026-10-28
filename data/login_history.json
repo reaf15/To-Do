@@ -1,5 +1,65 @@
 [
   {
+    "id": "LOG-1793149517284-488",
+    "timestamp": "2026-10-28 10:05:17",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "오남체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149513020-547",
+    "timestamp": "2026-10-28 10:05:13",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "화도체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [오남체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149484833-991",
+    "timestamp": "2026-10-28 10:04:44",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "오남체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [화도체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149476738-661",
+    "timestamp": "2026-10-28 10:04:36",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "호평체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [오남체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793149460412-629",
+    "timestamp": "2026-10-28 10:04:20",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [호평체육문화센터]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793149409640-390",
     "timestamp": "2026-10-28 10:03:29",
     "userId": "admin_fms",
