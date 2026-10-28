@@ -243,7 +243,7 @@
     "status": "설계",
     "startDate": "",
     "endDate": "",
-    "quoteAmount": 4000000,
+    "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
     "memo": "",
@@ -270,6 +270,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[quoteAmount] 직접 수정: 4,000,000원"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[quoteAmount] 직접 수정: 삭제"
       }
     ]
   },
