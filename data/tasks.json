@@ -532,7 +532,7 @@
   {
     "department": "남양주체육문화센터",
     "budget": "시설비(야구장)",
-    "facility": "��인야구장",
+    "facility": "성인야구장",
     "location": "",
     "title": "관급자재 조달구매(철근)",
     "estimatedCost": null,
@@ -561,6 +561,11 @@
         "date": "2026-10-22",
         "author": "관리자",
         "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[facility] 직접 수정: 성인야구장"
       }
     ]
   },
