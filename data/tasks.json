@@ -822,7 +822,7 @@
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
-    "title": "조경���사(최초)",
+    "title": "조경공사(최초)",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -833,6 +833,8 @@
     "contractAmount": 86200990,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
     "id": "TASK-1792655730273",
     "logs": [
       {
