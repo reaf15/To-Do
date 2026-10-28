@@ -234,17 +234,19 @@
     "budget": "시설비(파크골프장)",
     "facility": "남양주센터",
     "location": "",
-    "title": "옥외용벤치 구���",
+    "title": "그물망 교체 공사",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
     "status": "설계",
     "startDate": "",
     "endDate": "",
-    "quoteAmount": 1440000,
+    "quoteAmount": 4000000,
     "contractAmount": null,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
     "id": "TASK-1792731319838",
     "logs": [
       {
@@ -261,6 +263,11 @@
         "date": "2026-10-23",
         "author": "관리자",
         "message": "진행 상태를 [설계](으)로 변경"
+      },
+      {
+        "date": "2026-10-28",
+        "author": "관리자",
+        "message": "[quoteAmount] 직접 수정: 4,000,000원"
       }
     ]
   },
