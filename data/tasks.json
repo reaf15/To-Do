@@ -805,7 +805,7 @@
       },
       {
         "date": "2026-10-22",
-        "author": "��리자",
+        "author": "���리자",
         "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
@@ -1563,7 +1563,7 @@
     "budget": "시설비(야구장)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
-    "title": "성인��구장 관람석 보수",
+    "title": "성인야구장 관람석 보수",
     "estimatedCost": 13900000,
     "estimatedCostNote": "",
     "manager": "권병학",
@@ -1575,6 +1575,7 @@
     "vendor": "",
     "memo": "관람석 의자 균열 및 페인트 박리 보수",
     "photos": [],
+    "documents": [],
     "id": "TASK-17",
     "logs": [
       {
