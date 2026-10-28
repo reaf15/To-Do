@@ -203,6 +203,9 @@ function InlineTextInput({ value, onSave, placeholder = '-', className = '', rea
 
 export default function TableView({
   tasks,
+  allTasks = [],
+  selectedBudget = '',
+  onBudgetChange,
   onSelectTask,
   onEditTask,
   onDeleteTask,
@@ -242,7 +245,7 @@ export default function TableView({
 
   // Row filters state (budget is single-select, statuses is multi-select)
   const INITIAL_ROW_FILTERS = {
-    budget: '',
+    budget: selectedBudget || '',
     statuses: [],
     facility: '',
     location: '',
@@ -257,11 +260,21 @@ export default function TableView({
   const [rowFilters, setRowFilters] = useState(INITIAL_ROW_FILTERS);
   const [isFilterRowVisible, setIsFilterRowVisible] = useState(true);
 
+  // Keep rowFilters.budget in sync with external selectedBudget
+  useEffect(() => {
+    if (selectedBudget !== undefined) {
+      setRowFilters((prev) => (prev.budget === selectedBudget ? prev : { ...prev, budget: selectedBudget || '' }));
+    }
+  }, [selectedBudget]);
+
   // Unique options extracted dynamically from department budgets, facilities & tasks
-  const uniqueBudgets = useMemo(
-    () => Array.from(new Set([...(Array.isArray(budgetCategories) ? budgetCategories.filter(Boolean) : []), ...tasks.map(t => t.budget).filter(Boolean)])),
-    [budgetCategories, tasks]
-  );
+  const uniqueBudgets = useMemo(() => {
+    const pool = Array.isArray(allTasks) && allTasks.length > 0 ? allTasks : tasks;
+    return Array.from(new Set([
+      ...(Array.isArray(budgetCategories) ? budgetCategories.filter(Boolean) : []),
+      ...pool.map(t => t.budget).filter(Boolean)
+    ]));
+  }, [budgetCategories, allTasks, tasks]);
   const uniqueFacilities = useMemo(
     () => Array.from(new Set([...(Array.isArray(facilities) ? facilities.filter(Boolean) : []), ...tasks.map(t => t.facility).filter(Boolean)])),
     [facilities, tasks]
@@ -354,14 +367,21 @@ export default function TableView({
   // Reset all row filters
   const handleResetRowFilters = () => {
     setRowFilters(INITIAL_ROW_FILTERS);
+    if (onBudgetChange) {
+      onBudgetChange('');
+    }
   };
 
   // Single-select toggle for Budget item (중복 없이 1개만 선택, 재클릭 시 해제)
   const handleToggleBudgetFilter = (budgetItem) => {
+    const nextVal = rowFilters.budget === budgetItem ? '' : budgetItem;
     setRowFilters((prev) => ({
       ...prev,
-      budget: prev.budget === budgetItem ? '' : budgetItem
+      budget: nextVal
     }));
+    if (onBudgetChange) {
+      onBudgetChange(nextVal);
+    }
   };
 
   // Multi-select toggle for Status item
@@ -634,13 +654,13 @@ export default function TableView({
             <button
               type="button"
               onClick={handleResetRowFilters}
-              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition border ${
-                activeRowFilterCount === 0
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition border cursor-pointer ${
+                activeRowFilterCount === 0 && !rowFilters.budget
                   ? 'bg-slate-800 text-white border-slate-800 shadow-xs'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
               }`}
             >
-              전체 ({tasks.length})
+              전체 ({Array.isArray(allTasks) && allTasks.length > 0 ? allTasks.length : tasks.length})
             </button>
 
             <span className="text-slate-300 mx-0.5">|</span>
@@ -651,7 +671,8 @@ export default function TableView({
             </span>
             {uniqueBudgets.map((b) => {
               const isSelected = rowFilters.budget === b;
-              const count = tasks.filter((t) => t.budget === b).length;
+              const pool = Array.isArray(allTasks) && allTasks.length > 0 ? allTasks : tasks;
+              const count = pool.filter((t) => t.budget === b).length;
               return (
                 <button
                   key={b}
@@ -659,7 +680,7 @@ export default function TableView({
                   onClick={() => handleToggleBudgetFilter(b)}
                   className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition border cursor-pointer ${
                     isSelected
-                      ? 'bg-cyan-600 text-white border-cyan-600 shadow-xs'
+                      ? 'bg-cyan-600 text-white border-cyan-600 shadow-xs ring-2 ring-cyan-200'
                       : 'bg-cyan-50/60 hover:bg-cyan-100 text-cyan-900 border-cyan-200'
                   }`}
                   title={`예산 [${b}] 선택 (클릭 시 선택, 재클릭 시 전체)`}
@@ -957,7 +978,13 @@ export default function TableView({
                     <th scope="col" className="py-1.5 px-2 font-normal">
                       <select
                         value={rowFilters.budget}
-                        onChange={(e) => setRowFilters({ ...rowFilters, budget: e.target.value })}
+                        onChange={(e) => {
+                          const nextVal = e.target.value;
+                          setRowFilters({ ...rowFilters, budget: nextVal });
+                          if (onBudgetChange) {
+                            onBudgetChange(nextVal);
+                          }
+                        }}
                         className={`w-full text-[11px] px-1.5 py-1 rounded border transition font-medium focus:outline-none focus:ring-1 focus:ring-teal-500 ${
                           rowFilters.budget ? 'border-teal-500 bg-teal-50 text-teal-900 font-bold' : 'border-slate-300 bg-white text-slate-700'
                         }`}

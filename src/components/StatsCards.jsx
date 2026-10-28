@@ -19,6 +19,8 @@ export default function StatsCards({
   onFilterClick,
   onStatusFilterClick,
   selectedStatus = '',
+  selectedBudget = '',
+  onBudgetChange,
   selectedDepartment = '남양주체육문화센터',
   budgets = {},
   allBudgets = {},
@@ -35,18 +37,20 @@ export default function StatsCards({
   
   // State: selected budget item for Card 2 (예산금액) & Card 3 (집행예정 및 잔여예산) - NO 'ALL' (전체예산 합계 없음)
   const [selectedBudgetItem, setSelectedBudgetItem] = useState(() => {
-    return budgetCategories[0] || '수선유지비';
+    return selectedBudget || budgetCategories[0] || '수선유지비';
   });
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const [inlineValue, setInlineValue] = useState('');
 
-  // Sync selected budget item if department or categories change
+  // Sync selected budget item if department, categories, or selectedBudget changes
   React.useEffect(() => {
-    if (!budgetCategories.includes(selectedBudgetItem)) {
+    if (selectedBudget && budgetCategories.includes(selectedBudget)) {
+      setSelectedBudgetItem(selectedBudget);
+    } else if (!budgetCategories.includes(selectedBudgetItem)) {
       setSelectedBudgetItem(budgetCategories[0] || '수선유지비');
     }
-  }, [budgetCategories, selectedBudgetItem]);
+  }, [selectedBudget, budgetCategories, selectedBudgetItem]);
 
   // Card 2: Allocated budget calculation strictly for selectedBudgetItem
   const allocatedBudget = Number(budgets?.[selectedBudgetItem]) || 0;
@@ -198,11 +202,15 @@ export default function StatsCards({
                 <select
                   value={selectedBudgetItem}
                   onChange={(e) => {
-                    setSelectedBudgetItem(e.target.value);
+                    const newVal = e.target.value;
+                    setSelectedBudgetItem(newVal);
                     setIsInlineEditing(false);
+                    if (onBudgetChange) {
+                      onBudgetChange(newVal);
+                    }
                   }}
                   className="text-[11px] font-bold bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-                  title="조회할 예산종목을 선택하세요"
+                  title="조회할 예산종목을 선택하세요 (하단 스프레드시트 행 필터 즉시 연동)"
                 >
                   {budgetCategories.map((cat) => (
                     <option key={cat} value={cat}>
@@ -211,9 +219,23 @@ export default function StatsCards({
                   ))}
                 </select>
               ) : (
-                <span className="text-[11px] font-black bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-2.5 py-1 shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onBudgetChange) {
+                      const target = selectedBudget === selectedBudgetItem ? '' : selectedBudgetItem;
+                      onBudgetChange(target);
+                    }
+                  }}
+                  className={`text-[11px] font-black border rounded-lg px-2.5 py-1 shadow-2xs cursor-pointer transition ${
+                    selectedBudget === selectedBudgetItem
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                      : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
+                  }`}
+                  title={`클릭 시 하단 스프레드시트 행 필터 [${selectedBudgetItem}] 선택/해제`}
+                >
                   {selectedBudgetItem}
-                </span>
+                </button>
               )}
 
               <button
@@ -294,12 +316,33 @@ export default function StatsCards({
                 {selectedDepartment}
               </span>
             </div>
-            <span 
-              className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200"
-              title="현재 선택된 예산종목 기준 집계"
+            <button
+              type="button"
+              onClick={() => {
+                if (onBudgetChange) {
+                  const target = selectedBudget === selectedBudgetItem ? '' : selectedBudgetItem;
+                  onBudgetChange(target);
+                }
+              }}
+              className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border transition cursor-pointer flex items-center gap-1 shadow-2xs ${
+                selectedBudget === selectedBudgetItem
+                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs ring-2 ring-indigo-200'
+                  : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100 hover:border-indigo-300'
+              }`}
+              title={
+                selectedBudget === selectedBudgetItem
+                  ? `현재 하단 스프레드시트가 [${selectedBudgetItem}] 필터링 상태입니다 (클릭 시 전체 표시)`
+                  : `클릭 시 하단 스프레드시트 행 필터를 [${selectedBudgetItem}]으로 선택합니다`
+              }
             >
-              {selectedBudgetItem === 'ALL' ? '전체 종목' : selectedBudgetItem}
-            </span>
+              {selectedBudget === selectedBudgetItem && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+              <span>{selectedBudgetItem === 'ALL' ? '전체 종목' : selectedBudgetItem}</span>
+              <span className={`text-[9px] font-semibold px-1 rounded ${
+                selectedBudget === selectedBudgetItem ? 'bg-indigo-700 text-indigo-100' : 'bg-white/80 text-indigo-600'
+              }`}>
+                {selectedBudget === selectedBudgetItem ? '필터중' : '행필터 선택'}
+              </span>
+            </button>
           </div>
 
           <div className="flex items-baseline gap-2">

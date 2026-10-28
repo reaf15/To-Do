@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>남양주도시공사 시설·공사업무 시스템 스마트 접속</title>
+  <title>남양주도시공사 시설물종합관리시스템 스마트 접속</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -100,21 +100,21 @@
   <div class="card">
     <div class="badge">스마트 자동 감지 시스템</div>
     <div class="spinner" id="loader"></div>
-    <h2>시설·공사업무 관리 시스템</h2>
+    <h2>시설물종합관리시스템</h2>
     <div id="status">사내 메인 PC 서버 상태 확인 중...</div>
 
     <div id="manual-buttons" style="border-top: 1px solid #334155; padding-top: 1.25rem; margin-top: 0.5rem;">
       <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.75rem;">원하는 서버로 바로 이동:</p>
       <div class="buttons">
         <a href="http://192.168.101.96:5173" class="btn btn-primary">🏠 내 PC (메인)</a>
-        <a href="https://ncuc-fms.onrender.com/" class="btn btn-secondary">☁️ Render (클라우드)</a>
+        <a href="https://to-do-hxmd.onrender.com/" class="btn btn-secondary">☁️ Render (클라우드)</a>
       </div>
     </div>
   </div>
 
   <script>
     const LOCAL_URL = 'http://192.168.101.96:5173';
-    const RENDER_URL = 'https://ncuc-fms.onrender.com/';
+    const RENDER_URL = 'https://to-do-hxmd.onrender.com/';
     const statusEl = document.getElementById('status');
     const loaderEl = document.getElementById('loader');
 
