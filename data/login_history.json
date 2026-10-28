@@ -1,5 +1,77 @@
 [
   {
+    "id": "LOG-1793152625229-927",
+    "timestamp": "2026-10-28 10:57:05",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "어린이비전센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793152610065-812",
+    "timestamp": "2026-10-28 10:56:50",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "주차시설부",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [어린이비전센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793152601504-575",
+    "timestamp": "2026-10-28 10:56:41",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "별내커뮤니티센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [주차시설부]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793152589074-941",
+    "timestamp": "2026-10-28 10:56:29",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [별내커뮤니티센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793152502096-196",
+    "timestamp": "2026-10-28 10:55:02",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주시청소년수련관",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주체육문화센터]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793152474983-796",
+    "timestamp": "2026-10-28 10:54:34",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사이드바 조직도 이동: [남양주시청소년수련관]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793151883798-896",
     "timestamp": "2026-10-28 10:44:43",
     "userId": "admin_fms",

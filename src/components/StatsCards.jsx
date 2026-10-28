@@ -191,9 +191,6 @@ export default function StatsCards({
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 예산금액
               </span>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                {selectedDepartment}
-              </span>
             </div>
 
             {/* 예산종목 선택 (부서별 과목, 전체예산 합계 없음) */}
@@ -311,9 +308,6 @@ export default function StatsCards({
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 집행예정 및 잔여예산
-              </span>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                {selectedDepartment}
               </span>
             </div>
             <span 
