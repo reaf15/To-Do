@@ -206,7 +206,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비(파크���프장)",
+    "budget": "시설비(파크골프장)",
     "facility": "남양주센터",
     "location": "",
     "title": "그물망 교체",
@@ -220,6 +220,8 @@
     "contractAmount": null,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
     "id": "TASK-1792731673878",
     "logs": [
       {
