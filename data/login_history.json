@@ -1,5 +1,29 @@
 [
   {
+    "id": "LOG-1793148740350-949",
+    "timestamp": "2026-10-28 09:52:20",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [성인��구장 관람석 보수] budget = 시설비(야구장)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793148706537-7",
+    "timestamp": "2026-10-28 09:51:46",
+    "userId": "staff",
+    "userName": "접속자",
+    "role": "직원/방문자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793148235820-492",
     "timestamp": "2026-10-28 09:43:55",
     "userId": "admin_fms",
