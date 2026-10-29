@@ -1,32 +1,5 @@
 [
   {
-    "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
-    "facility": "리틀야구장",
-    "location": "바닥 꺼짐(외야)",
-    "title": "외야 바닥 침하 보수",
-    "estimatedCost": 3000000,
-    "estimatedCostNote": "",
-    "manager": "",
-    "status": "검토",
-    "startDate": "",
-    "endDate": "",
-    "quoteAmount": null,
-    "contractAmount": null,
-    "vendor": "",
-    "memo": "",
-    "photos": [],
-    "documents": [],
-    "id": "TASK-1793237659491",
-    "logs": [
-      {
-        "date": "2026-10-29",
-        "author": "시스템",
-        "message": "신규 공사 업무 등록"
-      }
-    ]
-  },
-  {
     "department": "남양주시청소년수련관",
     "budget": "수선유지비(운영)",
     "facility": "남양주시청소년수련관",
@@ -61,7 +34,7 @@
     "title": "잔디 시비",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -87,11 +60,6 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[vendor] 직접 수정: 하나건설"
-      },
-      {
-        "date": "2026-10-29",
-        "author": "김일호",
-        "message": "담당자를 [김일호](으)로 지정"
       }
     ]
   },
@@ -124,11 +92,6 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "진행 상태를 [완료](으)로 변경"
-      },
-      {
-        "date": "2026-10-29",
-        "author": "김일호",
-        "message": "담당자를 [김일호](으)로 지정"
       }
     ]
   },
@@ -182,7 +145,7 @@
       {
         "date": "2026-10-27",
         "author": "대리 김수관",
-        "message": "신규 공사 업��� 등록"
+        "message": "신규 공사 업�� 등록"
       },
       {
         "date": "2026-10-27",
@@ -240,7 +203,7 @@
     "estimatedCost": 50000,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "���토",
+    "status": "검토",
     "startDate": "2026-10-21",
     "endDate": "2026-10-21",
     "quoteAmount": null,
@@ -304,7 +267,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
     "title": "야외공연장 주차장 ��타리 조달 구매 설치",
@@ -318,8 +281,6 @@
     "contractAmount": 3420000,
     "vendor": "",
     "memo": "",
-    "photos": [],
-    "documents": [],
     "id": "TASK-1792738481308",
     "logs": [
       {
@@ -384,7 +345,7 @@
   {
     "department": "남양주체육문화센터",
     "budget": "시설비(파크골프장)",
-    "facility": "파크골프",
+    "facility": "남양주센터",
     "location": "",
     "title": "옥외 벤치",
     "estimatedCost": 1440000,
@@ -440,21 +401,6 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[quoteAmount] 직접 수정: 1,440,000원"
-      },
-      {
-        "date": "2026-10-29",
-        "author": "김일호",
-        "message": "[budget] 직접 수정: 보류"
-      },
-      {
-        "date": "2026-10-29",
-        "author": "김일호",
-        "message": "[facility] 직접 수정: 파크골프"
-      },
-      {
-        "date": "2026-10-29",
-        "author": "김일호",
-        "message": "[budget] 직접 수정: 시설비(파크골프장)"
       }
     ]
   },
@@ -683,7 +629,7 @@
       },
       {
         "date": "2026-10-22",
-        "author": "관���자",
+        "author": "관리자",
         "message": "담당자를 [김일호](으)�� 지정"
       },
       {
@@ -931,7 +877,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "진행 ���태를 [공사진행](으)로 변경"
+        "message": "진행 상태를 [공사진행](으)로 변경"
       }
     ]
   },
@@ -944,7 +890,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "진행",
+    "status": "완료",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -977,11 +923,6 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[vendor] 직접 수정: 하나건설"
-      },
-      {
-        "date": "2026-10-29",
-        "author": "김일호",
-        "message": "진행 상태를 [진행](으)로 변경"
       }
     ]
   },
@@ -1074,7 +1015,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "전체시설",
     "title": "통신설비유지관리 성능점검",
@@ -1134,7 +1075,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "방송실",
     "title": "천장 보수공사",
@@ -1159,7 +1100,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "삼패야구장",
     "title": "삼패 풋살구장 조명교체공사",
@@ -1274,7 +1215,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "파크골프",
     "location": "다목적잔디광장",
     "title": "그늘막 원단 교체",
@@ -1376,7 +1317,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "",
     "title": "화단 통행로 이동",
@@ -1455,7 +1396,7 @@
     "department": "남양주체육������센터"
   },
   {
-    "department": "남양주체육���화��터",
+    "department": "남양주체육���화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "청수관 교차로",
@@ -1486,7 +1427,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 그물망 및 주루베이스 교체",
@@ -1511,7 +1452,7 @@
   },
   {
     "id": "TASK-06",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "3층 방송실",
     "title": "방송실 천정재 설치",
@@ -1595,7 +1536,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "추락 방지 안전기준 1.2m 상향에 따른 ���간 증설",
+    "memo": "추락 방지 안전기준 1.2m 상향에 따른 난간 증설",
     "id": "TASK-09",
     "logs": []
   },
@@ -1626,7 +1567,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "A구장 데크 계단",
     "title": "데크 계단 철거",
@@ -1639,7 +1580,7 @@
     "quoteAmount": 2255000,
     "contractAmount": null,
     "vendor": "고려안전",
-    "memo": "노후 부식 데크 계단 ��거 및 안전통로 확보 (견적 2,255,000원 접수)",
+    "memo": "노후 부식 데크 계단 철거 및 안전통로 확보 (견적 2,255,000원 접수)",
     "id": "TASK-11",
     "logs": [
       {
@@ -1651,14 +1592,14 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주��터",
     "location": "B,C 축구장",
     "title": "B,C축구장 와이어 파단 보수",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "��계",
+    "status": "설계",
     "startDate": "2026-10-03",
     "endDate": "2026-10-11",
     "quoteAmount": null,
@@ -1676,22 +1617,20 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "B,C 축구장",
-    "title": "관람석 데크 들뜸 보수, 다목적잔디광장 화장실 보수",
+    "title": "관람석 데크 들뜸 보수",
     "estimatedCost": 5000000,
     "estimatedCostNote": "다목적잔���광장 화장실 배관 공사 포함",
     "manager": "조현호",
     "status": "검토",
     "startDate": "2026-10-15",
     "endDate": "2026-10-15",
-    "quoteAmount": 2974000,
+    "quoteAmount": null,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "memo": "10월 15일 견적방문 (다목적잔디광장 화장실 ���관 공사 포함)",
-    "photos": [],
-    "documents": [],
     "id": "TASK-13",
     "logs": [
       {
@@ -1713,7 +1652,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
@@ -1747,31 +1686,30 @@
     ]
   },
   {
-    "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "id": "TASK-16",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장(성인)",
-    "title": "야구장 더그아웃 평탄화",
+    "title": "야��장 더그아웃 평탄화",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
     "status": "완료",
-    "startDate": "2026-10-11",
-    "endDate": "2026-10-23",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
+    "contact": "",
     "memo": "더그아웃 1루/3루 바닥 흙 다짐 ��� 평탄화 시공 완��",
-    "photos": [],
-    "documents": [],
-    "id": "TASK-16",
     "logs": [
       {
         "date": "2026-10-05",
         "author": "김일호",
         "message": "공사 시공 �� 바닥 레벨 검수 완료"
       }
-    ]
+    ],
+    "startDate": "2026-10-11",
+    "endDate": "2026-10-23",
+    "department": "남양주체육문화센터"
   },
   {
     "department": "남��주체육문화센터",
@@ -1844,7 +1782,7 @@
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "남양주센터",
-    "title": "정보통신유지관���자 성능점검",
+    "title": "정보통신유지관리자 성능점검",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "����현호",
@@ -1867,7 +1805,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "주차장 배면 옹벽",
     "title": "보강토 옹벽 보수",
@@ -1948,7 +1886,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "다산멀티",
     "location": "남녀 탈의실",
     "title": "다산멀티스포츠센터 탈의실 환풍기 설치 및 전기공사",
@@ -2058,7 +1996,7 @@
   },
   {
     "id": "TASK-27",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장, 장애인 체육관 전기 공사",
@@ -2084,7 +2022,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장 주차장 잡석 포설",
@@ -2103,7 +2041,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "장애인체육관",
     "title": "장애인체육관 민원 캐노피 설치",
@@ -2133,7 +2071,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "컨퍼런스 방풍비닐",
@@ -2158,7 +2096,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
+    "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "장애인체육관",
     "title": "장애인체육관 에어 컴프레서 설치",
@@ -2276,7 +2214,7 @@
     "department": "호��체육문화센터",
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
-    "location": "2�� 헬스장",
+    "location": "2층 헬스장",
     "title": "헬스장 프리웨���트존 ���무블��� 바닥 교체",
     "estimatedCost": 4800000,
     "estimatedCostNote": "",
@@ -2498,7 +2436,7 @@
     "budget": "수선유지비",
     "facility": "별내커뮤니티센터",
     "location": "수영장 풀장",
-    "title": "별내 수영장 오버풀 트렌치 ���레���� �����면 교체",
+    "title": "별내 수영장 오버풀 트렌치 그레���� �����면 교체",
     "estimatedCost": 8200000,
     "estimatedCostNote": "",
     "manager": "윤서준",
