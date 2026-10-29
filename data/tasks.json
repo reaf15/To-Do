@@ -61,7 +61,7 @@
     "title": "잔디 시비",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "",
+    "manager": "김일호",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -87,6 +87,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[vendor] 직접 수정: 하나건설"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "담당자를 [김일호](으)로 지정"
       }
     ]
   },
@@ -98,7 +103,7 @@
     "title": "조경유지관리 공사",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "���일호",
+    "manager": "김일호",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -119,6 +124,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "담당자를 [김일호](으)로 지정"
       }
     ]
   },
@@ -919,7 +929,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "완료",
+    "status": "진행",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -952,6 +962,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[vendor] 직접 수정: 하나건설"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "진행 상태를 [진행](으)로 변경"
       }
     ]
   },
