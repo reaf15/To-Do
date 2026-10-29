@@ -1,5 +1,32 @@
 [
   {
+    "department": "남양주체육문화센터",
+    "budget": "수선(운영)",
+    "facility": "리틀야구장",
+    "location": "바닥 꺼짐(외야)",
+    "title": "외야 바닥 침하 보수",
+    "estimatedCost": 3000000,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "검토",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793237659491",
+    "logs": [
+      {
+        "date": "2026-10-29",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
     "department": "남양주시청소년수련관",
     "budget": "수선유지비(운영)",
     "facility": "남양주시청소년수련관",
