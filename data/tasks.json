@@ -384,7 +384,7 @@
   {
     "department": "남양주체육문화센터",
     "budget": "시설비(파크골프장)",
-    "facility": "남양주센터",
+    "facility": "파크골프",
     "location": "",
     "title": "옥외 벤치",
     "estimatedCost": 1440000,
@@ -440,6 +440,21 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[quoteAmount] 직접 수정: 1,440,000원"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 보류"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "[facility] 직접 수정: 파크골프"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 시설비(파크골프장)"
       }
     ]
   },
@@ -1580,7 +1595,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "추락 방지 안전기준 1.2m 상향에 따른 난간 증설",
+    "memo": "추락 방지 안전기준 1.2m 상향에 따른 ���간 증설",
     "id": "TASK-09",
     "logs": []
   },

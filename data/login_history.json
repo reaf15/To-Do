@@ -1,5 +1,29 @@
 [
   {
+    "id": "LOG-1793238609520-353",
+    "timestamp": "2026-10-29 10:50:09",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [옥외 벤치] budget = 시설비(파크골프장)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793238598034-71",
+    "timestamp": "2026-10-29 10:49:58",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [옥외 벤치] facility = 파크골프",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793238469515-376",
     "timestamp": "2026-10-29 10:47:49",
     "userId": "kim_ilho",
