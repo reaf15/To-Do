@@ -799,7 +799,7 @@
     "logs": [
       {
         "date": "2026-10-22",
-        "author": "시스��",
+        "author": "��스��",
         "message": "신규 공사 업무 등록"
       },
       {
@@ -1544,7 +1544,7 @@
     "department": "남양주체육문화센터",
     "budget": "보류",
     "facility": "남양주센터",
-    "location": "A축구��",
+    "location": "A축구장",
     "title": "CCTV 증설",
     "estimatedCost": null,
     "estimatedCostNote": "",
@@ -1562,6 +1562,11 @@
         "date": "2026-10-08",
         "author": "조현호",
         "message": "CCTV 설치 제안서 접수되어 설치 위치 조율 중"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
+        "message": "[location] 직접 수정: A축구장"
       }
     ]
   },

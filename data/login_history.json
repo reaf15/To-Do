@@ -1,5 +1,29 @@
 [
   {
+    "id": "LOG-1793240279839-102",
+    "timestamp": "2026-10-29 11:17:59",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [CCTV 증설] location = A축구장",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793240155357-515",
+    "timestamp": "2026-10-29 11:15:55",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793240053645-976",
     "timestamp": "2026-10-29 11:14:13",
     "userId": "cho_hh",
