@@ -1598,7 +1598,7 @@
   {
     "department": "남양주체육문화센터",
     "budget": "수선유지비",
-    "facility": "남양주��터",
+    "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "B,C축구장 와이어 파단 보수",
     "estimatedCost": 5000000,
@@ -1611,6 +1611,8 @@
     "contractAmount": null,
     "vendor": "대신이엔지",
     "memo": "안전 그물망 지지 ��이�� 파단 부�� 긴급 보수 검토",
+    "photos": [],
+    "documents": [],
     "id": "TASK-12",
     "logs": [
       {
