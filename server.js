@@ -10,6 +10,13 @@ import {
   restoreBackup, 
   startAutoBackupSchedule 
 } from './backupManager.js';
+import {
+  syncTasksToNotion,
+  triggerAutoNotionSync,
+  getLastSyncStatus,
+  NOTION_DATABASE_ID,
+  getNotionToken
+} from './notionSync.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -196,11 +203,52 @@ const server = http.createServer((req, res) => {
         const parsed = JSON.parse(body);
         fs.writeFileSync(DATA_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
         triggerAutoCloudSync(15000);
+        triggerAutoNotionSync(30000);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 3-1. API: GET Notion status
+  if (req.url === '/api/notion/status' && req.method === 'GET') {
+    const token = getNotionToken();
+    const syncStatus = getLastSyncStatus();
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({
+      configured: Boolean(token),
+      databaseId: NOTION_DATABASE_ID,
+      databaseUrl: `https://app.notion.com/p/${NOTION_DATABASE_ID.replace(/-/g, '')}`,
+      databaseTitle: '남양주도시공사 시설관리',
+      ...syncStatus
+    }));
+    return;
+  }
+
+  // 3-2. API: POST Notion manual sync
+  if (req.url === '/api/notion/sync' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        let tasksToSync = [];
+        if (body.trim()) {
+          tasksToSync = JSON.parse(body);
+        } else if (fs.existsSync(DATA_FILE)) {
+          tasksToSync = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+        }
+        console.log(`[NotionSync] 수동 동기화 요청 수신 (대상: ${tasksToSync.length}건)`);
+        const result = await syncTasksToNotion(tasksToSync);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify(result));
+      } catch (err) {
+        console.error('[NotionSync] 수동 동기화 에러:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
       }
     });
     return;

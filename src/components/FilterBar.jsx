@@ -13,7 +13,8 @@ import {
   Plus,
   FileSpreadsheet,
   Building2,
-  ChevronDown
+  ChevronDown,
+  ExternalLink
 } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 
@@ -39,6 +40,9 @@ export default function FilterBar({
   onNewTask,
   onExportExcel,
   onExportAllExcel,
+  onSyncNotion,
+  isNotionSyncing = false,
+  notionDatabaseUrl = 'https://app.notion.com/p/408deafa4bbd81a19467e7df6fdec5d1',
   budgetCategories = BUDGET_TYPES,
   facilities = [],
   managers = MANAGERS
@@ -47,11 +51,16 @@ export default function FilterBar({
   const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   const [isExcelMenuOpen, setIsExcelMenuOpen] = useState(false);
   const excelMenuRef = useRef(null);
+  const [isNotionMenuOpen, setIsNotionMenuOpen] = useState(false);
+  const notionMenuRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (excelMenuRef.current && !excelMenuRef.current.contains(event.target)) {
         setIsExcelMenuOpen(false);
+      }
+      if (notionMenuRef.current && !notionMenuRef.current.contains(event.target)) {
+        setIsNotionMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -245,6 +254,70 @@ export default function FilterBar({
                       </div>
                     </button>
                   )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Action Button: Notion Sync */}
+          {onSyncNotion && (
+            <div className="relative inline-flex items-center rounded-lg shadow-2xs shrink-0" ref={notionMenuRef}>
+              <button
+                type="button"
+                onClick={onSyncNotion}
+                disabled={isNotionSyncing}
+                title="클릭 시 현재 시설보수 공사 데이터를 노션 [남양주도시공사 시설관리]에 동기화합니다"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-l-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white border border-slate-800 transition cursor-pointer disabled:opacity-50"
+              >
+                {isNotionSyncing ? (
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-300 animate-spin" />
+                ) : (
+                  <svg className="w-3.5 h-3.5 fill-current text-white shrink-0" viewBox="0 0 24 24">
+                    <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.047-.373L18.47 2.015c-.466-.42-1.12-.7-2.008-.653L2.733 2.388c-.513.047-.653.373-.373.653l2.099 1.167zm1.12 3.126v12.78c0 .886.42 1.353 1.306 1.353h12.596c.886 0 1.213-.42 1.213-1.307V7.334c0-.793-.327-1.12-1.12-1.12H6.699c-.793 0-1.12.327-1.12 1.12zm11.895 2.193c.094.42 0 .84-.467.886l-.793.093v7.325c-.466.28-.98.466-1.54.466-.933 0-1.446-.373-2.146-1.213l-4.153-5.225v5.412c.513.093.886.233.886.653 0 .42-.327.42-.746.42l-2.613.14c-.093-.327.094-.653.467-.7l.7-.093V9.757c-.466-.046-.84-.14-1.073-.42-.093-.28 0-.513.42-.56l2.846-.187 4.34 5.365V9.43l-.7-.093c-.42-.047-.606-.233-.56-.606.047-.374.373-.42.793-.42l2.333-.14c.42 0 .56.28.56.7z"/>
+                  </svg>
+                )}
+                <span>{isNotionSyncing ? '동기화 중...' : '노션 동기화'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsNotionMenuOpen(!isNotionMenuOpen)}
+                title="노션 옵션 (새 창에서 노션 데이터베이스 열기)"
+                className="px-1.5 py-1.5 rounded-r-lg bg-slate-800 hover:bg-slate-700 text-white border-t border-r border-b border-slate-800 border-l border-slate-700 transition cursor-pointer"
+              >
+                <ChevronDown className="w-3.5 h-3.5 text-slate-300" />
+              </button>
+
+              {isNotionMenuOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsNotionMenuOpen(false);
+                      onSyncNotion();
+                    }}
+                    disabled={isNotionSyncing}
+                    className="w-full px-3.5 py-2 text-left hover:bg-slate-50 transition flex items-center gap-2.5 text-xs text-slate-800 cursor-pointer disabled:opacity-50"
+                  >
+                    <RotateCcw className="w-4 h-4 text-slate-700 shrink-0" />
+                    <div>
+                      <div className="font-bold text-slate-900">지금 노션으로 동기화</div>
+                      <div className="text-[10px] text-slate-400">시설보수 공사 데이터 즉시 동기화</div>
+                    </div>
+                  </button>
+
+                  <a
+                    href={notionDatabaseUrl || "https://app.notion.com/p/408deafa4bbd81a19467e7df6fdec5d1"}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setIsNotionMenuOpen(false)}
+                    className="w-full px-3.5 py-2 text-left hover:bg-indigo-50 transition flex items-center gap-2.5 text-xs text-indigo-900 border-t border-slate-100 cursor-pointer"
+                  >
+                    <ExternalLink className="w-4 h-4 text-indigo-600 shrink-0" />
+                    <div>
+                      <div className="font-bold text-indigo-700">노션에서 열기 (새 창)</div>
+                      <div className="text-[10px] text-slate-400">남양주도시공사 시설관리 데이터베이스</div>
+                    </div>
+                  </a>
                 </div>
               )}
             </div>
