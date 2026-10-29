@@ -362,7 +362,7 @@ export default function App() {
       timestamp: timeStr,
       userId: currentUser === '김일호' ? 'kim_ilho' : currentUser === '권병학' ? 'kwon_bh' : currentUser === '조현호' ? 'cho_hh' : 'admin_fms',
       userName: currentUser !== 'ALL' ? currentUser : '관리자',
-      role: currentUser === '권병학' ? '시설담당 (대리)' : currentUser === 'ALL' ? '시스템 관리자' : '시설담당 (주임)',
+      role: currentUser === 'ALL' ? '시스템 관리자' : '시설담당',
       dept: selectedDepartment || '체육문화센터 시설팀',
       ip: serverInfo?.clientIp || serverInfo?.ip || '127.0.0.1',
       device: deviceStr,
@@ -860,7 +860,7 @@ export default function App() {
           body: JSON.stringify({
             userId: currentUser === '김일호' ? 'kim_ilho' : currentUser === '권병학' ? 'kwon_bh' : currentUser === '조현호' ? 'cho_hh' : 'staff',
             userName: currentUser !== 'ALL' ? currentUser : '접속자',
-            role: currentUser === '권병학' ? '시설담당 (대리)' : currentUser === 'ALL' ? '직원/방문자' : '시설담당 (주임)',
+            role: currentUser === 'ALL' ? '직원/방문자' : '시설담당',
             dept: selectedDepartment || '체육문화센터 시설팀',
             action: accessDesc,
             device: deviceStr

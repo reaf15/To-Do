@@ -562,7 +562,7 @@ export default function Sidebar({
               </div>
               <div className="leading-tight truncate">
                 <div className="font-bold text-white text-xs truncate">
-                  {currentUser} {currentUser !== 'ALL' && '주임'}
+                  {currentUser}
                 </div>
                 <div className="text-[10px] text-slate-400 truncate">
                   {selectedDepartment}
