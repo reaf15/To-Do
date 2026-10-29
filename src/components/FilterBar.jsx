@@ -130,39 +130,6 @@ export default function FilterBar({
         <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
           
 
-          <button
-            onClick={() => onStatusChange(selectedStatus === '설계' ? '' : '설계')}
-            className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition shrink-0 ${
-              selectedStatus === '설계'
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
-          >
-            설계 단계 건
-          </button>
-
-          <button
-            onClick={() => onStatusChange(selectedStatus === '진행' ? '' : '진행')}
-            className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition shrink-0 ${
-              selectedStatus === '진행'
-                ? 'bg-indigo-600 text-white border-indigo-600'
-                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
-          >
-            공사진행 건
-          </button>
-
-          <button
-            onClick={() => onManagerChange(selectedManager === 'unassigned' ? '' : 'unassigned')}
-            className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition shrink-0 ${
-              selectedManager === 'unassigned'
-                ? 'bg-amber-600 text-white border-amber-600'
-                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
-          >
-            담당자 미정 건
-          </button>
-
           {hasActiveFilters && (
             <button
               onClick={onResetFilters}
