@@ -1421,33 +1421,6 @@ export default function App() {
     addAuditLog(`전체 통합 엑셀 다운로드 (공사 ${tasks.length}건, 시설 ${facilities.length}개소)`);
   };
 
-  // Notion Sync State & Handler
-  const [isNotionSyncing, setIsNotionSyncing] = useState(false);
-
-  const handleSyncNotion = async () => {
-    if (isNotionSyncing) return;
-    setIsNotionSyncing(true);
-    showToast('노션 [남양주도시공사 시설관리] 동기화를 시작합니다...', 'info');
-    try {
-      const res = await fetch('/api/notion/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(tasks)
-      });
-      const data = await res.json();
-      if (data.success) {
-        showToast(`✅ 노션 동기화 완료! (생성 ${data.createdCount}건, 업데이트 ${data.updatedCount}건)`);
-        addAuditLog(`노션 동기화 완료: [남양주도시공사 시설관리] (총 ${data.total || tasks.length}건)`);
-      } else {
-        showToast(data.error || '노션 동기화 중 오류가 발생했습니다.', 'error');
-      }
-    } catch (e) {
-      showToast('노션 동기화 서버 연결 실패: ' + e.message, 'error');
-    } finally {
-      setIsNotionSyncing(false);
-    }
-  };
-
   // If Print View is active
   if (isPrintViewActive) {
     return (
@@ -1683,9 +1656,6 @@ export default function App() {
                     }}
                     onExportExcel={handleExportExcel}
                     onExportAllExcel={handleExportAllExcel}
-                    onSyncNotion={handleSyncNotion}
-                    isNotionSyncing={isNotionSyncing}
-                    notionDatabaseUrl="https://app.notion.com/p/408deafa4bbd81a19467e7df6fdec5d1"
                     budgetCategories={currentDeptCategories}
                     facilities={Array.from(new Set([...currentDeptFacilities.map(f => f.name), ...departmentTasks.map(t => t.facility).filter(Boolean)]))}
                     managers={currentDeptManagers}
