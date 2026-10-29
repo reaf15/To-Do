@@ -128,19 +128,7 @@ export default function FilterBar({
 
         {/* Quick Fast Filters */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-          {currentUser !== 'ALL' && (
-            <button
-              onClick={onQuickFilterMyTasks}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold border transition shrink-0 ${
-                isMyTasksActive
-                  ? 'bg-teal-600 text-white border-teal-600 shadow-sm'
-                  : 'bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>내 담당 업무만 보기 ({currentUser})</span>
-            </button>
-          )}
+          
 
           <button
             onClick={() => onStatusChange(selectedStatus === '설계' ? '' : '설계')}
