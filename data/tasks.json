@@ -503,7 +503,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "���료",
+    "status": "완료",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -525,6 +525,11 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
+        "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-10-29",
+        "author": "김일호",
         "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
