@@ -1693,30 +1693,31 @@
     ]
   },
   {
-    "id": "TASK-16",
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "야구장(성인)",
-    "title": "야��장 더그아웃 평탄화",
+    "title": "야구장 더그아웃 평탄화",
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
     "status": "완료",
+    "startDate": "2026-10-11",
+    "endDate": "2026-10-23",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "더그아웃 1루/3루 바닥 흙 다짐 ��� 평탄화 시공 완��",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-16",
     "logs": [
       {
         "date": "2026-10-05",
         "author": "김일호",
         "message": "공사 시공 �� 바닥 레벨 검수 완료"
       }
-    ],
-    "startDate": "2026-10-11",
-    "endDate": "2026-10-23",
-    "department": "남양주체육문화센터"
+    ]
   },
   {
     "department": "남��주체육문화센터",
