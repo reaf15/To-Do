@@ -71,7 +71,7 @@
     "title": "조경유지관리 공사",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "���일호",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -145,7 +145,7 @@
       {
         "date": "2026-10-27",
         "author": "대리 김수관",
-        "message": "신규 공사 업�� 등록"
+        "message": "신규 공사 업��� 등록"
       },
       {
         "date": "2026-10-27",
@@ -203,7 +203,7 @@
     "estimatedCost": 50000,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "검토",
+    "status": "���토",
     "startDate": "2026-10-21",
     "endDate": "2026-10-21",
     "quoteAmount": null,
@@ -631,7 +631,7 @@
       },
       {
         "date": "2026-10-22",
-        "author": "관리자",
+        "author": "관���자",
         "message": "담당자를 [김일호](으)�� 지정"
       },
       {
@@ -879,7 +879,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "진행 상태를 [공사진행](으)로 변경"
+        "message": "진행 ���태를 [공사진행](으)로 변경"
       }
     ]
   },
@@ -1398,7 +1398,7 @@
     "department": "남양주체육������센터"
   },
   {
-    "department": "남양주체육���화센터",
+    "department": "남양주체육���화��터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "청수관 교차로",
@@ -1622,17 +1622,19 @@
     "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "B,C 축구장",
-    "title": "관람석 데크 들뜸 보수",
+    "title": "관람석 데크 들뜸 보수, 다목적잔디광장 화장실 보수",
     "estimatedCost": 5000000,
     "estimatedCostNote": "다목적잔���광장 화장실 배관 공사 포함",
     "manager": "조현호",
     "status": "검토",
     "startDate": "2026-10-15",
     "endDate": "2026-10-15",
-    "quoteAmount": null,
+    "quoteAmount": 2974000,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "memo": "10월 15일 견적방문 (다목적잔디광장 화장실 ���관 공사 포함)",
+    "photos": [],
+    "documents": [],
     "id": "TASK-13",
     "logs": [
       {
@@ -1785,7 +1787,7 @@
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "남양주센터",
-    "title": "정보통신유지관리자 성능점검",
+    "title": "정보통신유지관���자 성능점검",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "����현호",
@@ -2217,7 +2219,7 @@
     "department": "호��체육문화센터",
     "budget": "수선유지비",
     "facility": "호평체육문화센터",
-    "location": "2층 헬스장",
+    "location": "2�� 헬스장",
     "title": "헬스장 프리웨���트존 ���무블��� 바닥 교체",
     "estimatedCost": 4800000,
     "estimatedCostNote": "",
@@ -2439,7 +2441,7 @@
     "budget": "수선유지비",
     "facility": "별내커뮤니티센터",
     "location": "수영장 풀장",
-    "title": "별내 수영장 오버풀 트렌치 그레���� �����면 교체",
+    "title": "별내 수영장 오버풀 트렌치 ���레���� �����면 교체",
     "estimatedCost": 8200000,
     "estimatedCostNote": "",
     "manager": "윤서준",
