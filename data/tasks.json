@@ -267,7 +267,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
     "title": "야외공연장 주차장 ��타리 조달 구매 설치",
@@ -1015,7 +1015,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "전체시설",
     "title": "통신설비유지관리 성능점검",
@@ -1075,7 +1075,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "방송실",
     "title": "천장 보수공사",
@@ -1100,7 +1100,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "삼패야구장",
     "title": "삼패 풋살구장 조명교체공사",
@@ -1215,7 +1215,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "파크골프",
     "location": "다목적잔디광장",
     "title": "그늘막 원단 교체",
@@ -1317,7 +1317,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "",
     "title": "화단 통행로 이동",
@@ -1427,7 +1427,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 그물망 및 주루베이스 교체",
@@ -1452,7 +1452,7 @@
   },
   {
     "id": "TASK-06",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "3층 방송실",
     "title": "방송실 천정재 설치",
@@ -1567,7 +1567,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "A구장 데크 계단",
     "title": "데크 계단 철거",
@@ -1592,14 +1592,14 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주��터",
     "location": "B,C 축구장",
     "title": "B,C축구장 와이어 파단 보수",
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "설계",
+    "status": "��계",
     "startDate": "2026-10-03",
     "endDate": "2026-10-11",
     "quoteAmount": null,
@@ -1617,7 +1617,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "관람석 데크 들뜸 보수",
@@ -1652,7 +1652,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "야구장 3면",
     "title": "야구장 조명 보수",
@@ -1687,7 +1687,7 @@
   },
   {
     "id": "TASK-16",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "야구장(성인)",
     "title": "야��장 더그아웃 평탄화",
@@ -1805,7 +1805,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "주차장 배면 옹벽",
     "title": "보강토 옹벽 보수",
@@ -1886,7 +1886,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "다산멀티",
     "location": "남녀 탈의실",
     "title": "다산멀티스포츠센터 탈의실 환풍기 설치 및 전기공사",
@@ -1996,7 +1996,7 @@
   },
   {
     "id": "TASK-27",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장, 장애인 체육관 전기 공사",
@@ -2022,7 +2022,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "컨퍼런스",
     "location": "컨퍼런스장",
     "title": "컨퍼런스장 주차장 잡석 포설",
@@ -2041,7 +2041,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "장애인체육관",
     "title": "장애인체육관 민원 캐노피 설치",
@@ -2071,7 +2071,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "컨퍼런스",
     "location": "장애인체육관",
     "title": "컨퍼런스 방풍비닐",
@@ -2096,7 +2096,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "수선유지비",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "장애인체육관",
     "title": "장애인체육관 에어 컴프레서 설치",
