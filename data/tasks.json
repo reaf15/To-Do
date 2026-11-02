@@ -4,6 +4,33 @@
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
+    "title": "조달 수수료",
+    "estimatedCost": null,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "검토",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": 20000,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793591746710",
+    "logs": [
+      {
+        "date": "2026-11-02",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
+    "budget": "시설비(조경)",
+    "facility": "남양주센터",
+    "location": "",
     "title": "1차 설계변경",
     "estimatedCost": 9819010,
     "estimatedCostNote": "",
