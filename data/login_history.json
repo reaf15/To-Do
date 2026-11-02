@@ -1,5 +1,77 @@
 [
   {
+    "id": "LOG-1793587788644-126",
+    "timestamp": "2026-11-02 11:49:48",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "상태 변경: [1차 설계변경] -> [진행]",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793587774852-358",
+    "timestamp": "2026-11-02 11:49:34",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [1차 설계변경] contractAmount = 9819010",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793587764257-228",
+    "timestamp": "2026-11-02 11:49:24",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [1차 설계변경] contractAmount = 9810109",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793587759911-731",
+    "timestamp": "2026-11-02 11:49:19",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [1차 설계변경] contractAmount = 9810010",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793587754078-815",
+    "timestamp": "2026-11-02 11:49:14",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "공사 업무 신규등록: [1차 설계변경] (남양주체육문화센터)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793587608554-435",
+    "timestamp": "2026-11-02 11:46:48",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793587060238-173",
     "timestamp": "2026-11-02 11:37:40",
     "userId": "kim_ilho",

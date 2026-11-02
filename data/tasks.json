@@ -1,5 +1,52 @@
 [
   {
+    "department": "남양주체육문화센터",
+    "budget": "시설비(조경)",
+    "facility": "남양주센터",
+    "location": "",
+    "title": "1차 설계변경",
+    "estimatedCost": 9819010,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "진행",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": 9819010,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793587754078",
+    "logs": [
+      {
+        "date": "2026-11-02",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-11-02",
+        "author": "김일호",
+        "message": "[contractAmount] 직접 수정: 9,810,010원"
+      },
+      {
+        "date": "2026-11-02",
+        "author": "김일호",
+        "message": "[contractAmount] 직접 수정: 9,810,109원"
+      },
+      {
+        "date": "2026-11-02",
+        "author": "김일호",
+        "message": "[contractAmount] 직접 수정: 9,819,010원"
+      },
+      {
+        "date": "2026-11-02",
+        "author": "김일호",
+        "message": "진행 상태를 [진행](으)로 변경"
+      }
+    ]
+  },
+  {
     "department": "남양주시청소년수련관",
     "budget": "수선유지비(운영)",
     "facility": "남양주시청소년수련관",
