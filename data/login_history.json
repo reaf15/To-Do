@@ -1,5 +1,53 @@
 [
   {
+    "id": "LOG-1793587060238-173",
+    "timestamp": "2026-11-02 11:37:40",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "시설 정보 수정: [남양주체육문화센터] 남양주센터",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793586959765-615",
+    "timestamp": "2026-11-02 11:35:59",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793578131908-396",
+    "timestamp": "2026-11-02 09:08:51",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793577374179-584",
+    "timestamp": "2026-11-02 08:56:14",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당 (주임)",
+    "dept": "정약용 펀그라운드",
+    "ip": "192.168.108.132",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793257812695-392",
     "timestamp": "2026-10-29 16:10:12",
     "userId": "kim_ilho",
