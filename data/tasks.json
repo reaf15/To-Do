@@ -1,6 +1,33 @@
 [
   {
     "department": "남양주체육문화센터",
+    "budget": "수선유지비",
+    "facility": "남양주센터",
+    "location": "1층 탈의실 화장실",
+    "title": "천정 배기휀 공사",
+    "estimatedCost": 5000000,
+    "estimatedCostNote": "",
+    "manager": "",
+    "status": "검토",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": null,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793687961527",
+    "logs": [
+      {
+        "date": "2026-11-03",
+        "author": "시스템",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
