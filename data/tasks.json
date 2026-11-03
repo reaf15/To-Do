@@ -1,6 +1,33 @@
 [
   {
     "department": "남양주체육문화센터",
+    "budget": "시설비(조경)",
+    "facility": "남양주센터",
+    "location": "",
+    "title": "임목 폐기물 처리",
+    "estimatedCost": null,
+    "estimatedCostNote": "",
+    "manager": "김일호",
+    "status": "검토",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": 660000,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793688028169",
+    "logs": [
+      {
+        "date": "2026-11-03",
+        "author": "김일호",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
     "budget": "수선유지비",
     "facility": "남양주센터",
     "location": "1층 탈의실 화장실",
