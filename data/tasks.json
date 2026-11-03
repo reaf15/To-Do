@@ -1606,7 +1606,7 @@
     "title": "방송실 천정재 설치",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
-    "manager": "",
+    "manager": "권병학",
     "status": "검토",
     "quoteAmount": null,
     "contractAmount": null,
@@ -1617,6 +1617,11 @@
       {
         "date": "2026-10-21",
         "author": "관리자",
+        "message": "담당자를 [권병학](으)로 지정"
+      },
+      {
+        "date": "2026-11-03",
+        "author": "김일호",
         "message": "담당자를 [권병학](으)로 지정"
       }
     ],
