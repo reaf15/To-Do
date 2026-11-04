@@ -290,33 +290,31 @@ export default function TableView({
 
   // ============================================================================
   // Notion-style inline Add Row state & handlers (스프레드시트 간편 행 추가)
+  // "새 작업을 누르면 담당자는 바로 위와 같이 나오고, 엔터를 치면 등록이 됨"
   // ============================================================================
-  const getInitialNewRow = () => ({
-    budget: selectedBudget || (uniqueBudgets && uniqueBudgets[0]) || (budgetCategories && budgetCategories[0]) || '수선유지비',
-    facility: (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터',
-    location: '',
-    title: '',
-    estimatedCost: '',
-    manager: currentUser && currentUser !== 'ALL' ? currentUser : '',
-    status: '검토',
-    quoteAmount: '',
-    contractAmount: '',
-    vendor: ''
-  });
+  const getInitialNewRow = () => {
+    // 바로 위 행(직전 공사 항목) 데이터 조회
+    const lastRow = sortedTasks && sortedTasks.length > 0 ? sortedTasks[sortedTasks.length - 1] : null;
+    const managerFromAbove = lastRow?.manager || (currentUser && currentUser !== 'ALL' ? currentUser : '');
+    const budgetFromAbove = lastRow?.budget || selectedBudget || (uniqueBudgets && uniqueBudgets[0]) || (budgetCategories && budgetCategories[0]) || '수선유지비';
+    const facilityFromAbove = lastRow?.facility || (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터';
+
+    return {
+      budget: budgetFromAbove,
+      facility: facilityFromAbove,
+      location: lastRow?.location || '',
+      title: '',
+      estimatedCost: '',
+      manager: managerFromAbove,
+      status: '검토',
+      quoteAmount: '',
+      contractAmount: '',
+      vendor: ''
+    };
+  };
 
   const [isAddingRow, setIsAddingRow] = useState(false);
-  const [newRowData, setNewRowData] = useState({
-    budget: selectedBudget || (budgetCategories && budgetCategories[0]) || '수선유지비',
-    facility: (facilities && facilities[0]) || '남양주센터',
-    location: '',
-    title: '',
-    estimatedCost: '',
-    manager: currentUser && currentUser !== 'ALL' ? currentUser : '',
-    status: '검토',
-    quoteAmount: '',
-    contractAmount: '',
-    vendor: ''
-  });
+  const [newRowData, setNewRowData] = useState(getInitialNewRow);
   const newRowTitleInputRef = useRef(null);
 
   const handleStartAddRow = () => {
@@ -333,9 +331,9 @@ export default function TableView({
     setNewRowData(getInitialNewRow());
   };
 
-  const handleCommitAddRow = (keepAdding = false) => {
+  const handleCommitAddRow = () => {
     if (!newRowData.title.trim()) {
-      setIsAddingRow(false);
+      newRowTitleInputRef.current?.focus();
       return;
     }
 
@@ -370,29 +368,14 @@ export default function TableView({
       onSaveTask(newTaskPayload);
     }
 
-    if (keepAdding) {
-      setNewRowData(prev => ({
-        ...prev,
-        title: '',
-        location: '',
-        estimatedCost: '',
-        quoteAmount: '',
-        contractAmount: '',
-        vendor: ''
-      }));
-      setTimeout(() => {
-        newRowTitleInputRef.current?.focus();
-      }, 60);
-    } else {
-      setIsAddingRow(false);
-      setNewRowData(getInitialNewRow());
-    }
+    // 엔터 치면 등록 완료 후 바로 인라인 행 닫기
+    setIsAddingRow(false);
   };
 
   const handleNewRowKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleCommitAddRow(true);
+      handleCommitAddRow();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       handleCancelAddRow();
@@ -1722,7 +1705,7 @@ export default function TableView({
                           value={newRowData.title}
                           onChange={(e) => setNewRowData(prev => ({ ...prev, title: e.target.value }))}
                           onKeyDown={handleNewRowKeyDown}
-                          placeholder="새 공사명 입력 후 [Enter]를 누르면 바로 행 추가..."
+                          placeholder="새 공사명 입력 후 [Enter]를 누르면 등록 완료..."
                           className="w-full text-xs font-bold px-2.5 py-1.5 rounded-md border-2 border-teal-500 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs placeholder:font-normal placeholder:text-slate-400"
                         />
                       </div>
@@ -1756,7 +1739,7 @@ export default function TableView({
                         className="text-[11px] font-bold px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs cursor-pointer"
                       >
                         <option value="">미정</option>
-                        {activeManagers.map((m) => (
+                        {Array.from(new Set([...activeManagers, ...(newRowData.manager ? [newRowData.manager] : [])])).map((m) => (
                           <option key={m} value={m}>{m}</option>
                         ))}
                       </select>
