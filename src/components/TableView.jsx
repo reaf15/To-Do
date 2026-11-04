@@ -681,18 +681,6 @@ export default function TableView({
             )}
           </button>
 
-          {/* Notion Add Row Button in Top Toolbar */}
-          {!isReadOnly && onSaveTask && (
-            <button
-              type="button"
-              onClick={handleStartAddRow}
-              title="스프레드시트 하단에 새 행을 추가하여 간편하게 등록합니다"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 active:scale-95 text-white transition shadow-xs cursor-pointer shrink-0"
-            >
-              <Plus className="w-3.5 h-3.5 text-white stroke-[2.5]" />
-              <span>+ 새 작업 행 추가</span>
-            </button>
-          )}
 
           {/* Column Picker Popover */}
           <div className="relative">
