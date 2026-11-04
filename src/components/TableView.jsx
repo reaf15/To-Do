@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   ArrowUpDown, 
   ArrowUp, 
@@ -14,7 +14,9 @@ import {
   RotateCcw,
   Filter,
   X,
-  Search
+  Search,
+  Plus,
+  CornerDownLeft
 } from 'lucide-react';
 import { formatCurrency, copyToClipboard } from '../utils/formatters';
 import { STATUS_COLORS, STATUS_LIST, MANAGERS } from '../data/initialTasks';
@@ -212,6 +214,9 @@ export default function TableView({
   onQuickStatusChange,
   onQuickManagerChange,
   onQuickFieldChange,
+  onSaveTask,
+  currentUser = '',
+  selectedDepartment = '',
   managers = MANAGERS,
   facilities = [],
   budgetCategories = [],
@@ -222,6 +227,106 @@ export default function TableView({
   const [sortField, setSortField] = useState('id');
   const [sortAsc, setSortAsc] = useState(true);
   const [copiedId, setCopiedId] = useState(null);
+
+  // ============================================================================
+  // Notion-style inline Add Row state & handlers (스프레드시트 간편 행 추가)
+  // ============================================================================
+  const getInitialNewRow = () => ({
+    budget: selectedBudget || (budgetCategories && budgetCategories[0]) || '수선유지비',
+    facility: (uniqueFacilities && uniqueFacilities[0]) || '남양주센터',
+    location: '',
+    title: '',
+    estimatedCost: '',
+    manager: currentUser && currentUser !== 'ALL' ? currentUser : '',
+    status: '검토',
+    quoteAmount: '',
+    contractAmount: '',
+    vendor: ''
+  });
+
+  const [isAddingRow, setIsAddingRow] = useState(false);
+  const [newRowData, setNewRowData] = useState(getInitialNewRow);
+  const newRowTitleInputRef = useRef(null);
+
+  const handleStartAddRow = () => {
+    if (isReadOnly) return;
+    setNewRowData(getInitialNewRow());
+    setIsAddingRow(true);
+    setTimeout(() => {
+      newRowTitleInputRef.current?.focus();
+    }, 60);
+  };
+
+  const handleCancelAddRow = () => {
+    setIsAddingRow(false);
+    setNewRowData(getInitialNewRow());
+  };
+
+  const handleCommitAddRow = (keepAdding = false) => {
+    if (!newRowData.title.trim()) {
+      setIsAddingRow(false);
+      return;
+    }
+
+    if (onSaveTask) {
+      const newTaskPayload = {
+        id: `TASK-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        department: selectedDepartment || '남양주체육문화센터',
+        budget: newRowData.budget || (budgetCategories && budgetCategories[0]) || '수선유지비',
+        facility: newRowData.facility || (uniqueFacilities[0] || '남양주센터'),
+        location: newRowData.location || '',
+        title: newRowData.title.trim(),
+        estimatedCost: newRowData.estimatedCost ? parseInt(String(newRowData.estimatedCost).replace(/[^0-9]/g, ''), 10) : null,
+        manager: newRowData.manager || '',
+        status: newRowData.status || '검토',
+        quoteAmount: newRowData.quoteAmount ? parseInt(String(newRowData.quoteAmount).replace(/[^0-9]/g, ''), 10) : null,
+        contractAmount: newRowData.contractAmount ? parseInt(String(newRowData.contractAmount).replace(/[^0-9]/g, ''), 10) : null,
+        vendor: newRowData.vendor || '',
+        startDate: '',
+        endDate: '',
+        memo: '',
+        photos: [],
+        documents: [],
+        logs: [
+          {
+            date: new Date().toISOString().split('T')[0],
+            author: newRowData.manager || (currentUser !== 'ALL' ? currentUser : '관리자'),
+            message: '스프레드시트 간편 행 추가 등록'
+          }
+        ]
+      };
+
+      onSaveTask(newTaskPayload);
+    }
+
+    if (keepAdding) {
+      setNewRowData(prev => ({
+        ...prev,
+        title: '',
+        location: '',
+        estimatedCost: '',
+        quoteAmount: '',
+        contractAmount: '',
+        vendor: ''
+      }));
+      setTimeout(() => {
+        newRowTitleInputRef.current?.focus();
+      }, 60);
+    } else {
+      setIsAddingRow(false);
+      setNewRowData(getInitialNewRow());
+    }
+  };
+
+  const handleNewRowKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleCommitAddRow(true);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleCancelAddRow();
+    }
+  };
 
   // Column visibility state with localStorage persistence
   const [activePreset, setActivePreset] = useState(() => {
@@ -556,6 +661,19 @@ export default function TableView({
               </span>
             )}
           </button>
+
+          {/* Notion Add Row Button in Top Toolbar */}
+          {!isReadOnly && onSaveTask && (
+            <button
+              type="button"
+              onClick={handleStartAddRow}
+              title="스프레드시트 하단에 새 행을 추가하여 간편하게 등록합니다"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 active:scale-95 text-white transition shadow-xs cursor-pointer shrink-0"
+            >
+              <Plus className="w-3.5 h-3.5 text-white stroke-[2.5]" />
+              <span>+ 새 작업 행 추가</span>
+            </button>
+          )}
 
           {/* Column Picker Popover */}
           <div className="relative">
@@ -1522,6 +1640,221 @@ export default function TableView({
                   </tr>
                 );
               }))}
+
+              {/* Notion-style Inline Input Row (새 작업 입력 중일 때) */}
+              {!isReadOnly && onSaveTask && isAddingRow && (
+                <tr className="bg-teal-50/50 border-b-2 border-teal-500 animate-in fade-in duration-150 shadow-inner">
+                  {/* Number Column */}
+                  <td className="py-2 px-3 text-center">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-600 text-white font-black text-[10px] animate-pulse shadow-xs">
+                      +
+                    </span>
+                  </td>
+
+                  {/* Budget Column */}
+                  {visibleColumns.includes('budget') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap">
+                      <select
+                        value={newRowData.budget}
+                        onChange={(e) => setNewRowData(prev => ({ ...prev, budget: e.target.value }))}
+                        onKeyDown={handleNewRowKeyDown}
+                        className="text-[11px] font-bold px-2 py-1 rounded-md border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs cursor-pointer"
+                      >
+                        {uniqueBudgets.map((b) => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
+                      </select>
+                    </td>
+                  )}
+
+                  {/* Facility Column */}
+                  {visibleColumns.includes('facility') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap">
+                      <select
+                        value={newRowData.facility}
+                        onChange={(e) => setNewRowData(prev => ({ ...prev, facility: e.target.value }))}
+                        onKeyDown={handleNewRowKeyDown}
+                        className="text-[11px] font-bold px-2 py-1 rounded-md border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs cursor-pointer"
+                      >
+                        {uniqueFacilities.map((f) => (
+                          <option key={f} value={f}>{f}</option>
+                        ))}
+                      </select>
+                    </td>
+                  )}
+
+                  {/* Location Column */}
+                  {visibleColumns.includes('location') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap">
+                      <input
+                        type="text"
+                        value={newRowData.location}
+                        onChange={(e) => setNewRowData(prev => ({ ...prev, location: e.target.value }))}
+                        onKeyDown={handleNewRowKeyDown}
+                        placeholder="위치 (예: 1층 기계실)"
+                        className="w-28 text-[11px] px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs"
+                      />
+                    </td>
+                  )}
+
+                  {/* Title Column (Auto-focused) */}
+                  {visibleColumns.includes('title') && (
+                    <td className="py-1.5 px-3 min-w-[240px]">
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          ref={newRowTitleInputRef}
+                          type="text"
+                          value={newRowData.title}
+                          onChange={(e) => setNewRowData(prev => ({ ...prev, title: e.target.value }))}
+                          onKeyDown={handleNewRowKeyDown}
+                          placeholder="새 공사명 입력 후 [Enter]를 누르면 바로 행 추가..."
+                          className="w-full text-xs font-bold px-2.5 py-1.5 rounded-md border-2 border-teal-500 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs placeholder:font-normal placeholder:text-slate-400"
+                        />
+                      </div>
+                    </td>
+                  )}
+
+                  {/* Estimated Cost Column */}
+                  {visibleColumns.includes('estimatedCost') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap text-right">
+                      <input
+                        type="text"
+                        value={newRowData.estimatedCost ? Number(newRowData.estimatedCost).toLocaleString() : ''}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^0-9]/g, '');
+                          setNewRowData(prev => ({ ...prev, estimatedCost: raw }));
+                        }}
+                        onKeyDown={handleNewRowKeyDown}
+                        placeholder="예상비용(원)"
+                        className="w-24 text-right text-[11px] font-bold px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs"
+                      />
+                    </td>
+                  )}
+
+                  {/* Manager Column */}
+                  {visibleColumns.includes('manager') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap text-center">
+                      <select
+                        value={newRowData.manager}
+                        onChange={(e) => setNewRowData(prev => ({ ...prev, manager: e.target.value }))}
+                        onKeyDown={handleNewRowKeyDown}
+                        className="text-[11px] font-bold px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs cursor-pointer"
+                      >
+                        <option value="">미정</option>
+                        {activeManagers.map((m) => (
+                          <option key={m} value={m}>{m}</option>
+                        ))}
+                      </select>
+                    </td>
+                  )}
+
+                  {/* Status Column */}
+                  {visibleColumns.includes('status') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap text-center">
+                      <select
+                        value={newRowData.status}
+                        onChange={(e) => setNewRowData(prev => ({ ...prev, status: e.target.value }))}
+                        onKeyDown={handleNewRowKeyDown}
+                        className="text-[11px] font-bold px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs cursor-pointer"
+                      >
+                        {STATUS_LIST.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </select>
+                    </td>
+                  )}
+
+                  {/* Quote Amount Column */}
+                  {visibleColumns.includes('quoteAmount') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap text-right">
+                      <input
+                        type="text"
+                        value={newRowData.quoteAmount ? Number(newRowData.quoteAmount).toLocaleString() : ''}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^0-9]/g, '');
+                          setNewRowData(prev => ({ ...prev, quoteAmount: raw }));
+                        }}
+                        onKeyDown={handleNewRowKeyDown}
+                        placeholder="견적가(원)"
+                        className="w-24 text-right text-[11px] font-bold px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-indigo-700 shadow-2xs"
+                      />
+                    </td>
+                  )}
+
+                  {/* Contract Amount Column */}
+                  {visibleColumns.includes('contractAmount') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap text-right">
+                      <input
+                        type="text"
+                        value={newRowData.contractAmount ? Number(newRowData.contractAmount).toLocaleString() : ''}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^0-9]/g, '');
+                          setNewRowData(prev => ({ ...prev, contractAmount: raw }));
+                        }}
+                        onKeyDown={handleNewRowKeyDown}
+                        placeholder="계약금액(원)"
+                        className="w-24 text-right text-[11px] font-bold px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-emerald-700 shadow-2xs"
+                      />
+                    </td>
+                  )}
+
+                  {/* Vendor Column */}
+                  {visibleColumns.includes('vendor') && (
+                    <td className="py-1.5 px-2 whitespace-nowrap">
+                      <input
+                        type="text"
+                        value={newRowData.vendor}
+                        onChange={(e) => setNewRowData(prev => ({ ...prev, vendor: e.target.value }))}
+                        onKeyDown={handleNewRowKeyDown}
+                        placeholder="시공업체명"
+                        className="w-24 text-[11px] px-2 py-1 rounded border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs"
+                      />
+                    </td>
+                  )}
+
+                  {/* Actions Column */}
+                  <td className="py-1.5 px-2 whitespace-nowrap text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleCommitAddRow(false)}
+                        title="등록 완료 (Enter)"
+                        className="px-2 py-1 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white rounded text-[11px] font-bold flex items-center gap-1 shadow-xs transition cursor-pointer"
+                      >
+                        <Check className="w-3 h-3 stroke-[3]" />
+                        <span>등록</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleCancelAddRow}
+                        title="취소 (ESC)"
+                        className="p-1 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded text-[11px] font-bold transition cursor-pointer"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )}
+
+              {/* Notion-style '새 작업' Add Row Button Row */}
+              {!isReadOnly && onSaveTask && (
+                <tr className="hover:bg-slate-50/80 transition-colors border-b border-slate-100 group">
+                  <td colSpan={visibleColumns.length + 2} className="py-1.5 px-2">
+                    <div 
+                      role="button" 
+                      tabIndex={0}
+                      onClick={handleStartAddRow}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleStartAddRow(); }}
+                      className="inline-flex items-center gap-2 h-7 px-2.5 rounded-md text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer select-none text-xs font-medium"
+                      title="스프레드시트에 새 작업 행을 간편하게 추가합니다 (클릭)"
+                    >
+                      <Plus className="w-4 h-4 text-slate-400 group-hover:text-teal-600 transition-colors" />
+                      <span className="font-semibold text-slate-600 group-hover:text-slate-900">새 작업</span>
+                    </div>
+                  </td>
+                </tr>
+              )}
             </tbody>
 
             {/* Table Footer with Summary Row dynamically matching visible columns */}

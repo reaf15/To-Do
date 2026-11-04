@@ -1676,6 +1676,9 @@ export default function App() {
                       onQuickStatusChange={handleQuickStatusChange}
                       onQuickManagerChange={handleQuickManagerChange}
                       onQuickFieldChange={handleQuickFieldChange}
+                      onSaveTask={handleSaveTask}
+                      currentUser={currentUser}
+                      selectedDepartment={selectedDepartment}
                       managers={currentDeptManagers}
                       facilities={currentDeptFacilities.map(f => f.name)}
                       budgetCategories={currentDeptCategories}
