@@ -292,14 +292,43 @@ export default function TableView({
   // Notion-style inline Add Row state & handlers (스프레드시트 간편 행 추가)
   // "새 작업을 누르면 담당자는 바로 위와 같이 나오고, 엔터를 치면 등록이 됨"
   // ============================================================================
-  const getInitialNewRow = () => {
-    // 바로 위 행(직전 공사 항목) 데이터 조회
-    const lastRow = sortedTasks && sortedTasks.length > 0 ? sortedTasks[sortedTasks.length - 1] : null;
+  const DEFAULT_EMPTY_ROW = {
+    budget: '수선유지비',
+    facility: '남양주센터',
+    location: '',
+    title: '',
+    estimatedCost: '',
+    manager: '',
+    status: '검토',
+    quoteAmount: '',
+    contractAmount: '',
+    vendor: ''
+  };
+
+  const [isAddingRow, setIsAddingRow] = useState(false);
+  const [newRowData, setNewRowData] = useState(DEFAULT_EMPTY_ROW);
+  const newRowTitleInputRef = useRef(null);
+
+  const handleStartAddRow = () => {
+    if (isReadOnly) return;
+
+    // 클릭 시점에 바로 위 행(직전 공사 항목) 데이터 안전 조회
+    let lastRow = null;
+    try {
+      if (Array.isArray(sortedTasks) && sortedTasks.length > 0) {
+        lastRow = sortedTasks[sortedTasks.length - 1];
+      } else if (Array.isArray(tasks) && tasks.length > 0) {
+        lastRow = tasks[tasks.length - 1];
+      }
+    } catch (e) {
+      lastRow = null;
+    }
+
     const managerFromAbove = lastRow?.manager || (currentUser && currentUser !== 'ALL' ? currentUser : '');
     const budgetFromAbove = lastRow?.budget || selectedBudget || (uniqueBudgets && uniqueBudgets[0]) || (budgetCategories && budgetCategories[0]) || '수선유지비';
     const facilityFromAbove = lastRow?.facility || (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터';
 
-    return {
+    setNewRowData({
       budget: budgetFromAbove,
       facility: facilityFromAbove,
       location: lastRow?.location || '',
@@ -310,16 +339,8 @@ export default function TableView({
       quoteAmount: '',
       contractAmount: '',
       vendor: ''
-    };
-  };
+    });
 
-  const [isAddingRow, setIsAddingRow] = useState(false);
-  const [newRowData, setNewRowData] = useState(getInitialNewRow);
-  const newRowTitleInputRef = useRef(null);
-
-  const handleStartAddRow = () => {
-    if (isReadOnly) return;
-    setNewRowData(getInitialNewRow());
     setIsAddingRow(true);
     setTimeout(() => {
       newRowTitleInputRef.current?.focus();
@@ -328,7 +349,7 @@ export default function TableView({
 
   const handleCancelAddRow = () => {
     setIsAddingRow(false);
-    setNewRowData(getInitialNewRow());
+    setNewRowData(DEFAULT_EMPTY_ROW);
   };
 
   const handleCommitAddRow = () => {
