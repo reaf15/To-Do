@@ -555,14 +555,12 @@ export default function TableView({
     return 0;
   });
 
-  // Calculate totals - "완료 된 것만 합산"
-  const [sumOnlyCompleted, setSumOnlyCompleted] = useState(true);
+  // Calculate totals - "완료 금액" (완료된 공사만 항상 합산)
   const completedTasks = useMemo(() => sortedTasks.filter(t => t.status === '완료'), [sortedTasks]);
-  const targetTasksForSum = sumOnlyCompleted ? completedTasks : sortedTasks;
 
-  const totalCost = targetTasksForSum.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
-  const totalQuote = targetTasksForSum.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
-  const totalContract = targetTasksForSum.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
+  const totalCost = completedTasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
+  const totalQuote = completedTasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
+  const totalContract = completedTasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
 
 
   const renderSortIcon = (field) => {
@@ -1877,33 +1875,11 @@ export default function TableView({
             {/* Table Footer with Summary Row dynamically matching visible columns */}
             <tfoot className="bg-slate-100 font-extrabold text-xs text-slate-900 border-t-2 border-slate-300 sticky bottom-0 z-10 shadow-inner">
               <tr>
-                <td className="py-2 px-3 text-center whitespace-nowrap">
-                  <div className="inline-flex items-center gap-1 bg-white p-0.5 rounded-lg border border-slate-300 shadow-2xs">
-                    <button
-                      type="button"
-                      onClick={() => setSumOnlyCompleted(true)}
-                      className={`px-2 py-0.5 rounded text-[10px] font-black transition cursor-pointer ${
-                        sumOnlyCompleted
-                          ? 'bg-emerald-600 text-white shadow-xs'
-                          : 'text-slate-500 hover:text-slate-900'
-                      }`}
-                      title="완료된 공사만 합산"
-                    >
-                      완료 합계
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setSumOnlyCompleted(false)}
-                      className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
-                        !sumOnlyCompleted
-                          ? 'bg-slate-700 text-white shadow-xs'
-                          : 'text-slate-500 hover:text-slate-900'
-                      }`}
-                      title="모든 공사 전체 합산"
-                    >
-                      전체
-                    </button>
-                  </div>
+                {/* 완료 금액 Label Column */}
+                <td className="py-3 px-3 text-center whitespace-nowrap">
+                  <span className="inline-block px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-black border border-emerald-300 shadow-2xs">
+                    완료 금액
+                  </span>
                 </td>
 
                 {visibleColumns.includes('budget') && (
@@ -1920,20 +1896,14 @@ export default function TableView({
 
                 {visibleColumns.includes('title') && (
                   <td className="py-3 px-4 text-slate-800 font-bold whitespace-nowrap">
-                    {sumOnlyCompleted ? (
-                      <div className="flex items-center gap-1.5">
-                        <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-black border border-emerald-300">
-                          완료 건만 합산
-                        </span>
-                        <span className="text-slate-800 text-xs font-black">
-                          총 {completedTasks.length}건 <span className="text-[10px] text-slate-400 font-normal">(전체 {sortedTasks.length}건 중)</span>
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-slate-800 font-black">
-                        총 {sortedTasks.length}건 (전체)
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-emerald-800 text-xs font-black">
+                        완료 {completedTasks.length}건
                       </span>
-                    )}
+                      <span className="text-[11px] text-slate-400 font-normal">
+                        (전체 {sortedTasks.length}건)
+                      </span>
+                    </div>
                   </td>
                 )}
 
@@ -1949,13 +1919,9 @@ export default function TableView({
 
                 {visibleColumns.includes('status') && (
                   <td className="py-3 px-3 text-center font-bold whitespace-nowrap">
-                    {sumOnlyCompleted ? (
-                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs">
-                        완료만
-                      </span>
-                    ) : (
-                      <span className="text-slate-400 font-normal">-</span>
-                    )}
+                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs">
+                      완료
+                    </span>
                   </td>
                 )}
 
