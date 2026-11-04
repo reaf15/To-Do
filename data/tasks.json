@@ -124,7 +124,7 @@
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 20000,
-    "vendor": "",
+    "vendor": "조달청",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -144,6 +144,11 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "진행 상태를 [진행](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[vendor] 직접 수정: 조달청"
       }
     ]
   },
@@ -161,7 +166,7 @@
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 9819010,
-    "vendor": "",
+    "vendor": "(주)서영건설",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -196,6 +201,11 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "담당자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[vendor] 직접 수정: (주)서영건설"
       }
     ]
   },
@@ -1068,7 +1078,7 @@
     "endDate": "",
     "quoteAmount": null,
     "contractAmount": 86200990,
-    "vendor": "",
+    "vendor": "(주)서영건설",
     "memo": "",
     "photos": [],
     "documents": [],
@@ -1083,6 +1093,11 @@
         "date": "2026-10-22",
         "author": "관리자",
         "message": "진행 상태를 [공사진행](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[vendor] 직접 수정: (주)서영건설"
       }
     ]
   },
