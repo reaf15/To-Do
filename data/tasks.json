@@ -817,7 +817,7 @@
     "title": "관급자재(철근, 벤치플륨관, 덕아웃) 조달구매(배수로)",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "김��호",
+    "manager": "김일호",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -841,6 +841,11 @@
         "date": "2026-10-22",
         "author": "관리자",
         "message": "진행 상태�� [완료](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "담당자를 [김일호](으)로 지정"
       }
     ]
   },
