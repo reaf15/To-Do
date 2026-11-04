@@ -1,5 +1,29 @@
 [
   {
+    "id": "LOG-1793835645336-486",
+    "timestamp": "2026-11-05 08:40:45",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "사내 다른 PC 접속 (192.168.101.96)",
+    "status": "성공"
+  },
+  {
+    "id": "LOG-1793835630140-227",
+    "timestamp": "2026-11-05 08:40:30",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "공사 업무 삭제: [ㄹㅇㅁㄴㅇㄹ]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793835606832-381",
     "timestamp": "2026-11-05 08:40:06",
     "userId": "kim_ilho",
