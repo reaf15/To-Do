@@ -1625,7 +1625,7 @@
     "status": "설계",
     "startDate": "2026-10-09",
     "endDate": "2026-10-18",
-    "quoteAmount": null,
+    "quoteAmount": 15000000,
     "contractAmount": null,
     "vendor": "현 eng",
     "memo": "야구장 3면 ��규 투수마운드 흙 교체 및 레벨링 평탄화 작업",
@@ -1634,7 +1634,12 @@
       {
         "date": "2026-10-11",
         "author": "김일���",
-        "message": "현 eng 업����� 현장 답사 및 견적 요청"
+        "message": "현 eng �������� 현장 답사 및 견적 요청"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[quoteAmount] 직접 수정: 15,000,000원"
       }
     ]
   },
