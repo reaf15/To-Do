@@ -1,5 +1,17 @@
 [
   {
+    "id": "LOG-1793751568418-792",
+    "timestamp": "2026-11-04 09:19:28",
+    "userId": "kim_ilho",
+    "userName": "김일호",
+    "role": "시설담당",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [임목 폐기물 처리] vendor = 천일",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793751446389-769",
     "timestamp": "2026-11-04 09:17:26",
     "userId": "kim_ilho",
