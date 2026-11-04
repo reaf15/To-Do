@@ -33,6 +33,26 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "[location] 직접 수정: 수영장 탈의실(남)"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [검토](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [검토](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -443,7 +463,7 @@
     "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "야외공연장 주차장",
-    "title": "야외공연장 주차장 ��타리 조달 구매 설치",
+    "title": "야외공연장 주차장 울타리 조달 구매 설치",
     "estimatedCost": 3420000,
     "estimatedCostNote": "",
     "manager": "조현호",
@@ -454,6 +474,8 @@
     "contractAmount": 3420000,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
     "id": "TASK-1792738481308",
     "logs": [
       {
@@ -795,7 +817,7 @@
     "title": "관급자재(철근, 벤치플륨관, 덕아웃) 조달구매(배수로)",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "김일호",
+    "manager": "김��호",
     "status": "완료",
     "startDate": "",
     "endDate": "",
@@ -1415,7 +1437,7 @@
     "estimatedCost": 4000000,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "검토",
+    "status": "설계",
     "startDate": "",
     "endDate": "",
     "quoteAmount": 3719160,
@@ -1430,6 +1452,11 @@
         "date": "2026-10-21",
         "author": "시스템",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -1614,7 +1641,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "진행 상태를 [설계](으)로 변경"
+        "message": "진행 상태를 [설계](으)로 변��"
       }
     ]
   },
@@ -1649,20 +1676,24 @@
     ]
   },
   {
-    "id": "TASK-06",
+    "department": "남양주체육문화센터",
     "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "3층 방송실",
-    "title": "방송실 ���정재 설치",
+    "title": "방송실 천장재 설치",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
+    "startDate": "2026-10-11",
+    "endDate": "2026-10-21",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "contact": "",
     "memo": "방���실 텍스 천정재 노후 교체 및 방음재 보강",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-06",
     "logs": [
       {
         "date": "2026-10-21",
@@ -1673,11 +1704,13 @@
         "date": "2026-11-03",
         "author": "김일호",
         "message": "담당자를 [권병학](으)로 지정"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
-    ],
-    "startDate": "2026-10-11",
-    "endDate": "2026-10-21",
-    "department": "남양주체육문화센터"
+    ]
   },
   {
     "id": "TASK-07",
@@ -2325,7 +2358,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
-    "memo": "휠체어 바�� 공기압 주입 및 먼지 털이용 저소음 콤���레샤 설치",
+    "memo": "휠체어 바�� 공기��� 주입 및 먼지 털이용 저소음 콤���레샤 설치",
     "id": "TASK-32",
     "logs": []
   },
