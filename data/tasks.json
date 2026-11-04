@@ -45,7 +45,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "검토",
+    "status": "진행",
     "startDate": "",
     "endDate": "",
     "quoteAmount": 660000,
@@ -65,6 +65,11 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "[vendor] 직접 수정: 천일"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [진행](으)로 변경"
       }
     ]
   },
@@ -113,8 +118,8 @@
     "title": "조달 수수료",
     "estimatedCost": null,
     "estimatedCostNote": "",
-    "manager": "",
-    "status": "검토",
+    "manager": "김일호",
+    "status": "진행",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -129,6 +134,16 @@
         "date": "2026-11-02",
         "author": "시스템",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "담당자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "진행 상태를 [진행](으)로 변경"
       }
     ]
   },
@@ -140,7 +155,7 @@
     "title": "1차 설계변경",
     "estimatedCost": 9819010,
     "estimatedCostNote": "",
-    "manager": "",
+    "manager": "김일호",
     "status": "진행",
     "startDate": "",
     "endDate": "",
@@ -176,6 +191,11 @@
         "date": "2026-11-02",
         "author": "김일호",
         "message": "진행 상태를 [진행](으)로 변경"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "담당자를 [김일호](으)로 지정"
       }
     ]
   },
@@ -1630,7 +1650,7 @@
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "현 eng",
-    "memo": "야구장 3면 정규 투수마운드 흙 교체 및 레벨링 평탄화 작업",
+    "memo": "야구장 3면 ��규 투수마운드 흙 교체 및 레벨링 평탄화 작업",
     "id": "TASK-05",
     "logs": [
       {
