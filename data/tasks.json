@@ -3,7 +3,7 @@
     "department": "남양주체육문화센터",
     "budget": "수선(일상)",
     "facility": "남양주센터",
-    "location": "수영장 탈의실 화장실",
+    "location": "수영장 탈의실(남)",
     "title": "배기 덕트 자바라 보수",
     "estimatedCost": null,
     "estimatedCostNote": "",
@@ -23,6 +23,16 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[location] 직접 수정: 수영장 탈의실"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[location] 직접 수정: 수영장 탈의실(남)"
       }
     ]
   },
@@ -799,7 +809,7 @@
     "logs": [
       {
         "date": "2026-10-22",
-        "author": "시스템",
+        "author": "���스템",
         "message": "신규 공사 업��� 등록"
       },
       {
@@ -1635,7 +1645,7 @@
     "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "3층 방송실",
-    "title": "방송실 천정재 설치",
+    "title": "방송실 ���정재 설치",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "권병학",
