@@ -517,7 +517,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "시설비(파크골프장)",
+    "budget": "보류",
     "facility": "남양주센터",
     "location": "",
     "title": "옥외 벤치",
@@ -574,6 +574,11 @@
         "date": "2026-10-28",
         "author": "관리자",
         "message": "[quoteAmount] 직접 수정: 1,440,000원"
+      },
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 보류"
       }
     ]
   },
