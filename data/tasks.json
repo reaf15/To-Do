@@ -1,6 +1,33 @@
 [
   {
     "department": "남양주체육문화센터",
+    "budget": "수선(일상)",
+    "facility": "남양주센터",
+    "location": "수영장 탈의실 화장실",
+    "title": "배기 덕트 자바라 보수",
+    "estimatedCost": null,
+    "estimatedCostNote": "",
+    "manager": "김일호",
+    "status": "설계",
+    "startDate": "",
+    "endDate": "",
+    "quoteAmount": 737000,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "id": "TASK-1793751446388",
+    "logs": [
+      {
+        "date": "2026-11-04",
+        "author": "김일호",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
+    "department": "남양주체육문화센터",
     "budget": "시설비(조경)",
     "facility": "남양주센터",
     "location": "",
@@ -1612,7 +1639,7 @@
     "contractAmount": null,
     "vendor": "",
     "contact": "",
-    "memo": "방송실 텍스 천정재 노후 교체 및 방음재 보강",
+    "memo": "방���실 텍스 천정재 노후 교체 및 방음재 보강",
     "logs": [
       {
         "date": "2026-10-21",
