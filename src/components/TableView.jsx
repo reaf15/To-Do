@@ -228,105 +228,7 @@ export default function TableView({
   const [sortAsc, setSortAsc] = useState(true);
   const [copiedId, setCopiedId] = useState(null);
 
-  // ============================================================================
-  // Notion-style inline Add Row state & handlers (스프레드시트 간편 행 추가)
-  // ============================================================================
-  const getInitialNewRow = () => ({
-    budget: selectedBudget || (budgetCategories && budgetCategories[0]) || '수선유지비',
-    facility: (uniqueFacilities && uniqueFacilities[0]) || '남양주센터',
-    location: '',
-    title: '',
-    estimatedCost: '',
-    manager: currentUser && currentUser !== 'ALL' ? currentUser : '',
-    status: '검토',
-    quoteAmount: '',
-    contractAmount: '',
-    vendor: ''
-  });
 
-  const [isAddingRow, setIsAddingRow] = useState(false);
-  const [newRowData, setNewRowData] = useState(getInitialNewRow);
-  const newRowTitleInputRef = useRef(null);
-
-  const handleStartAddRow = () => {
-    if (isReadOnly) return;
-    setNewRowData(getInitialNewRow());
-    setIsAddingRow(true);
-    setTimeout(() => {
-      newRowTitleInputRef.current?.focus();
-    }, 60);
-  };
-
-  const handleCancelAddRow = () => {
-    setIsAddingRow(false);
-    setNewRowData(getInitialNewRow());
-  };
-
-  const handleCommitAddRow = (keepAdding = false) => {
-    if (!newRowData.title.trim()) {
-      setIsAddingRow(false);
-      return;
-    }
-
-    if (onSaveTask) {
-      const newTaskPayload = {
-        id: `TASK-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-        department: selectedDepartment || '남양주체육문화센터',
-        budget: newRowData.budget || (budgetCategories && budgetCategories[0]) || '수선유지비',
-        facility: newRowData.facility || (uniqueFacilities[0] || '남양주센터'),
-        location: newRowData.location || '',
-        title: newRowData.title.trim(),
-        estimatedCost: newRowData.estimatedCost ? parseInt(String(newRowData.estimatedCost).replace(/[^0-9]/g, ''), 10) : null,
-        manager: newRowData.manager || '',
-        status: newRowData.status || '검토',
-        quoteAmount: newRowData.quoteAmount ? parseInt(String(newRowData.quoteAmount).replace(/[^0-9]/g, ''), 10) : null,
-        contractAmount: newRowData.contractAmount ? parseInt(String(newRowData.contractAmount).replace(/[^0-9]/g, ''), 10) : null,
-        vendor: newRowData.vendor || '',
-        startDate: '',
-        endDate: '',
-        memo: '',
-        photos: [],
-        documents: [],
-        logs: [
-          {
-            date: new Date().toISOString().split('T')[0],
-            author: newRowData.manager || (currentUser !== 'ALL' ? currentUser : '관리자'),
-            message: '스프레드시트 간편 행 추가 등록'
-          }
-        ]
-      };
-
-      onSaveTask(newTaskPayload);
-    }
-
-    if (keepAdding) {
-      setNewRowData(prev => ({
-        ...prev,
-        title: '',
-        location: '',
-        estimatedCost: '',
-        quoteAmount: '',
-        contractAmount: '',
-        vendor: ''
-      }));
-      setTimeout(() => {
-        newRowTitleInputRef.current?.focus();
-      }, 60);
-    } else {
-      setIsAddingRow(false);
-      setNewRowData(getInitialNewRow());
-    }
-  };
-
-  const handleNewRowKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleCommitAddRow(true);
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      handleCancelAddRow();
-    }
-  };
 
   // Column visibility state with localStorage persistence
   const [activePreset, setActivePreset] = useState(() => {
@@ -385,6 +287,117 @@ export default function TableView({
     [facilities, tasks]
   );
   const uniqueManagers = useMemo(() => Array.from(new Set(tasks.map(t => t.manager).filter(Boolean))), [tasks]);
+
+  // ============================================================================
+  // Notion-style inline Add Row state & handlers (스프레드시트 간편 행 추가)
+  // ============================================================================
+  const getInitialNewRow = () => ({
+    budget: selectedBudget || (uniqueBudgets && uniqueBudgets[0]) || (budgetCategories && budgetCategories[0]) || '수선유지비',
+    facility: (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터',
+    location: '',
+    title: '',
+    estimatedCost: '',
+    manager: currentUser && currentUser !== 'ALL' ? currentUser : '',
+    status: '검토',
+    quoteAmount: '',
+    contractAmount: '',
+    vendor: ''
+  });
+
+  const [isAddingRow, setIsAddingRow] = useState(false);
+  const [newRowData, setNewRowData] = useState({
+    budget: selectedBudget || (budgetCategories && budgetCategories[0]) || '수선유지비',
+    facility: (facilities && facilities[0]) || '남양주센터',
+    location: '',
+    title: '',
+    estimatedCost: '',
+    manager: currentUser && currentUser !== 'ALL' ? currentUser : '',
+    status: '검토',
+    quoteAmount: '',
+    contractAmount: '',
+    vendor: ''
+  });
+  const newRowTitleInputRef = useRef(null);
+
+  const handleStartAddRow = () => {
+    if (isReadOnly) return;
+    setNewRowData(getInitialNewRow());
+    setIsAddingRow(true);
+    setTimeout(() => {
+      newRowTitleInputRef.current?.focus();
+    }, 60);
+  };
+
+  const handleCancelAddRow = () => {
+    setIsAddingRow(false);
+    setNewRowData(getInitialNewRow());
+  };
+
+  const handleCommitAddRow = (keepAdding = false) => {
+    if (!newRowData.title.trim()) {
+      setIsAddingRow(false);
+      return;
+    }
+
+    if (onSaveTask) {
+      const newTaskPayload = {
+        id: `TASK-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        department: selectedDepartment || '남양주체육문화센터',
+        budget: newRowData.budget || (budgetCategories && budgetCategories[0]) || '수선유지비',
+        facility: newRowData.facility || (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터',
+        location: newRowData.location || '',
+        title: newRowData.title.trim(),
+        estimatedCost: newRowData.estimatedCost ? parseInt(String(newRowData.estimatedCost).replace(/[^0-9]/g, ''), 10) : null,
+        manager: newRowData.manager || '',
+        status: newRowData.status || '검토',
+        quoteAmount: newRowData.quoteAmount ? parseInt(String(newRowData.quoteAmount).replace(/[^0-9]/g, ''), 10) : null,
+        contractAmount: newRowData.contractAmount ? parseInt(String(newRowData.contractAmount).replace(/[^0-9]/g, ''), 10) : null,
+        vendor: newRowData.vendor || '',
+        startDate: '',
+        endDate: '',
+        memo: '',
+        photos: [],
+        documents: [],
+        logs: [
+          {
+            date: new Date().toISOString().split('T')[0],
+            author: newRowData.manager || (currentUser !== 'ALL' ? currentUser : '관리자'),
+            message: '스프레드시트 간편 행 추가 등록'
+          }
+        ]
+      };
+
+      onSaveTask(newTaskPayload);
+    }
+
+    if (keepAdding) {
+      setNewRowData(prev => ({
+        ...prev,
+        title: '',
+        location: '',
+        estimatedCost: '',
+        quoteAmount: '',
+        contractAmount: '',
+        vendor: ''
+      }));
+      setTimeout(() => {
+        newRowTitleInputRef.current?.focus();
+      }, 60);
+    } else {
+      setIsAddingRow(false);
+      setNewRowData(getInitialNewRow());
+    }
+  };
+
+  const handleNewRowKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleCommitAddRow(true);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleCancelAddRow();
+    }
+  };
 
   // Active filter count
   const activeRowFilterCount = useMemo(() => {
