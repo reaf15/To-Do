@@ -19,5 +19,12 @@
     "description": "민원 응대 시설",
     "order": 3,
     "active": true
+  },
+  {
+    "id": "CHK-1793854033836",
+    "title": "만족도",
+    "description": "고객 만족도 향상(경영평가)",
+    "order": 4,
+    "active": true
   }
 ]
