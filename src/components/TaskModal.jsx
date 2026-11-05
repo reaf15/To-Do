@@ -828,7 +828,7 @@ export default function TaskModal({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 font-bold text-slate-800">
                   <CheckSquare className="w-4 h-4 text-teal-600" />
-                  <span>공사 점검 체크박스</span>
+                  <span>해당공사 체크</span>
                   <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 border border-teal-200">
                     {formData.checklist.filter(c => c.completed).length} / {formData.checklist.length} 완료
                   </span>
@@ -888,7 +888,7 @@ export default function TaskModal({
               {/* Notice that items are managed exclusively in System Management */}
               <div className="flex items-center gap-1.5 text-[10px] text-slate-400 bg-slate-100/80 px-2.5 py-1.5 rounded-lg border border-slate-200/60">
                 <Lock className="w-3 h-3 text-slate-400 shrink-0" />
-                <span>체크박스 항목의 추가·수정·삭제는 <strong>[시스템 관리 &gt; 공사 체크박스 관리]</strong>에서만 가능합니다.</span>
+                <span>체크박스 항목의 추가·수정·삭제는 <strong>[시스템 관리 &gt; 해당공사 체크 관리]</strong>에서만 가능합니다.</span>
               </div>
             </div>
           )}

@@ -144,11 +144,11 @@ export default function ChecklistManagementView({
                 시스템 관리
               </span>
               <span>&gt;</span>
-              <span className="text-teal-300">공사 체크박스 항목 관리</span>
+              <span className="text-teal-300">해당공사 체크 항목 관리</span>
             </div>
             <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2 tracking-tight">
               <ListChecks className="w-6 h-6 text-teal-400" />
-              <span>공사 점검 체크박스 마스터 관리</span>
+              <span>해당공사 체크 마스터 관리</span>
             </h1>
             <p className="text-xs text-slate-300 mt-1.5 leading-relaxed max-w-2xl">
               새 공사 등록 및 수정 창에 표시될 **체크박스 항목을 중앙에서 관리**합니다.
@@ -423,7 +423,7 @@ export default function ChecklistManagementView({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 font-bold text-slate-800 text-xs">
                   <CheckSquare className="w-4 h-4 text-teal-600" />
-                  <span>공사 점검 체크박스</span>
+                  <span>해당공사 체크</span>
                   <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 border border-teal-200">
                     {activeTemplates.filter(t => previewChecked[t.id]).length} / {activeTemplates.length} 완료
                   </span>
@@ -444,7 +444,7 @@ export default function ChecklistManagementView({
               </div>
 
               {/* Checkbox Items */}
-              <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
+              <div className="grid grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
                 {activeTemplates.length === 0 ? (
                   <div className="py-4 text-center text-slate-400 text-[11px]">
                     활성화된 체크박스 항목이 없습니다.

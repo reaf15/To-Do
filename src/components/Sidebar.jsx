@@ -486,7 +486,7 @@ export default function Sidebar({
 
                 <button
                   onClick={() => onModuleChange('checklist-settings')}
-                  title="시스템관리 > 공사 체크박스 항목 관리"
+                  title="시스템관리 > 해당공사 체크 항목 관리"
                   className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
                     currentModule === 'checklist-settings'
                       ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
@@ -494,7 +494,7 @@ export default function Sidebar({
                   }`}
                 >
                   <ListChecks className="w-4 h-4 shrink-0 text-teal-400" />
-                  {!isCollapsed && <span className="truncate">공사 체크박스 관리</span>}
+                  {!isCollapsed && <span className="truncate">해당공사 체크 관리</span>}
                 </button>
                 <button
                   onClick={() => onModuleChange('backup-restore')}

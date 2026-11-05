@@ -173,8 +173,8 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated)
       });
-      showToast('공사 체크박스 항목이 안전하게 저장되었습니다.');
-      addAuditLog(`공사 체크박스 마스터 항목 변경 (${updated.length}개)`);
+      showToast('해당공사 체크 항목이 안전하게 저장되었습니다.');
+      addAuditLog(`해당공사 체크 마스터 항목 변경 (${updated.length}개)`);
     } catch (err) {
       console.error('Failed to save checklist templates to server:', err);
       showToast('체크박스 항목 로컬 저장 완료 (서버 동기화 지연)', 'info');
@@ -331,7 +331,7 @@ export default function App() {
       } else if (currentModule === 'backup-restore') {
         document.title = `데이터 백업 및 복구 | ${dept} | 시설물종합관리시스템`;
       } else if (currentModule === 'checklist-settings') {
-        document.title = `공사 체크박스 관리 | ${dept} | 시설물종합관리시스템`;
+        document.title = `해당공사 체크 관리 | ${dept} | 시설물종합관리시스템`;
       } else if (currentModule === 'version-history') {
         document.title = `버전 및 변경 이력 | ${dept} | 시설물종합관리시스템`;
       } else if (currentModule === 'facility-overview') {
