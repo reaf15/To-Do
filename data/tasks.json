@@ -2956,30 +2956,70 @@
     ]
   },
   {
-    "id": "TASK-JJ-01",
+    "year": "2026",
     "department": "진접체육문화센터",
     "budget": "수선유지비",
     "facility": "진접체육문화센터",
     "location": "수영장 풀장",
-    "title": "수영장 바닥 및 ��면 타일 박리구간 긴급 보수",
+    "title": "수영장 바닥 및 바닥면 타일 박리구간 긴급 보수",
     "estimatedCost": 5200000,
     "estimatedCostNote": "",
     "manager": "오세훈",
     "status": "완료",
+    "startDate": "2026-10-17",
+    "endDate": "2026-10-28",
     "quoteAmount": 4900000,
     "contractAmount": 4800000,
     "vendor": "신일타일",
-    "contact": "010-7712-4450",
     "memo": "이용객 발 끼임 방지 긴급 수중 본드 타일 보수 완료",
+    "photos": [],
+    "documents": [],
+    "checklist": [
+      {
+        "id": "CHK-1",
+        "title": "안전",
+        "description": "안전예방 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-2",
+        "title": "신재생",
+        "description": "에너지 시설 대상",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793849909634",
+        "title": "민원",
+        "description": "민원 응대 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793854033836",
+        "title": "만족도",
+        "description": "고객 만족도 향상(경영평가)",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859968784",
+        "title": "환경",
+        "description": "환경 개선 공사",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859995694",
+        "title": "공모",
+        "description": "공모 사업",
+        "completed": false
+      }
+    ],
+    "id": "TASK-JJ-01",
     "logs": [
       {
         "date": "2026-10-16",
         "author": "김일호",
         "message": "보수공사 완료 및 현장 점검 이���무"
       }
-    ],
-    "startDate": "2026-10-17",
-    "endDate": "2026-10-28"
+    ]
   },
   {
     "department": "평내체육문화센터",
