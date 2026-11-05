@@ -622,7 +622,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "시설비(파크골프장)",
     "facility": "남양주센터",
     "location": "",
     "title": "옥외 벤치",
@@ -684,6 +684,11 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "[budget] 직접 수정: 보류"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 시설비(파크골프장)"
       }
     ]
   },
@@ -803,7 +808,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "담당자를 [김일호](으)로 지정"
+        "message": "담당자를 [����일호](으)로 지정"
       },
       {
         "date": "2026-10-22",
@@ -1633,7 +1638,7 @@
     "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "",
-    "title": "화단 통행로 이동",
+    "title": "���단 통행로 이동",
     "estimatedCost": 500000,
     "estimatedCostNote": "",
     "manager": "권병학",
@@ -2123,7 +2128,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "B,C 축구장",
     "title": "B,C축구장 주차장 배수로 플륨관 교체",
@@ -2138,7 +2143,13 @@
     "vendor": "",
     "memo": "",
     "id": "TASK-18",
-    "logs": []
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
+      }
+    ]
   },
   {
     "id": "TASK-19",
@@ -2168,7 +2179,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "주차장 배면 옹벽",
     "title": "보강토 옹벽 보수",
@@ -2203,6 +2214,11 @@
         "date": "2026-11-05",
         "author": "김일호",
         "message": "진행 상태를 [검토](으)로 변경"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
       }
     ]
   },
@@ -2289,7 +2305,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "도농공원",
     "location": "옥상",
     "title": "도농공원 옥상 방수",
@@ -2309,12 +2325,17 @@
         "date": "2026-10-22",
         "author": "관리자",
         "message": "담당자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
       }
     ]
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "도농공원",
     "location": "탁구장",
     "title": "바닥 매트 설치",
@@ -2339,12 +2360,17 @@
         "date": "2026-10-22",
         "author": "관리자",
         "message": "담당자를 [김일호](으)로 지정"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
       }
     ]
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "삼패야구장",
     "location": "야구장 3면",
     "title": "삼패야구장 바닥 정지 작업",
@@ -2374,6 +2400,11 @@
         "date": "2026-11-05",
         "author": "김일호",
         "message": "진행 상태를 [검토](으)로 변경"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
       }
     ]
   },
