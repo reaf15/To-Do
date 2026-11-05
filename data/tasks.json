@@ -34,7 +34,7 @@
     "title": "남자 화장실 소변기 세관 작업",
     "estimatedCost": 1000000,
     "manager": "김일호",
-    "status": "설계",
+    "status": "완료",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -53,6 +53,11 @@
         "date": "2026-11-05",
         "author": "관리자",
         "message": "[budget] 직접 수정: 수선(일상)"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
   },
