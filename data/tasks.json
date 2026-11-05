@@ -1,52 +1,5 @@
 [
   {
-    "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
-    "facility": "남양주센터",
-    "location": "",
-    "title": "테스트",
-    "estimatedCost": null,
-    "estimatedCostNote": "",
-    "manager": "",
-    "status": "검토",
-    "startDate": "",
-    "endDate": "",
-    "quoteAmount": null,
-    "contractAmount": null,
-    "vendor": "",
-    "memo": "",
-    "photos": [],
-    "documents": [],
-    "checklist": [
-      {
-        "id": "CHK-1",
-        "title": "안전시설",
-        "description": "현장 치수 확인 및 시공 여건 사전 답사",
-        "completed": true
-      },
-      {
-        "id": "CHK-2",
-        "title": "신재생",
-        "description": "2개 이상 업체 비교견적 확보 및 단가 비교",
-        "completed": false
-      },
-      {
-        "id": "CHK-1793849909634",
-        "title": "민원응대",
-        "description": "",
-        "completed": false
-      }
-    ],
-    "id": "TASK-1793851093944",
-    "logs": [
-      {
-        "date": "2026-11-05",
-        "author": "시스템",
-        "message": "신규 공사 업무 등록"
-      }
-    ]
-  },
-  {
     "id": "TASK-1793845737608-644",
     "department": "남양주체육문화센터",
     "budget": "시설비(야구장)",
@@ -1710,7 +1663,7 @@
     "budget": "보류",
     "facility": "남양주센터",
     "location": "옥상",
-    "title": "체육관 옥상 방수(콘크리트면)",
+    "title": "체육관 옥상 방수(콘크리��면)",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "김일호",
