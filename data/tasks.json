@@ -458,7 +458,7 @@
     "estimatedCost": 50000,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "검토",
+    "status": "완료",
     "startDate": "2026-10-21",
     "endDate": "2026-10-21",
     "quoteAmount": null,
@@ -479,6 +479,11 @@
         "date": "2026-10-26",
         "author": "시스템",
         "message": "신규 공사 업무 등록"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
   },
@@ -1661,7 +1666,7 @@
     "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "",
-    "title": "계단 통행로 이동",
+    "title": "���단 통행로 이동",
     "estimatedCost": 500000,
     "estimatedCostNote": "",
     "manager": "권병학",
