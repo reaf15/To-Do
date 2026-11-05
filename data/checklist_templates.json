@@ -15,8 +15,8 @@
   },
   {
     "id": "CHK-1793849909634",
-    "title": "민원응대",
-    "description": "",
+    "title": "민원",
+    "description": "민원 응대 시설",
     "order": 3,
     "active": true
   }
