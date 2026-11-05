@@ -1610,6 +1610,9 @@ export default function App() {
             <ChecklistManagementView
               templates={checklistTemplates}
               onSaveTemplates={handleSaveChecklistTemplates}
+              tasks={tasks}
+              allTasks={allTasks}
+              showToast={showToast}
               onBackToApp={() => {
                 setCurrentModule('databases');
                 setSelectedDbId('facility');

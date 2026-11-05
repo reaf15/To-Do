@@ -406,3 +406,82 @@ export function importFromExcel(file) {
     reader.readAsArrayBuffer(file);
   });
 }
+
+/**
+ * 해당공사 체크 관리 마스터 및 공사별 체크 현황 엑셀(.xlsx) 내보내기
+ */
+export function exportChecklistDataToExcel({
+  templates = [],
+  tasks = [],
+  fileName = `남양주도시공사_해당공사체크_마스터데이터_${new Date().toISOString().split('T')[0]}.xlsx`
+}) {
+  const workbook = XLSX.utils.book_new();
+
+  // Sheet 1: 해당공사 체크 마스터 항목
+  const sortedTemplates = [...templates].sort((a, b) => (a.order || 0) - (b.order || 0));
+  const masterSheetData = sortedTemplates.map((item, idx) => ({
+    '순번': idx + 1,
+    '항목명': item.title || '',
+    '세부 설명': item.description || '',
+    '노출 상태': item.active !== false ? '노출(활성)' : '숨김(비활성)',
+    '항목 ID': item.id || '',
+    '적용 범위': '새 공사 등록 및 수정 창 기본 점검 항목'
+  }));
+
+  const wsMaster = XLSX.utils.json_to_sheet(masterSheetData);
+  wsMaster['!cols'] = [
+    { wch: 8 },  // 순번
+    { wch: 30 }, // 항목명
+    { wch: 50 }, // 세부 설명
+    { wch: 16 }, // 노출 상태
+    { wch: 14 }, // 항목 ID
+    { wch: 35 }  // 적용 범위
+  ];
+  XLSX.utils.book_append_sheet(workbook, wsMaster, '체크마스터항목');
+
+  // Sheet 2: 공사별 체크 현황
+  if (Array.isArray(tasks) && tasks.length > 0) {
+    const statusData = tasks.map((t, idx) => {
+      const chk = Array.isArray(t.checklist) ? t.checklist : [];
+      const completedList = chk.filter(c => c.completed);
+      const uncompletedList = chk.filter(c => !c.completed);
+      const totalCount = chk.length;
+      const completedCount = completedList.length;
+      const rate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+      return {
+        '연번': idx + 1,
+        '소속부서': t.department || '남양주체육문화센터',
+        '예산과목': t.budget || '수선유지비',
+        '공사명': t.title || '',
+        '시설': t.facility || '',
+        '위치': t.location || '',
+        '진행상태': t.status || '',
+        '담당자': t.manager || '',
+        '체크완료수': `${completedCount} / ${totalCount}`,
+        '체크달성률': `${rate}%`,
+        '체크(완료)된 항목': completedList.map((c, i) => `${i + 1}. ${c.title}`).join('\n'),
+        '미완료 항목': uncompletedList.map((c, i) => `${i + 1}. ${c.title}`).join('\n')
+      };
+    });
+
+    const wsStatus = XLSX.utils.json_to_sheet(statusData);
+    wsStatus['!cols'] = [
+      { wch: 8 },
+      { wch: 20 },
+      { wch: 14 },
+      { wch: 35 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 14 },
+      { wch: 14 },
+      { wch: 45 },
+      { wch: 45 }
+    ];
+    XLSX.utils.book_append_sheet(workbook, wsStatus, '공사별체크현황');
+  }
+
+  saveWorkbookAsFile(workbook, fileName);
+}

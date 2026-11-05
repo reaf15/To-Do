@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { exportChecklistDataToExcel } from '../utils/excelExport';
 import { 
   ShieldCheck, 
   ListChecks, 
+  FileSpreadsheet, 
+  Download, 
   Plus, 
   Trash2, 
   Edit3, 
@@ -31,7 +34,10 @@ export const DEFAULT_CHECKLIST_TEMPLATES = [
 export default function ChecklistManagementView({
   templates = DEFAULT_CHECKLIST_TEMPLATES,
   onSaveTemplates,
-  onBackToApp
+  onBackToApp,
+  tasks = [],
+  allTasks = [],
+  showToast
 }) {
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState('');
@@ -129,7 +135,42 @@ export default function ChecklistManagementView({
     }));
   };
 
-  const activeTemplates = sortedTemplates.filter(t => t.active);
+  // Download handlers (Excel & JSON)
+  const handleDownloadExcel = () => {
+    try {
+      const taskList = allTasks && allTasks.length > 0 ? allTasks : tasks;
+      exportChecklistDataToExcel({
+        templates: sortedTemplates,
+        tasks: taskList,
+        fileName: `남양주도시공사_해당공사체크_마스터데이터_${new Date().toISOString().split('T')[0]}.xlsx`
+      });
+      if (showToast) {
+        showToast('해당공사 체크 데이터(Excel .xlsx)가 성공적으로 다운로드되었습니다.');
+      }
+    } catch (err) {
+      console.error('Excel download failed:', err);
+      alert('엑셀 다운로드 중 오류가 발생했습니다: ' + err.message);
+    }
+  };
+
+  const handleDownloadJson = () => {
+    try {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sortedTemplates, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `해당공사체크_마스터_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      if (showToast) {
+        showToast('해당공사 체크 JSON 백업 데이터가 다운로드되었습니다.');
+      }
+    } catch (err) {
+      console.error('JSON export failed:', err);
+    }
+  };
+
+    const activeTemplates = sortedTemplates.filter(t => t.active);
 
   return (
     <div className="space-y-5 animate-in fade-in duration-200">
@@ -156,8 +197,27 @@ export default function ChecklistManagementView({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
             <button
+              type="button"
+              onClick={handleDownloadExcel}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition cursor-pointer shadow-sm active:scale-95"
+              title="해당공사 체크 마스터 및 공사별 현황 엑셀(.xlsx) 다운로드"
+            >
+              <FileSpreadsheet className="w-4 h-4 text-emerald-100" />
+              <span>데이터 다운로드 (Excel)</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadJson}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition cursor-pointer shadow-xs active:scale-95"
+              title="해당공사 체크 항목 JSON 백업 파일 다운로드"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-400" />
+              <span>JSON 백업</span>
+            </button>
+            <button
+              type="button"
               onClick={handleResetToDefaults}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition cursor-pointer shadow-xs"
               title="공공기관 표준 7개 항목으로 기본값 복원"
@@ -243,9 +303,20 @@ export default function ChecklistManagementView({
                   활성 {activeTemplates.length}개
                 </span>
               </div>
-              <span className="text-[11px] text-slate-400">
-                위/아래 화살표로 순서 조정 가능
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-slate-400 hidden sm:inline">
+                  위/아래 화살표로 순서 조정 가능
+                </span>
+                <button
+                  type="button"
+                  onClick={handleDownloadExcel}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition cursor-pointer shadow-2xs"
+                  title="해당공사 체크 데이터 엑셀(.xlsx) 다운로드"
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>엑셀 다운로드</span>
+                </button>
+              </div>
             </div>
 
             <div className="divide-y divide-slate-100">
