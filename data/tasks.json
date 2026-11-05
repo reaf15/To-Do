@@ -1465,7 +1465,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "조현호",
-    "status": "검토",
+    "status": "설계",
     "startDate": "",
     "endDate": "",
     "quoteAmount": 7770000,
@@ -1483,6 +1483,11 @@
         "date": "2026-10-21",
         "author": "조현호",
         "message": "담당자를 [조현호](���)로 지정"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -1663,7 +1668,7 @@
     "budget": "보류",
     "facility": "남양주센터",
     "location": "옥상",
-    "title": "체육관 옥상 방수(콘크리��면)",
+    "title": "체육관 옥상 방수(콘크리���면)",
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "김일호",
@@ -1828,7 +1833,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "남녀 탈의실",
     "title": "탈의실 락커 수 칸막이 공사",
@@ -1843,7 +1848,13 @@
     "vendor": "",
     "memo": "이용객 프라이버시 보호를 위���� 락커 칸막이 증설",
     "id": "TASK-08",
-    "logs": []
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
+      }
+    ]
   },
   {
     "department": "남���주체육문화센터",
@@ -1866,7 +1877,7 @@
   },
   {
     "department": "남양주체육문화센터",
-    "budget": "보류",
+    "budget": "수선(운영)",
     "facility": "남양주센터",
     "location": "A축구장",
     "title": "CCTV 증설",
@@ -1891,6 +1902,11 @@
         "date": "2026-10-29",
         "author": "김일호",
         "message": "[location] 직접 수정: A축구장"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[budget] 직접 수정: 수선(운영)"
       }
     ]
   },
@@ -1955,7 +1971,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "다목적잔���광장 화장실 배관 공사 포함",
     "manager": "조현호",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-15",
     "endDate": "2026-10-15",
     "quoteAmount": null,
@@ -1988,6 +2004,11 @@
         "date": "2026-11-05",
         "author": "관리자",
         "message": "진행 상태를 [검토](으)로 변경"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
