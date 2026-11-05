@@ -510,21 +510,39 @@
     "checklist": [
       {
         "id": "CHK-1",
-        "title": "안전시설",
-        "description": "현장 치수 확인 및 시공 여건 사전 답사",
-        "completed": false
+        "title": "안전",
+        "description": "안전예방 시설",
+        "completed": true
       },
       {
         "id": "CHK-2",
         "title": "신재생",
-        "description": "2개 이상 업체 비교견적 확보 및 단가 비교",
+        "description": "에너지 시설 대상",
         "completed": true
       },
       {
         "id": "CHK-1793849909634",
-        "title": "민원응대",
-        "description": "",
-        "completed": true
+        "title": "민원",
+        "description": "민원 응대 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793854033836",
+        "title": "만족도",
+        "description": "고객 만족도 향상(경영평가)",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859968784",
+        "title": "환경",
+        "description": "환경 개선 공사",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859995694",
+        "title": "공모",
+        "description": "공모 사업",
+        "completed": false
       }
     ],
     "id": "TASK-1792995208181",
