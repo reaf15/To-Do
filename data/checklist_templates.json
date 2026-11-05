@@ -9,7 +9,7 @@
   {
     "id": "CHK-2",
     "title": "신재생",
-    "description": "2개 이상 업체 비교견적 확보 및 단가 비교",
+    "description": "에너지 시설 대상",
     "order": 2,
     "active": true
   },
