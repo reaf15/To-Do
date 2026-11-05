@@ -1,54 +1,5 @@
 [
   {
-    "department": "남양주체육문화센터",
-    "budget": "수선(운영)",
-    "facility": "남양주센터",
-    "location": "",
-    "title": "ㄹㅇㅁㄶㄹㅇㅁㄴㅇㄹ",
-    "estimatedCost": null,
-    "estimatedCostNote": "",
-    "manager": "",
-    "status": "검토",
-    "startDate": "",
-    "endDate": "",
-    "quoteAmount": null,
-    "contractAmount": null,
-    "vendor": "",
-    "memo": "",
-    "photos": [],
-    "documents": [],
-    "checklist": [
-      {
-        "id": "CHK-1793848322303-bblx",
-        "text": "안전",
-        "completed": false
-      },
-      {
-        "id": "CHK-1793848327801-papk",
-        "text": "신재생",
-        "completed": false
-      },
-      {
-        "id": "CHK-1793848343479-075f",
-        "text": "환경",
-        "completed": false
-      },
-      {
-        "id": "CHK-1793848347443-twg3",
-        "text": "민원",
-        "completed": false
-      }
-    ],
-    "id": "TASK-1793848366837",
-    "logs": [
-      {
-        "date": "2026-11-05",
-        "author": "시스템",
-        "message": "신규 공사 업무 등록"
-      }
-    ]
-  },
-  {
     "id": "TASK-1793845737608-644",
     "department": "남양주체육문화센터",
     "budget": "시설비(야구장)",
