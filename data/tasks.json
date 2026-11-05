@@ -1651,7 +1651,7 @@
     "logs": [
       {
         "date": "2026-10-21",
-        "author": "조현호",
+        "author": "���현호",
         "message": "신규 ��사 업무 등록"
       },
       {
@@ -3137,24 +3137,64 @@
     "endDate": "2026-10-09"
   },
   {
-    "id": "TASK-PF-01",
+    "year": "2026",
     "department": "주차시설부",
     "budget": "수선유지비",
     "facility": "주차시설부",
     "location": "평내호평역 공영주차장",
-    "title": "공영��차장 출차 차단기 및 루프코일 센서 교체",
+    "title": "공영차장 출차 차단기 및 루프코일 센서 교체",
     "estimatedCost": 5500000,
     "estimatedCostNote": "",
     "manager": "정원석",
     "status": "설계",
+    "startDate": "2026-10-05",
+    "endDate": "2026-10-12",
     "quoteAmount": 5100000,
     "contractAmount": null,
     "vendor": "아마노코리아",
-    "contact": "010-3112-9900",
     "memo": "������량 ���인식 오류 개선을 위한 루프코일 재매설",
-    "logs": [],
-    "startDate": "2026-10-05",
-    "endDate": "2026-10-12"
+    "photos": [],
+    "documents": [],
+    "checklist": [
+      {
+        "id": "CHK-1",
+        "title": "안전",
+        "description": "안전예방 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-2",
+        "title": "신재생",
+        "description": "에너지 시설 대상",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793849909634",
+        "title": "민원",
+        "description": "민원 응대 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793854033836",
+        "title": "만족도",
+        "description": "고객 만족도 향상(경영평가)",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859968784",
+        "title": "환경",
+        "description": "환경 개선 공사",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859995694",
+        "title": "공모",
+        "description": "공모 사업",
+        "completed": false
+      }
+    ],
+    "id": "TASK-PF-01",
+    "logs": []
   },
   {
     "id": "TASK-EL-01",
