@@ -808,7 +808,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "담당자를 [����일호](으)로 지정"
+        "message": "담당자를 [�����일호](으)로 지정"
       },
       {
         "date": "2026-10-22",
@@ -1330,7 +1330,7 @@
     "estimatedCost": 2000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "startDate": "",
     "endDate": "",
     "quoteAmount": null,
@@ -1348,6 +1348,11 @@
         "date": "2026-10-21",
         "author": "관리자",
         "message": "담당자를 [권병학](으)로 지정"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -2287,7 +2292,7 @@
     "estimatedCost": 12000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-05",
     "endDate": "2026-10-16",
     "quoteAmount": null,
@@ -2300,6 +2305,11 @@
         "date": "2026-10-11",
         "author": "권병학",
         "message": "다산센터 ���장 분전반 여�� 용량 확인"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -2417,7 +2427,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "quoteAmount": null,
     "contractAmount": null,
     "vendor": "",
@@ -2428,6 +2438,11 @@
         "date": "2026-10-14",
         "author": "권병학",
         "message": "공�� ���위 도면 표�� 작업 중"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ],
     "startDate": "2026-10-13",
@@ -2443,7 +2458,7 @@
     "estimatedCost": 8000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-15",
     "endDate": "2026-10-23",
     "quoteAmount": null,
@@ -2451,7 +2466,13 @@
     "vendor": "",
     "memo": "우천 시 진흙탕 방����� 위한 25mm 쇄�� 골재 50톤 포�� 및 다짐",
     "id": "TASK-28",
-    "logs": []
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
+      }
+    ]
   },
   {
     "department": "남양주체육문화센터",
@@ -2462,7 +2483,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-17",
     "endDate": "2026-10-26",
     "quoteAmount": null,
@@ -2480,6 +2501,11 @@
         "date": "2026-10-20",
         "author": "김일호",
         "message": "담당자를 [권병학](으)로 지정"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -2492,7 +2518,7 @@
     "estimatedCost": 3000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-01",
     "endDate": "2026-10-12",
     "quoteAmount": null,
@@ -2505,6 +2531,11 @@
         "date": "2026-10-15",
         "author": "권병학",
         "message": "출입구 치수 실측: 가로 4.2m x 높이 3.5m"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
       }
     ]
   },
@@ -2517,7 +2548,7 @@
     "estimatedCost": 3000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "검토",
+    "status": "설계",
     "startDate": "2026-10-03",
     "endDate": "2026-10-15",
     "quoteAmount": null,
@@ -2525,7 +2556,13 @@
     "vendor": "",
     "memo": "휠체어 바�� 공기��� 주입 및 먼지 털이용 저소음 콤���레샤 설치",
     "id": "TASK-32",
-    "logs": []
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [설계](으)로 변경"
+      }
+    ]
   },
   {
     "department": "남양주체육문화센��",
