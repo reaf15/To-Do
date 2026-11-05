@@ -469,11 +469,13 @@ export default function ChecklistManagementView({
                           className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer accent-teal-600 mt-0.5 shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <div className={`text-xs ${isChecked ? 'line-through text-slate-400 font-medium' : 'text-slate-800 font-bold'}`}>
+                          <div className={`text-xs ${isChecked ? 'text-emerald-950 font-bold' : 'text-slate-800 font-bold'}`}>
                             {item.title}
                           </div>
                           {item.description && (
-                            <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                            <div className={`text-[10px] mt-0.5 truncate ${
+                              isChecked ? 'text-emerald-700/80' : 'text-slate-400'
+                            }`} title={item.description}>
                               {item.description}
                             </div>
                           )}

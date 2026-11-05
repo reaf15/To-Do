@@ -870,13 +870,15 @@ export default function TaskModal({
                     <div className="flex-1 min-w-0">
                       <div className={`text-xs ${
                         item.completed 
-                          ? 'line-through text-slate-400 font-medium' 
+                          ? 'text-emerald-950 font-bold' 
                           : 'text-slate-800 font-bold'
                       }`}>
                         {item.title}
                       </div>
                       {item.description && (
-                        <div className="text-[10px] text-slate-400 mt-0.5 truncate" title={item.description}>
+                        <div className={`text-[10px] mt-0.5 truncate ${
+                          item.completed ? 'text-emerald-700/80' : 'text-slate-400'
+                        }`} title={item.description}>
                           {item.description}
                         </div>
                       )}
