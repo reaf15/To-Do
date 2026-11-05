@@ -1,5 +1,31 @@
 [
   {
+    "id": "TASK-1793845737608-644",
+    "department": "남양주체육문화센터",
+    "budget": "시설비(야구장)",
+    "facility": "성인야구장",
+    "location": "",
+    "title": "관람석 데크 보수 공사",
+    "estimatedCost": null,
+    "manager": "권병학",
+    "status": "진행",
+    "quoteAmount": null,
+    "contractAmount": 13000000,
+    "vendor": "",
+    "startDate": "",
+    "endDate": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "권병학",
+        "message": "스프레드시트 간편 행 추가 등록"
+      }
+    ]
+  },
+  {
     "id": "TASK-1793839622027-531",
     "department": "남양주체육문화센터",
     "budget": "수선(일상)",
