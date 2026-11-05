@@ -1,8 +1,8 @@
 [
   {
     "id": "CHK-1",
-    "title": "안전시설",
-    "description": "현장 치수 확인 및 시공 여건 사전 답사",
+    "title": "안전",
+    "description": "안전예방 시설 여부",
     "order": 1,
     "active": true
   },
