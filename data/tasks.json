@@ -2359,6 +2359,46 @@
     "contractAmount": null,
     "vendor": "",
     "memo": "",
+    "photos": [],
+    "documents": [],
+    "checklist": [
+      {
+        "id": "CHK-1",
+        "title": "안전",
+        "description": "안전예방 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-2",
+        "title": "신재생",
+        "description": "에너지 시설 대상",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793849909634",
+        "title": "민원",
+        "description": "민원 응대 시설",
+        "completed": true
+      },
+      {
+        "id": "CHK-1793854033836",
+        "title": "만족도",
+        "description": "고객 만족도 향상(경영평가)",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859968784",
+        "title": "환경",
+        "description": "환경 개선 공사",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859995694",
+        "title": "공모",
+        "description": "공모 사업",
+        "completed": false
+      }
+    ],
     "id": "TASK-25",
     "logs": [
       {
