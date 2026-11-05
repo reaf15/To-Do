@@ -848,13 +848,13 @@ export default function TaskModal({
                 />
               </div>
 
-              {/* Checkbox Items List */}
-              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+              {/* Checkbox Items List (2열 배치) */}
+              <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
                 {formData.checklist.map((item) => (
                   <div 
                     key={item.id}
                     onClick={() => handleToggleCheckItem(item.id)}
-                    className={`flex items-start gap-2.5 p-2 rounded-lg border transition cursor-pointer select-none ${
+                    className={`flex items-start gap-2 p-2 rounded-lg border transition cursor-pointer select-none ${
                       item.completed 
                         ? 'bg-emerald-50/70 border-emerald-200' 
                         : 'bg-white border-slate-200 hover:border-teal-300'
@@ -876,7 +876,7 @@ export default function TaskModal({
                         {item.title}
                       </div>
                       {item.description && (
-                        <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                        <div className="text-[10px] text-slate-400 mt-0.5 truncate" title={item.description}>
                           {item.description}
                         </div>
                       )}
