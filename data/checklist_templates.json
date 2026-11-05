@@ -2,7 +2,7 @@
   {
     "id": "CHK-1",
     "title": "안전",
-    "description": "안전예방 시설 여부",
+    "description": "안전예방 시설",
     "order": 1,
     "active": true
   },
