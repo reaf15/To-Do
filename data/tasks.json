@@ -1,31 +1,5 @@
 [
   {
-    "id": "TASK-1793837431557-45",
-    "department": "남양주체육문화센터",
-    "budget": "보류",
-    "facility": "삼패야구장",
-    "location": "야구장 3면",
-    "title": "fdsag",
-    "estimatedCost": null,
-    "manager": "김일호",
-    "status": "검토",
-    "quoteAmount": null,
-    "contractAmount": null,
-    "vendor": "",
-    "startDate": "",
-    "endDate": "",
-    "memo": "",
-    "photos": [],
-    "documents": [],
-    "logs": [
-      {
-        "date": "2026-11-05",
-        "author": "김일호",
-        "message": "스프레드시트 간편 행 추가 등록"
-      }
-    ]
-  },
-  {
     "department": "남양주체육문화센터",
     "budget": "수선(일상)",
     "facility": "남양주센터",
