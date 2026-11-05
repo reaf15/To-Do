@@ -8,7 +8,8 @@ import {
   Wifi,
   Hammer,
   Database,
-  ExternalLink
+  ExternalLink,
+  Calendar
 } from 'lucide-react';
 import { MANAGERS } from '../data/initialTasks';
 import { CURRENT_SYSTEM_VERSION } from '../data/initialVersionHistory';
@@ -28,7 +29,10 @@ export default function Header({
   dbCount,
   selectedDepartment,
   selectedDbId,
-  managers = MANAGERS
+  managers = MANAGERS,
+  selectedYear = '2026',
+  onYearChange,
+  availableYears = ['2025', '2026', '2027', '2028', '2029']
 }) {
   const activeManagers = managers && managers.length > 0 ? managers : MANAGERS;
   return (
@@ -72,6 +76,24 @@ export default function Header({
           {/* Right Action Bar */}
           <div className="flex items-center gap-2 sm:gap-3">
             
+            {/* Fiscal Year (회계연도) Selector */}
+            <div className="flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/35 px-2.5 py-1.5 rounded-lg text-xs font-bold text-amber-300 shadow-sm">
+              <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
+              <span className="hidden lg:inline text-amber-200/90">회기:</span>
+              <select
+                value={selectedYear}
+                onChange={(e) => onYearChange && onYearChange(e.target.value)}
+                aria-label="회계연도 선택"
+                className="bg-transparent text-amber-300 font-extrabold focus:outline-none cursor-pointer border-none py-0 text-xs"
+              >
+                {availableYears.map((yr) => (
+                  <option key={yr} value={yr} className="bg-slate-900 text-white font-bold">
+                    {yr}년도
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Persona / Current User Selector */}
             <div className="hidden md:flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-xs">
               <UserCheck className="w-4 h-4 text-teal-400" />
@@ -156,6 +178,22 @@ export default function Header({
         {/* Mobile Title Badge */}
         <div className="flex items-center px-2 py-1 bg-slate-900 rounded-lg border border-slate-700 text-teal-300 font-bold text-[11px]">
           <span>시설·공사 ({totalTasksCount}건)</span>
+        </div>
+
+        {/* Mobile Year Selector */}
+        <div className="flex items-center gap-1 bg-amber-500/15 border border-amber-500/35 px-2 py-1 rounded text-xs font-bold text-amber-300">
+          <Calendar className="w-3.5 h-3.5 text-amber-400" />
+          <select
+            value={selectedYear}
+            onChange={(e) => onYearChange && onYearChange(e.target.value)}
+            className="bg-transparent text-amber-300 font-bold focus:outline-none cursor-pointer border-none py-0 text-xs"
+          >
+            {availableYears.map((yr) => (
+              <option key={yr} value={yr} className="bg-slate-900 text-white font-bold">
+                {yr}년
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Mobile Persona Switcher */}

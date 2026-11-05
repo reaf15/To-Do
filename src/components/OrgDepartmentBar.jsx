@@ -4,7 +4,8 @@ import {
   ChevronRight, 
   UserCheck,
   Users,
-  Eye
+  Eye,
+  Calendar
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 import { MANAGERS } from '../data/initialTasks';
@@ -20,7 +21,10 @@ export default function OrgDepartmentBar({
   isHost = true,
   onOpenVersion,
   isActualHost = false,
-  onToggleStaffPreview
+  onToggleStaffPreview,
+  selectedYear = '2026',
+  onYearChange,
+  availableYears = ['2025', '2026', '2027', '2028', '2029']
 }) {
   // Current active division object based on selectedDepartment
   const currentDiv = ORGANIZATION_TREE.find(div => 
@@ -89,6 +93,24 @@ export default function OrgDepartmentBar({
             <span>담당자 설정</span>
           </button>
         )}
+
+        {/* Fiscal Year (회계연도) Selector */}
+        <div className="flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300 shadow-2xs">
+          <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+          <span className="text-amber-200/90 text-[11px] hidden sm:inline">회계연도:</span>
+          <select
+            value={selectedYear}
+            onChange={(e) => onYearChange && onYearChange(e.target.value)}
+            aria-label="회계연도 선택"
+            className="bg-transparent text-amber-300 font-extrabold focus:outline-none cursor-pointer border-none py-0 text-xs"
+          >
+            {availableYears.map((yr) => (
+              <option key={yr} value={yr} className="bg-slate-900 text-white font-bold">
+                {yr}년도
+              </option>
+            ))}
+          </select>
+        </div>
 
         {currentUser && onUserChange && (
           <div className="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 text-xs">

@@ -97,7 +97,8 @@ export default function TaskModal({
   allDepartmentManagers = {},
   managers = MANAGERS,
   isReadOnly = false,
-  checklistTemplates = []
+  checklistTemplates = [],
+  selectedYear = '2026'
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
@@ -154,6 +155,7 @@ export default function TaskModal({
   };
 
   const [formData, setFormData] = useState({
+    year: selectedYear || '2026',
     department: selectedDepartment,
     budget: defaultBudget,
     facility: getDeptFacilityList(selectedDepartment)[0] || '남양주센터',
@@ -345,6 +347,7 @@ export default function TaskModal({
       const taskDept = currentTask.department || selectedDepartment || '남양주체육문화센터';
       const deptFacs = getDeptFacilityList(taskDept);
       setFormData({
+        year: currentTask.year || currentTask.startDate?.substring(0, 4) || selectedYear || '2026',
         department: taskDept,
         budget: currentTask.budget || defaultBudget,
         facility: currentTask.facility || deptFacs[0] || taskDept,
@@ -367,6 +370,7 @@ export default function TaskModal({
     } else {
       const deptFacs = getDeptFacilityList(selectedDepartment);
       setFormData({
+        year: selectedYear || '2026',
         department: selectedDepartment || '남양주체육문화센터',
         budget: defaultBudget,
         facility: deptFacs[0] || (selectedDepartment.includes('체육문화센터') ? selectedDepartment.replace('체육문화센터', '센터') : selectedDepartment),
@@ -455,6 +459,7 @@ export default function TaskModal({
 
     const payload = {
       ...formData,
+      year: formData.year || selectedYear || '2026',
       department: formData.department || selectedDepartment || '남양주체육문화센터',
       id: currentTask ? currentTask.id : `TASK-${Date.now()}`,
       estimatedCost: formData.estimatedCost ? Number(formData.estimatedCost) : null,
@@ -523,10 +528,24 @@ export default function TaskModal({
                 {formData.department}
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] text-slate-500 font-semibold">부서 변경:</span>
-              <select
-                value={formData.department}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] text-amber-700 font-bold">회계연도:</span>
+                <select
+                  value={formData.year || selectedYear || '2026'}
+                  onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
+                  className="text-xs font-black bg-white border border-amber-300 rounded-lg px-2.5 py-1 text-amber-800 focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer shadow-xs"
+                >
+                  {['2025', '2026', '2027', '2028', '2029'].map(yr => (
+                    <option key={yr} value={yr}>{yr}년도</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] text-slate-500 font-semibold">부서 변경:</span>
+                <select
+                  value={formData.department}
                 onChange={(e) => {
                   const nextDept = e.target.value;
                   const nextFacs = getDeptFacilityList(nextDept);
@@ -551,6 +570,7 @@ export default function TaskModal({
               </select>
             </div>
           </div>
+        </div>
 
           {/* Row 1: Budget, Facility, Location */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

@@ -31,7 +31,8 @@ export default function StatsCards({
   onRenameCategory,
   onDeleteCategory,
   managers = ['김일호', '권병학', '조현호'],
-  onOpenDeptManagersModal
+  onOpenDeptManagersModal,
+  selectedYear = '2026'
 }) {
   const totalCount = tasks.length;
   
@@ -196,8 +197,9 @@ export default function StatsCards({
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                예산금액
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <span>예산금액</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded font-bold bg-amber-50 text-amber-700 border border-amber-200">{selectedYear}년</span>
               </span>
             </div>
 
@@ -314,8 +316,9 @@ export default function StatsCards({
         <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-slate-300 transition">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                집행예정 및 잔여예산
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <span>집행예정 및 잔여예산</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded font-bold bg-amber-50 text-amber-700 border border-amber-200">{selectedYear}년</span>
               </span>
             </div>
             <span 
@@ -456,6 +459,7 @@ export default function StatsCards({
         onAddCategory={onAddCategory}
         onRenameCategory={onRenameCategory}
         onDeleteCategory={onDeleteCategory}
+        selectedYear={selectedYear}
       />
     </>
   );

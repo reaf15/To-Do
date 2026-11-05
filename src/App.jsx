@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import confetti from 'canvas-confetti';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ArrowRightLeft } from 'lucide-react';
+import CarryoverModal from './components/CarryoverModal';
 import Sidebar from './components/Sidebar';
 import StatsCards from './components/StatsCards';
 import FilterBar from './components/FilterBar';
@@ -43,8 +44,26 @@ const LOCAL_STORAGE_HISTORY = 'nyj_login_history_v1';
 const LOCAL_STORAGE_SUBMISSIONS = 'nyj_submissions_status_v1';
 const LOCAL_STORAGE_BUDGETS = 'nyj_budget_allocations_v1';
 const LOCAL_STORAGE_BUDGET_CATEGORIES = 'nyj_budget_categories_v2';
+const LOCAL_STORAGE_YEAR = 'nyj_selected_year_v1';
 const LOCAL_STORAGE_FACILITIES = 'nyj_facilities_v1';
 const LOCAL_STORAGE_DEPT_MANAGERS = 'nyj_dept_managers_v1';
+
+export const getTaskYear = (t) => {
+  if (t?.year) return String(t.year);
+  if (t?.startDate && t.startDate.length >= 4) {
+    const y = t.startDate.substring(0, 4);
+    if (/^\d{4}$/.test(y)) return y;
+  }
+  if (t?.endDate && t.endDate.length >= 4) {
+    const y = t.endDate.substring(0, 4);
+    if (/^\d{4}$/.test(y)) return y;
+  }
+  if (t?.createdAt && t.createdAt.length >= 4) {
+    const y = t.createdAt.substring(0, 4);
+    if (/^\d{4}$/.test(y)) return y;
+  }
+  return '2026';
+};
 
 export function flattenFacilities(data) {
   if (Array.isArray(data)) return data;
@@ -97,6 +116,24 @@ export default function App() {
       return '남양주체육문화센터';
     }
   });
+
+  // Fiscal Year State (기본 2026년도)
+  const [selectedYear, setSelectedYear] = useState(() => {
+    try {
+      return localStorage.getItem(LOCAL_STORAGE_YEAR) || '2026';
+    } catch {
+      return '2026';
+    }
+  });
+
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    try {
+      localStorage.setItem(LOCAL_STORAGE_YEAR, year);
+    } catch (e) {}
+    showToast(`${year}년도 회계연도로 전환되었습니다.`);
+    addAuditLog(`회계연도 전환: [${year}년도]`);
+  };
 
   // Selected Database ID: 'facility' (시설·공사 관리대장) or custom database IDs
   const [selectedDbId, setSelectedDbId] = useState('facility');
@@ -219,16 +256,73 @@ export default function App() {
     };
   });
 
-  // Current selected department budget allocations dynamically keyed by department
-  const currentDeptBudgets = useMemo(() => {
-    if (budgets && typeof budgets === 'object') {
-      const deptData = budgets[selectedDepartment] || (selectedDepartment === '남양주체육문화센터' ? budgets['남양주체육문화센터'] : null);
+  // Helper to extract department budget map for a specific year
+  const getDeptBudgetsForYear = (allBudgets, year, department) => {
+    if (!allBudgets || typeof allBudgets !== 'object') {
+      return { '수선유지비': department === '남양주체육문화센터' ? 150000000 : 100000000 };
+    }
+    // 1. If year-keyed:
+    if (allBudgets[year] && typeof allBudgets[year] === 'object') {
+      const deptData = allBudgets[year][department];
       if (deptData && typeof deptData === 'object' && Object.keys(deptData).length > 0) {
         return deptData;
       }
     }
-    return { '수선유지비': selectedDepartment === '남양주체육문화센터' ? 150000000 : 100000000 };
-  }, [budgets, selectedDepartment]);
+    // 2. If year is '2026' and legacy flat structure:
+    if (year === '2026' && allBudgets[department] && typeof allBudgets[department] === 'object') {
+      return allBudgets[department];
+    }
+    // 3. Fallback for new years: inherit categories from 2026 with 0 amounts
+    const baseDept = (allBudgets['2026'] && allBudgets['2026'][department]) || allBudgets[department];
+    if (baseDept && typeof baseDept === 'object') {
+      const freshObj = {};
+      Object.keys(baseDept).forEach(cat => {
+        freshObj[cat] = 0;
+      });
+      return freshObj;
+    }
+    return { '수선유지비': 0 };
+  };
+
+  // Helper to update department budget for a specific year
+  const updateDeptBudgetsForYear = (allBudgets, year, department, updaterFn) => {
+    const root = { ...(allBudgets && typeof allBudgets === 'object' ? allBudgets : {}) };
+    const hasYearKeys = Object.keys(root).some(k => /^\d{4}$/.test(k));
+    let yearMap = {};
+    if (!hasYearKeys) {
+      yearMap = { '2026': { ...root } };
+    } else {
+      yearMap = { ...root };
+    }
+
+    if (!yearMap[year] || typeof yearMap[year] !== 'object') {
+      yearMap[year] = {};
+    }
+    const currentDeptObj = getDeptBudgetsForYear(yearMap, year, department);
+    const updatedDeptObj = updaterFn(currentDeptObj);
+    yearMap[year] = {
+      ...yearMap[year],
+      [department]: updatedDeptObj
+    };
+    return yearMap;
+  };
+
+  // Current selected department budget allocations dynamically keyed by department & selectedYear
+  const currentDeptBudgets = useMemo(() => {
+    return getDeptBudgetsForYear(budgets, selectedYear, selectedDepartment);
+  }, [budgets, selectedYear, selectedDepartment]);
+
+  // Current year all department budgets (passed to BudgetModal)
+  const currentYearAllBudgets = useMemo(() => {
+    if (budgets && budgets[selectedYear] && typeof budgets[selectedYear] === 'object') {
+      return budgets[selectedYear];
+    }
+    const hasYearKeys = Object.keys(budgets || {}).some(k => /^\d{4}$/.test(k));
+    if (selectedYear === '2026') {
+      return hasYearKeys ? (budgets['2026'] || {}) : (budgets || {});
+    }
+    return {};
+  }, [budgets, selectedYear]);
 
   // Current selected department budget categories (기본: 수선유지비)
   const currentDeptCategories = useMemo(() => {
@@ -1177,10 +1271,57 @@ export default function App() {
     }
   };
 
-  // Filter tasks strictly by selectedDepartment
+  // Filter tasks strictly by selectedDepartment AND selectedYear
   const departmentTasks = useMemo(() => {
-    return tasks.filter((t) => (t.department || '남양주체육문화센터') === selectedDepartment);
-  }, [tasks, selectedDepartment]);
+    return tasks.filter((t) => {
+      const matchDept = (t.department || '남양주체육문화센터') === selectedDepartment;
+      const matchYear = String(getTaskYear(t)) === String(selectedYear);
+      return matchDept && matchYear;
+    });
+  }, [tasks, selectedDepartment, selectedYear]);
+
+  // Previous year string for carryover detection
+  const prevYear = useMemo(() => String(Number(selectedYear) - 1), [selectedYear]);
+
+  // Tasks eligible for carryover from prevYear (uncompleted or '검토')
+  const carryoverEligibleTasks = useMemo(() => {
+    return tasks.filter((t) => {
+      const matchDept = (t.department || '남양주체육문화센터') === selectedDepartment;
+      const matchPrevYear = String(getTaskYear(t)) === prevYear;
+      const isEligible = t.status !== '완료' || t.status === '검토';
+      return matchDept && matchPrevYear && isEligible;
+    });
+  }, [tasks, selectedDepartment, prevYear]);
+
+  const [isCarryoverModalOpen, setIsCarryoverModalOpen] = useState(false);
+
+  // Carryover handler: updates task.year to targetYear and registers log
+  const handleCarryover = (taskIds, targetYear) => {
+    if (!taskIds || taskIds.length === 0) return;
+    const nowIso = new Date().toISOString();
+    const updatedTasks = tasks.map(t => {
+      if (taskIds.includes(t.id)) {
+        const oldYear = getTaskYear(t);
+        const newLogs = [
+          ...(Array.isArray(t.logs) ? t.logs : []),
+          {
+            timestamp: nowIso,
+            user: currentUser || '관리자',
+            message: `[회기 이월] ${oldYear}년도에서 ${targetYear}년도로 이월 처리 (상태: ${t.status || '미정'})`
+          }
+        ];
+        return {
+          ...t,
+          year: targetYear,
+          logs: newLogs
+        };
+      }
+      return t;
+    });
+    persistTasks(updatedTasks);
+    showToast(`공사 ${taskIds.length}건이 ${targetYear}년도로 성공적으로 이월되었습니다.`);
+    addAuditLog(`회기 이월 실행: [${selectedDepartment}] ${prevYear}년 -> ${targetYear}년 (${taskIds.length}건)`);
+  };
 
   // Filter tasks for the active department
   const filteredTasks = useMemo(() => {
@@ -1674,18 +1815,48 @@ export default function App() {
                 onOpenVersion={() => setCurrentModule('version-history')}
                 isActualHost={isActualHost}
                 onToggleStaffPreview={setPreviewAsStaff}
+                selectedYear={selectedYear}
+                onYearChange={handleYearChange}
               />
 
               {/* Sub-item A: 시설·공사 관리 (Maintenance Management Suite) */}
               {selectedDbId === 'facility' && (
                 <>
+                  {/* Carryover Alert Banner */}
+                  {carryoverEligibleTasks.length > 0 && (
+                    <div className="mb-4 bg-gradient-to-r from-amber-500/10 via-amber-50 to-orange-50 border border-amber-300 rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs animate-in fade-in duration-200">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-700 flex items-center justify-center font-bold shrink-0">
+                          <ArrowRightLeft className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                            <span>{prevYear}년도 미완료/검토 공사 ({carryoverEligibleTasks.length}건) 발견</span>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-800">회기 이월 가능</span>
+                          </div>
+                          <p className="text-[11px] text-slate-600 mt-0.5">
+                            전년도 미완료 공사 및 '검토' 안건을 {selectedYear}년도로 일괄 또는 선택하여 이월할 수 있습니다. ('검토' 상태는 예산이 차감되지 않습니다)
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsCarryoverModalOpen(true)}
+                        className="px-3.5 py-2 rounded-lg text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition active:scale-95 shrink-0 flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <ArrowRightLeft className="w-3.5 h-3.5" />
+                        <span>{selectedYear}년도로 이월하기</span>
+                      </button>
+                    </div>
+                  )}
+
                   {/* KPI Summary Cards */}
                   <StatsCards
                     tasks={departmentTasks}
                     allTasks={tasks}
                     selectedDepartment={selectedDepartment}
                     budgets={currentDeptBudgets}
-                    allBudgets={budgets}
+                    allBudgets={currentYearAllBudgets}
                     onFilterClick={handleStatsFilterClick}
                     onStatusFilterClick={handleStatusFilterClick}
                     selectedStatus={selectedStatus}
@@ -1699,6 +1870,7 @@ export default function App() {
                     onDeleteCategory={handleDeleteDeptCategory}
                     managers={currentDeptManagers}
                     onOpenDeptManagersModal={() => setIsDeptManagersModalOpen(true)}
+                    selectedYear={selectedYear}
                   />
 
                   {/* Filter and View mode Toolbar */}
@@ -1847,6 +2019,7 @@ export default function App() {
         managers={currentDeptManagers}
         isReadOnly={isReadOnly}
         checklistTemplates={checklistTemplates}
+        selectedYear={selectedYear}
       />
 
       {/* Department Managers Modal */}
@@ -1856,6 +2029,17 @@ export default function App() {
         departmentManagers={departmentManagers}
         selectedDepartment={selectedDepartment}
         onSaveManagers={handleSaveDepartmentManagers}
+      />
+
+      {/* Carryover Modal (회기 이월 관리) */}
+      <CarryoverModal
+        isOpen={isCarryoverModalOpen}
+        onClose={() => setIsCarryoverModalOpen(false)}
+        tasks={carryoverEligibleTasks}
+        prevYear={prevYear}
+        targetYear={selectedYear}
+        onCarryover={handleCarryover}
+        selectedDepartment={selectedDepartment}
       />
 
       {/* Messenger / KakaoTalk Share Modal */}

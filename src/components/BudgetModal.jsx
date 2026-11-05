@@ -26,7 +26,8 @@ export default function BudgetModal({
   tasks = [],
   onAddCategory,
   onRenameCategory,
-  onDeleteCategory
+  onDeleteCategory,
+  selectedYear = '2026'
 }) {
   const [targetDepartment, setTargetDepartment] = useState(currentDepartment);
   const [formData, setFormData] = useState({});
@@ -183,7 +184,7 @@ export default function BudgetModal({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (onSave) {
-      onSave(formData, targetDepartment);
+      onSave(formData, targetDepartment, selectedYear);
     }
     onClose();
   };
@@ -204,8 +205,9 @@ export default function BudgetModal({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-black tracking-tight text-white">
-                  부서별 예산금액 및 과목 관리
+                <h2 className="text-base font-black tracking-tight text-white flex items-center gap-2">
+                  <span>부서별 예산금액 및 과목 관리</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">{selectedYear}년도</span>
                 </h2>
                 <span className="text-[11px] px-2 py-0.5 rounded font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">
                   기본: 수선유지비
@@ -244,7 +246,7 @@ export default function BudgetModal({
         <div className="bg-gradient-to-r from-blue-50 via-slate-50 to-teal-50 border-b border-slate-200 px-6 py-2.5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5 font-bold text-slate-700">
             <Building2 className="w-4 h-4 text-teal-600" />
-            <span>[{targetDepartment}] 예산 과목 및 배정액 설정</span>
+            <span>[{targetDepartment}] {selectedYear}년도 예산 과목 및 배정액 설정</span>
           </div>
           <span className="text-[11px] text-slate-500">
             기본: 수선유지비 (부서별 개별 수정 및 과목 추가 가능)
