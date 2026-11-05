@@ -19,6 +19,7 @@ import OrgDepartmentBar from './components/OrgDepartmentBar';
 import FacilityOverviewView from './components/FacilityOverviewView';
 import BackupRestoreView from './components/BackupRestoreView';
 import VersionManagementView from './components/VersionManagementView';
+import ChecklistManagementView, { DEFAULT_CHECKLIST_TEMPLATES } from './components/ChecklistManagementView';
 import DepartmentManagersModal from './components/DepartmentManagersModal';
 import { INITIAL_TASKS } from './data/initialTasks';
 import { INITIAL_DATABASES } from './data/initialDatabases';
@@ -131,6 +132,55 @@ export default function App() {
   });
 
   // Login History & Audit Log state
+  // Checklist Templates (Managed exclusively in System Management)
+  const [checklistTemplates, setChecklistTemplates] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nyj_checklist_templates');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_CHECKLIST_TEMPLATES;
+  });
+
+  const fetchChecklistTemplates = async () => {
+    try {
+      const res = await fetch('/api/checklist-templates');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setChecklistTemplates(data);
+          try {
+            localStorage.setItem('nyj_checklist_templates', JSON.stringify(data));
+          } catch (e) {}
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to fetch checklist templates:', err);
+    }
+  };
+
+  const handleSaveChecklistTemplates = async (updated) => {
+    setChecklistTemplates(updated);
+    try {
+      localStorage.setItem('nyj_checklist_templates', JSON.stringify(updated));
+    } catch (e) {}
+
+    try {
+      await fetch('/api/checklist-templates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+      showToast('공사 체크박스 항목이 안전하게 저장되었습니다.');
+      addAuditLog(`공사 체크박스 마스터 항목 변경 (${updated.length}개)`);
+    } catch (err) {
+      console.error('Failed to save checklist templates to server:', err);
+      showToast('체크박스 항목 로컬 저장 완료 (서버 동기화 지연)', 'info');
+    }
+  };
+
   const [loginHistory, setLoginHistory] = useState(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_HISTORY);
@@ -280,6 +330,8 @@ export default function App() {
         document.title = `로그인이력조회 | ${dept} | 시설물종합관리시스템`;
       } else if (currentModule === 'backup-restore') {
         document.title = `데이터 백업 및 복구 | ${dept} | 시설물종합관리시스템`;
+      } else if (currentModule === 'checklist-settings') {
+        document.title = `공사 체크박스 관리 | ${dept} | 시설물종합관리시스템`;
       } else if (currentModule === 'version-history') {
         document.title = `버전 및 변경 이력 | ${dept} | 시설물종합관리시스템`;
       } else if (currentModule === 'facility-overview') {
@@ -1553,6 +1605,18 @@ export default function App() {
             />
           )}
 
+          {/* Module 1-D: 시스템관리 > 공사 체크박스 항목 관리 (마스터 관리) */}
+          {currentModule === 'checklist-settings' && (
+            <ChecklistManagementView
+              templates={checklistTemplates}
+              onSaveTemplates={handleSaveChecklistTemplates}
+              onBackToApp={() => {
+                setCurrentModule('databases');
+                setSelectedDbId('facility');
+              }}
+            />
+          )}
+
           {/* Module 1-C: 시스템관리 > 시스템 버전 및 변경 이력 관리 (내 컴퓨터 전용) */}
           {currentModule === 'version-history' && (
             <VersionManagementView
@@ -1775,6 +1839,7 @@ export default function App() {
         allDepartmentManagers={departmentManagers}
         managers={currentDeptManagers}
         isReadOnly={isReadOnly}
+        checklistTemplates={checklistTemplates}
       />
 
       {/* Department Managers Modal */}

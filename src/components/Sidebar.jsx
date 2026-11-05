@@ -25,7 +25,8 @@ import {
   RotateCcw,
   Calendar,
   GitBranch,
-  Eye
+  Eye,
+  ListChecks
 } from 'lucide-react';
 import { ORGANIZATION_TREE } from '../data/organizationChart';
 import { CURRENT_SYSTEM_VERSION } from '../data/initialVersionHistory';
@@ -483,6 +484,18 @@ export default function Sidebar({
                   {!isCollapsed && <span className="truncate">로그인이력조회</span>}
                 </button>
 
+                <button
+                  onClick={() => onModuleChange('checklist-settings')}
+                  title="시스템관리 > 공사 체크박스 항목 관리"
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition ${
+                    currentModule === 'checklist-settings'
+                      ? 'bg-slate-800 text-teal-300 border border-teal-500/50 font-bold shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+                  }`}
+                >
+                  <ListChecks className="w-4 h-4 shrink-0 text-teal-400" />
+                  {!isCollapsed && <span className="truncate">공사 체크박스 관리</span>}
+                </button>
                 <button
                   onClick={() => onModuleChange('backup-restore')}
                   title="시스템관리 > 데이터 백업 및 복구 관리"

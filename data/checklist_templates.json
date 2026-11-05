@@ -1,0 +1,51 @@
+[
+  {
+    "id": "CHK-1",
+    "title": "현장 실측 및 사전 답사",
+    "description": "현장 치수 확인 및 시공 여건 사전 답사",
+    "order": 1,
+    "active": true
+  },
+  {
+    "id": "CHK-2",
+    "title": "복수 비교견적서 징구",
+    "description": "2개 이상 업체 비교견적 확보 및 단가 비교",
+    "order": 2,
+    "active": true
+  },
+  {
+    "id": "CHK-3",
+    "title": "일상감사 및 품의 결재",
+    "description": "일상감사 요청 및 수선 공사 내부 품의 결재 완료",
+    "order": 3,
+    "active": true
+  },
+  {
+    "id": "CHK-4",
+    "title": "계약 체결 및 시공일정 협의",
+    "description": "시공 업체 선정 및 세부 공사 일정 조율",
+    "order": 4,
+    "active": true
+  },
+  {
+    "id": "CHK-5",
+    "title": "착공계 접수 및 현장 안전점검",
+    "description": "공사 착공계 확인 및 근로자 안전 점검",
+    "order": 5,
+    "active": true
+  },
+  {
+    "id": "CHK-6",
+    "title": "준공검사 및 검수조서 작성",
+    "description": "현장 준공 확인 및 검수조서 사진 대지 작성",
+    "order": 6,
+    "active": true
+  },
+  {
+    "id": "CHK-7",
+    "title": "세금계산서 및 공사대금 정산",
+    "description": "전자세금계산서 청구 및 회계팀 지출 결의",
+    "order": 7,
+    "active": true
+  }
+]

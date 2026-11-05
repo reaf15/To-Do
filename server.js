@@ -24,6 +24,7 @@ const FACILITIES_FILE = path.resolve(__dirname, 'data/facilities.json');
 const DEPT_MANAGERS_FILE = path.resolve(__dirname, 'data/department_managers.json');
 const VERSION_HISTORY_FILE = path.resolve(__dirname, 'data/version_history.json');
 const LOGIN_HISTORY_FILE = path.resolve(__dirname, 'data/login_history.json');
+const CHECKLIST_TEMPLATES_FILE = path.resolve(__dirname, 'data/checklist_templates.json');
 
 // Helper: Extract clean IPv4/IPv6 client IP
 function getClientIp(req) {
@@ -380,6 +381,38 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify([]));
     }
+    return;
+  }
+
+  // 7-2f. API: GET /api/checklist-templates
+  if (req.url === '/api/checklist-templates' && req.method === 'GET') {
+    if (fs.existsSync(CHECKLIST_TEMPLATES_FILE)) {
+      const data = fs.readFileSync(CHECKLIST_TEMPLATES_FILE, 'utf-8');
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(data);
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
+  // 7-2g. API: POST /api/checklist-templates
+  if (req.url === '/api/checklist-templates' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body);
+        fs.writeFileSync(CHECKLIST_TEMPLATES_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+        triggerAutoCloudSync(15000);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, count: parsed.length, updatedAt: Date.now() }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
     return;
   }
 

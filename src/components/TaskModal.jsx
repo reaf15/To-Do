@@ -3,6 +3,8 @@ import {
   X, Save, AlertCircle, Building2, Calendar, Camera, Image, Eye, Trash2, Plus, Upload,
   FileText, Paperclip, Download, FileCode, File
 } from 'lucide-react';
+import { CheckSquare, Lock } from 'lucide-react';
+import { DEFAULT_CHECKLIST_TEMPLATES } from './ChecklistManagementView';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
 
@@ -95,10 +97,45 @@ export default function TaskModal({
   allBudgets = {},
   allDepartmentManagers = {},
   managers = MANAGERS,
-  isReadOnly = false
+  isReadOnly = false,
+  checklistTemplates = []
 }) {
   const currentTask = task || editingTask;
   const defaultBudget = budgetCategories[0] || '수선유지비';
+  // Active checklist templates managed in System Management
+  const activeChecklistTemplates = useMemo(() => {
+    const list = Array.isArray(checklistTemplates) && checklistTemplates.length > 0
+      ? checklistTemplates
+      : DEFAULT_CHECKLIST_TEMPLATES;
+    return list.filter(t => t.active !== false).sort((a, b) => (a.order || 0) - (b.order || 0));
+  }, [checklistTemplates]);
+
+  const buildInitialChecklist = (existingChecklist) => {
+    const existingMap = {};
+    if (Array.isArray(existingChecklist)) {
+      existingChecklist.forEach(item => {
+        if (item.id) existingMap[item.id] = item.completed;
+        if (item.title) existingMap[item.title] = item.completed;
+      });
+    }
+    return activeChecklistTemplates.map(tmpl => ({
+      id: tmpl.id,
+      title: tmpl.title,
+      description: tmpl.description || '',
+      completed: Boolean(existingMap[tmpl.id] || existingMap[tmpl.title] || false)
+    }));
+  };
+
+  const handleToggleCheckItem = (id) => {
+    if (isReadOnly) return;
+    setFormData(prev => ({
+      ...prev,
+      checklist: (prev.checklist || []).map(item =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      )
+    }));
+  };
+
   const [isCustomFacility, setIsCustomFacility] = useState(false);
 
   const getDeptFacilityList = (dept) => {
@@ -326,6 +363,7 @@ export default function TaskModal({
         memo: currentTask.memo || '',
         photos: Array.isArray(currentTask.photos) ? currentTask.photos : [],
         documents: Array.isArray(currentTask.documents) ? currentTask.documents : (Array.isArray(currentTask.attachments) ? currentTask.attachments : []),
+        checklist: buildInitialChecklist(currentTask.checklist),
       });
     } else {
       const deptFacs = getDeptFacilityList(selectedDepartment);
@@ -347,6 +385,7 @@ export default function TaskModal({
         memo: '',
         photos: [],
         documents: [],
+        checklist: buildInitialChecklist([]),
       });
     }
     setErrors({});
@@ -782,6 +821,78 @@ export default function TaskModal({
               className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 text-xs"
             />
           </div>
+
+
+          {/* Checklist Section (시스템 관리에서 설정된 체크박스 항목) */}
+          {formData.checklist && formData.checklist.length > 0 && (
+            <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 font-bold text-slate-800">
+                  <CheckSquare className="w-4 h-4 text-teal-600" />
+                  <span>공사 점검 체크박스</span>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 border border-teal-200">
+                    {formData.checklist.filter(c => c.completed).length} / {formData.checklist.length} 완료
+                  </span>
+                </div>
+                <span className="text-[11px] font-semibold text-slate-500">
+                  {Math.round((formData.checklist.filter(c => c.completed).length / formData.checklist.length) * 100)}%
+                </span>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                <div 
+                  className="h-1.5 bg-teal-500 rounded-full transition-all duration-300"
+                  style={{ 
+                    width: `${Math.round((formData.checklist.filter(c => c.completed).length / formData.checklist.length) * 100)}%` 
+                  }}
+                />
+              </div>
+
+              {/* Checkbox Items List */}
+              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                {formData.checklist.map((item) => (
+                  <div 
+                    key={item.id}
+                    onClick={() => handleToggleCheckItem(item.id)}
+                    className={`flex items-start gap-2.5 p-2 rounded-lg border transition cursor-pointer select-none ${
+                      item.completed 
+                        ? 'bg-emerald-50/70 border-emerald-200' 
+                        : 'bg-white border-slate-200 hover:border-teal-300'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={Boolean(item.completed)}
+                      onChange={() => {}}
+                      disabled={isReadOnly}
+                      className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer accent-teal-600 mt-0.5 shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className={`text-xs ${
+                        item.completed 
+                          ? 'line-through text-slate-400 font-medium' 
+                          : 'text-slate-800 font-bold'
+                      }`}>
+                        {item.title}
+                      </div>
+                      {item.description && (
+                        <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                          {item.description}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Notice that items are managed exclusively in System Management */}
+              <div className="flex items-center gap-1.5 text-[10px] text-slate-400 bg-slate-100/80 px-2.5 py-1.5 rounded-lg border border-slate-200/60">
+                <Lock className="w-3 h-3 text-slate-400 shrink-0" />
+                <span>체크박스 항목의 추가·수정·삭제는 <strong>[시스템 관리 &gt; 공사 체크박스 관리]</strong>에서만 가능합니다.</span>
+              </div>
+            </div>
+          )}
 
           {/* Row 7.5: Photos / Site Images Section */}
           <div 
