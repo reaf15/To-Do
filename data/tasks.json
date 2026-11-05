@@ -58,6 +58,16 @@
         "date": "2026-11-05",
         "author": "김일호",
         "message": "진행 상태를 [완료](으)로 변경"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[contractAmount] 직접 수정: 737,000원"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[contractAmount] 직접 수정: 삭제"
       }
     ]
   },
@@ -74,7 +84,7 @@
     "startDate": "",
     "endDate": "",
     "quoteAmount": 737000,
-    "contractAmount": null,
+    "contractAmount": 737000,
     "vendor": "",
     "memo": "",
     "photos": [],
@@ -115,6 +125,11 @@
         "date": "2026-11-04",
         "author": "김일호",
         "message": "진행 상태를 [설계](으)로 변경"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[contractAmount] 직접 수정: 737,000원"
       }
     ]
   },
@@ -796,7 +811,7 @@
       {
         "date": "2026-10-22",
         "author": "시스���",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 공사 업�� 등록"
       },
       {
         "date": "2026-10-22",
@@ -1661,7 +1676,7 @@
       },
       {
         "date": "2026-10-21",
-        "author": "관리자",
+        "author": "관���자",
         "message": "진행 상태를 [제안서 협의](으)로 변경"
       }
     ]
