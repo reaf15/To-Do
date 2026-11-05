@@ -33,26 +33,50 @@ export function saveWorkbookAsFile(workbook, fileName) {
  * 업무 목록을 Excel (.xlsx) 파일로 내보내기
  */
 export function exportToExcel(tasks, fileName = '남양주체육문화센터_공사업무현황.xlsx') {
-  const exportData = tasks.map((t) => ({
-    '예산': t.budget || '',
-    '분류': t.facility || '',
-    '위치': t.location || '',
-    '공사명': t.title || '',
-    '예상비용': t.estimatedCost ? Number(t.estimatedCost) : (t.estimatedCostNote || ''),
-    '담당자': t.manager || '',
-    '진행': t.status || '',
-    '견적가': t.quoteAmount ? Number(t.quoteAmount) : '',
-    '계약금액': t.contractAmount ? Number(t.contractAmount) : '',
-    '업체명': t.vendor || '',
-    '비고/메모': t.memo || '',
-  }));
+  // 체크박스 항목 1개당 1개 열(1셀)로 개별 분리하기 위한 전체 항목 수집
+  const checklistTitlesSet = new Set();
+  tasks.forEach(t => {
+    if (Array.isArray(t.checklist)) {
+      t.checklist.forEach(c => {
+        const title = (c.title || '').trim();
+        if (title) checklistTitlesSet.add(title);
+      });
+    }
+  });
+  const checklistTitles = Array.from(checklistTitlesSet);
+
+  const exportData = tasks.map((t) => {
+    const row = {
+      '예산': t.budget || '',
+      '분류': t.facility || '',
+      '위치': t.location || '',
+      '공사명': t.title || '',
+      '예상비용': t.estimatedCost ? Number(t.estimatedCost) : (t.estimatedCostNote || ''),
+      '담당자': t.manager || '',
+      '진행': t.status || '',
+      '견적가': t.quoteAmount ? Number(t.quoteAmount) : '',
+      '계약금액': t.contractAmount ? Number(t.contractAmount) : '',
+      '업체명': t.vendor || ''
+    };
+
+    // 체크박스 항목 1개당 1셀로 분리
+    checklistTitles.forEach((title) => {
+      const isChecked = Array.isArray(t.checklist) && t.checklist.some(
+        c => (c.title || '').trim() === title && Boolean(c.completed)
+      );
+      row[`[체크] ${title}`] = isChecked ? '✔' : '';
+    });
+
+    row['비고/메모'] = t.memo || '';
+    return row;
+  });
 
   // 합계 행 추가
   const totalCost = tasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
   const totalQuote = tasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
   const totalContract = tasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
 
-  exportData.push({
+  const summaryRow = {
     '예산': '',
     '분류': '',
     '위치': '',
@@ -62,14 +86,21 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
     '진행': '',
     '견적가': totalQuote,
     '계약금액': totalContract,
-    '업체명': '',
-    '비고/메모': `총 ${tasks.length}건`,
+    '업체명': ''
+  };
+
+  checklistTitles.forEach((title) => {
+    const countChecked = tasks.filter(t => Array.isArray(t.checklist) && t.checklist.some(c => (c.title || '').trim() === title && Boolean(c.completed))).length;
+    summaryRow[`[체크] ${title}`] = countChecked > 0 ? `${countChecked}건` : '';
   });
+
+  summaryRow['비고/메모'] = `총 ${tasks.length}건`;
+  exportData.push(summaryRow);
 
   const worksheet = XLSX.utils.json_to_sheet(exportData);
 
   // 컬럼 너비 설정
-  worksheet['!cols'] = [
+  const cols = [
     { wch: 12 }, // 예산
     { wch: 14 }, // 분류
     { wch: 18 }, // 위치
@@ -79,9 +110,15 @@ export function exportToExcel(tasks, fileName = '남양주체육문화센터_공
     { wch: 14 }, // 진행
     { wch: 16 }, // 견적가
     { wch: 16 }, // 계약금액
-    { wch: 16 }, // 업체명
-    { wch: 30 }, // 메모
+    { wch: 16 }  // 업체명
   ];
+
+  checklistTitles.forEach(title => {
+    cols.push({ wch: Math.max(12, title.length * 2 + 6) });
+  });
+
+  cols.push({ wch: 30 }); // 메모
+  worksheet['!cols'] = cols;
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, '공사업무현황');
@@ -439,17 +476,30 @@ export function exportChecklistDataToExcel({
   ];
   XLSX.utils.book_append_sheet(workbook, wsMaster, '체크마스터항목');
 
-  // Sheet 2: 공사별 체크 현황
+  // Sheet 2: 공사별 체크 현황 (체크박스 1개당 1개 열(1셀)로 개별 분리)
   if (Array.isArray(tasks) && tasks.length > 0) {
+    // 1. 등록된 모든 체크박스 항목 제목 목록 수집 (마스터 순서 우선)
+    const templateTitles = sortedTemplates.map(t => (t.title || '').trim()).filter(Boolean);
+    const extraTitlesSet = new Set();
+    tasks.forEach(t => {
+      if (Array.isArray(t.checklist)) {
+        t.checklist.forEach(c => {
+          const title = (c.title || '').trim();
+          if (title && !templateTitles.includes(title)) {
+            extraTitlesSet.add(title);
+          }
+        });
+      }
+    });
+    const allChecklistTitles = [...templateTitles, ...Array.from(extraTitlesSet)];
+
     const statusData = tasks.map((t, idx) => {
       const chk = Array.isArray(t.checklist) ? t.checklist : [];
-      const completedList = chk.filter(c => c.completed);
-      const uncompletedList = chk.filter(c => !c.completed);
+      const completedCount = chk.filter(c => c.completed).length;
       const totalCount = chk.length;
-      const completedCount = completedList.length;
       const rate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-      return {
+      const row = {
         '연번': idx + 1,
         '소속부서': t.department || '남양주체육문화센터',
         '예산과목': t.budget || '수선유지비',
@@ -458,28 +508,50 @@ export function exportChecklistDataToExcel({
         '위치': t.location || '',
         '진행상태': t.status || '',
         '담당자': t.manager || '',
-        '체크완료수': `${completedCount} / ${totalCount}`,
-        '체크달성률': `${rate}%`,
-        '체크(완료)된 항목': completedList.map((c, i) => `${i + 1}. ${c.title}`).join('\n'),
-        '미완료 항목': uncompletedList.map((c, i) => `${i + 1}. ${c.title}`).join('\n')
+        '예상비용': t.estimatedCost ? Number(t.estimatedCost) : '',
+        '견적가': t.quoteAmount ? Number(t.quoteAmount) : '',
+        '계약금액': t.contractAmount ? Number(t.contractAmount) : '',
+        '시공업체': t.vendor || ''
       };
+
+      // 체크박스 항목 1개당 엑셀 자료 1셀(열)로 배치
+      allChecklistTitles.forEach((chkTitle) => {
+        const isChecked = chk.some(c => (c.title || '').trim() === chkTitle && Boolean(c.completed));
+        row[`[체크] ${chkTitle}`] = isChecked ? '✔' : '';
+      });
+
+      row['체크완료수'] = `${completedCount} / ${totalCount}`;
+      row['체크달성률'] = `${rate}%`;
+
+      return row;
     });
 
     const wsStatus = XLSX.utils.json_to_sheet(statusData);
-    wsStatus['!cols'] = [
-      { wch: 8 },
-      { wch: 20 },
-      { wch: 14 },
-      { wch: 35 },
-      { wch: 18 },
-      { wch: 18 },
-      { wch: 12 },
-      { wch: 12 },
-      { wch: 14 },
-      { wch: 14 },
-      { wch: 45 },
-      { wch: 45 }
+
+    // 컬럼 너비 설정
+    const colWidths = [
+      { wch: 8 },  // 연번
+      { wch: 20 }, // 소속부서
+      { wch: 14 }, // 예산과목
+      { wch: 35 }, // 공사명
+      { wch: 18 }, // 시설
+      { wch: 18 }, // 위치
+      { wch: 12 }, // 진행상태
+      { wch: 12 }, // 담당자
+      { wch: 16 }, // 예상비용
+      { wch: 16 }, // 견적가
+      { wch: 16 }, // 계약금액
+      { wch: 18 }  // 시공업체
     ];
+
+    allChecklistTitles.forEach(title => {
+      colWidths.push({ wch: Math.max(12, title.length * 2 + 6) });
+    });
+
+    colWidths.push({ wch: 14 }); // 체크완료수
+    colWidths.push({ wch: 14 }); // 체크달성률
+
+    wsStatus['!cols'] = colWidths;
     XLSX.utils.book_append_sheet(workbook, wsStatus, '공사별체크현황');
   }
 
