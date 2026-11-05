@@ -559,12 +559,10 @@ export default function TableView({
     return 0;
   });
 
-  // Calculate totals - "완료 금액" (완료된 공사만 항상 합산)
-  const completedTasks = useMemo(() => sortedTasks.filter(t => t.status === '완료'), [sortedTasks]);
-
-  const totalCost = completedTasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
-  const totalQuote = completedTasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
-  const totalContract = completedTasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
+  // Calculate totals
+  const totalCost = sortedTasks.reduce((sum, t) => sum + (Number(t.estimatedCost) || 0), 0);
+  const totalQuote = sortedTasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
+  const totalContract = sortedTasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
 
 
   const renderSortIcon = (field) => {
@@ -1867,11 +1865,8 @@ export default function TableView({
             {/* Table Footer with Summary Row dynamically matching visible columns */}
             <tfoot className="bg-slate-100 font-extrabold text-xs text-slate-900 border-t-2 border-slate-300 sticky bottom-0 z-10 shadow-inner">
               <tr>
-                {/* 완료 금액 Label Column */}
-                <td className="py-3 px-3 text-center whitespace-nowrap">
-                  <span className="inline-block px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-black border border-emerald-300 shadow-2xs">
-                    완료 금액
-                  </span>
+                <td className="py-3 px-3 text-center text-slate-600 font-bold">
+                  합계
                 </td>
 
                 {visibleColumns.includes('budget') && (
@@ -1887,15 +1882,8 @@ export default function TableView({
                 )}
 
                 {visibleColumns.includes('title') && (
-                  <td className="py-3 px-4 text-slate-800 font-bold whitespace-nowrap">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-emerald-800 text-xs font-black">
-                        완료 {completedTasks.length}건
-                      </span>
-                      <span className="text-[11px] text-slate-400 font-normal">
-                        (전체 {sortedTasks.length}건)
-                      </span>
-                    </div>
+                  <td className="py-3 px-4 text-slate-800 font-bold">
+                    총 {sortedTasks.length}건
                   </td>
                 )}
 
@@ -1910,11 +1898,7 @@ export default function TableView({
                 )}
 
                 {visibleColumns.includes('status') && (
-                  <td className="py-3 px-3 text-center font-bold whitespace-nowrap">
-                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs">
-                      완료
-                    </span>
-                  </td>
+                  <td className="py-3 px-3 text-center text-slate-400 font-normal">-</td>
                 )}
 
                 {visibleColumns.includes('quoteAmount') && (
