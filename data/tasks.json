@@ -1652,7 +1652,7 @@
       {
         "date": "2026-10-21",
         "author": "조현호",
-        "message": "신규 공사 업무 등록"
+        "message": "신규 ��사 업무 등록"
       },
       {
         "date": "2026-10-22",
@@ -2069,7 +2069,7 @@
     "estimatedCost": null,
     "estimatedCostNote": "",
     "manager": "",
-    "status": "검토",
+    "status": "검���",
     "startDate": "2026-10-19",
     "endDate": "2026-10-25",
     "quoteAmount": null,
@@ -2159,7 +2159,7 @@
     "status": "설계",
     "startDate": "2026-10-15",
     "endDate": "2026-10-15",
-    "quoteAmount": null,
+    "quoteAmount": 3158000,
     "contractAmount": null,
     "vendor": "세한이앤지",
     "memo": "10월 15일 견적방문 (다목적잔디광장 화장실 ���관 공사 포함)",
@@ -2193,7 +2193,12 @@
       {
         "date": "2026-11-05",
         "author": "김일호",
-        "message": "진행 상태를 [설계](으)로 변경"
+        "message": "진행 상태를 [���계](으)로 변경"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "조현호",
+        "message": "[quoteAmount] 직접 수정: 3,158,000원"
       }
     ]
   },
