@@ -1,5 +1,77 @@
 [
   {
+    "year": "2026",
+    "department": "남양주체육문화센터",
+    "budget": "수선(일상)",
+    "facility": "남양주센터",
+    "location": "테니스장 뒤 주차장",
+    "title": "CCTV 거치대 보수",
+    "estimatedCost": 983000,
+    "estimatedCostNote": "",
+    "manager": "조현호",
+    "status": "검토",
+    "startDate": "2026-11-06",
+    "endDate": "2026-11-06",
+    "quoteAmount": 983000,
+    "contractAmount": null,
+    "vendor": "",
+    "memo": "",
+    "photos": [],
+    "documents": [],
+    "checklist": [
+      {
+        "id": "CHK-1",
+        "title": "현장 실측 및 사전 답사",
+        "description": "현장 치수 확인 및 시공 여건 사전 답사",
+        "completed": false
+      },
+      {
+        "id": "CHK-2",
+        "title": "복수 비교견적서 징구",
+        "description": "2개 이상 업체 비교견적 확보 및 단가 비교",
+        "completed": false
+      },
+      {
+        "id": "CHK-3",
+        "title": "일상감사 및 품의 결재",
+        "description": "일상감사 요청 및 수선 공사 내부 품의 결재 완료",
+        "completed": false
+      },
+      {
+        "id": "CHK-4",
+        "title": "계약 체결 및 시공일정 협의",
+        "description": "시공 업체 선정 및 세부 공사 일정 조율",
+        "completed": false
+      },
+      {
+        "id": "CHK-5",
+        "title": "착공계 접수 및 현장 안전점검",
+        "description": "공사 착공계 확인 및 근로자 안전 점검",
+        "completed": false
+      },
+      {
+        "id": "CHK-6",
+        "title": "준공검사 및 검수조서 작성",
+        "description": "현장 준공 확인 및 검수조서 사진 대지 작성",
+        "completed": false
+      },
+      {
+        "id": "CHK-7",
+        "title": "세금계산서 및 공사대금 정산",
+        "description": "전자세금계산서 청구 및 회계팀 지출 결의",
+        "completed": false
+      }
+    ],
+    "id": "TASK-1793868810263",
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "조현호",
+        "message": "신규 공사 업무 등록"
+      }
+    ]
+  },
+  {
     "id": "TASK-1793845737608-644",
     "department": "남양주체육문화센터",
     "budget": "시설비(야구장)",
@@ -143,7 +215,7 @@
       },
       {
         "date": "2026-11-05",
-        "author": "김일호",
+        "author": "김���호",
         "message": "진행 상태를 [완료](으)로 변경"
       }
     ]
@@ -223,7 +295,7 @@
       {
         "date": "2026-11-04",
         "author": "김일호",
-        "message": "[vendor] 직접 수정: 조달청"
+        "message": "[vendor] 직접 수���: 조달청"
       }
     ]
   },
@@ -1273,7 +1345,7 @@
       {
         "date": "2026-10-22",
         "author": "관리자",
-        "message": "담당자를 [김일호](으)로 지정"
+        "message": "담당��를 [김일호](으)로 지정"
       },
       {
         "date": "2026-10-28",
@@ -1573,7 +1645,7 @@
     "endDate": "2026-12-10",
     "quoteAmount": null,
     "contractAmount": 437500000,
-    "vendor": "(주)오라시스템",
+    "vendor": "(주)오라시스���",
     "memo": "",
     "id": "TASK-1792556893646",
     "logs": [
@@ -1861,7 +1933,7 @@
     "quoteAmount": 14996000,
     "contractAmount": null,
     "vendor": "현 eng",
-    "memo": "야구장 3면 ��규 투수마운드 흙 교체 및 레벨링 평탄화 작업",
+    "memo": "야구장 3면 ��규 투���마운드 흙 교체 및 레벨링 평탄화 작업",
     "id": "TASK-05",
     "logs": [
       {
@@ -2057,7 +2129,7 @@
     "estimatedCost": 5000000,
     "estimatedCostNote": "",
     "manager": "권병학",
-    "status": "설계",
+    "status": "���계",
     "startDate": "2026-10-03",
     "endDate": "2026-10-11",
     "quoteAmount": null,
@@ -2116,7 +2188,7 @@
       {
         "date": "2026-11-05",
         "author": "관리자",
-        "message": "진행 상태를 [검토](으)로 변경"
+        "message": "진행 상태를 [검토](으)로 변���"
       },
       {
         "date": "2026-11-05",
@@ -2939,7 +3011,7 @@
     "contractAmount": 7900000,
     "vendor": "클린��어테크",
     "contact": "010-5511-9022",
-    "memo": "추계 전동차 �������기점검 및 미��먼지 필터 교체",
+    "memo": "추계 전동차 �������기점검 ��� 미��먼지 필터 교체",
     "logs": [],
     "startDate": "2026-10-03",
     "endDate": "2026-10-09"
@@ -2990,7 +3062,7 @@
     "budget": "수선유지비",
     "facility": "어린이비전센터",
     "location": "1층 놀이���율체��관",
-    "title": "어린��� 안전 벽면쿠션 전면 �����체 및 바�� 매트 보수",
+    "title": "어린��� 안전 벽면쿠션 전면 ������체 및 바�� 매트 보수",
     "estimatedCost": 7500000,
     "estimatedCostNote": "",
     "manager": "박보검",
@@ -3039,7 +3111,7 @@
     "contractAmount": 7600000,
     "vendor": "한양건설",
     "contact": "010-3344-5566",
-    "memo": "수영장 미끄럼 ��지 논슬립 그레이팅 교체",
+    "memo": "수영장 미끄럼 ��지 논슬립 그��이팅 교체",
     "logs": [],
     "startDate": "2026-10-13",
     "endDate": "2026-10-24"
