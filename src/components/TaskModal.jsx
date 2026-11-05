@@ -135,6 +135,7 @@ export default function TaskModal({
     }));
   };
 
+  const [checklistFilter, setChecklistFilter] = useState('all'); // 'all' | 'completed' | 'uncompleted'
   const [isCustomFacility, setIsCustomFacility] = useState(false);
 
   const getDeptFacilityList = (dept) => {
@@ -848,41 +849,105 @@ export default function TaskModal({
                 />
               </div>
 
-              {/* Checkbox Items List */}
-              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
-                {formData.checklist.map((item) => (
-                  <div 
-                    key={item.id}
-                    onClick={() => handleToggleCheckItem(item.id)}
-                    className={`flex items-start gap-2.5 p-2 rounded-lg border transition cursor-pointer select-none ${
-                      item.completed 
-                        ? 'bg-emerald-50/70 border-emerald-200' 
-                        : 'bg-white border-slate-200 hover:border-teal-300'
+              {/* View Filter Tabs: 전체 / 체크된 내용만 / 미완료 */}
+              <div className="flex items-center justify-between gap-2 pt-0.5">
+                <div className="inline-flex p-0.5 bg-slate-200/80 rounded-lg text-[10px] font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setChecklistFilter('all')}
+                    className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                      checklistFilter === 'all' 
+                        ? 'bg-white text-slate-900 shadow-2xs font-black' 
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    <input
-                      type="checkbox"
-                      checked={Boolean(item.completed)}
-                      onChange={() => {}}
-                      disabled={isReadOnly}
-                      className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer accent-teal-600 mt-0.5 shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className={`text-xs ${
-                        item.completed 
-                          ? 'line-through text-slate-400 font-medium' 
-                          : 'text-slate-800 font-bold'
-                      }`}>
-                        {item.title}
-                      </div>
-                      {item.description && (
-                        <div className="text-[10px] text-slate-400 mt-0.5 truncate">
-                          {item.description}
-                        </div>
-                      )}
-                    </div>
+                    전체 ({formData.checklist.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setChecklistFilter('completed')}
+                    className={`px-2.5 py-0.5 rounded-md transition cursor-pointer flex items-center gap-1 ${
+                      checklistFilter === 'completed' 
+                        ? 'bg-emerald-600 text-white shadow-2xs font-black' 
+                        : 'text-slate-600 hover:text-emerald-700'
+                    }`}
+                  >
+                    <span>체크된 내용만 보기</span>
+                    <span className={`px-1 py-0.2 rounded-full text-[9px] ${
+                      checklistFilter === 'completed' ? 'bg-emerald-700 text-white' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {formData.checklist.filter(c => c.completed).length}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setChecklistFilter('uncompleted')}
+                    className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                      checklistFilter === 'uncompleted' 
+                        ? 'bg-slate-700 text-white shadow-2xs font-black' 
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    미완료 ({formData.checklist.filter(c => !c.completed).length})
+                  </button>
+                </div>
+              </div>
+
+              {/* Checkbox Items List */}
+              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                {(formData.checklist.filter(item => {
+                  if (checklistFilter === 'completed') return Boolean(item.completed);
+                  if (checklistFilter === 'uncompleted') return !item.completed;
+                  return true;
+                })).length === 0 ? (
+                  <div className="py-4 text-center text-slate-400 text-[11px] bg-white rounded-lg border border-dashed border-slate-200">
+                    {checklistFilter === 'completed' 
+                      ? '체크(완료)된 점검 항목이 아직 없습니다.' 
+                      : checklistFilter === 'uncompleted'
+                        ? '모든 점검 항목이 완료되었습니다! 🎉'
+                        : '등록된 체크박스 항목이 없습니다.'}
                   </div>
-                ))}
+                ) : (
+                  formData.checklist
+                    .filter(item => {
+                      if (checklistFilter === 'completed') return Boolean(item.completed);
+                      if (checklistFilter === 'uncompleted') return !item.completed;
+                      return true;
+                    })
+                    .map((item) => (
+                      <div 
+                        key={item.id}
+                        onClick={() => handleToggleCheckItem(item.id)}
+                        className={`flex items-start gap-2.5 p-2 rounded-lg border transition cursor-pointer select-none ${
+                          item.completed 
+                            ? 'bg-emerald-50/70 border-emerald-200' 
+                            : 'bg-white border-slate-200 hover:border-teal-300'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={Boolean(item.completed)}
+                          onChange={() => {}}
+                          disabled={isReadOnly}
+                          className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer accent-teal-600 mt-0.5 shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className={`text-xs ${
+                            item.completed 
+                              ? 'line-through text-slate-400 font-medium' 
+                              : 'text-slate-800 font-bold'
+                          }`}>
+                            {item.title}
+                          </div>
+                          {item.description && (
+                            <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                              {item.description}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                )}
               </div>
 
               {/* Notice that items are managed exclusively in System Management */}
