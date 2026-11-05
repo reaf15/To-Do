@@ -44,18 +44,6 @@ export const VIEW_PRESETS = [
     columns: ['budget', 'facility', 'location', 'title', 'estimatedCost', 'manager', 'status', 'quoteAmount', 'contractAmount', 'vendor']
   },
   {
-    id: 'budget_focused',
-    name: '💰 예산·비용 중심',
-    description: '예산, 견적가, 계약금액 등 재정 정보 중심',
-    columns: ['budget', 'title', 'estimatedCost', 'quoteAmount', 'contractAmount', 'status', 'vendor']
-  },
-  {
-    id: 'field_focused',
-    name: '👷 현장·업체 중심',
-    description: '시설, 위치, 담당자, 시공업체 중심',
-    columns: ['facility', 'location', 'title', 'manager', 'status', 'vendor']
-  },
-  {
     id: 'compact',
     name: '⚡ 간략 요약',
     description: '주요 핵심 정보만 간략히 확인',
