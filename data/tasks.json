@@ -2133,10 +2133,10 @@
     "estimatedCost": 10000000,
     "estimatedCostNote": "",
     "manager": "김일호",
-    "status": "설계",
+    "status": "검토",
     "startDate": "2026-10-19",
     "endDate": "2026-10-27",
-    "quoteAmount": null,
+    "quoteAmount": 15000000,
     "contractAmount": null,
     "vendor": "에스엠",
     "memo": "사면 옹벽 록 균열 및 토압에 의한 ",
@@ -2151,6 +2151,16 @@
         "date": "2026-11-03",
         "author": "김일호",
         "message": "[budget] 직접 수정: 보류"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[quoteAmount] 직접 수정: 15,000,000원"
+      },
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "진행 상태를 [검토](으)로 변경"
       }
     ]
   },
