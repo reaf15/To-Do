@@ -1194,8 +1194,12 @@ export default function App() {
         const matchesVendor = (task.vendor || '').toLowerCase().includes(query);
         const matchesContact = (task.contact || '').toLowerCase().includes(query);
         const matchesNote = (task.estimatedCostNote || '').toLowerCase().includes(query);
+        const matchesMemo = (task.memo || '').toLowerCase().includes(query);
+        const matchesChecklist = Array.isArray(task.checklist) && task.checklist.some(
+          c => Boolean(c.completed) && (c.title || '').toLowerCase().includes(query)
+        );
 
-        if (!matchesTitle && !matchesFacility && !matchesLocation && !matchesVendor && !matchesContact && !matchesNote) {
+        if (!matchesTitle && !matchesFacility && !matchesLocation && !matchesVendor && !matchesContact && !matchesNote && !matchesMemo && !matchesChecklist) {
           return false;
         }
       }

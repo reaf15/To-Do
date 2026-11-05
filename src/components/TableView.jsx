@@ -428,9 +428,16 @@ export default function TableView({
         return false;
       }
 
-      // Title filter (contains)
-      if (rowFilters.title.trim() && !(t.title || '').toLowerCase().includes(rowFilters.title.trim().toLowerCase())) {
-        return false;
+      // Title & Checklist filter (contains)
+      if (rowFilters.title.trim()) {
+        const query = rowFilters.title.trim().toLowerCase();
+        const matchesTitle = (t.title || '').toLowerCase().includes(query);
+        const matchesChecklist = Array.isArray(t.checklist) && t.checklist.some(
+          c => Boolean(c.completed) && (c.title || '').toLowerCase().includes(query)
+        );
+        if (!matchesTitle && !matchesChecklist) {
+          return false;
+        }
       }
 
       // Estimated Cost Range filter
