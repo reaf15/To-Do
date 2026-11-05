@@ -1611,7 +1611,7 @@ export default function App() {
               templates={checklistTemplates}
               onSaveTemplates={handleSaveChecklistTemplates}
               tasks={tasks}
-              allTasks={allTasks}
+              allTasks={tasks}
               showToast={showToast}
               onBackToApp={() => {
                 setCurrentModule('databases');
