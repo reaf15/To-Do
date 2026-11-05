@@ -26,5 +26,12 @@
     "description": "고객 만족도 향상(경영평가)",
     "order": 4,
     "active": true
+  },
+  {
+    "id": "CHK-1793859968784",
+    "title": "환경",
+    "description": "환경 개선 공사",
+    "order": 5,
+    "active": true
   }
 ]
