@@ -1,5 +1,17 @@
 [
   {
+    "id": "LOG-1793837821434-306",
+    "timestamp": "2026-11-05 09:17:01",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "공사 업무 삭제: [시험]",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793837788158-231",
     "timestamp": "2026-11-05 09:16:28",
     "userId": "admin_fms",
