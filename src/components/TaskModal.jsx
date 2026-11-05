@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { 
   X, Save, AlertCircle, Building2, Calendar, Camera, Image, Eye, Trash2, Plus, Upload,
-  FileText, Paperclip, Download, FileCode, File
+  FileText, Paperclip, Download, FileCode, File, CheckSquare, Lock
 } from 'lucide-react';
-import { CheckSquare, Lock } from 'lucide-react';
 import { DEFAULT_CHECKLIST_TEMPLATES } from './ChecklistManagementView';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
