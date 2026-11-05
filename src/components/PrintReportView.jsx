@@ -16,8 +16,8 @@ export default function PrintReportView({
   const totalQuote = tasks.reduce((sum, t) => sum + (Number(t.quoteAmount) || 0), 0);
   const totalContract = tasks.reduce((sum, t) => sum + (Number(t.contractAmount) || 0), 0);
   
-  // 집행 예정금액 (우선순위: 1.계약금액 > 2.견적가 > 3.예상비용)
-  const totalPlannedCost = tasks.reduce((sum, t) => {
+  // 집행 예정금액 (우선순위: 1.계약금액 > 2.견적가 > 3.예상비용, 진행상태 '검토' 제외)
+  const totalPlannedCost = tasks.filter(t => t.status !== '검토').reduce((sum, t) => {
     const c = Number(t.contractAmount) || 0;
     if (c > 0) return sum + c;
     const q = Number(t.quoteAmount) || 0;

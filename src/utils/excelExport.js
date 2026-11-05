@@ -227,7 +227,7 @@ export function exportMasterDataToExcel({
       if (catMap && typeof catMap === 'object') {
         Object.entries(catMap).forEach(([cat, amount]) => {
           const bAmount = Number(amount) || 0;
-          const deptTasks = allTasks.filter(t => (t.department || '남양주체육문화센터') === dept && (t.budget || '수선유지비') === cat);
+          const deptTasks = allTasks.filter(t => (t.department || '남양주체육문화센터') === dept && (t.budget || '수선유지비') === cat && t.status !== '검토');
           const executed = deptTasks.reduce((s, t) => s + (Number(t.estimatedCost) || 0), 0);
           const remain = bAmount - executed;
           const rate = bAmount > 0 ? ((executed / bAmount) * 100).toFixed(1) : '0.0';

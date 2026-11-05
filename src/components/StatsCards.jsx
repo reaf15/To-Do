@@ -69,8 +69,8 @@ export default function StatsCards({
     return { amount: 0, type: 'none' };
   };
 
-  // Card 3: Tasks relevant strictly to selected budget item in this department
-  const relevantTasks = tasks.filter(t => t.budget === selectedBudgetItem);
+  // Card 3: Tasks relevant strictly to selected budget item in this department (진행상태 '검토' 제외)
+  const relevantTasks = tasks.filter(t => t.budget === selectedBudgetItem && t.status !== '검토');
 
   let contractAppliedCount = 0;
   let quoteAppliedCount = 0;
@@ -362,8 +362,8 @@ export default function StatsCards({
             </div>
           </div>
 
-          <div className="text-[10px] text-slate-400 mt-1 truncate" title={`1.계약(${contractAppliedCount}건) > 2.견적(${quoteAppliedCount}건) > 3.예상(${estimatedAppliedCount}건) 우선 적용`}>
-            * 1.계약({contractAppliedCount}) &gt; 2.견적({quoteAppliedCount}) &gt; 3.예상({estimatedAppliedCount}) 적용
+          <div className="text-[10px] text-slate-400 mt-1 truncate" title={`1.계약(${contractAppliedCount}건) > 2.견적(${quoteAppliedCount}건) > 3.예상(${estimatedAppliedCount}건) 우선 적용 (진행상태 '검토' 제외)`}>
+            * 1.계약({contractAppliedCount}) &gt; 2.견적({quoteAppliedCount}) &gt; 3.예상({estimatedAppliedCount}) 적용 (검토 제외)
           </div>
         </div>
 

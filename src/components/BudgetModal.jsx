@@ -72,10 +72,10 @@ export default function BudgetModal({
   // Filter tasks belonging strictly to targetDepartment
   const departmentTasks = tasks.filter(t => (t.department || '남양주체육문화센터') === targetDepartment);
 
-  // Compute current planned execution cost per budget item (3-tier priority: contract > quote > estimated)
+  // Compute current planned execution cost per budget item (3-tier priority: contract > quote > estimated, 진행상태 '검토' 제외)
   const getPlannedCostForBudget = (budgetName) => {
     return departmentTasks
-      .filter(t => t.budget === budgetName)
+      .filter(t => t.budget === budgetName && t.status !== '검토')
       .reduce((sum, t) => {
         const c = Number(t.contractAmount) || 0;
         if (c > 0) return sum + c;
