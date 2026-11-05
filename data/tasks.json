@@ -1651,7 +1651,7 @@
     "logs": [
       {
         "date": "2026-10-21",
-        "author": "���현호",
+        "author": "�����현호",
         "message": "신규 ��사 업무 등록"
       },
       {
@@ -3217,24 +3217,70 @@
     "endDate": "2026-10-15"
   },
   {
-    "id": "TASK-CV-01",
+    "year": "2026",
     "department": "어린이비전센터",
     "budget": "수선유지비",
     "facility": "어린이비전센터",
-    "location": "1층 놀이���율체��관",
-    "title": "어린��� 안전 벽면쿠션 전면 ������체 및 바�� 매트 보수",
+    "location": "1층 놀이율체관",
+    "title": " 매트 보수",
     "estimatedCost": 7500000,
     "estimatedCostNote": "",
     "manager": "박보검",
     "status": "설계",
+    "startDate": "2026-10-09",
+    "endDate": "2026-10-18",
     "quoteAmount": 7100000,
     "contractAmount": 6900000,
     "vendor": "키즈세이프",
-    "contact": "010-6677-2234",
     "memo": "KC인증 친환경 난연 쿠션재 교체 시공",
-    "logs": [],
-    "startDate": "2026-10-09",
-    "endDate": "2026-10-18"
+    "photos": [],
+    "documents": [],
+    "checklist": [
+      {
+        "id": "CHK-1",
+        "title": "안전",
+        "description": "안전예방 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-2",
+        "title": "신재생",
+        "description": "에너지 시설 대상",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793849909634",
+        "title": "민원",
+        "description": "민원 응대 시설",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793854033836",
+        "title": "만족도",
+        "description": "고객 만족도 향상(경영평가)",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859968784",
+        "title": "환경",
+        "description": "환경 개선 공사",
+        "completed": false
+      },
+      {
+        "id": "CHK-1793859995694",
+        "title": "공모",
+        "description": "공모 사업",
+        "completed": false
+      }
+    ],
+    "id": "TASK-CV-01",
+    "logs": [
+      {
+        "date": "2026-11-05",
+        "author": "김일호",
+        "message": "[location] 직접 수정: 1층 놀이율체관"
+      }
+    ]
   },
   {
     "id": "TASK-YC-01",
