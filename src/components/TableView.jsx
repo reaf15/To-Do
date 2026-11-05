@@ -1503,7 +1503,7 @@ export default function TableView({
                                   ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200'
                                   : 'bg-slate-100 hover:bg-teal-50 text-slate-600 hover:text-teal-700 border-slate-300'
                               }`}
-                              title={`[점검 체크박스 ${t.checklist.filter(c => c.completed).length}/${t.checklist.length} 완료]${t.checklist.filter(c => c.completed).length > 0 ? "\n" + t.checklist.filter(c => c.completed).map((c, i) => `${i + 1}. ✔ ${c.title}`).join("\n") : ""}\n(클릭: 공사창에서 전체 확인/체크)`}
+                              title={`점검 체크박스 ${t.checklist.filter(c => c.completed).length}/${t.checklist.length} 완료 (클릭: 확인/체크)`}
                             >
                               ☑️ {t.checklist.filter(c => c.completed).length}/{t.checklist.length}
                             </span>
