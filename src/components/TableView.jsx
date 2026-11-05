@@ -294,7 +294,7 @@ export default function TableView({
   // ============================================================================
   const DEFAULT_EMPTY_ROW = {
     budget: '수선유지비',
-    facility: '남양주센터',
+    facility: '',
     location: '',
     title: '',
     estimatedCost: '',
@@ -326,12 +326,11 @@ export default function TableView({
 
     const managerFromAbove = lastRow?.manager || (currentUser && currentUser !== 'ALL' ? currentUser : '');
     const budgetFromAbove = lastRow?.budget || selectedBudget || (uniqueBudgets && uniqueBudgets[0]) || (budgetCategories && budgetCategories[0]) || '수선유지비';
-    const facilityFromAbove = lastRow?.facility || (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터';
 
     setNewRowData({
       budget: budgetFromAbove,
-      facility: facilityFromAbove,
-      location: lastRow?.location || '',
+      facility: '',
+      location: '',
       title: '',
       estimatedCost: '',
       manager: managerFromAbove,
@@ -363,7 +362,7 @@ export default function TableView({
         id: `TASK-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
         department: selectedDepartment || '남양주체육문화센터',
         budget: newRowData.budget || (budgetCategories && budgetCategories[0]) || '수선유지비',
-        facility: newRowData.facility || (uniqueFacilities && uniqueFacilities[0]) || (facilities && facilities[0]) || '남양주센터',
+        facility: newRowData.facility || '',
         location: newRowData.location || '',
         title: newRowData.title.trim(),
         estimatedCost: newRowData.estimatedCost ? parseInt(String(newRowData.estimatedCost).replace(/[^0-9]/g, ''), 10) : null,
@@ -1681,6 +1680,7 @@ export default function TableView({
                         onKeyDown={handleNewRowKeyDown}
                         className="text-[11px] font-bold px-2 py-1 rounded-md border border-teal-300 bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-800 shadow-2xs cursor-pointer"
                       >
+                        <option value="">(분류 선택)</option>
                         {uniqueFacilities.map((f) => (
                           <option key={f} value={f}>{f}</option>
                         ))}
