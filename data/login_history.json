@@ -1,5 +1,17 @@
 [
   {
+    "id": "LOG-1793839638739-288",
+    "timestamp": "2026-11-05 09:47:18",
+    "userId": "admin_fms",
+    "userName": "관리자",
+    "role": "시스템 관리자",
+    "dept": "남양주체육문화센터",
+    "ip": "192.168.101.96",
+    "device": "Edge / Windows 10/11",
+    "action": "스프레드시트 셀 수정: [남자 화장실 소변기 세관 작업] budget = 수선(일상)",
+    "status": "성공"
+  },
+  {
     "id": "LOG-1793839622027-538",
     "timestamp": "2026-11-05 09:47:02",
     "userId": "admin_fms",
