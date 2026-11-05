@@ -506,6 +506,27 @@
         "date": "2026-10-26"
       }
     ],
+    "documents": [],
+    "checklist": [
+      {
+        "id": "CHK-1",
+        "title": "안전시설",
+        "description": "현장 치수 확인 및 시공 여건 사전 답사",
+        "completed": false
+      },
+      {
+        "id": "CHK-2",
+        "title": "신재생",
+        "description": "2개 이상 업체 비교견적 확보 및 단가 비교",
+        "completed": true
+      },
+      {
+        "id": "CHK-1793849909634",
+        "title": "민원응대",
+        "description": "",
+        "completed": true
+      }
+    ],
     "id": "TASK-1792995208181",
     "logs": [
       {
