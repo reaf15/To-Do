@@ -1495,6 +1495,19 @@ export default function TableView({
                               📎{t.documents.length}
                             </span>
                           )}
+                          {t.checklist && t.checklist.length > 0 && (
+                            <span 
+                              onClick={() => onEditTask && onEditTask(t)}
+                              className={`text-[10px] px-1.5 py-0.2 rounded font-bold shrink-0 cursor-pointer transition border ${
+                                t.checklist.every(c => c.completed)
+                                  ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200'
+                                  : 'bg-slate-100 hover:bg-teal-50 text-slate-600 hover:text-teal-700 border-slate-300'
+                              }`}
+                              title={`체크리스트 ${t.checklist.filter(c => c.completed).length}/${t.checklist.length} 완료 (클릭하여 확인/수정)`}
+                            >
+                              ☑️ {t.checklist.filter(c => c.completed).length}/{t.checklist.length}
+                            </span>
+                          )}
                           {t.logs && t.logs.length > 0 && (
                             <span className="text-[10px] bg-slate-100 text-slate-600 px-1 rounded font-normal shrink-0" title={`${t.logs.length}개 업무 일지 있음`}>
                               💬{t.logs.length}

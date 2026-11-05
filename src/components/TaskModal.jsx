@@ -1,10 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, Save, AlertCircle, Building2, Calendar, Camera, Image, Eye, Trash2, Plus, Upload,
-  FileText, Paperclip, Download, FileCode, File
+  FileText, Paperclip, Download, FileCode, File, CheckSquare, Check
 } from 'lucide-react';
 import { FACILITIES, BUDGET_TYPES, MANAGERS, STATUS_LIST } from '../data/initialTasks';
 import { ALL_DEPARTMENTS } from '../data/organizationChart';
+
+// 자주 쓰는 공사 점검 체크리스트 추천 항목
+const CHECKLIST_PRESETS = [
+  '현장 실측 및 사전 답사',
+  '복수 비교견적서 징구',
+  '일상감사 및 품의 결재',
+  '계약 체결 및 시공일정 협의',
+  '착공계 접수 및 현장 안전점검',
+  '준공검사 및 검수조서 작성',
+  '세금계산서 및 공사대금 정산'
+];
 
 // 파일 크기 포맷 헬퍼 (예: 1.2 MB, 450 KB)
 function formatFileSize(bytes) {
@@ -135,7 +146,44 @@ export default function TaskModal({
     memo: '',
     photos: [],
     documents: [],
+    checklist: [],
   });
+
+  const [newCheckItemText, setNewCheckItemText] = useState('');
+
+  const handleAddCheckItem = (textToAdd) => {
+    if (isReadOnly) return;
+    const text = (typeof textToAdd === 'string' ? textToAdd : newCheckItemText).trim();
+    if (!text) return;
+    const newItem = {
+      id: `CHK-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      text: text,
+      completed: false
+    };
+    setFormData(prev => ({
+      ...prev,
+      checklist: [...(prev.checklist || []), newItem]
+    }));
+    setNewCheckItemText('');
+  };
+
+  const handleToggleCheckItem = (itemId) => {
+    if (isReadOnly) return;
+    setFormData(prev => ({
+      ...prev,
+      checklist: (prev.checklist || []).map(item => 
+        item.id === itemId ? { ...item, completed: !item.completed } : item
+      )
+    }));
+  };
+
+  const handleRemoveCheckItem = (itemId) => {
+    if (isReadOnly) return;
+    setFormData(prev => ({
+      ...prev,
+      checklist: (prev.checklist || []).filter(item => item.id !== itemId)
+    }));
+  };
 
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
@@ -326,6 +374,7 @@ export default function TaskModal({
         memo: currentTask.memo || '',
         photos: Array.isArray(currentTask.photos) ? currentTask.photos : [],
         documents: Array.isArray(currentTask.documents) ? currentTask.documents : (Array.isArray(currentTask.attachments) ? currentTask.attachments : []),
+        checklist: Array.isArray(currentTask.checklist) ? currentTask.checklist : [],
       });
     } else {
       const deptFacs = getDeptFacilityList(selectedDepartment);
@@ -347,8 +396,10 @@ export default function TaskModal({
         memo: '',
         photos: [],
         documents: [],
+        checklist: [],
       });
     }
+    setNewCheckItemText('');
     setErrors({});
   }, [currentTask, isOpen, selectedDepartment, defaultBudget, allFacilities]);
 
@@ -781,6 +832,140 @@ export default function TaskModal({
               placeholder="특이사항, 견적방문 예정일자, 시공 범위 등 직원간 공유할 내용 입력"
               className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 text-xs"
             />
+          </div>
+
+          {/* Checklist / Task Checkbox Items Section (체크박스 항목 추가) */}
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 font-bold text-slate-800">
+                <CheckSquare className="w-4 h-4 text-teal-600" />
+                <span>체크리스트 / 공사 점검 체크박스</span>
+                {formData.checklist && formData.checklist.length > 0 && (
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 border border-teal-200">
+                    {formData.checklist.filter(c => c.completed).length} / {formData.checklist.length} 완료
+                  </span>
+                )}
+              </div>
+              {formData.checklist && formData.checklist.length > 0 && (
+                <span className="text-[11px] font-semibold text-slate-500">
+                  {Math.round((formData.checklist.filter(c => c.completed).length / formData.checklist.length) * 100)}%
+                </span>
+              )}
+            </div>
+
+            {/* Progress Bar (if items exist) */}
+            {formData.checklist && formData.checklist.length > 0 && (
+              <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                <div 
+                  className="h-1.5 bg-teal-500 rounded-full transition-all duration-300"
+                  style={{ 
+                    width: `${Math.round((formData.checklist.filter(c => c.completed).length / formData.checklist.length) * 100)}%` 
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Checklist Items List */}
+            {formData.checklist && formData.checklist.length > 0 ? (
+              <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                {formData.checklist.map((item) => (
+                  <div 
+                    key={item.id}
+                    className={`flex items-center justify-between gap-2 p-2 rounded-lg border transition ${
+                      item.completed 
+                        ? 'bg-emerald-50/70 border-emerald-200' 
+                        : 'bg-white border-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <label className="flex items-center gap-2.5 flex-1 min-w-0 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(item.completed)}
+                        onChange={() => handleToggleCheckItem(item.id)}
+                        disabled={isReadOnly}
+                        className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer accent-teal-600 shrink-0"
+                      />
+                      <span className={`text-xs break-all ${
+                        item.completed 
+                          ? 'line-through text-slate-400 font-medium' 
+                          : 'text-slate-800 font-bold'
+                      }`}>
+                        {item.text}
+                      </span>
+                    </label>
+                    {!isReadOnly && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveCheckItem(item.id)}
+                        title="항목 삭제"
+                        className="p-1 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded transition cursor-pointer shrink-0"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-3 text-center text-slate-400 text-[11px] border border-dashed border-slate-200 rounded-lg bg-white/60">
+                등록된 체크박스 항목이 없습니다. 아래 입력창 또는 추천 항목을 클릭하여 추가해보세요.
+              </div>
+            )}
+
+            {/* Add New Checkbox Item Input */}
+            {!isReadOnly && (
+              <div className="space-y-2 pt-2 border-t border-slate-200">
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    value={newCheckItemText}
+                    onChange={(e) => setNewCheckItemText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleAddCheckItem();
+                      }
+                    }}
+                    placeholder="체크할 작업 항목 입력 후 [항목추가] 또는 Enter..."
+                    className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-medium placeholder:text-slate-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleAddCheckItem()}
+                    disabled={!newCheckItemText.trim()}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 disabled:bg-slate-300 text-white transition shadow-xs cursor-pointer disabled:cursor-not-allowed shrink-0 active:scale-95"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>항목추가</span>
+                  </button>
+                </div>
+
+                {/* Quick Recommendation Chips */}
+                <div className="flex items-center gap-1 flex-wrap pt-0.5">
+                  <span className="text-[10px] text-slate-400 font-semibold mr-0.5">자주 쓰는 항목:</span>
+                  {CHECKLIST_PRESETS.map((preset) => {
+                    const alreadyAdded = (formData.checklist || []).some(c => c.text === preset);
+                    return (
+                      <button
+                        key={preset}
+                        type="button"
+                        disabled={alreadyAdded}
+                        onClick={() => handleAddCheckItem(preset)}
+                        className={`text-[10px] px-2 py-0.5 rounded-md border transition cursor-pointer ${
+                          alreadyAdded 
+                            ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-default opacity-50' 
+                            : 'bg-white hover:bg-teal-50 text-slate-600 hover:text-teal-700 border-slate-200 hover:border-teal-300 shadow-2xs active:scale-95'
+                        }`}
+                        title={alreadyAdded ? "이미 추가된 항목입니다" : "클릭하여 바로 추가"}
+                      >
+                        + {preset}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Row 7.5: Photos / Site Images Section */}
