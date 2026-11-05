@@ -89,6 +89,14 @@ export default function StatsCards({
   const burnRate = allocatedBudget > 0 ? Math.min(Math.round((plannedExecutionCost / allocatedBudget) * 100), 100) : 0;
   const exactRate = allocatedBudget > 0 ? ((plannedExecutionCost / allocatedBudget) * 100).toFixed(1) : '0.0';
 
+  // Card 3: Actual executed cost based on completed tasks (실제 집행금액 - 완료 금액 기준)
+  const completedTasksInBudget = relevantTasks.filter((t) => t.status === '완료');
+  const completedExecutionCost = completedTasksInBudget.reduce((sum, t) => {
+    return sum + getTaskPlannedCost(t).amount;
+  }, 0);
+  const completedBurnRate = allocatedBudget > 0 ? Math.min(Math.round((completedExecutionCost / allocatedBudget) * 100), 100) : 0;
+  const completedRate = allocatedBudget > 0 ? ((completedExecutionCost / allocatedBudget) * 100).toFixed(1) : '0.0';
+
   // Status counts (Card 1) for this department
   const completedCount = tasks.filter((t) => t.status === '완료').length;
   const inProgressCount = tasks.filter((t) => t.status === '진행' || t.status === '공사진행').length;
@@ -335,21 +343,21 @@ export default function StatsCards({
             </span>
           </div>
 
-          {/* Budget execution burn rate progress bar */}
+          {/* Budget execution burn rate progress bar (집행금액 - 완료 금액 기준) */}
           <div className="mt-1.5 space-y-1">
-            <div className="flex justify-between text-[10px] text-slate-400 font-medium">
-              <span>집행 소진율 ({exactRate}%)</span>
-              <span className={remainingBudget >= 0 ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
-                {remainingBudget >= 0 ? `${formatCurrencyShort(remainingBudget)} 잔여` : '예산 초과'}
+            <div className="flex justify-between items-center text-[10px] text-slate-500 font-medium">
+              <span>집행금액 (완료 {completedTasksInBudget.length}건)</span>
+              <span className="text-emerald-600 font-bold" title={`완료 금액: ${formatCurrency(completedExecutionCost)}`}>
+                {formatCurrency(completedExecutionCost)} <span className="text-slate-400 font-normal">({completedRate}%)</span>
               </span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden flex">
               <div 
                 className={`h-1.5 rounded-full transition-all duration-500 ${
-                  burnRate > 90 ? 'bg-rose-500' : burnRate > 75 ? 'bg-amber-500' : 'bg-indigo-600'
+                  completedBurnRate > 90 ? 'bg-rose-500' : completedBurnRate > 75 ? 'bg-amber-500' : 'bg-emerald-500'
                 }`}
-                style={{ width: `${burnRate}%` }}
-                title={`집행률 ${exactRate}%`}
+                style={{ width: `${completedBurnRate}%` }}
+                title={`집행금액(완료): ${formatCurrency(completedExecutionCost)} (집행률 ${completedRate}%)`}
               />
             </div>
           </div>
